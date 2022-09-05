@@ -1,0 +1,254 @@
+<breadcrumb></breadcrumb>
+
+<div fxLayout="row wrap" class="matero-row">
+
+  <div fxFlex="100" class="matero-col">
+    <mat-card>
+      <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
+        <mat-tab label="Product">
+          <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+            <div class="col-md-12">
+              <div class="row pt-2">
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Items</label>
+                    <select class="form-control form-control-sm" (change)="OnItemChange($event)"
+                      [ngClass]="{'is-invalid': submitted && f.ItemID.invalid}" formControlName="ItemID" id="ItemID">
+                      <option value="null" disabled>Select </option>
+                      <option *ngFor="let i of Itemlist" value={{i.ItemID}}>{{i.ItemName}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.ItemID.invalid" class="invalid-feedback">
+                      <div *ngIf="f.ItemID.errors?.required">Select Item</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label for="company">Product Code</label>
+                    <input type="text" [ngClass]="{'is-invalid': submitted && f.ProductCode.invalid}"
+                      formControlName="ProductCode" id="ProductCode" class=" form-control form-control-sm" />
+                    <div *ngIf="submitted && f.ProductCode.invalid" class="invalid-feedback">
+                      <div *ngIf="f.ProductCode.errors?.required">Enter Product Code</div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Product Name</label>
+                    <input type="text" [ngClass]="{'is-invalid': submitted && f.ProductName.invalid}"
+                      formControlName="ProductName" id="ProductName" class=" form-control form-control-sm" />
+                    <div *ngIf="submitted && f.ProductName.invalid" class="invalid-feedback">
+                      <div *ngIf="f.ProductName.errors?.required">Enter Product Name</div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Product Type</label>
+                    <select class="form-control  form-control-sm"
+                      [ngClass]="{'is-invalid': submitted && f.ProductTypeID.invalid}" formControlName="ProductTypeID"
+                      id="ProductTypeID">
+                      <option value="null" disabled>Select </option>
+                      <option *ngFor="let p of ProductTypelist" value={{p.ProductTypeID}}>{{p.ProductType1}}</option>
+
+                    </select>
+                    <div *ngIf="submitted && f.ProductTypeID.invalid" class="invalid-feedback">
+                      <div *ngIf="f.ProductTypeID.errors?.required">Select Product Type</div>
+                    </div>
+
+                  </div>
+
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Product Group</label>
+                    <select class="form-control  form-control-sm"
+                      [ngClass]="{'is-invalid': submitted && f.ProductGroupID.invalid}" formControlName="ProductGroupID"
+                      id="ProductGroupID">
+                      <option value="null" disabled>Select </option>
+                      <option *ngFor="let p of ProductGrouplist" value={{p.ProductGroupID}}>{{p.ProductGroupName}}
+                      </option>
+                    </select>
+                    <div *ngIf="submitted && f.ProductGroupID.invalid" class="invalid-feedback">
+                      <div *ngIf="f.ProductGroupID.errors?.required">Select Product Group</div>
+                    </div>
+
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Unit of Measurement</label>
+                    <select class="form-control  form-control-sm"
+                      [ngClass]="{'is-invalid': submitted && f.UOMID.invalid}" formControlName="UOMID" id="UOMID">
+                      <option value="null" disabled>Select </option>
+                      <option *ngFor="let u of UOMlist" value={{u.UOMID}}>{{u.UOMName}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.UOMID.invalid" class="invalid-feedback">
+                      <div *ngIf="f.UOMID.errors?.required">Select Unit of Measurement</div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Packing Type</label>
+                    <select class="form-control  form-control-sm"
+                      [ngClass]="{'is-invalid': submitted && f.PackingTypeID.invalid}" formControlName="PackingTypeID"
+                      id="PackingTypeID">
+                      <option value="null" disabled>Select </option>
+                      <option *ngFor="let p of PackingTypelist" value={{p.PackingTypeID}}>{{p.PackingType1}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.PackingTypeID.invalid" class="invalid-feedback">
+                      <div *ngIf="f.PackingTypeID.errors?.required">Select Packing Type </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Cublic Area (in FT)</label>
+                    <input type="text" [ngClass]="{'is-invalid': submitted && f.CubicArea.invalid}"
+                      formControlName="CubicArea" id="CubicArea" class="form-control  form-control-sm" />
+                    <div *ngIf="submitted && f.CubicArea.invalid" class="invalid-feedback">
+                      <div *ngIf="f.CubicArea.errors?.required">Enter Cubic Area</div>
+                    </div>
+
+                  </div>
+
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Weight (in KG)</label>
+                    <input type="text" [ngClass]="{'is-invalid': submitted && f.WeightinKG.invalid}"
+                      formControlName="WeightinKG" id="WeightinKG" class="form-control  form-control-sm" />
+                    <div *ngIf="submitted && f.WeightinKG.invalid" class="invalid-feedback">
+                      <div *ngIf="f.WeightinKG.errors?.required">Enter Weight in KG</div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Item Count</label>
+                    <input type="text" [ngClass]="{'is-invalid': submitted && f.ItemCount.invalid}"
+                      formControlName="ItemCount" id="ItemCount" class="form-control  form-control-sm" />
+                    <div *ngIf="submitted && f.ItemCount.invalid" class="invalid-feedback">
+                      <div *ngIf="f.ItemCount.errors?.required">Enter Item Count</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Self Life (In Days)</label>
+                    <input type="text" [ngClass]="{'is-invalid': submitted && f.SelfLife.invalid}"
+                      formControlName="SelfLife" id="SelfLife" class="form-control  form-control-sm" />
+                    <div *ngIf="submitted && f.SelfLife.invalid" class="invalid-feedback">
+                      <div *ngIf="f.SelfLife.errors?.required">Enter Self Life</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Temperature Category</label>
+                    <select class="form-control  form-control-sm"
+                      [ngClass]="{'is-invalid': submitted && f.TemperatureCategoryID.invalid}"
+                      formControlName="TemperatureCategoryID" id="TemperatureCategoryID">
+                      <option value="null" disabled>Select </option>
+                      <option *ngFor="let t of Temperaturelist" value={{t.TemperatureCategoryID}}>
+                        {{t.TemperatureCategory}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.TemperatureCategoryID.invalid" class="invalid-feedback">
+                      <div *ngIf="f.TemperatureCategoryID.errors?.required">Select Temperature Category</div>
+                    </div>
+                  </div>
+                  <!-- /.form-group -->
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Approx Value</label>
+                    <input type="text" [ngClass]="{'is-invalid': submitted && f.ApproxValue.invalid}"
+                      formControlName="ApproxValue" id="ApproxValue" class=" form-control form-control-sm" />
+                    <div *ngIf="submitted && f.ApproxValue.invalid" class="invalid-feedback">
+                      <div *ngIf="f.ApproxValue.errors?.required">Enter Approx Value</div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Billing Cycle</label>
+                    <select [ngClass]="{'is-invalid': submitted && f.BillingCycleID.invalid}"
+                      class="form-control form-control-sm" formControlName="BillingCycleID" id="BillingCycleID">
+                      <option value="null" disabled>Select </option>
+                      <option *ngFor="let b of Billingcyclelist" value={{b.BillingCycleID}}>{{b.BillingCyclesName}}
+                      </option>
+                    </select>
+                    <div *ngIf="submitted && f.BillingCycleID.invalid" class="invalid-feedback">
+                      <div *ngIf="f.BillingCycleID.errors?.required">Select Billing cycle</div>
+                    </div>
+
+                  </div>
+                  <!-- col end-->
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <label>Is Active</label>
+                    <input type="checkbox" style="margin-top: 30px !important; margin-left: 2px !important;"
+                      formControlName="IsActive" id="IsActive" class="form-check-input" />
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                  <div class="form-group">
+                    <button type="submit" [disabled]="submitted" class="btn btn-primary btn-sm"
+                      style="width: 85px !important; margin-top: 20px !important;"> Save </button>
+                  </div>
+                </div>
+              </div>
+              <!--/.col  click="onSubmit(form)"-->
+            </div>
+            <!--/.row-->
+          </form>
+        </mat-tab>
+        <mat-tab label="List">
+
+          <mtx-grid [data]="Productlist"
+          [columns]="columns"
+          [loading]="false"
+          [columnResizable]="true"
+            [multiSelectable]="false"
+            [rowSelectable]="false"
+            [hideRowSelectionCheckbox]="false"
+            [rowHover]="true"
+            [rowStriped]="false"
+            [showToolbar]="true"
+            [toolbarTitle]="'Product List'"
+            [columnHideable]="false"
+            [columnMovable]="true"
+            [expandable]="false"
+            [pageOnFront]="true"
+            [showPaginator]="true"
+            [pageSizeOptions]="[10,20,50,100,500]"
+            [pageIndex]="0"
+            [pageSize]="10"
+            [toolbarTemplate]="toolbarTpl"
+            >
+            <!-- (sortChange)="changeSort($event)"
+(selectionChange)="changeSelect($event)"
+[expansionTemplate]="expansionTpl"-->
+          </mtx-grid>
+          <ng-template #toolbarTpl>
+            <input placeholder="Search">
+          </ng-template>
+          <!-- <ng-template #expansionTpl let-row>
+            {{row.name}}
+          </ng-template> -->
+        </mat-tab>
+
+      </mat-tab-group>
+    </mat-card>
+  </div>
+
+</div>

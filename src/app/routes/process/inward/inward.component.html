@@ -1,0 +1,693 @@
+<breadcrumb></breadcrumb>
+
+<div fxLayout="row wrap" class="matero-row">
+
+  <div fxFlex="100" class="matero-col">
+    <mat-card>
+      <mat-tab-group animationDuration="1ms" (selectedIndexChange)="tabInwardchange($event)" [(selectedIndex)]="tab">
+        <mat-tab label="Inward">
+          <!-- (ngSubmit)="onSubmit(form)" -->
+          <form [formGroup]="form" >
+            <div class="col-md-12">
+              <div class="row pt-2">
+                      <div class="col-sm-6 col-md-6">
+                        <div class="form-group">
+                          <label>Customer Name</label>
+                          <select class="form-control form-control-sm" (change)="GetCustomerID($event)"
+                            formControlName="customer_id" id="customer_id">
+                            <option value="null" disabled>Select</option>
+                            <option *ngFor="let c of customerList" value={{c.CustomerID}}>{{c.CustomerName}}</option>
+                          </select>
+                          <mat-error id="customer_id_error"></mat-error>
+                        </div>
+                        <!-- /.form-group -->
+                      </div>
+
+                      <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                          <label>Enter Challan</label>
+                          <input type="text" formControlName="challan_no" id="challan_no"
+                            [ngClass]="{ 'is-invalid': submitted && f.challan_no.errors }"
+                            class=" form-control form-control-sm" autocomplete="off"/>
+
+                        </div>
+                        <!-- /.form-group -->
+                      </div>
+                      <!-- /.col -->
+                      <div class="col-sm-6 col-md-3">
+                        <div class="row">
+                        <div class="form-group pl-2">
+                          <button (click)="OnApplyClick(f.customer_id.value,f.challan_no.value)"
+                            class="btn btn-primary btn-sm" style="width: 85px !important; margin-top: 20px !important;">
+                            Apply </button>
+                        </div>
+                        <div class="form-group pl-2">
+                          <button (click)="onCustomerContact(CustomerContactcontent)" class="btn btn-primary btn-sm"
+                            style="width: 85px !important; margin-top: 20px !important;"> Contact </button>
+                        </div>
+                      </div>
+                      </div>
+                    
+                      <!-- <div class="col-sm-6 col-md-3 text-center">
+
+                      </div> -->
+                      <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                          <label>Dock Name</label>
+                          <select class="form-control form-control-sm" formControlName="dock_name" id="dock_name">
+                            <option value="null" disabled>Select </option>
+                            <option *ngFor="let d of dockList" value={{d.DockID}}>{{d.DockName}}</option>
+                          </select>
+                        </div>
+                        <!-- /.form-group -->
+                      </div>
+
+                      <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                          <label>Inward Date</label>
+                          <input type="date" formControlName="inward_date" id="inward_date"
+                            class="form-control form-control-sm" placeholder="" 
+                            [ngModel]="todayDate| date:'yyyy-MM-dd'"  name="inward_date" 
+                              class="form-control form-control-rounded" 
+                            />
+                        </div>
+                        <!-- /.form-group -->
+                      </div>
+                      <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                          <label>Unloading By</label>
+                          <select class="form-control form-control-sm" formControlName="unloading_by" id="unloading_by">
+                            <option value="null" disabled>Select </option>
+                            <option *ngFor="let u of unloadingList" value={{u.UserID}}>{{u.UserName}}</option>
+                          </select>
+                        </div>
+                        <!-- /.form-group -->
+                      </div>
+
+                      <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                          <label>Remarks</label>
+                          <select class="form-control form-control-sm" formControlName="custremarks" id="custremarks">
+                            <option value="null" disabled>Select </option>
+                            <option *ngFor="let r of remarkList" value={{r.Remarks}}>{{r.Remarks}}</option>
+                          </select>
+                        </div>
+                        <!-- /.form-group -->
+                      </div>
+              </div>
+              <hr>
+
+              <div class="col-12">
+                  <p class="font-weight-bold"> Transfer Details </p>
+                  <div class="row">
+                      <div class="col">
+                        <div class="row">
+                          <div class="col-sm-6 col-md-3">
+                            <div class="form-group">
+                              <label>Transporter Name</label>
+                              <input type="text" formControlName="transportername" id="transportername"
+                                class=" form-control form-control-sm" placeholder="" autocomplete="on"/>
+                            </div>
+                            <!-- /.form-group -->
+                          </div>
+
+                          <div class="col-sm-6 col-md-3">
+                            <div class="form-group">
+                              <label>Truck No</label>
+                              <input type="text" formControlName="truckno" id="truckno"
+                                class=" form-control form-control-sm" placeholder="" autocomplete="on"/>
+                            </div>
+                            <!-- /.form-group -->
+                          </div>
+                          <!-- /.col -->
+                          <div class="col-sm-6 col-md-3">
+                            <div class="form-group">
+                              <label>Container No</label>
+                              <input type="text" formControlName="container_no" id="container_no"
+                                class=" form-control form-control-sm" placeholder="" autocomplete="on"/>
+                            </div>
+                            <!-- /.form-group -->
+                          </div>
+
+                          <div class="col-sm-6 col-md-3">
+                            <div class="form-group">
+                              <button (click)="OnTransportAdd(TranspoterDetailcontent)" class="btn btn-primary btn-sm"
+                                style="width: 85px !important; margin-top: 20px !important;"> Add </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!--<div class="col-6">
+                        <div class="card">
+                          <div class="card-body">
+
+                            <div class="table-wrap-transport">
+                              <table class="table table-bordered">
+                                <thead>
+                                  <tr>
+                                    <th>Transporter Name</th>
+                                    <th>Truck No</th>
+                                    <th>Container</th>
+
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let d of inwardTransportList">
+                                    <td>{{d.TransporterName}}</td>
+                                    <td>{{d.TruckNo}}</td>
+                                    <td>{{d.Container}}</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+
+                            </div>
+
+                          </div>
+
+                        </div>
+                    </div>-->
+
+                  </div>
+              </div>
+              <hr>
+              <div class="col-12">
+                <p class="font-weight-bold"> Inward Details </p>
+                <div class="row">                  
+                  <div class="col-9">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4">
+                          <div class="form-group">
+                            <label>Product Name</label>
+                            <select class="form-control form-control-sm"  (change)="OnProductSelect($event)"
+                              formControlName="product_id" id="product_id" >
+                              <option value="null" disabled>Select </option>
+                              <option *ngFor="let p of productList" value="{{p.ProductID}}">{{p.ProductName}}</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="col-sm-6 col-md-4">
+                          <div class="form-group">
+                            <label>Brand Name </label>
+                            <select class="form-control form-control-sm" (change)="OnBrandSelect($event)"
+                            
+                              formControlName="brand_id" id="brand_id">
+                              <option value="null" disabled>Select </option>
+                              <option *ngFor="let b of brandList" value="{{b.BrandID}}" >{{b.BrandName}}</option>
+                            </select>
+                          </div>
+                          <!-- [(ngModel)]="selectedBrand" -->
+                          <!-- /.form-group [ngValue]="b"-->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-6 col-md-4">
+                          <div class="form-group">
+                            <label>Count In Packet</label>
+                            <select class="form-control form-control-sm" formControlName="packetcount" id="packetcount" >
+                              <option value="null" disabled>Select </option>
+                              <option *ngFor="let c of packateCountList" value={{c.Counts}} >{{c.Counts}}</option>
+                            </select>
+                          </div>
+                          <!-- /.form-group -->
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                          <div class="form-group">
+                            <label>Quantity</label>
+                            <input type="text" formControlName="quantity" id="quantity" autocomplete="off"
+                              class="form-control form-control-sm" placeholder="" required />                              
+                          </div>
+
+                          <!-- /.form-group -->
+                        </div>
+
+                        <div class="col-sm-6 col-md-4">
+                          <div class="form-group">
+                            <label>Service Type</label>
+                            <select class="form-control form-control-sm" (change)="OnServiceSelect($event)"
+                              formControlName="service_id" id="service_id">
+                              <option [ngValue]="null" disabled>Select </option>
+                              <option *ngFor="let s of serviceTypeList" value="{{s.StorageAreaTypeID}}">{{s.ServiceName}}
+                              </option>
+                            </select>
+                          </div>
+                          <!-- /.form-group -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-6 col-md-4">
+                          <div class="form-group">
+                            <label>Self Life</label>
+                            <input type="text" formControlName="selflife" id="selflife"
+                              class="form-control form-control-sm" placeholder="" />
+                          </div>
+                          <!-- /.form-group -->
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                          <div class="form-group">
+                            <label>Mfg Date</label>
+                            <input type="date" formControlName="mgfdate" id="mgfdate" class="form-control form-control-sm"
+                              placeholder="" />
+                          </div>
+
+                          <!-- /.form-group -->
+                        </div>
+
+                        <div class="col-sm-6 col-md-4">
+                          <div class="form-group">
+                            <label>Expiry Date</label>
+                            <input type="date" formControlName="expdate" id="expdate" class="form-control form-control-sm"
+                              placeholder="" />
+                          </div>
+
+                          <!-- /.form-group -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-6 col-md-4">
+                          <div class="form-group">
+                            <label>Labour Contracter</label>
+                            <select class=" form-control form-control-sm" (change)="OnLabourSelect($event)"
+                              formControlName="labourcontractor_id" id="labourcontractor_id">
+                              <option [ngValue]="null" disabled>Select </option>
+                              <option *ngFor="let l of labourContractorList" value="{{l.LabourContractorID}}">
+                                {{l.ContractorName}}</option>
+                            </select>
+                          </div>
+                          <!-- /.form-group -->
+                        </div>
+                        <div class="col-sm-6 col-md-4">
+                          <div class="form-group">
+                            <label>Lot No</label>
+                            <input type="text" formControlName="lot_no" id="lot_no" class=" form-control form-control-sm"
+                            [(ngModel)]="CurrentLotNo"  placeholder="" readonly/>
+                          </div>
+
+                          <!-- /.form-group -->
+                        </div>
+
+                        <div class="col-sm-6 col-md-4">
+                          <div class="form-group">
+                            <label>Remarks</label>
+                            <select class="form-control form-control-sm" formControlName="remarks" id="remarks">
+                              <option [ngValue]="null" disabled>Select </option>
+                              <option *ngFor="let r of remarkList" [ngValue]="r">{{r.Remarks}}</option>
+                            </select>
+                          </div>
+
+                          <!-- /.form-group -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-6 col-md-4">
+                          <div class="form-group">
+                            <label>Country</label>
+                            <input type="text" formControlName="country" id="country" class="form-control form-control-sm"
+                              placeholder="" autocomplete="off"/>
+                          </div>
+                          <!-- /.form-group -->
+                        </div>
+                        <!--<div class="testclass">
+                          <div class="form-group">
+                            <label>Test</label><br>
+                              <mat-form-field appearance="outline" >                                
+                                <input matInput type="text" placeholder="0" id="end_time_hour" />
+                                <mat-select class="form-control form-control-sm" formControlName="test1" id="test1"  >
+                                  <mat-option *ngFor="let Sr of storageAreaList" value="r">{{Sr.StorageArea}}</mat-option>
+                                </mat-select>                                
+                              </mat-form-field>
+                          </div>                          
+                        </div>-->
+                        <!-- /.form-group -->
+                        
+                        <div class="col-3">
+                          <div class="form-group">
+                            <button (click)="OnAddClick()" class="btn btn-primary btn-sm" [id]="OnAddClick"
+                            [disabled]="OnAddProductClick"
+                              style="width: 85px !important; margin-top: 20px !important;"> Add </button>
+                          </div>
+
+                          <!-- /.form-group -->
+                        </div>
+
+                        <div class="col-3">
+                          <div class="form-group">
+                            <button (click)="openStorageArea(StorageAreacontent)" class="btn btn-primary btn-sm" 
+                            id="BtnStorageArea"
+                              style="width: 100px !important; margin-top: 20px !important;"> Storage Area </button>
+                          </div>
+
+                          <!-- /.form-group -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-3">
+                          <div class="form-group">
+                            <button class="btn btn-primary btn-sm"
+                              style="width: 100px !important; margin-top: 20px !important;"> Label Print </button>
+                          </div>
+                        </div>
+
+                        <!-- /.form-group -->
+                        <div class="col-3">
+                          <div class="form-group">
+                            <button class="btn btn-primary btn-sm"
+                              style="width: 105px !important; margin-top: 20px !important;"> Receipt Print </button>
+                          </div>
+                        </div>
+                        <!-- /.form-group -->
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="card">
+                      <ag-grid-angular 
+                          style="height: 300px;"
+                          class="ag-theme-alpine"
+                          [rowData]="inwardservicelist"
+                          [columnDefs]="serviceColumns"                        
+                      >
+                      </ag-grid-angular>
+                      <!-- <mtx-grid [data]="inwardservicelist"  
+                      [columns]="serviceColumns"
+                      [loading]="false"
+                      [columnResizable]="true"
+                      [hideRowSelectionCheckbox]="false"
+                      [rowHover]="true"
+                      [rowStriped]="false"
+                      [showToolbar]="false"
+                      [columnHideable]="false"
+                      [columnMovable]="false"
+                      [pageOnFront]="false"
+                      [showPaginator]="false"
+                      [rowSelectable] ="true"
+                      (rowSelectionChange)="setInwardCharges($event)"
+                      >
+                        </mtx-grid> -->
+                      
+
+                    </div>
+                  </div>
+                  <!-- <div class="col-3">
+                    <div class="card">
+                      <mtx-grid [data]="storageAreaList"
+                      [columns]="StorageAreaColumns"
+                      [rowSelectable] ="true"                      
+                      ></mtx-grid>
+                      
+                      </div>
+                    </div> -->
+                    
+                </div>
+                <!----popup-->                
+                <ng-template #StorageAreacontent let-c="close" let-d="dismiss">
+                  <!-- <mat-tab-group>
+                    <mat-tab label="Storage Area">  -->
+                    <div class="modal-header">
+                      <h4  id="modal-basic-title">Storage Area</h4> 
+                    </div>
+                    <br>
+                    <div class="row" >
+                      <div class="col-6" >
+                        <label >Quantity </label>
+                        <input formControlName="quantity" id="quantity" readonly style="width: 50%;"/>
+                      </div>
+                      <div class="col-6">
+                        <label>AllocatedQty</label>
+                        <input formControlName="allocatedQty" id="allocatedQty" readonly style="width: 50%;"/>
+                      </div>
+                    </div>
+                    <div class="modal-body">
+                      <ag-grid-angular #LocationGrid
+                          style="height: 300px;"
+                          class="ag-theme-alpine"
+                          [rowData]="storageAreaList"
+                          [columnDefs]="columnDefs"
+                          (cellValueChanged) ="onCellKeyPress($event)"                      
+                                                   
+                      >
+                      </ag-grid-angular>
+                      <!-- (cellValueChanged)="onCellValueChangedStorageArea($event)" [groupIncludeTotalFooter]="true"   (cellKeyPress)="onCellKeyPress($event)"
+                          (rowClicked)="onRowClickStorageArea($event)" -->
+                    </div>
+                    
+                  <!-- </mat-tab> -->
+                    <!-- <mat-tab label="Applied Storage Area"> 
+                    <ag-grid-angular 
+                          style="height: 300px;"
+                          class="ag-theme-alpine"
+                          [rowData]="InwardshowStorageArea"
+                          [columnDefs]="AppliedStoragecolumnDefs"                        
+                          [enableCellChangeFlash]="true"
+                      >
+                      </ag-grid-angular>
+                    </mat-tab> -->
+                  <!-- </mat-tab-group> -->
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" (click)="onSaveStorageArea(StorageAreacontent)">ADD</button>
+                    <button type="button" class="btn btn-info" (click)="oncloseStoragearea(StorageAreacontent)">cancel</button>
+                  </div> 
+                </ng-template>
+
+                <!----popup customer contact-->                
+                <ng-template #CustomerContactcontent let-c="close" let-d="dismiss" >
+                  <div class="modal-header" >
+                    <h4  id="modal-basic-title" >Customer Contact</h4>
+                  </div>
+                  <div class="modal-body">
+                    <ag-grid-angular 
+                        style="height: 300px;"
+                        class="ag-theme-alpine"
+                        [rowData]="customercontactList"
+                        [columnDefs]="CustomerContactcolumnDefs"
+                        rowSelection="multiple"
+                        [groupIncludeTotalFooter]="true">
+                    </ag-grid-angular>
+                  </div>
+                  <div class="modal-footer" >
+                    <button type="button" class="btn btn-info" (click)="onCloseCustomerContact(CustomerContactcontent)">cancel</button>
+                  </div>
+                </ng-template>
+                <!-- ----------Tranfer detail------------ -->
+                <!----popup customer contact-->                
+                <ng-template #TranspoterDetailcontent let-c="close" let-d="dismiss" style="width:620px;" >
+                  <div class="modal-header" >
+                    <h4  id="modal-basic-title" >Transporter Details</h4>                    
+                    <button type="button" class="btn btn-secondary btn-lg" (click)="onAddTranspoterDetailNewrow()">+</button>
+                  </div>
+                  <div class="modal-body">
+                    <ag-grid-angular 
+                        style="height: 300px;"
+                        class="ag-theme-alpine"
+                        [rowData]="TransportList"
+                        [columnDefs]="TransperdetailcolumnDefs"
+                        (rowClicked)="onRowSelectedTransport($event)"
+                        >
+                    </ag-grid-angular>
+                  </div>
+                  <div class="modalfooter" >
+                    <button type="button" style=" float: left; width:60px;" class="btn btn-danger" (click)="onRemoveTranspoterDetailNewrow()">-</button>
+                    <button type="button" style="float: right; width: 100px;" class="btn btn-info" (click)="onCloseTransportContact(TranspoterDetailcontent)">Cancel</button>
+                  </div>
+                </ng-template>
+              </div>
+              <hr>
+              <div class="col-12">
+                <p class="font-weight-bold"> Inward Details List </p>
+                <!--<div class="row">
+                  <div class="col">
+                    <div class="row">
+                      <div class="card-body">
+                        <table class="table table-bordered">
+                          <tbody>
+                              <tr>
+                                <th>Company</th>
+                                <th>Contact</th>
+                                <th>Country</th>
+                              </tr>
+                              <tr>
+                                <td>Alfreds Futterkiste</td>
+                                <td>Maria Anders</td>
+                                <td>Germany</td>
+                              </tr>
+                              <tr>
+                                <td>Centro comercial Moctezuma</td>
+                                <td>Francisco Chang</td>
+                                <td>Mexico</td>
+                              </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>-->
+                <mtx-grid [data]="InwardDetailList" #gridlist
+                      [columns]="InwardDetailColumns"
+                  [loading]="false"
+              [columnResizable]="true"
+            [multiSelectable]="false"
+            [rowSelectable]="false"
+            [hideRowSelectionCheckbox]="false"
+            [rowHover]="true"
+            [rowStriped]="false"
+            [showToolbar]="false"
+            [toolbarTitle]="'Detail List'"
+            [columnHideable]="false"
+            [columnMovable]="true"
+            [expandable]="false"
+            [pageOnFront]="true"
+            [showPaginator]="false"
+            [pageSizeOptions]="[10,20,50,100,500]"
+            [pageIndex]="0"     
+            (dblclick)="onRowDblclicked(gridlist,$event)"
+            >
+          </mtx-grid>
+
+          <!--(dblclick)="onRowDblclicked(gridlist,$event)" [toolbarTemplate]="toolbarTpl" [rowClassFormatter]="rowClassFormatter" -->
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-6">
+                <button class="btn btn-primary btn-sm" (click)="OnSaveinward()" style="width: 85px !important; " [disabled]="click">Save</button>
+          </div>
+          <div class="col-md-6">
+            <button class="btn btn-primary btn-sm" (click)="OnResetInward()" style="width: 85px !important; ">Reset</button>
+      </div>
+        </div>
+      </div>
+            <!--/.row-->
+            
+          </form>
+          
+        </mat-tab>
+        <!-- <mat-tab label="Inward List" style="height: auto;" hidden="true"> -->
+          
+          <!-- <div class="col-3">
+            <button class="btn btn-primary btn-sm" (click)="OnEditInward()">Edit</button>
+      </div> -->
+
+          <!-- <dx-data-grid
+          #InwardListgrid
+          id="gridContainer"
+          
+          [dataSource]="InwardList"          
+          [remoteOperations]="false"
+          [allowColumnReordering]="true"
+          [rowAlternationEnabled]="true"
+          [showBorders]="true"
+          [focusedRowEnabled]="true"
+          [focusedRowIndex]="0"
+          [focusedColumnIndex]="0"
+          [columnAutoWidth]="true"
+          [(focusedRowKey)]="focusedRowKey"
+          (onContentReady)="contentReady($event)"
+          keyExpr="InwardID"
+        >
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-header-filter ></dxo-header-filter>
+        <dxo-search-panel [visible]="true" [width]="240" placeholder="Search..." ></dxo-search-panel>
+        
+      <dxo-search-panel [visible]="true" [highlightCaseSensitive]="true"></dxo-search-panel>
+      <dxi-column type="buttons" caption="Action"  [width]="100"  >
+        <dxi-button icon="trash" hint="Delete" [onClick]="deleteIconClick" ></dxi-button>
+        <dxi-button icon="print" hint="Print" [onClick]="printIconClick" ></dxi-button>
+        <dxi-button icon="edit" hint="Edit" [onClick]="editIconClick" ></dxi-button>
+      </dxi-column>
+
+      
+      <dxi-column dataField="InwardID" [visible]="false" ></dxi-column>
+      <dxi-column dataField="ReceiptNo"></dxi-column>
+      <dxi-column dataField="CustomerID"  [visible]="false"></dxi-column>
+      <dxi-column dataField="CustomerName" ></dxi-column>      
+      <dxi-column dataField="LotNo" ></dxi-column>
+      <dxi-column dataField="DocID" [visible]="false"></dxi-column>
+      <dxi-column dataField="UnLoadingBy" [visible]="false" ></dxi-column>
+      <dxi-column dataField="InwardDate" dataType="date" format="dd/MM/yyyy"></dxi-column>
+      <dxi-column dataField="BillingStartDate" dataType="date" format="dd/MM/yyyy" ></dxi-column>
+      <dxi-column dataField="PersonName" [visible]="false"></dxi-column>
+      <dxi-column dataField="Remarks" ></dxi-column>
+      <dxi-column dataField="Status"  [visible]="true"></dxi-column>
+      <dxi-column dataField="StatusName" ></dxi-column>
+        </dx-data-grid> -->
+
+<!-- 
+        <div >
+          <button class="btn btn-primary btn-sm" (click)="onTabclick()">Tab</button>
+    </div> -->
+
+          <!-- <mtx-grid [data]="InwardList" #gridList
+          [columnDefs]="columnInwardDefs"  
+          [columnResizable]="true"
+          [pageOnFront]="false"
+          [showPaginator]="false"
+          [rowSelectable]="false"
+          [rowHover]="true"
+          
+            >
+            
+          </mtx-grid> -->
+
+          <!-- <ag-grid-angular class="ag-theme-alpine"
+          style="width: 100%; height: 400px;"
+          [rowData]="InwardList"
+          [columnDefs]="columnInwardDefs"
+          [defaultColDef]="defaultColDef"
+          [frameworkComponents]="frameworkComponents"
+          ></ag-grid-angular> -->
+
+          <!-- <ng-template #toolbarTpl>
+            <input placeholder="Search">
+          </ng-template>
+          <div class="form-group pl-2">
+            <button (click)="Ondeleteclick(gridList)" class="btn btn-primary btn-sm"
+              style="width: 85px !important; margin-top: 20px !important;"> Delete </button>
+          </div> -->
+
+
+
+          <!-- (sortChange)="changeSort($event)"
+(selectionChange)="changeSelect($event)"
+[expansionTemplate]="expansionTpl"-->
+          <!-- <ng-template #expansionTpl let-row>
+            {{row.name}}
+          </ng-template> -->
+        <!-- </mat-tab> -->
+        <mat-tab label="Inward test List" >
+          <div class="form-control-sm" >
+            <label class="form-control-sm" >Filter  </label>
+            <input type="text" (keyup)="onKeyfilter(filtertext.value)" id="filtertext" #filtertext 
+            class="form-control-sm" />
+          </div>
+          <br>
+          <div style="height: 800px">
+          <mtx-grid
+          style="height: 790px"
+          [data]="InwardList"
+          [columns]="columnstest"
+          [loading]="false"
+          [columnResizable]="true"
+          [multiSelectable]="false"
+          [rowSelectable]="false"
+          [hideRowSelectionCheckbox]="false"
+          [rowHover]="true"
+          [rowStriped]="false"
+          [showToolbar]="false"
+          [toolbarTitle]="'Item List'"
+          [columnHideable]="false"
+          [columnMovable]="true"
+          [expandable]="false"
+          [pageOnFront]="false"
+          [showPaginator]="false"
+          [pageSize]="10000000" 
+          
+          >            
+          </mtx-grid>
+        </div>
+        </mat-tab>
+
+      </mat-tab-group>
+    </mat-card>
+  </div>
+
+<!----popup customer contact-->                
+
+
+
+  
+</div>
+

@@ -1,0 +1,249 @@
+<breadcrumb></breadcrumb>
+<div fxLayout="row wrap" class="matero-row">
+    <div fxFlex="100" class="matero-col">
+      <mat-card>
+        <mat-tab-group animationDuration="1ms" (selectedIndexChange)="tabDeliveryOrderchange($event)" [(selectedIndex)]="tab" >
+          <mat-tab label="Delivery Order">
+            <form [formGroup]="form" >
+                <div class="col-md-12">
+                    <div class="row pt-2">
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                              <label>Customer Name</label>
+                              <select class="form-control form-control-sm" (change)="GetCustomerID($event)"
+                                formControlName="customer_id" id="customer_id">
+                                <option value="null" disabled>Select</option>
+                                <option *ngFor="let c of customerList" value={{c.CustomerID}}>{{c.CustomerName}}</option>
+                              </select>
+                              <mat-error id="customer_id_error"></mat-error>
+                            </div>
+                          </div>
+                          <div class="col-sm-3 col-md-3">
+                            <div class="form-group">
+                              <label>Delivery Order Date</label>
+                              <input type="date" formControlName="deliveryorder_date" id="deliveryorder_date"
+                                class="form-control form-control-sm" placeholder="" 
+                                [ngModel]="todayDate| date:'yyyy-MM-dd'"  name="deliveryorder_date" 
+                                  class="form-control form-control-rounded"    />
+                            </div>
+                          </div>
+                          <div class="col-sm-3 col-md-3">
+                            <div class="form-group pt-4">
+                              <button type="button" class="btn btn-primary btn-block" (click)="OnSearchClick()" [disabled]="checkCust">Search</button>
+                              <mat-error id="customer_id_error"></mat-error>
+                            </div>
+                          </div>
+                          <div class="col-sm-2 col-md-2">
+                            <div class="form-group">
+                              <label >Do & Dispatch</label>
+                                <input type="checkbox" class="form-check-input" formControlName="chk_Do_Disptch" class="form-control" id="chk_Do_Disptch"   />
+                            </div>
+                          </div>
+                          
+                          <!---row 1-->
+
+                          <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                              <label>Customer Party</label>
+                              <select class="form-control form-control-sm"
+                                formControlName="customerParty_id" id="customerParty_id">
+                                <option value="null" disabled>Select</option>
+                                <option *ngFor="let c of customePartyList" value={{c.PartyName}}>{{c.PartyName}}</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-3 col-md-3">
+                            <div class="form-group">
+                              <label>Delivery Party</label>
+                              <select class="form-control form-control-sm"
+                                formControlName="DeliveryParty_id" id="DeliveryParty_id">
+                                <option value="null" disabled>Select</option>
+                                <option *ngFor="let c of customePartyList" value={{c.CustomerPartyID}}>{{c.PartyName}}</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-3 col-md-3">
+                            <div class="form-group pt-3">
+                              <button type="button" class="btn btn-primary btn-block"
+                              (click)="onCustomerPartyContact(CustomerPartycontent)"
+                              >ADD Party</button>
+                            </div>
+                          </div>
+                          <div class="col-sm-2 col-md-2">
+                            <div class="form-group">
+                              <label>DO No</label>
+                              <input type="text" formControlName="txtDO_No" id="txtDO_No"
+                                class="form-control form-control-sm" placeholder="" readonly/>
+                            </div>
+                          </div>
+                          <!---row 2-->
+                          <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                              <label>Shipping Address</label>
+                              <input type="text" formControlName="txtShipping_Address" id="txtShipping_Address"
+                                class="form-control form-control-sm" placeholder="" autocomplete="off"/>
+                            </div>
+                          </div>
+                          <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                              <label>Truck No</label>
+                              <input type="text" formControlName="txtTruckNo" id="txtTruckNo"
+                                class="form-control form-control-sm" placeholder="" autocomplete="off"/>
+                            </div>
+                          </div>
+                          <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                              <label>Container No</label>
+                              <input type="text" formControlName="txtContainerNo" id="txtContainerNo"
+                                class="form-control form-control-sm" placeholder="" autocomplete="off"/>
+                            </div>
+                          </div>
+
+                          <!---row 3-->
+                          <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                              <label>OrderGivenBy</label>
+                              <select class="form-control form-control-sm" (change)="GetMobileNo($event)"
+                                formControlName="OrderGivenBy_id" id="OrderGivenBy_id">
+                                <option value="null" disabled>Select</option>
+                                <option *ngFor="let c of OrderGivenByList" value={{c.CustomerContactID}}>{{c.ContactPersonName}}</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                              <label>Mobile No</label>
+                              <input type="text" formControlName="txtMobileNo" id="txtMobileNo" readonly
+                                class="form-control form-control-sm" placeholder="" />
+                            </div>
+                          </div>
+                          <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                              <label>Remarks</label>
+                              <select class="form-control form-control-sm" formControlName="DORemarks" id="DORemarks">
+                                <option value="null" disabled>Select </option>
+                                <option *ngFor="let r of remarkList" value={{r.Remarks}}>{{r.Remarks}}</option>
+                              </select>
+                            </div>
+                          </div>
+                    </div>
+
+                    <!----popup customer contact-->                
+                <ng-template #CustomerPartycontent let-c="close" let-d="dismiss" style="width:620px;" >
+                  <div class="modal-header" >
+                    <h4  id="modal-basic-title" >Customer Parties</h4>                    
+                    <!-- <button type="button" class="btn btn-secondary btn-lg" (click)="onAddTranspoterDetailNewrow()">+</button> -->
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12">
+                          <div class="form-group">
+                            <label>Customer Name</label>
+                            <select class="form-control form-control-sm" 
+                              formControlName="Party_customer_id" id="Party_customer_id">
+                              <option *ngFor="let c of customerList" disabled value={{c.CustomerID}}>{{c.CustomerName}}</option>
+                            </select>
+                            
+                          </div>
+                          <div class="col-sm-12 col-md-12">
+                            <div class="form-group">
+                              <label>Party Name</label>
+                              <input type="text" formControlName="txtPartyName" id="txtPartyName"
+                                class="form-control form-control-sm" placeholder="" />
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-12">
+                            <div class="form-group">
+                              <label>Shipping Address</label>
+                              <input type="text" formControlName="txtshiffadd1" id="txtshiffadd1"
+                                class="form-control form-control-sm" placeholder="" />
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-12">
+                            <div class="form-group">
+                              <label>Shipping Address2</label>
+                              <input type="text" formControlName="txtshiffadd2" id="txtshiffadd2"
+                                class="form-control form-control-sm" placeholder="" />
+                            </div>
+                          </div>
+                          <div class="col-sm-12 col-md-12">
+                            <div class="form-group">
+                              <label>Pin Code</label>
+                              <input type="text" formControlName="txtPinCode" id="txtPinCode"
+                                class="form-control form-control-sm" placeholder="" />
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+
+                  </div>
+                  <div class="modal-footer" >
+                    <button type="button" class="btn btn-primary" (click)="onAddCustomerParty(CustomerPartycontent)">ADD</button> 
+                    <button type="button" class="btn btn-info" (click)="onCloseCustpmerParty(CustomerPartycontent)">Cancel</button> 
+                  </div>
+                </ng-template>
+                    <!---end row-->
+                    <hr>
+                </div>
+                <div class="col-12">
+                  <p class="font-weight-bold"> Delivery Order Details</p>
+                  <div>
+                    <ag-grid-angular 
+                          style="height: 500px;"
+                          class="ag-theme-alpine"
+                          [rowData]="DeliveryOrdersearchList"
+                          [columnDefs]="DeliveryOrdercolumnDefs"
+                          (cellValueChanged) ="onDOCellKeyPress($event)"
+                      >
+                      </ag-grid-angular>
+                  </div>
+                  <div class="row mt-2">
+                    <div class="col-sm-12">
+                      <div class="form-group float-right" style="display: flex;">
+                        <label>Total DO Quantity</label>
+                        <input type="text" formControlName="txtTotalDOQty" id="txtTotalDOQty" readonly
+                          class="form-control form-control-sm" placeholder="" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-primary" style="width:20%;" (click)="onSaveDeliveryOrder()" [disabled]="clickSave">Save</button>
+                <button type="button" class="btn btn-primary ml-3" style="width:20%;" (click)="onResetDeliveryOrder()" >Reset</button>
+            </form>
+            </mat-tab>
+            <mat-tab label="Delivery Order List">
+              <div class="form-control-sm" >
+                <label class="form-control-sm" >Filter  </label>
+                <input type="text" (keyup)="onKeyfilter(filtertext.value)" id="filtertext" #filtertext 
+                class="form-control-sm" />
+              </div>
+              <br>
+              <div style="height: 800px">
+              <mtx-grid
+              style="height: 790px"
+              [data]="DeliveryOrderList"
+              [columns]="columnsDeliveryOrderList"
+              [loading]="false"
+              [columnResizable]="true"
+              [multiSelectable]="false"
+              [rowSelectable]="false"
+              [hideRowSelectionCheckbox]="false"
+              [rowHover]="true"
+              [rowStriped]="false"
+              [showToolbar]="false"
+              [toolbarTitle]="'Item List'"
+              [columnHideable]="false"
+              [columnMovable]="true"
+              [expandable]="false"
+              [pageOnFront]="false"
+              [showPaginator]="false"
+              [pageSize]="10000000" 
+              
+              >            
+              </mtx-grid>
+            </div>
+            </mat-tab>
+            </mat-tab-group>
+        </mat-card>
+    </div>
+</div>
