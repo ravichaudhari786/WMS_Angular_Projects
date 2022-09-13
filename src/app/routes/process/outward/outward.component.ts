@@ -3,6 +3,7 @@ import { ApiService } from '@core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '@core/authentication/interface';
 import { DatePipe } from '@angular/common';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-outward',
   templateUrl: './outward.component.html',
@@ -18,8 +19,13 @@ export class OutwardComponent implements OnInit {
   dockList:any;
   unloadingList:any;
   labourContractorList:any;
+  config = {
+    backdrop: false,
+    ignoreBackdropClick: true
+  };
+  
   private currentUser:User;
-  constructor(private api:ApiService,private fb: FormBuilder) {
+  constructor(private api:ApiService,private fb: FormBuilder,private modalService: NgbModal) {
     this.currentUser=this.api.getCurrentUser();
     const dateSendingToServer = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd')
     this.todayDate=dateSendingToServer;
@@ -74,4 +80,13 @@ export class OutwardComponent implements OnInit {
   OnSearchClick(){
 
   }
+  openPartyWindow(AddPartyContent:any) {
+    
+    this.modalService.open(AddPartyContent,this.config);
+  }
+
+  onCloseAddParty(AddPartyContent:any){
+    this.modalService.dismissAll(AddPartyContent);
+  }
+
 }

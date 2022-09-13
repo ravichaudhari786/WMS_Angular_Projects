@@ -60,7 +60,7 @@
                           </div>
                           <div class="col-sm-3 col-md-3">
                             <div class="form-group pt-3">
-                                <button type="button" class="btn btn-primary btn-block" >ADD Party</button>
+                                <button type="button" class="btn btn-primary btn-block" (click)="openPartyWindow(AddPartyContent)">ADD Party</button>
                             </div>
                           </div>
                           <div class="col-sm-5 col-md-5">
@@ -133,3 +133,41 @@
             </mat-card>
         </div>
     </div>
+
+
+    <!----Add Party window-->
+<!----popup-->                
+<ng-template #AddPartyContent let-c="close" let-d="dismiss">
+  <!-- <mat-tab-group>
+    <mat-tab label="Storage Area">  -->
+    <div class="modal-header">
+      <h4  id="modal-basic-title">Storage Area</h4> 
+    </div>
+    <br>
+    <div class="row" >
+      <div class="col-6" >
+        <label >Quantity </label>
+        <input formControlName="quantity" id="quantity" readonly style="width: 50%;"/>
+      </div>
+      <div class="col-6">
+        <label>AllocatedQty</label>
+        <input formControlName="allocatedQty" id="allocatedQty" readonly style="width: 50%;"/>
+      </div>
+    </div>
+    <div class="modal-body">
+      <!-- <ag-grid-angular #LocationGrid
+          style="height: 300px;"
+          class="ag-theme-alpine"
+          [rowData]="storageAreaList"
+          [columnDefs]="columnDefs"
+      >
+      </ag-grid-angular> -->
+       <!-- (cellValueChanged) ="onCellKeyPress($event)"                       -->
+    </div>
+  
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" >ADD</button>
+    <button type="button" class="btn btn-info" (click)="onCloseAddParty(AddPartyContent)">cancel</button>
+  </div> 
+</ng-template>
+
