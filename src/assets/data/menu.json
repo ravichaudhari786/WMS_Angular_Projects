@@ -25,6 +25,46 @@
           "route": "items",
           "name": "Items",
           "type": "link"
+        },
+        {
+          "route":"Labour Contractors",
+          "name": "Labour Contractors",
+          "type": "link"
+        },
+        {
+          "route":"Report Print Info",
+          "name": "Report Print Info",
+          "type": "link"
+        },
+        {
+          "route":"Pellets",
+          "name": "Pellets",
+          "type": "link"
+        },
+        {
+          "route":"Check List Master",
+          "name": "Check List Master",
+          "type": "link"
+        },
+        {
+          "route":"Check List Detail",
+          "name": "Check List Detail",
+          "type": "link"
+        },
+        {
+          "route":"Dock Master",
+          "name": "Dock Master",
+          "type": "link"
+        },
+        {
+          "route":"Financial Year",
+          "name": "Financial Year",
+          "type": "link"
+        },
+        {
+          "route":"Remarks",
+          "name": "Remarks",
+          "type": "link"
         }
       ],
       "permissions": {
