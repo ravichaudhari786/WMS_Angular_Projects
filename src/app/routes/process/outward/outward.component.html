@@ -140,35 +140,46 @@
 <ng-template #AddPartyContent let-c="close" let-d="dismiss">
   <!-- <mat-tab-group>
     <mat-tab label="Storage Area">  -->
-    <div class="modal-header">
-      <h5  id="modal-basic-title">Customer Party</h5> 
-    </div>
-    <br>
-    <form>
-      <div class="col-lg-12">
-        <div class="col-sm-12 col-md-12">
-          <div class="form-group">
-            <label>Customer Name</label>
-            <input type="text" />
-          </div>
-        </div>  
+      <div>
+        <div class="modal-header">
+          <h5  id="modal-basic-title">Customer Party</h5> 
+        </div>
+        <br>
+        <form>
+          <div class="col-lg-12">
+              <div class="row pt-2">
+                    <div class="col-sm-5 col-md-5">
+                      <div class="form-group">
+                        <label>Customer Name</label>
+                        <input type="text"  />
+                      </div>
+                    </div>
+                    <div class="col-sm-5 col-md-5">
+                      <div class="form-group">
+                        <label>Customer Name</label>
+                        <input type="text"  />
+                      </div>
+                    </div>
+                </div>
+              </div>
+          </form>
+        
+        <div class="modal-body">
+          <!-- <ag-grid-angular #LocationGrid
+              style="height: 300px;"
+              class="ag-theme-alpine"
+              [rowData]="storageAreaList"
+              [columnDefs]="columnDefs"
+          >
+          </ag-grid-angular> -->
+           <!-- (cellValueChanged) ="onCellKeyPress($event)"                       -->
+        </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" >ADD</button>
+        <button type="button" class="btn btn-info" (click)="onCloseAddParty(AddPartyContent)">cancel</button>
+      </div> 
       </div>
-      </form>
     
-    <div class="modal-body">
-      <!-- <ag-grid-angular #LocationGrid
-          style="height: 300px;"
-          class="ag-theme-alpine"
-          [rowData]="storageAreaList"
-          [columnDefs]="columnDefs"
-      >
-      </ag-grid-angular> -->
-       <!-- (cellValueChanged) ="onCellKeyPress($event)"                       -->
-    </div>
-  
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" >ADD</button>
-    <button type="button" class="btn btn-info" (click)="onCloseAddParty(AddPartyContent)">cancel</button>
-  </div> 
 </ng-template>
 
