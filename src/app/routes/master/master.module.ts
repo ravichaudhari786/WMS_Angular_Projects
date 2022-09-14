@@ -3,21 +3,30 @@ import { MasterRoutingModule } from './master-routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { ProductComponent } from './product/product.component';
 import { ItemsComponent } from './items/items.component';
-<<<<<<< HEAD
+
 import { LabourContractorsComponent } from './labour-contractors/labour-contractors.component';
-=======
+
 import { PelletsComponent } from './pellets/pellets.component';
->>>>>>> d7fe0f1c464cf4445749edc1c040015e117afb17
+import { ReportPrintInfoComponent } from './report-print-info/report-print-info.component';
+import { CheckListMasterComponent } from './check-list-master/check-list-master.component';
+import { CheckListDetailComponent } from './check-list-detail/check-list-detail.component';
+import { DockMasterComponent } from './dock-master/dock-master.component';
+import { FinancialYearComponent } from './financial-year/financial-year.component';
+import { RemarksComponent } from './remarks/remarks.component';
+
 
 @NgModule({
   declarations: [
     ProductComponent,
     ItemsComponent,
-<<<<<<< HEAD
-    LabourContractorsComponent
-=======
-    PelletsComponent
->>>>>>> d7fe0f1c464cf4445749edc1c040015e117afb17
+    LabourContractorsComponent,
+    PelletsComponent,
+    ReportPrintInfoComponent,
+    CheckListMasterComponent,
+    CheckListDetailComponent,
+    DockMasterComponent,
+    FinancialYearComponent,
+    RemarksComponent
   ],
   imports: [
     SharedModule,
