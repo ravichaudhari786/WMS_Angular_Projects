@@ -3,11 +3,13 @@ import { MasterRoutingModule } from './master-routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { ProductComponent } from './product/product.component';
 import { ItemsComponent } from './items/items.component';
+import { PelletsComponent } from './pellets/pellets.component';
 
 @NgModule({
   declarations: [
     ProductComponent,
-    ItemsComponent
+    ItemsComponent,
+    PelletsComponent
   ],
   imports: [
     SharedModule,

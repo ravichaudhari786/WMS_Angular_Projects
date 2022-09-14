@@ -81,11 +81,18 @@ export class OutwardComponent implements OnInit {
 
   }
   openPartyWindow(AddPartyContent:any) {
-    
-    this.modalService.open(AddPartyContent,this.config);
+    console.log(this.form.value.customer_id);
+    // if(this.form.value.customer_id==null || this.form.value.customer_id=="")
+    // {
+    //   alert("Please .... Select Customer Name");
+    //   document?.getElementById("customer_id")?.focus();
+    // }else{
+      
+    // }  
+    this.modalService.open(AddPartyContent);
   }
 
-  onCloseAddParty(AddPartyContent:any){
+  onCloseAddParty(AddPartyContent:any){    
     this.modalService.dismissAll(AddPartyContent);
   }
 
