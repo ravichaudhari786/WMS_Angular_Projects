@@ -1,1 +1,235 @@
 <p>labour-contractors works!</p>
+
+<breadcrumb></breadcrumb>
+
+<div fxLayout="row wrap" class="matero-row">
+
+  <div fxFlex="100" class="matero-col">
+    <mat-card>
+      <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
+        <mat-tab label="Labour Contractor Master">
+          <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+            <div class="col-md-12">
+              <div class="row pt-2">
+
+                <div class="col-sm-6" style="display:none;"> 
+                    <div class="form-group">
+                      <label>LabourContractorID</label>
+                      <input type="text" 
+                        formControlName="LabourContractorID" id="LabourContractorID" class=" form-control form-control-sm" />
+                      
+                    </div>
+                  </div>
+
+
+                <div class="col-sm-6"> 
+                  <div class="form-group">
+                    <label>Contractor Name</label>
+                    <input type="text" [ngClass]="{'is-invalid': submitted && f.ContractorName.invalid}"
+                      formControlName="ContractorName" id="ContractorName" class=" form-control form-control-sm" />
+                    <div *ngIf="submitted && f.ContractorName.invalid" class="invalid-feedback">
+                      <span *ngIf="f.ContractorName?.errors?.required">Enter Contractor Name</span>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Address1</label>
+                      <input type="text" [ngClass]="{'is-invalid': submitted && f.Address1.invalid}"
+                        formControlName="Address1" id="Address1" class=" form-control form-control-sm" />
+                      <div *ngIf="submitted && f.Address1.invalid" class="invalid-feedback">
+                        <span *ngIf="f.Address1?.errors?.required">Enter Address1</span>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Address2</label>
+                      <input type="text" [ngClass]="{'is-invalid': submitted && f.Address2.invalid}"
+                        formControlName="Address2" id="Address2" class=" form-control form-control-sm" />
+                      <div *ngIf="submitted && f.Address2.invalid" class="invalid-feedback">
+                        <span *ngIf="f.Address2?.errors?.required">Enter Address2</span>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Contact No</label>
+                      <input type="text" [ngClass]="{'is-invalid': submitted && f.ContactNo.invalid}"
+                        formControlName="ContactNo" id="ContactNo" class=" form-control form-control-sm" />
+                      <div *ngIf="submitted && f.ContactNo.invalid" class="invalid-feedback">
+                        <span *ngIf="f.ContactNo?.errors?.required">Enter ContactNo</span>
+                      </div>
+                    </div>
+                  </div>
+
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>PanCard No</label>
+                      <input type="text" [ngClass]="{'is-invalid': submitted && f.PanCardNo.invalid}"
+                        formControlName="PanCardNo" id="PanCardNo" class=" form-control form-control-sm" />
+                      <div *ngIf="submitted && f.PanCardNo.invalid" class="invalid-feedback">
+                        <span *ngIf="f.PanCardNo?.errors?.required">Enter PanCardNo</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Licence No</label>
+                      <input type="text" [ngClass]="{'is-invalid': submitted && f.LicenceNo.invalid}"
+                        formControlName="LicenceNo" id="LicenceNo" class=" form-control form-control-sm" />
+                      <div *ngIf="submitted && f.LicenceNo.invalid" class="invalid-feedback">
+                        <span *ngIf="f.LicenceNo?.errors?.required">Enter LicenceNo</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Date Of Joining</label>
+                      <input type="date" 
+                      
+                      [ngClass]="{'is-invalid': submitted && f.DOJ.invalid}" 
+                        formControlName="DOJ" id="DOJ" class=" form-control form-control-sm"/>
+                      <div *ngIf="submitted && f.DOJ.invalid" class="invalid-feedback">
+                        <span *ngIf="f.DOJ?.errors?.required">Enter  Date Of Joining</span>
+                      </div>                    
+                     
+                    </div>                   
+                  </div>
+
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Bank Name</label>
+                      <input type="text" [ngClass]="{'is-invalid': submitted && f.BankName.invalid}"
+                        formControlName="BankName" id="BankName" class=" form-control form-control-sm" />
+                      <div *ngIf="submitted && f.BankName.invalid" class="invalid-feedback">
+                        <span *ngIf="f.BankName?.errors?.required">Enter  Bank Name</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Branch</label>
+                      <input type="text" [ngClass]="{'is-invalid': submitted && f.Branch.invalid}"
+                        formControlName="Branch" id="Branch" class=" form-control form-control-sm" />
+                      <div *ngIf="submitted && f.Branch.invalid" class="invalid-feedback">
+                        <span *ngIf="f.Branch?.errors?.required">Enter  Branch</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Account No</label>
+                      <input type="text" [ngClass]="{'is-invalid': submitted && f.AccountNo.invalid}"
+                        formControlName="AccountNo" id="AccountNo" class=" form-control form-control-sm" />
+                      <div *ngIf="submitted && f.AccountNo.invalid" class="invalid-feedback">
+                        <span *ngIf="f.AccountNo?.errors?.required">Enter  AccountNo</span>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>IFSC Code</label>
+                      <input type="text" [ngClass]="{'is-invalid': submitted && f.IFSCCode.invalid}"
+                        formControlName="IFSCCode" id="IFSCCode" class=" form-control form-control-sm" />
+                      <div *ngIf="submitted && f.IFSCCode.invalid" class="invalid-feedback">
+                        <span *ngIf="f.IFSCCode?.errors?.required">Enter  IFSCCode</span>
+                      </div>
+                    </div>
+                  </div>
+
+              
+
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label for="company">Email ID</label>
+                    <input type="text" [ngClass]="{'is-invalid': submitted && f.EmailID.invalid}"
+                      formControlName="EmailID" id="EmailID" class=" form-control form-control-sm" />
+                    <div *ngIf="submitted && f.EmailID.invalid" class="invalid-feedback">
+                      <div *ngIf="f.EmailID?.errors?.required">Enter EmailID</div>
+                    </div>
+                  </div>
+                </div>
+
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label for="company">GST No</label>
+                      <input type="text" [ngClass]="{'is-invalid': submitted && f.GSTNo.invalid}"
+                        formControlName="GSTNo" id="GSTNo" class=" form-control form-control-sm" />
+                      <div *ngIf="submitted && f.GSTNo.invalid" class="invalid-feedback">
+                        <div *ngIf="f.GSTNo?.errors?.required">Enter GSTNo</div>
+                      </div>
+                    </div>
+                </div>
+
+               
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <button type="submit" [disabled]="submitted" class="btn btn-primary btn-sm"
+                      style="width: 85px !important; margin-top: 20px !important;"> Save </button>
+                  </div>
+                </div>
+              </div>
+              <!--/.col  click="onSubmit(form)"-->
+            </div>
+            
+            <!--/.row-->
+          </form>
+        </mat-tab>
+        <mat-tab label="List">
+
+          <mtx-grid
+         
+          [data]="ItemList"
+          [columns]="columns"
+          [loading]="false"
+          [columnResizable]="true"
+          [multiSelectable]="false"
+          [rowSelectable]="false"
+          [hideRowSelectionCheckbox]="false"
+          [rowHover]="true"
+          [rowStriped]="false"
+          [showToolbar]="true"
+          [toolbarTitle]="'Item List'"
+          [columnHideable]="false"
+          [columnMovable]="true"
+          [expandable]="false"
+          [pageOnFront]="true"
+          [showPaginator]="true"
+          [pageSizeOptions]="[10,20,50,100,500]"
+          [pageIndex]="0"
+          [pageSize]="10"
+          [toolbarTemplate]="toolbarTpl" 
+          
+            >
+            <!-- (sortChange)="changeSort($event)"
+(selectionChange)="changeSelect($event)"
+[expansionTemplate]="expansionTpl"-->
+          </mtx-grid>
+          <ng-template #toolbarTpl>
+            <input placeholder="Search">
+          </ng-template>
+          <!-- <ng-template #expansionTpl let-row>
+            {{row.name}}
+          </ng-template> -->
+        </mat-tab>
+
+      </mat-tab-group>
+    </mat-card>
+  </div>
+
+</div>
+
