@@ -10,6 +10,7 @@ import { CheckListDetailComponent } from './check-list-detail/check-list-detail.
 import { DockMasterComponent } from './dock-master/dock-master.component';
 import { FinancialYearComponent } from './financial-year/financial-year.component';
 import { RemarksComponent } from './remarks/remarks.component';
+import { BrandsComponent } from './brands/brands.component';
 
  const routes:Routes=[{ path: 'product', component: ProductComponent },
   { path: 'items', component: ItemsComponent },
@@ -21,6 +22,7 @@ import { RemarksComponent } from './remarks/remarks.component';
   { path: 'Dock Master', component: DockMasterComponent },
   { path: 'Financial Year', component: FinancialYearComponent },
   { path: 'Remarks', component: RemarksComponent },
+  { path: 'Brands', component: BrandsComponent },
 ];
 
 @NgModule({
