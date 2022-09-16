@@ -20,7 +20,7 @@
                           </div>
                           <div class="col-sm-3 col-md-3">
                             <div class="form-group pt-3">
-                              <button type="button" class="btn btn-primary btn-block" (click)="OnSearchClick()">Pending DO</button>
+                              <button type="button" class="btn btn-primary btn-block" (click)="OnSearchPendingDO()">Pending DO</button>
                             </div>
                           </div>
                           <div class="col-sm-4 col-md-4">
@@ -138,46 +138,59 @@
     <!----Add Party window-->
 <!----popup-->                
 <ng-template #AddPartyContent let-c="close" let-d="dismiss">
-  <!-- <mat-tab-group>
-    <mat-tab label="Storage Area">  -->
       <div>
         <div class="modal-header">
           <h5  id="modal-basic-title">Customer Party</h5> 
         </div>
         <br>
-        <form>
-          <div class="col-lg-12">
-              <div class="row pt-2">
-                    <div class="col-sm-5 col-md-5">
-                      <div class="form-group">
-                        <label>Customer Name</label>
-                        <input type="text"  />
-                        
-                      </div>
-                    </div>
-                    <div class="col-sm-5 col-md-5">
-                      <div class="form-group">
-                        <label>Customer Name</label>
-                        <input type="text"  />
-                      </div>
-                    </div>
+        <form [formGroup]="formParty">
+          <div class="col-md-12">
+            <div class="row pt-2">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Party Name</label>
+                  <input type="text" formControlName="txtPartyName"
+                    id="txtPartyName" class=" form-control form-control-sm" autocomplete="off"/>
+                  <!-- <div *ngIf="submitted && f.ItemName.invalid" class="invalid-feedback">
+                    <span *ngIf="f.ItemName?.errors?.required">Enter Item Name</span>
+                  </div> -->
                 </div>
               </div>
-          </form>
-        
-        <div class="modal-body">
-          <!-- <ag-grid-angular #LocationGrid
-              style="height: 300px;"
-              class="ag-theme-alpine"
-              [rowData]="storageAreaList"
-              [columnDefs]="columnDefs"
-          >
-          </ag-grid-angular> -->
-           <!-- (cellValueChanged) ="onCellKeyPress($event)"                       -->
-        </div>
-      
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="company">Shipping Address1</label>
+                  <input type="text" formControlName="txtShippingAddress1" id="txtShippingAddress1" class=" form-control form-control-sm" />
+                  <!-- <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
+                    <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
+                  </div> -->
+                </div>
+
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="company">Shipping Address2</label>
+                  <input type="text" formControlName="txtShippingAddress2" id="txtShippingAddress2" class=" form-control form-control-sm" />
+                  <!-- <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
+                    <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
+                  </div> -->
+                </div>
+
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label for="company">Pin Code</label>
+                  <input type="text" formControlName="txtPinCode" id="txtPinCode" class=" form-control form-control-sm" />
+                  <!-- <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
+                    <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
+                  </div> -->
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </form>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" >ADD</button>
+        <button type="button" class="btn btn-outline-dark" (click)="onAddParty()">OK</button>
         <button type="button" class="btn btn-info" (click)="onCloseAddParty(AddPartyContent)">cancel</button>
       </div> 
       </div>

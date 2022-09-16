@@ -100,8 +100,13 @@ filtertext!:string;
   customercontactList:any;
   SaveInward:Array<SaveInward>=[];
   SaveInwardlist:Array<SaveInward>=[];
-  newDynamicSaveInward: any = {};  
+  newDynamicSaveInward: any = {};
+  GetInwardListJson:any={};
+  InData:any={};  
+  InServiceData:any={};
+  BindDropdownData:any={};
   frameworkComponents:any;
+
   public rowSelection = 'multiple';
   //selectedBrand:any;
   constructor(private fb: FormBuilder,private api:ApiService,public dialog: MtxDialog, private modalService: NgbModal,private el: ElementRef) {
@@ -142,6 +147,20 @@ filtertext!:string;
 
 
   ngOnInit(): void {
+    this.BindDropdownData={
+      InwardID :0,
+      CustomerID :0,
+      Remarks :0,
+      CreatedBy :0,
+      serviceID :0,
+      ProductID :0,
+      CompanyId :Number(this.currentUser.companyId),
+      WarehouseId :Number(this.currentUser.warehouseId),
+      FinantialYearId:Number(this.currentUser.FinantialYearId), 
+      challan :0,
+      StorageAreaMasterID :1,
+      FinancialYear :"",
+    }
     this.BindDropdown();
     
     // console.log(this.todayDate+'----'+this.productdate);
@@ -184,25 +203,24 @@ filtertext!:string;
      error=>{ console.error(error);}
    );
 
-   this.api.get('/servieceStorageAreaType').subscribe(
+   this.api.get('/StorageAreaType/servieceStorageAreaType').subscribe(
     data=>{this.serviceTypeList=data},
     error=>{ console.error(error);}
   );
 
   
 
-  this.api.get('/InwardList?companyId='+this.currentUser.companyId+'&warehouseId='
-  +this.currentUser.warehouseId+'&finantialYearId='+this.currentUser.FinantialYearId).subscribe(
+  this.api.post('/InwardList',this.BindDropdownData).subscribe(
     data=>{
       this.InwardList=data},
     error=>{ console.error(error);} );
 
- this.api.get('/Inward/GetLotNo?WarehouseID='+this.currentUser.warehouseId+'&StorageAreaMasterID=1&FinancialYear=0&FinancialYearID='+this.currentUser.FinantialYearId).subscribe(
+ this.api.post('/Inward/GetLotNo',this.BindDropdownData).subscribe(
   data=>  {this.CurrentLotNo=data[0]["LotNo"];
           console.log(this.CurrentLotNo)},
     error=>{ console.error(error);});
 
-    this.api.get('/StorageAreaMaster?WarehouseID='+this.currentUser.warehouseId).subscribe(
+    this.api.get('/StorageAreaMaster',this.BindDropdownData).subscribe(
       data=>{this.storageAreaList=data;},
       error=>{ console.error(error);} );
 
@@ -213,14 +231,14 @@ filtertext!:string;
   GetCustomerID(id:any){
     console.log(this.form.value)
     id=this.form.value.customer_id;
-    this.api.get('/Inward/GetCustomerProducts?customerid='+id+'&warehouseid='+this.currentUser.warehouseId).subscribe(
+    this.api.post('/Inward/GetCustomerProducts',this.BindDropdownData).subscribe(
       data=>{this.productList=data;//console.log(this.productList);
     },
       error=>{ console.error(error);}
     );
   }
 GetServicedetail(){
-  this.api.get('/servieceStorageAreaType').subscribe(
+  this.api.get('/StorageAreaType/servieceStorageAreaType').subscribe(
     data=>{this.serviceTypeList=data},
     error=>{ console.error(error);}
   );
@@ -354,23 +372,32 @@ if(e.row.data.Status==51 || e.row.data.Status==5)
     //console.log(this.TransportList);
     this.modalService.dismissAll(TranspoterDetailcontent);
   }
-  OnTransportAdd(TranspoterDetailcontent:any){
-    if(this.TransportList.length==0){
-      this.InwardTransportID=1;
-      this.TransportList.push(
-        {"InwardTransportID":this.InwardTransportID,
-         "TransporterName":this.form.value.transportername,
-         "TruckNo":this.form.value.truckno,
-         "ContainerNo":this.form.value.container_no,
-        });
-      this.TransportList.slice();
-    }else
+  OnTransportAdd(TranspoterDetailcontent:any)
+  {
+    if(this.form.value.truckno==null || this.form.value.truckno =="")
     {
-      this.InwardTransportID=this.InwardTransportID+1;
+      alert("Please .... Enter Truck Number...");
     }
-    this.modalService.open(TranspoterDetailcontent);
-    //console.log(this.TransportList);
+    else
+    {
+      console.log('truckno= '+this.form.value.truckno);
+      if(this.TransportList.length==0){
+        this.InwardTransportID=1;
+        this.TransportList.push(
+          {"InwardTransportID":this.InwardTransportID,
+           "TransporterName":this.form.value.transportername,
+           "TruckNo":this.form.value.truckno,
+           "ContainerNo":this.form.value.container_no,
+          });
+        this.TransportList.slice();
+      }else
+      {
+        this.InwardTransportID=this.InwardTransportID+1;
+      }
+      this.modalService.open(TranspoterDetailcontent);
+    }
   }
+
   onRowSelectedTransport(e:any){
     this.InwardTransportID=e.data.InwardTransportID;
   }
@@ -432,12 +459,27 @@ if(e.row.data.Status==51 || e.row.data.Status==5)
     else
     {
       id=this.form.value.service_id;//.StorageAreaTypeID;
-      this.api.get('/Inward/GetServiceId?serviceID='+id).subscribe(
+      this.InServiceData={
+        InwardID :0,
+        CustomerID :Number(this.form.value.customer_id),
+        Remarks :0,
+        CreatedBy :0,
+        serviceID :Number(this.form.value.service_id),
+        ProductID :Number(this.form.value.product_id),
+        CompanyId :0,
+        WarehouseId :0,
+        FinantialYearId:0, 
+        challan :0,
+        StorageAreaMasterID :0,
+        FinancialYear :"",
+      };
+      console.log(this.InServiceData);
+      this.api.get('/Inward/GetServiceId',this.InServiceData).subscribe(
         data=>{this.servicesid=data[0]["StorageAreaTypeID"]},
         error=>{ console.error(error);}
       );
   
-      this.api.get('/Inward/GetInwardProductRate?CustomerID='+this.form.value.customer_id+'&ProductID='+this.form.value.product_id+'&serviceID='+id).subscribe(
+      this.api.get('/Inward/GetInwardProductRate',this.InServiceData).subscribe(
         datas=>{console.log(" mess =>"+datas[0]["Message"]);
         if(datas[0]["Message"]!==''){
           alert(""+datas[0]["Message"])
@@ -996,8 +1038,14 @@ tabInwardchange(event:any){
     console.log("save");
   }
  GetInwardList(){
-  this.api.get('/InwardList?companyId='+this.currentUser.companyId+'&warehouseId='
-  +this.currentUser.warehouseId+'&finantialYearId='+this.currentUser.FinantialYearId).subscribe(
+
+  this.GetInwardListJson={
+    CompanyId:this.currentUser.companyId, 
+    WarehouseId:this.currentUser.warehouseId, 
+    FinantialYearId:this.currentUser.FinantialYearId,
+  }
+  
+  this.api.post('/InwardList',this.GetInwardListJson).subscribe(
     data=>{this.InwardList=data},
     error=>{ console.error(error);} );
 }
@@ -1081,12 +1129,26 @@ OnResetInward(){
     const inwardeditedDate = new DatePipe('en-US').transform(e.InwardDate, 'yyyy-MM-dd')
     if(e.Status==51)
     {
-      this.api.get('/Inward/GetCustomerProducts?customerid='+e.CustomerID+'&warehouseid='+this.currentUser.warehouseId).subscribe(
+      this.api.post('/Inward/GetCustomerProducts?customerid='+e.CustomerID+'&warehouseid='+this.currentUser.warehouseId).subscribe(
         data=>{this.productList=data; },
         error=>{ console.error(error);}
       );
         this.GetStorageAreaList();
-        this.api.post('/Inward/GetInwardDetailsByID?InwardID='+e.InwardID).subscribe(
+        this.InData={
+          InwardID :e.InwardID,
+          CustomerID :0,
+          Remarks :0,
+          CreatedBy :0,
+          serviceID :0,
+          ProductID :0,
+          CompanyId :0,
+          WarehouseId :0,
+          FinantialYearId:0, 
+          challan :0,
+          StorageAreaMasterID :0,
+          FinancialYear :"",
+        };
+        this.api.post('/Inward/GetInwardDetailsByID',this.InData).subscribe(
         data=>  {this.InwardDetailList=data.Table;          
         this.InwardshowStorageArea=data.Table1;
         this.InwardTransportList=data.Table2;
