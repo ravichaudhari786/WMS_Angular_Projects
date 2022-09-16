@@ -1,1 +1,69 @@
-<p>dock-master works!</p>
+<breadcrumb></breadcrumb>
+
+<div fxLayout="row wrap" class="matero-row">
+
+    <div fxFlex="100" class="matero-col">
+        <mat-card>
+            <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
+                <mat-tab label="Dock Master">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+                        <div class="col-md-12">
+                            <div class="row pt-2">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Dock No</label>
+                                        <input type="text" [ngClass]="{'is-invalid': submitted && f.dockNo.invalid}"
+                                            formControlName="dockNo" id="dockNo"
+                                            class=" form-control form-control-sm" />
+                                        <div *ngIf="submitted && f.dockNo.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.dockNo?.errors?.required">Enter Dock no</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="company">Dock Name</label>
+                                        <input type="text" [ngClass]="{'is-invalid': submitted && f.dockName.invalid}"
+                                            formControlName="dockName" id="dockName"
+                                            class=" form-control form-control-sm" />
+                                        <div *ngIf="submitted && f.dockName.invalid" class="invalid-feedback">
+                                            <div *ngIf="f.dockName?.errors?.required">Enter Dock Name</div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <button type="submit" [disabled]="submitted" class="btn btn-primary btn-sm"
+                                                style="width: 85px !important; margin-top: 20px !important;"> Save
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/.col  click="onSubmit(form)"-->
+                            </div>
+                            <!--/.row-->
+                        </div>
+                    </form>
+                </mat-tab>
+
+                <mat-tab label="List">
+
+                    <mtx-grid [data]="DockList" [columns]="columns" [loading]="false" [columnResizable]="true"
+                        [multiSelectable]="false" [rowSelectable]="false" [hideRowSelectionCheckbox]="false"
+                        [rowHover]="true" [rowStriped]="false" [showToolbar]="true" [toolbarTitle]="'Dock List'"
+                        [columnHideable]="false" [columnMovable]="true" [expandable]="false" [pageOnFront]="true"
+                        [showPaginator]="true" [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0" [pageSize]="10"
+                        [toolbarTemplate]="toolbarTpl">
+                    </mtx-grid>
+                    <ng-template #toolbarTpl>
+                        <input placeholder="Search">
+                      </ng-template>
+
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card>
+    </div>
+
+</div>
