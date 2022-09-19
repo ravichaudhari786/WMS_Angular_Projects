@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '@core/authentication/interface';
 import { DatePipe } from '@angular/common';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { MtxDialog, MtxGridCellSelectionDirective, MtxGridColumn,MtxGridRowClassFormatter  } from '@ng-matero/extensions';
 @Component({
   selector: 'app-outward',
   templateUrl: './outward.component.html',
@@ -20,7 +21,8 @@ export class OutwardComponent implements OnInit {
   dockList:any;
   unloadingList:any;
   labourContractorList:any;
-  
+  PendingDOList:any;
+  OutwardList:any;
   config = {
     backdrop: false,
     ignoreBackdropClick: true
@@ -58,6 +60,7 @@ export class OutwardComponent implements OnInit {
   ngOnInit(): void {
     this.BindDropdown();
     this.BindCustomerParty();
+    this.BindOutwardList();
   }
   async BindDropdown(){
     this.api.get('/Customer').subscribe(
@@ -89,6 +92,33 @@ export class OutwardComponent implements OnInit {
     error=>{ console.error(error);}
   );
  }
+ BindOutwardList(){
+  const OutwardListData={
+      outwardID: 0,
+      warehouseID: 1,
+      outWardDate: "",
+      billStartDate: "",
+      deliveryOrderID: 0,
+      customerPartyID: 0,
+      truckNo: "",
+      containerNo: "",
+      transporterName: "",
+      remarks: "",
+      createdBy: 0,
+      customerID: 0,
+      driverName: "",
+      driverNo: "",
+      docID: 0,
+      loadingBy: 0,
+      transferID: 0,
+      dispatchID: 0,
+  };
+  this.api.post('/Outward/GetOutwardList',OutwardListData).subscribe(
+    data=>{this.OutwardList=data;
+    console.log(data);},
+    error=>{ console.error(error);}
+  );
+ }
   tabDeliveryOrderchange(event:any){
 
   }
@@ -104,7 +134,7 @@ export class OutwardComponent implements OnInit {
         CompanyID :this.currentUser.companyId
       }
       this.api.post('/Outward/GetDeliveryOrderByID',this.GetPendingDO).subscribe(
-        data=>{data;
+        data=>{this.PendingDOList=data;
         console.log(data);},
         error=>{ console.error(error);}
       );
@@ -152,8 +182,180 @@ export class OutwardComponent implements OnInit {
       );
     }
   }
+  onKeyfilter(e:string){
+    // this.api.get('/InwardList?companyId='+this.currentUser.companyId+'&warehouseId='
+    // +this.currentUser.warehouseId+'&finantialYearId='+this.currentUser.FinantialYearId).subscribe(
+    // data=>{this.InwardList=data;
+    //   var searchName = e;
+    //   const lists=this.InwardList;
+    //   let res = lists.filter((obj:any) => 
+    //   (obj.CustomerName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //   (obj.BillingStartDate.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //   (obj.InwardDate.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //   (obj.PersonName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //   (obj.ReceiptNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //   (obj.StatusName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) 
+    //   );
+    //   this.InwardList=res;
+    // },
+    // error=>{ console.error(error);} );
+  }
+//----------------------------Grid Column
+PendingDOListColum: MtxGridColumn[] = [
+  {
+    header:"DispatchID",
+    field:"DispatchID",
+    hide:true,
+  },
+  {
+    header:"DeliveryOrderID",
+    field:"DeliveryOrderID",
+    hide:true,
+  },
+  {
+    header:"DeliveryOrderNo",
+    field:"DeliveryOrderNo",
+  },
+  {
+    header:"DispatchNo",
+    field:"DispatchNo",
+  },
+  {
+    header:"CreatedDate",
+    field:"CreatedDate",
+    hide:true,
+  },
+{
+    header:"OrderGivenBy",
+    field:"OrderGivenBy",
+  },
+  {
+    header:"DeliverTo",
+    field:"DeliverTo",
+  },
+{
+    header:"ShippingAddress",
+    field:"ShippingAddress",
+  },
+  {
+    header:"Remarks",
+    field:"Remarks",
+    hide:false,
+  },
+  {
+    header:"TruckNo",
+    field:"TruckNo",
+    hide:false,
+  },
+  {
+    header:"ContainerNo",
+    field:"ContainerNo",
+  },
+]
 
-
+OutWardListColumn: MtxGridColumn[] = [
+  {
+    header:"OutWardID",
+    field:"OutWardID",
+    hide:true,
+  },
+  {
+    header:"OutWardNo",
+    field:"OutWardNo",
+    hide:false,
+    minWidth: 100,
+  },
+  {
+    header:"WarehouseID",
+    field:"WarehouseID",
+    hide:true,
+  },
+  {
+    header:"CustomerName",
+    field:"CustomerName",
+    minWidth: 150,
+  },
+  {
+    header:"WareHouseName",
+    field:"WareHouseName",
+    hide:true,
+  },
+{
+    header:"OutWardDate",
+    field:"OutWardDate",
+    minWidth: 100,
+    type:'date',
+    typeParameter:{ format:'dd-MM-yyyy'}
+  },
+  {
+    header:"DeliveryOrderNo",
+    field:"DeliveryOrderNo",
+    minWidth: 100,
+  },
+{
+    header:"DispatchNo",
+    field:"DispatchNo",
+    minWidth: 100,
+  },
+  {
+    header:"DeliverTo",
+    field:"DeliverTo",
+    minWidth: 120,
+    hide:false,
+  },
+  {
+    header:"TruckNo",
+    field:"TruckNo",
+    hide:false,
+    minWidth: 150,
+  },
+  {
+    header:"ContainerNo",
+    field:"ContainerNo",
+    minWidth: 120,
+  },
+  {
+    header:"TransporterName",
+    field:"TransporterName",
+    hide:false,
+    minWidth: 80,
+  },
+  {
+    header:"Remarks",
+    field:"Remarks",
+    minWidth: 100,
+  },
+  {
+    header:"IsCancelled",
+    field:"IsCancelled",
+    hide:true,
+  },
+  {
+    header:"DriverName",
+    field:"DriverName",
+    minWidth: 80,
+  },
+  {
+    header:"DocID",
+    field:"DocID",
+    hide:true,
+  },
+  {
+    header:"LoadingBy",
+    field:"LoadingBy",
+    hide:true,
+    minWidth: 80,
+  },
+  {
+    header:"StatusID",
+    field:"StatusID",
+    hide:true,
+  },{
+    header:"StatusName",
+    field:"StatusName",
+    minWidth: 80,
+  },
+]
 
 }
 

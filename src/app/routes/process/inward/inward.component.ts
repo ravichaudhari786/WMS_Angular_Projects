@@ -115,7 +115,7 @@ filtertext!:string;
     }
     this.currentUser=this.api.getCurrentUser();
     //this.todayDate=new Date();
-    const dateSendingToServer = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd')
+    const dateSendingToServer = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd hh:mm:ss')
     this.todayDate=dateSendingToServer;
     this.productdate=new Date();//DatePipe('en-US');
     this.form = this.fb.group({
@@ -164,7 +164,7 @@ filtertext!:string;
     this.BindDropdown();
     
     // console.log(this.todayDate+'----'+this.productdate);
-    // console.log(this.todayDate);
+     console.log(this.todayDate);
   }
 
   async BindDropdown(){
@@ -211,14 +211,12 @@ filtertext!:string;
   
 
   this.api.post('/InwardList',this.BindDropdownData).subscribe(
-    data=>{
-      this.InwardList=data},
+    data=>{this.InwardList=data},
     error=>{ console.error(error);} );
 
  this.api.post('/Inward/GetLotNo',this.BindDropdownData).subscribe(
-  data=>  {this.CurrentLotNo=data[0]["LotNo"];
-          console.log(this.CurrentLotNo)},
-    error=>{ console.error(error);});
+  data=>  {this.CurrentLotNo=data[0]["LotNo"];  //console.log(this.CurrentLotNo)
+        },error=>{ console.error(error);});
 
     this.api.get('/StorageAreaMaster',this.BindDropdownData).subscribe(
       data=>{this.storageAreaList=data;},
@@ -229,7 +227,7 @@ filtertext!:string;
   get f() { return this.form.controls; }
 
   GetCustomerID(id:any){
-    console.log(this.form.value)
+    //console.log(this.form.value)
     id=this.form.value.customer_id;
     this.api.post('/Inward/GetCustomerProducts',this.BindDropdownData).subscribe(
       data=>{this.productList=data;//console.log(this.productList);
@@ -333,7 +331,7 @@ if(e.row.data.Status==51 || e.row.data.Status==5)
 }
 
   OnApplyClick(customer_id:any,challan_no:any){
-    console.log(this.form.value.challan_no);
+    //console.log(this.form.value.challan_no);
     if(this.form.value.customer_id==null||this.form.value.customer_id==0){
       alert("Select Customers .....");
       document?.getElementById("customer_id")?.focus();
@@ -350,9 +348,23 @@ if(e.row.data.Status==51 || e.row.data.Status==5)
       document?.getElementById("customer_id")?.focus();
     }else{
       //console.log("open Customers .....");
-      this.api.get('/Inward/GetCustomerContact?customerid='+this.form.value.customer_id).subscribe(
+      const CustomerData={
+        InwardID :0,
+        CustomerID :Number(this.form.value.customer_id),
+        Remarks :0,
+        CreatedBy :0,
+        serviceID :0,
+        ProductID :0,
+        CompanyId :Number(this.currentUser.companyId),
+        WarehouseId :Number(this.currentUser.warehouseId),
+        FinantialYearId:Number(this.currentUser.FinantialYearId), 
+        challan :0,
+        StorageAreaMasterID :1,
+        FinancialYear :"",
+      };
+      this.api.post('/Inward/GetCustomerContacts',CustomerData).subscribe(
         data=>{this.customercontactList=data;
-          console.log(this.customercontactList);
+          //console.log(this.customercontactList);
         },
         error=>{ console.error(error);}
       );
@@ -380,7 +392,7 @@ if(e.row.data.Status==51 || e.row.data.Status==5)
     }
     else
     {
-      console.log('truckno= '+this.form.value.truckno);
+      //console.log('truckno= '+this.form.value.truckno);
       if(this.TransportList.length==0){
         this.InwardTransportID=1;
         this.TransportList.push(
@@ -428,10 +440,11 @@ if(e.row.data.Status==51 || e.row.data.Status==5)
   OnProductSelect(id:any){
     id=this.form.value.product_id;
     this.api.get('/service/InwardService?productID='+id+"&customerID="+this.form.value.customer_id).subscribe(
-      data=>{this.inwardservicelist=data},
+      data=>{this.inwardservicelist=data;
+        console.log(this.inwardservicelist);},
       error=>{ console.error(error);}
     );
-    //console.log(this.inwardservicelist);
+   
   }
 
   OnBrandSelect(id:any){
@@ -462,24 +475,24 @@ if(e.row.data.Status==51 || e.row.data.Status==5)
       this.InServiceData={
         InwardID :0,
         CustomerID :Number(this.form.value.customer_id),
-        Remarks :0,
+        Remarks :"",
         CreatedBy :0,
         serviceID :Number(this.form.value.service_id),
         ProductID :Number(this.form.value.product_id),
         CompanyId :0,
         WarehouseId :0,
         FinantialYearId:0, 
-        challan :0,
+        challan :"",
         StorageAreaMasterID :0,
         FinancialYear :"",
       };
-      console.log(this.InServiceData);
-      this.api.get('/Inward/GetServiceId',this.InServiceData).subscribe(
+      
+      this.api.post('/Inward/GetServiceId',this.InServiceData).subscribe(
         data=>{this.servicesid=data[0]["StorageAreaTypeID"]},
         error=>{ console.error(error);}
       );
-  
-      this.api.get('/Inward/GetInwardProductRate',this.InServiceData).subscribe(
+    
+      this.api.post('/Inward/GetInwardProductRate',this.InServiceData).subscribe(
         datas=>{console.log(" mess =>"+datas[0]["Message"]);
         if(datas[0]["Message"]!==''){
           alert(""+datas[0]["Message"])
@@ -490,7 +503,7 @@ if(e.row.data.Status==51 || e.row.data.Status==5)
         }      
       },errors=>{ console.error(errors);});
     }
-
+    
     
   }
 
@@ -643,7 +656,26 @@ else if(this.form.value.quantity!=this.allocatedQty){
   return;
 }
 else if(this.Flag==true){
-  if(this.ChargesList.length==0) {
+  if(this.ChargesList.length==0 || this.InwardchargesList.length==0)
+    {
+      this.ChargesList=[];
+      this.inwardservicelist.forEach((i:any)=>{ 
+        if(i.Add==true){
+          this.ChargesList.push(
+            {
+             "InwardDID":this.DID,
+             "ServiceID":i.ServiceID,
+             "ServiceName":i.ServiceName,
+             "C_Rate":i.C_Rate,
+             "L_Rate":i.L_Rate
+            });
+          }        
+      });
+      this.ChargesList.slice();
+      var Qtydata = this.storageAreaList.map(v1=>v1.AllocatedQty).reduce((acc, v1) => v1 + acc);
+      this.allocatedQty=Qtydata;
+    }else 
+    if(this.ChargesList.length==0){
     const indexcharges=this.InwardchargesList.filter((x:any)=>x.InwardDID==this.DID);
     this.ChargesList=indexcharges;
     var Qtydata = this.storageAreaList.map(v1=>v1.AllocatedQty).reduce((acc, v1) => v1 + acc);
@@ -658,8 +690,9 @@ else if(this.Flag==true){
   const indexInwardStorageArea=this.InwardshowStorageArea.filter((x:any)=>x.InwardDID!=this.DID);
   this.InwardshowStorageArea=indexInwardStorageArea;
 
-  console.log(this.InwardDetailList);  
-}else if(this.Flag==false)
+  //console.log(this.InwardDetailList);  
+}
+else if(this.Flag==false)
 {
   this.DID=this.DID+1;
   this.allocatedQty=0;
@@ -736,18 +769,35 @@ this.DetailList=this.InwardDetailList;
 
 
 //-------------------InwardChareges
-this.ChargesList.forEach(i=>{ 
-this.InwardchargesList.push(
+if(this.ChargesList.length==0 || this.InwardchargesList.length==0)
 {
- "InwardDID":this.DID,
- "ServiceID":i.ServiceID,
- "ServiceName":i.ServiceName,
- "C_Rate":i.C_Rate,
- "L_Rate":i.L_Rate
-});
-});
-this.InwardchargesList.slice();
-
+  this.ChargesList=[];
+  this.inwardservicelist.forEach((i:any)=>{ 
+    if(i.Add==true){
+      this.InwardchargesList.push(
+        {
+         "InwardDID":this.DID,
+         "ServiceID":i.ServiceID,
+         "ServiceName":i.ServiceName,
+         "C_Rate":i.C_Rate,
+         "L_Rate":i.L_Rate
+        });
+      }        
+  });
+  this.InwardchargesList.slice();
+}else{
+  this.ChargesList.forEach(i=>{ 
+    this.InwardchargesList.push(
+    {
+     "InwardDID":this.DID,
+     "ServiceID":i.ServiceID,
+     "ServiceName":i.ServiceName,
+     "C_Rate":i.C_Rate,
+     "L_Rate":i.L_Rate
+    });
+    });
+    this.InwardchargesList.slice();
+}
 //-------------------Inward Transport
 this.TransportList.forEach(i=>{ 
   this.InwardTransportList.push(
@@ -777,7 +827,7 @@ if(i.AllocatedQty>0){
 this.InwardshowStorageArea.slice();
 // console.log(this.InwardshowStorageArea);
  //--------------------detail
-   console.log(this.InwardDetailList);
+  console.log(this.InwardDetailList);
   console.log(this.InwardchargesList);    
   console.log(this.InwardTransportList);
   console.log(this.InwardshowStorageArea);
@@ -1025,17 +1075,18 @@ tabInwardchange(event:any){
       InwardLocationModel:this.InwardshowStorageArea,
       InwardTransperModel:this.InwardTransportList
        }     
-      // console.log("save");
-      // console.log(this.newDynamicSaveInward);
+      
       this.api.post('/Inward/SaveInward',this.newDynamicSaveInward).subscribe(
         data=>{data;
-        alert(data.Table[0]["Column1"]);},
+          alert(data.Table[0]["Column1"]);
+          this.OnResetInward();
+      },
         error=>{ console.error(error);}
       );
       this.GetInwardList();
     } 
 
-    console.log("save");
+    console.log(this.newDynamicSaveInward);
   }
  GetInwardList(){
 
@@ -1111,7 +1162,7 @@ OnResetInward(){
   this.form.reset();
   this.BindDropdown();  
   this.InwardTransportID=0;
-  const inwardeditedDate = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd');
+  const inwardeditedDate = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd hh:mm:ss');
   this.todayDate=inwardeditedDate ;
   this.form.controls['inward_date'].setValue(this.todayDate);
   this.InwardDetailList=[];
@@ -1126,7 +1177,7 @@ OnResetInward(){
 }
 
    onEditTestListRow(e:any){
-    const inwardeditedDate = new DatePipe('en-US').transform(e.InwardDate, 'yyyy-MM-dd')
+    const inwardeditedDate = new DatePipe('en-US').transform(e.InwardDate, 'yyyy-MM-dd hh:mm:ss')
     if(e.Status==51)
     {
       this.api.post('/Inward/GetCustomerProducts?customerid='+e.CustomerID+'&warehouseid='+this.currentUser.warehouseId).subscribe(
@@ -1247,7 +1298,7 @@ OnResetInward(){
           }        
       });
       this.ChargesList.slice();
-      //console.log(this.ChargesList);
+      console.log(this.ChargesList);
     });
 
     //console.log(this.rowData);
