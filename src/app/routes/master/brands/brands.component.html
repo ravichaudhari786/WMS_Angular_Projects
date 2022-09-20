@@ -12,19 +12,20 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="company">Brand Name</label>
-                                        <input type="text" [ngClass]="{'is-invalid': submitted && f.BrandName.invalid}"
+                                        <input type="text" [ngClass]="{ 'is-invalid': submitted && form.controls.BrandName.errors }"
                                             formControlName="BrandName" id="BrandName"
                                             class=" form-control form-control-sm" />
-                                        <div *ngIf="submitted && f.BrandName.invalid" class="invalid-feedback">
-                                            <div *ngIf="f.BrandName?.errors?.required">Enter Brands Name</div>
-                                        </div>
+                                            <div *ngIf="submitted && form.controls.BrandName.errors" class="text-danger">
+                                                <div *ngIf="form.controls.BrandName.errors.required">Brand Name is required
+                                                </div>
+                                            </div>
                                     </div>
 
 
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <button type="submit" [disabled]="submitted" class="btn btn-primary btn-sm"
+                                            <button type="submit"  class="btn btn-primary btn-sm"
                                                 style="width: 85px !important; margin-top: 20px !important;  margin-left: 200px !important;"> Save
                                             </button>
                                         </div>
