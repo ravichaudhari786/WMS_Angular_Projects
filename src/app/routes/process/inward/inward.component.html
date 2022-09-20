@@ -65,9 +65,9 @@
                       <div class="col-sm-6 col-md-3">
                         <div class="form-group">
                           <label>Inward Date</label>
-                          <input type="date" formControlName="inward_date" id="inward_date"
-                            class="form-control form-control-sm" placeholder="" 
-                            [ngModel]="todayDate| date:'yyyy-MM-dd'"  name="inward_date" 
+                          <input type="datetime-local" formControlName="inward_date" id="inward_date"
+                            class="form-control form-control-sm" placeholder="yyyy-MM-dd" 
+                            [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'"  name="inward_date" 
                               class="form-control form-control-rounded" 
                             />
                         </div>
@@ -647,7 +647,7 @@
             {{row.name}}
           </ng-template> -->
         <!-- </mat-tab> -->
-        <mat-tab label="Inward test List" >
+        <mat-tab label="Inward List" >
           <div class="form-control-sm" >
             <label class="form-control-sm" >Filter  </label>
             <input type="text" (keyup)="onKeyfilter(filtertext.value)" id="filtertext" #filtertext 

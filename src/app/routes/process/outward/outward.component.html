@@ -124,16 +124,74 @@
                           </div>
                     </div>
                   </div>
-                  </form>
-                  </mat-tab>
-                  <mat-tab label="Outward List">
-
+                  
+                
+                  <hr>
+         <div class="col-12">
+          <p class="font-weight-bold">Pending DO</p>
+              <mtx-grid [data]="PendingDOList" #gridlist
+                [columns]="PendingDOListColum"
+                [loading]="false"
+                [columnResizable]="true"
+                [multiSelectable]="false"
+                [rowSelectable]="false"
+                [hideRowSelectionCheckbox]="false"
+                [rowHover]="true"
+                [rowStriped]="false"
+                [showToolbar]="false"
+                [toolbarTitle]="'Detail List'"
+                [columnHideable]="false"
+                [columnMovable]="true"
+                [expandable]="false"
+                [pageOnFront]="true"
+                [showPaginator]="false"
+                [pageSizeOptions]="[10,20,50,100,500]"
+                [pageIndex]="0"     
+                
+                >
+              </mtx-grid>
+              <!-- (dblclick)="onRowDblclicked(gridlist,$event)" -->
+            </div>
+          </form>   
+        </mat-tab>
+                <mat-tab label="Outward List">
+                  <div class="form-control-sm" >
+                    <label class="form-control-sm" >Filter  </label>
+                    <input type="text" (keyup)="onKeyfilter(filtertext.value)" id="filtertext" #filtertext 
+                    class="form-control-sm" />
+                  </div>
+                  <br>
+                  <div style="height: 800px">
+                  <mtx-grid
+                  style="height: 790px"
+                  [data]="OutwardList"
+                  [columns]="OutWardListColumn"
+                  [loading]="false"
+                  [columnResizable]="true"
+                  [multiSelectable]="false"
+                  [rowSelectable]="false"
+                  [hideRowSelectionCheckbox]="false"
+                  [rowHover]="true"
+                  [rowStriped]="false"
+                  [showToolbar]="false"
+                  [toolbarTitle]="'Item List'"
+                  [columnHideable]="false"
+                  [columnMovable]="true"
+                  [expandable]="false"
+                  [pageOnFront]="false"
+                  [showPaginator]="false"
+                  [pageSize]="10000000" 
+                  
+                  >            
+                  </mtx-grid>
+                </div>
                 </mat-tab>
                 </mat-tab-group>
             </mat-card>
         </div>
     </div>
 
+<!-----------PoP Up--------------->
 
     <!----Add Party window-->
 <!----popup-->                
