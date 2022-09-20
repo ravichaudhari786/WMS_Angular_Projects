@@ -11,6 +11,7 @@ import { DockMasterComponent } from './dock-master/dock-master.component';
 import { FinancialYearComponent } from './financial-year/financial-year.component';
 import { RemarksComponent } from './remarks/remarks.component';
 import { BrandsComponent } from './brands/brands.component';
+import { StateCityComponent } from './state-city/state-city.component';
 
  const routes:Routes=[{ path: 'product', component: ProductComponent },
   { path: 'items', component: ItemsComponent },
@@ -23,6 +24,7 @@ import { BrandsComponent } from './brands/brands.component';
   { path: 'Financial Year', component: FinancialYearComponent },
   { path: 'Remarks', component: RemarksComponent },
   { path: 'Brands', component: BrandsComponent },
+  { path: 'StateCity', component: StateCityComponent },
 ];
 
 @NgModule({

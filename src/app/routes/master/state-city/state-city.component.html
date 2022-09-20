@@ -1,0 +1,142 @@
+<breadcrumb></breadcrumb>
+
+<div fxLayout="row wrap" class="matero-row">
+
+    <div fxFlex="100" class="matero-col">
+        <mat-card>
+            <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
+
+                <mat-tab label="State Master">
+                    <form [formGroup]="form" (ngSubmit)="onStateSave(form)">
+                        <div class="col-md-12">
+                            <div class="row pt-2">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>State Name</label>
+                                        <input type="text" formControlName="State" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.State.errors }" />
+                                        <div *ngIf="submitted && form.controls.State.errors" class="text-danger">
+                                            <div *ngIf="form.controls.State.errors.required">State Name is required
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>State Code</label>
+                                        <input type="text" formControlName="StateCode" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.StateCode.errors }" />
+                                        <div *ngIf="submitted && form.controls.StateCode.errors" class="text-danger">
+                                            <div *ngIf="form.controls.StateCode.errors.required">StateCode is required
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>GST Code</label>
+                                        <input type="text" formControlName="GstCode" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.GstCode.errors }" />
+                                        <div *ngIf="submitted && form.controls.GstCode.errors" class="text-danger">
+                                            <div *ngIf="form.controls.GstCode.errors.required">GstCode is required</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                            style="width: 85px !important; margin-top: 20px !important;"> Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/.col  click="onSubmit(form)"-->
+                        </div>
+                        <!--/.row-->
+                        <mtx-grid [data]="StateList" [columns]="StateColumn" [loading]="false" [columnResizable]="true"
+                            [multiSelectable]="false" [rowSelectable]="false" [hideRowSelectionCheckbox]="false"
+                            [rowHover]="true" [rowStriped]="false" [showToolbar]="true" [toolbarTitle]="'Dock List'"
+                            [columnHideable]="false" [columnMovable]="true" [expandable]="false" [pageOnFront]="true"
+                            [showPaginator]="true" [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0"
+                            [pageSize]="10" [toolbarTemplate]="toolbarTpl">
+                        </mtx-grid>
+                        <ng-template #toolbarTpl>
+                            <input placeholder="Search">
+                        </ng-template>
+
+                    </form>
+
+                </mat-tab>
+
+                <mat-tab label="City Master">
+
+                    <form [formGroup]="form2" (ngSubmit)="onCitySave(form2)">
+                        <div class="col-md-12">
+                            <div class="row pt-2">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>City</label>
+                                        <input type="text" formControlName="City" class="form-control"
+                                            [ngClass]="{ 'is-invalid': submitted2 && form2.controls.City.errors }" />
+                                        <div *ngIf="submitted2 && form2.controls.City.errors" class="text-danger">
+                                            <div *ngIf="form2.controls.City.errors.required">City Name is required</div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>State</label>
+                                        <select class="form-control form-control-sm" formControlName="StateID"
+                                            id="StateID"
+                                            [ngClass]="{ 'is-invalid': submitted2 && form2.controls.StateID.errors }">
+                                            <option value="null" disabled>Select </option>
+                                            <option *ngFor="let i of StateList" value={{i.StateID}}>{{i.State}}</option>
+                                        </select>
+                                        <div *ngIf="submitted2 && form2.controls.StateID.errors" class="text-danger">
+                                            <div *ngIf="form2.controls.StateID.errors.required">State is required</div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                            style="width: 85px !important; margin-top: 20px !important;"> Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <mtx-grid [data]="Citylist" [columns]="CityColumn" [loading]="false" [columnResizable]="true"
+                            [multiSelectable]="false" [rowSelectable]="false" [hideRowSelectionCheckbox]="false"
+                            [rowHover]="true" [rowStriped]="false" [showToolbar]="true" [toolbarTitle]="'Dock List'"
+                            [columnHideable]="false" [columnMovable]="true" [expandable]="false" [pageOnFront]="true"
+                            [showPaginator]="true" [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0"
+                            [pageSize]="10" [toolbarTemplate]="toolbarTpl">
+                        </mtx-grid>
+                        <ng-template #toolbarTpl>
+                            <input placeholder="Search">
+                        </ng-template>
+
+                    </form>
+
+
+                </mat-tab>
+
+            </mat-tab-group>
+        </mat-card>
+    </div>
+</div>
