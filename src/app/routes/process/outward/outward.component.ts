@@ -256,12 +256,8 @@ export class OutwardComponent implements OnInit {
         (obj.StatusName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0)
         );
         this.OutwardList=res;
-      },
-      error=>{ console.error(error);} );
-    }else{
-
+      },error=>{ console.error(error);} );
     }
-    
   }
 
 //--------- Pending DO List Row double click event

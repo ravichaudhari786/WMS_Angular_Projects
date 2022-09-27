@@ -1,1 +1,101 @@
-<p>shifting works!</p>
+<breadcrumb></breadcrumb>
+
+<div fxLayout="row wrap" class="matero-row">
+
+  <div fxFlex="100" class="matero-col">
+    <mat-card>
+      <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
+        <mat-tab label="Item Master">
+          <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+            <div class="col-md-12">
+              <div class="row pt-2">
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label>Customer Name</label>
+                    <select class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f.cbCustomerID.invalid}" 
+                        formControlName="cbCustomerID" id="cbCustomerID">
+                      <option value="null" disabled>Select </option>
+                      <option *ngFor="let i of ItemTypelist" value={{i.CustomerID}}>{{i.CustomerName}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.cbCustomerID.invalid" class="invalid-feedback">
+                      <span *ngIf="f.cbCustomerID?.errors?.required">Customer Name</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="company">LotNo</label>  <!-- [ngClass]="{'is-invalid': submitted && f.txtLotNo.invalid}" -->
+                    <input type="text" 
+                      formControlName="txtLotNo" id="txtLotNo" class=" form-control form-control-sm" />
+                    <div *ngIf="submitted && f.txtLotNo.invalid" class="invalid-feedback">
+                      <div *ngIf="f.txtLotNo?.errors?.required">Enter Lot No</div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-sm-4">
+                  <div class="form-group">
+                    <label for="company">Item Code</label>
+                    <input type="text" [ngClass]="{'is-invalid': submitted && f.ItemCode.invalid}"
+                      formControlName="ItemCode" id="ItemCode" class=" form-control form-control-sm" />
+                    <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
+                      <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Items Type</label>
+                    <select class="form-control form-control-sm"
+                      [ngClass]="{'is-invalid': submitted && f.ItemTypeID.invalid}" formControlName="ItemTypeID" id="ItemTypeID">
+                      <option value="null" disabled>Select </option>
+                      <option *ngFor="let i of ItemTypelist" value={{i.ItemTypeID}}>{{i.ItemType}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.ItemTypeID.invalid" class="invalid-feedback">
+                      <div *ngIf="f.ItemTypeID.errors?.required">Select Item Type</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Temperature Category</label>
+                    <select class="form-control  form-control-sm"
+                      [ngClass]="{'is-invalid': submitted && f.TemperatureCategoryID.invalid}" formControlName="TemperatureCategoryID"
+                      id="TemperatureCategoryID">
+                      <option value="null" disabled>Select </option>
+                      <option *ngFor="let p of TempCatList" value={{p.TemperatureCategoryID}}>{{p.TemperatureCategory}}</option>
+                    </select>
+                    <div *ngIf="submitted && f.TemperatureCategoryID.invalid" class="invalid-feedback">
+                      <div *ngIf="f.TemperatureCategoryID.errors?.required">Select ProductType</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <label>Is Active</label>
+                    <input type="checkbox" style="margin-top: 30px !important; margin-left: 2px !important;"
+                      formControlName="IsActive" id="IsActive" class="form-check-input" />
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="form-group">
+                    <button type="submit" [hidden]="!HideSaveButton"  [value]="submitted" class="btn btn-primary btn-sm"
+                      style="width: 85px !important; margin-top: 20px !important;"> Save </button>
+                  </div>
+                </div>
+              </div>
+              <!--/.col  click="onSubmit(form)"-->
+            </div>
+            <!--/.row-->
+          </form>
+        </mat-tab>
+        
+
+      </mat-tab-group>
+    </mat-card>
+  </div>
+
+</div>
+
