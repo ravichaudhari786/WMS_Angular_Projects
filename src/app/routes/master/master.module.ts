@@ -12,6 +12,7 @@ import { DockMasterComponent } from './dock-master/dock-master.component';
 import { FinancialYearComponent } from './financial-year/financial-year.component';
 import { RemarksComponent } from './remarks/remarks.component';
 import { BrandsComponent } from './brands/brands.component';
+import { StateCityComponent } from './state-city/state-city.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { BrandsComponent } from './brands/brands.component';
     DockMasterComponent,
     FinancialYearComponent,
     RemarksComponent,
-    BrandsComponent
+    BrandsComponent,
+    StateCityComponent
   ],
   imports: [
     SharedModule,
