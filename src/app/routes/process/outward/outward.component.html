@@ -2,7 +2,7 @@
 <div fxLayout="row wrap" class="matero-row">
     <div fxFlex="100" class="matero-col">
       <mat-card>
-        <mat-tab-group animationDuration="1ms" (selectedIndexChange)="tabDeliveryOrderchange($event)" [(selectedIndex)]="tab" >
+        <mat-tab-group animationDuration="1ms" (selectedIndexChange)="tabOutward($event)" [(selectedIndex)]="tab" >
           <mat-tab label="Outward">
             <form [formGroup]="form" >
                 <div class="col-md-12">
@@ -26,9 +26,9 @@
                           <div class="col-sm-4 col-md-4">
                             <div class="form-group">
                                 <label>Outward Date</label>
-                                <input type="date" formControlName="Outward_Date" id="Outward_Date"
+                                <input type="datetime-local" formControlName="Outward_Date" id="Outward_Date"
                                   class="form-control form-control-sm" placeholder="" 
-                                  [ngModel]="todayDate| date:'yyyy-MM-dd'"  name="deliveryorder_date" 
+                                  [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'"  name="deliveryorder_date" 
                                     class="form-control form-control-rounded"    />
                             </div>
                           </div>
@@ -69,7 +69,7 @@
                               <select class="form-control form-control-sm" 
                               formControlName="cbRemarks" id="cbRemarks">
                               <option value="null" disabled>Select</option>
-                              <option *ngFor="let r of remarkList" value={{r.RemarksID}}>{{r.Remarks}}</option>
+                              <option *ngFor="let r of remarkList" value={{r.Remarks}}>{{r.Remarks}}</option>
                             </select>
                             </div>
                           </div>
@@ -127,9 +127,10 @@
                   
                 
                   <hr>
+                  <div class="row">
          <div class="col-12">
           <p class="font-weight-bold">Pending DO</p>
-              <mtx-grid [data]="PendingDOList" #gridlist
+              <mtx-grid [data]="PendingDOList" #gridPendingDOdList
                 [columns]="PendingDOListColum"
                 [loading]="false"
                 [columnResizable]="true"
@@ -146,12 +147,51 @@
                 [pageOnFront]="true"
                 [showPaginator]="false"
                 [pageSizeOptions]="[10,20,50,100,500]"
-                [pageIndex]="0"     
+                [pageIndex]="0"  
                 
+                (dblclick)="onRowDblclicked(gridPendingDOdList,$event)"
                 >
               </mtx-grid>
-              <!-- (dblclick)="onRowDblclicked(gridlist,$event)" -->
+            </div></div>
+            <hr>
+          
+            <div class="row">              
+              <div class="col-8">
+                <p class="font-weight-bold">Product List</p>
+                <div class="card">
+                  <ag-grid-angular 
+                  style="height: 300px;"
+                  class="ag-theme-alpine"
+                  [rowData]="DeliveryOrderDetailList"
+                  [columnDefs]="DeliveryOrderDetailColumns" >
+                </ag-grid-angular>
+                </div>
+              </div>
+              <div class="col-4">
+                <p class="font-weight-bold">Product Charges</p>
+                <div class="card">
+                  <ag-grid-angular 
+                  style="height: 300px;"
+                  class="ag-theme-alpine"
+                  [rowData]="DeliveryOrderDetailChargeList"
+                  [columnDefs]="DeliveryOrderDetailChargeColumns" >
+                </ag-grid-angular>
+                </div>
+              </div>
+
             </div>
+            <hr>
+          
+            <div class="row">              
+              <div class="col-sm-4">
+                <button class="btn btn-primary btn-sm" (click)="OnSaveOutward()" style="width: 85px !important; " [disabled]="Saveclick" >Save</button>
+              </div>
+              <div class="col-sm-4">
+                <button class="btn btn-primary btn-sm" (click)="OnResetOuward()" style="width: 85px !important; ">Reset</button>
+              </div>
+            </div>
+
+            <!-----End Of Form  [disabled]="click" -->
           </form>   
         </mat-tab>
                 <mat-tab label="Outward List">
@@ -191,10 +231,7 @@
         </div>
     </div>
 
-<!-----------PoP Up--------------->
-
-    <!----Add Party window-->
-<!----popup-->                
+<!-----------PoP Up (Add Party window)--------------->
 <ng-template #AddPartyContent let-c="close" let-d="dismiss">
       <div>
         <div class="modal-header">
