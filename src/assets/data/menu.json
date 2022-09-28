@@ -109,6 +109,12 @@
           "name": "Outward",
           "type": "link"
         }
+        ,
+        {
+          "route": "shifting",
+          "name": "Shifting",
+          "type": "link"
+        }
       ],
       "permissions": {
         "only": "ADMIN"
