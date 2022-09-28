@@ -48,6 +48,7 @@ export class DockMasterComponent implements OnInit {
     console.log("Inside");
     this.submitted = true;
     if (this.form.invalid) {
+      alert("invalid Form")
    
      return;
     }
@@ -60,7 +61,7 @@ export class DockMasterComponent implements OnInit {
       isActive: true,
       wareHouseID: this.currentUser.warehouseId,
     }
-    //console.log(this.SaveData);
+    console.log(this.SaveData);
     this.api.post('/DockMaster/Dock_insert', this.SaveData).subscribe(
       data => {
         this.dialog.alert(data[0], '', () => { window.location.reload(); });
