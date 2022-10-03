@@ -140,6 +140,35 @@
           "name": "Outward",
           "type": "link"
         }
+        ,
+        {
+          "route": "shifting",
+          "name": "Shifting",
+          "type": "link"
+        }
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
+
+    {
+      "route": "setup",
+      "name": "Setup",
+      "type": "sub",
+      "icon": "settings",
+      "children": [
+        {
+          "route": "Storagearea",
+          "name": "Storagearea",
+          "type": "link"
+        },
+        {
+          "route": "Company",
+          "name": "Company",
+          "type": "link"
+        }
+       
       ],
       "permissions": {
         "only": "ADMIN"

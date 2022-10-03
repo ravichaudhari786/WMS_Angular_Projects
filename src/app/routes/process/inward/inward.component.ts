@@ -1103,8 +1103,13 @@ tabInwardchange(event:any){
 
 
   onKeyfilter(e:string){
-    this.api.get('/InwardList?companyId='+this.currentUser.companyId+'&warehouseId='
-    +this.currentUser.warehouseId+'&finantialYearId='+this.currentUser.FinantialYearId).subscribe(
+    this.GetInwardListJson={
+      CompanyId:this.currentUser.companyId, 
+      WarehouseId:this.currentUser.warehouseId, 
+      FinantialYearId:this.currentUser.FinantialYearId,
+    }
+    
+    this.api.post('/InwardList',this.GetInwardListJson).subscribe(
     data=>{this.InwardList=data;
       var searchName = e;
       const lists=this.InwardList;
@@ -1117,6 +1122,7 @@ tabInwardchange(event:any){
       (obj.StatusName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) 
       );
       this.InwardList=res;
+      console.log(this.InwardList);
     },
     error=>{ console.error(error);} );
   }
@@ -1129,20 +1135,33 @@ tabInwardchange(event:any){
       error=>{ console.error(error);} );
   }
 onDeleteTestListRow(d:any){
+  console.log(d);
   if(d.Status==51)
   {
-    this.api.post('/Inward/DeleteInward?InwardID='+d.InwardID+'&CustomerID='+d.CustomerID+'&Remarks=test_by_angular&CreatedBy='+this.currentUser.userId).subscribe(
-      data=>{data;
-      alert(data.Table[0]["message"]); 
-      this.SetDataTo_Inwardlist();},
-      error=>{ console.error(error);}
-     ); 
-    //document?.getElementById("customer_id")?.focus();
-    // this.DeleteInward= document?.getElementById("DeleteInward")?;
-    // this.modalService.open(this.DeleteInward);
-    
-    
-  }else if(d.Status==52 || d.Status==0)
+    const DeletedData={
+      InwardID :d.InwardID,
+      CustomerID :Number(d.CustomerID),
+      Remarks :0,
+      CreatedBy :Number(this.currentUser.userId),
+      serviceID :0,
+      ProductID :0,
+      CompanyId :Number(this.currentUser.companyId),
+      WarehouseId :Number(this.currentUser.warehouseId),
+      FinantialYearId:Number(this.currentUser.FinantialYearId), 
+      challan :0,
+      StorageAreaMasterID :1,
+      FinancialYear :"",
+    };
+    console.log(DeletedData);
+        // // this.api.post('/Inward/DeleteInward?InwardID='+d.InwardID+'&CustomerID='+d.CustomerID+'&Remarks=test_by_angular&CreatedBy='+this.currentUser.userId).subscribe(
+      //   this.api.post('/Inward/DeleteInward',DeletedData).subscribe(  
+      //     data=>{data;
+      //     alert(data.Table[0]["message"]); 
+      //     this.SetDataTo_Inwardlist();},
+      //     error=>{ console.error(error);}
+      //    ); 
+  }
+  else if(d.Status==52 || d.Status==0)
   {
     console.log("Sorry,Inward is under process. You can't Delete ....!!!");
     alert("Sorry,Inward is under process. You can't Delete....!!!");
@@ -1427,7 +1446,8 @@ TransperdetailcolumnDefs: ColDef[] = [
   ]
   serviceColumns:ColDef[]  = [
     {
-      field: 'Add', cellRenderer: (params:any) => this.checkBoxCellEditRenderer(params), hide:false,width:10,     
+      field: 'Add', cellRenderer: (params:any) => this.checkBoxCellEditRenderer(params), 
+      hide:false,width:10,     
     },
     { field: 'InwardDID', hide:true },
     { field: 'ServiceID', hide:true,resizable: true },
@@ -1517,12 +1537,12 @@ TransperdetailcolumnDefs: ColDef[] = [
     }
  ]
 
- public defaultColDef: ColDef = {
-  flex: 1,
-  minWidth: 200,
-  resizable: true,
-  floatingFilter: true,
-};
+//  public defaultColDef: ColDef = {
+//   flex: 1,
+//   minWidth: 200,
+//   resizable: true,
+//   floatingFilter: true,
+// };
 
 // public columnInwardDefs: ColDef[] = [
 //   {

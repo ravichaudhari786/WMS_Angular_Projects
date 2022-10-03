@@ -7,6 +7,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { DeliveryorderComponent } from './deliveryorder/deliveryorder.component';
 import { DispatchComponent } from './dispatch/dispatch.component';
 import { OutwardComponent } from './outward/outward.component';
+import { ShiftingComponent } from './shifting/shifting.component';
 
 // import {
 //   DxDataGridModule,
@@ -18,7 +19,8 @@ import { OutwardComponent } from './outward/outward.component';
     InwardComponent,
     DeliveryorderComponent,
     DispatchComponent,
-    OutwardComponent
+    OutwardComponent,
+    ShiftingComponent
   ],
   imports: [
     SharedModule,

@@ -12,22 +12,26 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Dock No</label>
-                                        <input type="text" [ngClass]="{'is-invalid': submitted && f.dockNo.invalid}"
+                                        <input type="text"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.dockNo.errors }"
                                             formControlName="dockNo" id="dockNo"
                                             class=" form-control form-control-sm" />
-                                        <div *ngIf="submitted && f.dockNo.invalid" class="invalid-feedback">
-                                            <span *ngIf="f.dockNo?.errors?.required">Enter Dock no</span>
+                                        <div *ngIf="submitted && form.controls.dockNo.errors" class="text-danger">
+                                            <div *ngIf="form.controls.dockNo.errors.required">Dock No is required
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="company">Dock Name</label>
-                                        <input type="text" [ngClass]="{'is-invalid': submitted && f.dockName.invalid}"
+                                        <input type="text"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.dockName.errors }"
                                             formControlName="dockName" id="dockName"
                                             class=" form-control form-control-sm" />
-                                        <div *ngIf="submitted && f.dockName.invalid" class="invalid-feedback">
-                                            <div *ngIf="f.dockName?.errors?.required">Enter Dock Name</div>
+                                        <div *ngIf="submitted && form.controls.dockName.errors" class="text-danger">
+                                            <div *ngIf="form.controls.dockName.errors.required">Dock Name is required
+                                            </div>
                                         </div>
                                     </div>
 
@@ -35,7 +39,7 @@
 
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <button type="submit" [disabled]="submitted" class="btn btn-primary btn-sm"
+                                            <button type="submit"  class="btn btn-primary btn-sm"
                                                 style="width: 85px !important; margin-top: 20px !important;"> Save
                                             </button>
                                         </div>
@@ -59,7 +63,7 @@
                     </mtx-grid>
                     <ng-template #toolbarTpl>
                         <input placeholder="Search">
-                      </ng-template>
+                    </ng-template>
 
                 </mat-tab>
             </mat-tab-group>

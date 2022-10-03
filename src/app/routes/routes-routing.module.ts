@@ -43,6 +43,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./process/process.module').then(m => m.ProcessModule),
       },
+      {
+        path: 'setup',
+        loadChildren: () =>
+          import('./setup/setup.module').then(m => m.SetupModule),
+      },
     ],
   },
   {
