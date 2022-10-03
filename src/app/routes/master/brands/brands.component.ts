@@ -10,20 +10,17 @@ import { User } from '@core/authentication/interface';
   styleUrls: ['./brands.component.scss']
 })
 export class BrandsComponent implements OnInit {
-
-  form!: FormGroup; submitted = false;
+  form!: FormGroup; submitted = false; Reseted = false;
   UserID: any = 0; BrandsList: any;
+  HideSaveButton = true;
   SaveData: any = {};
-  tab = 0;
+  BrandID: number = 0;
+
   private currentUser: User;
-
-
 
   constructor(private fb: FormBuilder, private api: ApiService, public dialog: MtxDialog) {
     this.currentUser = this.api.getCurrentUser();
   }
-
-
   ngOnInit(): void {
     this.form = this.fb.group({
 
@@ -31,68 +28,72 @@ export class BrandsComponent implements OnInit {
       BrandName: ["", Validators.required],
       IsActive: true,
       CreatedBy: [this.UserID]
-
     });
-
-    this.BindDropdown();
-
+    this.BindinfDataToList();
 
   }
 
-
-  async BindDropdown() {
+  BindinfDataToList() {
     this.api.get('/Brands/Brand_Select').subscribe(
-      data => { this.BrandsList = data },
+      data => { this.BrandsList = data; console.log("initialdata", this.BrandsList) },
       error => { console.error(error); }
     );
   }
 
   get f() { return this.form.controls; }
-
-
   onSubmit(formData: any) {
 
     this.submitted = true;
     if (this.form.invalid) {
-
       return;
     }
     else {
-      this.SaveData = {
-        BrandID: this.form.value.BrandID,
-        BrandName: this.form.value.BrandName,
-        isActive: true,
-        CreatedBy: this.currentUser.userId
-      }
-      // console.log(this.SaveData);
-      this.api.post('/Brands/Brand_Insert_Update', this.SaveData).subscribe(
-        data => {
-          this.dialog.alert(data[0], '', () => { window.location.reload(); });
-          // window.location.reload();
-        },
-        error => { console.error(error); }
-      );
-    }
-  }
+      this.HideSaveButton = true;
 
-  tabchange(event: any) {
-    this.tab = event;
+      {
+        this.SaveData = {
+          BrandID: this.form.value.BrandID,
+          BrandName: this.form.value.BrandName,
+          isActive: this.form.value.IsActive,
+          CreatedBy: this.currentUser.userId
+        }
+        console.log("SaveData", this.SaveData);
+        this.api.post('/Brands/Brand_Insert_Update', this.SaveData).subscribe(
+          data => {
+            this.dialog.alert(data[0], '', () => { window.location.reload(); });
+            this.onReset();
+            this.BindinfDataToList();
+          },
+          error => { console.error(error); }
+        );
+      }
+    }
+
+  }
+  onReset() {
+    this.form.reset();
+    this.BrandID = 0;
+    this.submitted = false;
+    this.HideSaveButton = true;
+
+    this.BindinfDataToList();
+
   }
 
   editProduct(record: any) {
+    console.log("record ", record);
+
+    this.HideSaveButton = true;
     const item: any = {
 
       BrandID: record.BrandID,
       BrandName: record.BrandName,
       CreatedBy: record.CreatedBy,
-      IsActive: true
+      IsActive: record.IsActive,
     }
     this.form.setValue(item);
     console.log(this.form.value);
-    this.tab = 0;
-
   }
-
   columns: MtxGridColumn[] = [
     {
       header: "Action",
@@ -140,16 +141,5 @@ export class BrandsComponent implements OnInit {
       sortable: true,
       minWidth: 280,
     }
-
-
-
   ]
-
-
-
-
-
-
-
-
 }

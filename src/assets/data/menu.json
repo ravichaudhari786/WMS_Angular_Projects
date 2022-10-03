@@ -83,6 +83,37 @@
         "only": "ADMIN"
       }
     },
+
+    {
+      "route": "genericmaster",
+      "name": "Generic Master",
+      "type": "sub",
+      "icon": "settings",
+      "children": [
+        {
+          "route": "countmaster",
+          "name": "Count Master",
+          "type": "link"
+        },  
+         {
+          "route": "departmentmaster",
+          "name": "Department Master",
+          "type": "link"
+        },
+        {
+          "route": "designationmaster",
+          "name": "Designation Master",
+          "type": "link"
+        }
+
+   
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
+
+
     {
       "route": "process",
       "name": "Process",

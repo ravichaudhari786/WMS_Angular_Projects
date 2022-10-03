@@ -34,6 +34,11 @@ const routes: Routes = [
           import('./master/master.module').then(m => m.MasterModule),
       },
       {
+        path: 'genericmaster',
+        loadChildren: () =>
+          import('./generic-master/generic-master.module').then(m => m.GenericMasterModule),
+      },
+      {
         path: 'process',
         loadChildren: () =>
           import('./process/process.module').then(m => m.ProcessModule),

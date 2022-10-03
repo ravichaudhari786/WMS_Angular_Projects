@@ -3,16 +3,14 @@
 <div fxLayout="row wrap" class="matero-row">
 
   <div fxFlex="100" class="matero-col">
-    <mat-card>
-      <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
-        <mat-tab label="Item Master">
+   
           <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
             <div class="col-md-12">
               <div class="row pt-2">
                 <div class="col-sm-6">
                   <div class="form-group">
                     <label>Item Name</label>
-                    <input type="text" [ngClass]="{'is-invalid': submitted && f.ItemName.invalid}"
+                    <input type="text" autocomplete="off" [ngClass]="{'is-invalid': submitted && f.ItemName.invalid}"
                       formControlName="ItemName" id="ItemName" class=" form-control form-control-sm" />
                     <div *ngIf="submitted && f.ItemName.invalid" class="invalid-feedback">
                       <span *ngIf="f.ItemName?.errors?.required">Enter Item Name</span>
@@ -22,7 +20,7 @@
                 <div class="col-sm-6">
                   <div class="form-group">
                     <label for="company">Item Code</label>
-                    <input type="text" [ngClass]="{'is-invalid': submitted && f.ItemCode.invalid}"
+                    <input type="text" autocomplete="off" [ngClass]="{'is-invalid': submitted && f.ItemCode.invalid}"
                       formControlName="ItemCode" id="ItemCode" class=" form-control form-control-sm" />
                     <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
                       <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
@@ -64,57 +62,58 @@
                       formControlName="IsActive" id="IsActive" class="form-check-input" />
                   </div>
                 </div>
-                <div class="col-sm-6">
-                  <div class="form-group">
-                    <button type="submit" [disabled]="submitted" class="btn btn-primary btn-sm"
-                      style="width: 85px !important; margin-top: 20px !important;"> Save </button>
-                  </div>
+               <div class="row">
+                <div class="col-md-6">
+                      <button type="submit" [hidden]="!HideSaveButton" [value]="submitted" class="btn btn-primary btn-sm"
+                              style="width: 85px !important; margin-top: 20px !important;"> Save </button>
                 </div>
+                <!-- <div class="col-md-6">
+                   <button type="Reset" [hidden]="!HideResetButton" [value]="Reseted" class="btn btn-primary btn-sm"
+                              style="width: 85px !important; margin-top: 20px !important;" (click)="onReset()"> Reset </button>
+            </div> -->
+              </div>
               </div>
               <!--/.col  click="onSubmit(form)"-->
             </div>
             <!--/.row-->
           </form>
-        </mat-tab>
-        <mat-tab label="List">
 
-          <mtx-grid
-          [data]="ItemList"
+          <hr>
+          <br>
+          <mtx-grid [data]="ItemList" #gridPendingDOdList
           [columns]="columns"
           [loading]="false"
           [columnResizable]="true"
           [multiSelectable]="false"
-          [rowSelectable]="false"
-          [hideRowSelectionCheckbox]="false"
+          [rowSelectable]="true"
+          [hideRowSelectionCheckbox]="true"
           [rowHover]="true"
           [rowStriped]="false"
-          [showToolbar]="true"
-          [toolbarTitle]="'Item List'"
+          [showToolbar]="false"
+          [toolbarTitle]="'Detail List'"
           [columnHideable]="false"
           [columnMovable]="true"
           [expandable]="false"
           [pageOnFront]="true"
           [showPaginator]="true"
           [pageSizeOptions]="[10,20,50,100,500]"
-          [pageIndex]="0"
-          [pageSize]="10"
-          [toolbarTemplate]="toolbarTpl" 
+          [pageIndex]="0"  
+          [pageSize]="0" 
           
-            >
-            <!-- (sortChange)="changeSort($event)"
-(selectionChange)="changeSelect($event)"
-[expansionTemplate]="expansionTpl"-->
-          </mtx-grid>
+          
+          >
+        </mtx-grid>
+     
           <ng-template #toolbarTpl>
             <input placeholder="Search">
           </ng-template>
           <!-- <ng-template #expansionTpl let-row>
             {{row.name}}
           </ng-template> -->
-        </mat-tab>
+   
 
-      </mat-tab-group>
-    </mat-card>
+    
+    
   </div>
 
 </div>

@@ -14,6 +14,7 @@ import { RemarksComponent } from './remarks/remarks.component';
 import { BrandsComponent } from './brands/brands.component';
 import { StateCityComponent } from './state-city/state-city.component';
 
+
 @NgModule({
   declarations: [
     ProductComponent,
