@@ -1,27 +1,26 @@
 <breadcrumb></breadcrumb>
 
 <div fxLayout="row wrap" class="matero-row">
-
   <div fxFlex="100" class="matero-col">
     <mat-card>
       <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
-        <mat-tab label="Item Master">
+        <mat-tab label="Shifting">
           <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
             <div class="col-md-12">
               <div class="row pt-2">
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                   <div class="form-group">
                     <label>Customer Name</label>
                     <select class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f.cbCustomerID.invalid}" 
                         formControlName="cbCustomerID" id="cbCustomerID">
                       <option value="null" disabled>Select </option>
-                      <option *ngFor="let i of ItemTypelist" value={{i.CustomerID}}>{{i.CustomerName}}</option>
+                      <option *ngFor="let i of customerList" value={{i.CustomerID}}>{{i.CustomerName}}</option>
                     </select>
                     <div *ngIf="submitted && f.cbCustomerID.invalid" class="invalid-feedback">
                       <span *ngIf="f.cbCustomerID?.errors?.required">Customer Name</span>
                     </div>
                   </div>
-                </div>
+                </div>                
                 <div class="col-sm-4">
                   <div class="form-group">
                     <label for="company">LotNo</label>  <!-- [ngClass]="{'is-invalid': submitted && f.txtLotNo.invalid}" -->
@@ -31,34 +30,43 @@
                       <div *ngIf="f.txtLotNo?.errors?.required">Enter Lot No</div>
                     </div>
                   </div>
-
                 </div>
+                <div class="col-sm-2">
+                    <div class="row">
+                    <div class="form-group pl-2">
+                      <button (click)="OnSearchClick()" type="button" class="btn btn-primary btn-sm"
+                         style="width: 85px !important; margin-top: 20px !important;">Apply </button>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="col-sm-4">
                   <div class="form-group">
-                    <label for="company">Item Code</label>
-                    <input type="text" [ngClass]="{'is-invalid': submitted && f.ItemCode.invalid}"
-                      formControlName="ItemCode" id="ItemCode" class=" form-control form-control-sm" />
-                    <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
-                      <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
+                    <label for="company">Shifting Date</label>
+                    <input type="datetime-local" formControlName="inward_date" id="inward_date"
+                      class="form-control form-control-sm" placeholder="yyyy-MM-dd" 
+                      [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'"  name="inward_date" />  
+                    <div *ngIf="submitted && f.inward_date.invalid" class="invalid-feedback">
+                      <div *ngIf="f.inward_date?.errors?.required">Enter inward date</div>
                     </div>
                   </div>
-
                 </div>
 
-                <div class="col-sm-6">
+                <div class="col-sm-8">
                   <div class="form-group">
-                    <label>Items Type</label>
+                    <label>Loading By</label>
                     <select class="form-control form-control-sm"
-                      [ngClass]="{'is-invalid': submitted && f.ItemTypeID.invalid}" formControlName="ItemTypeID" id="ItemTypeID">
+                      [ngClass]="{'is-invalid': submitted && f.cbloadingByID.invalid}" formControlName="cbloadingByID" id="cbloadingByID">
                       <option value="null" disabled>Select </option>
-                      <option *ngFor="let i of ItemTypelist" value={{i.ItemTypeID}}>{{i.ItemType}}</option>
+                      <option *ngFor="let i of loadingByList" value={{i.UserID}}>{{i.UserName}}</option>
                     </select>
-                    <div *ngIf="submitted && f.ItemTypeID.invalid" class="invalid-feedback">
-                      <div *ngIf="f.ItemTypeID.errors?.required">Select Item Type</div>
+                    <div *ngIf="submitted && f.cbloadingByID.invalid" class="invalid-feedback">
+                      <div *ngIf="f.cbloadingByID.errors?.required">Select Item Type</div>
                     </div>
                   </div>
                 </div>
-                <div class="col-sm-6">
+
+                <!-- <div class="col-sm-6">
                   <div class="form-group">
                     <label>Temperature Category</label>
                     <select class="form-control  form-control-sm"
@@ -78,8 +86,168 @@
                     <input type="checkbox" style="margin-top: 30px !important; margin-left: 2px !important;"
                       formControlName="IsActive" id="IsActive" class="form-check-input" />
                   </div>
+                </div> -->
+       <div class="col-sm-12">
+        <hr>
+        <p class="font-weight-bold">Pending DO</p>
+            <mtx-grid [data]="BalanceStockList" #gridPendingDOdList
+              [columns]="BalanceStockColumn"
+              [loading]="false"
+              [columnResizable]="true"
+              [multiSelectable]="false"
+              [rowSelectable]="true"
+              [hideRowSelectionCheckbox]="true"
+              [rowHover]="true"
+              [rowStriped]="false"
+              [showToolbar]="false"
+              [toolbarTitle]="'Detail List'"
+              [columnHideable]="false"
+              [columnMovable]="true"
+              [expandable]="false"
+              [pageOnFront]="true"
+              [showPaginator]="false"
+              [pageSizeOptions]="[10,20,50,100,500]"
+              [pageIndex]="0"  
+              
+              (dblclick)="onRowDblclicked(gridPendingDOdList,$event)"
+              >
+            </mtx-grid>
+          </div>
+          
+              <div class="col-12">
+                <hr>
+                <p class="font-weight-bold">Shifting Details</p>
+                <div class="row">                  
+                  <div class="col-sm-8">
+                    <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Product Name</label>
+                            <input type="text" formControlName="txtProductName" id="txtProductName" autocomplete="off"
+                              class="form-control form-control-sm" placeholder="" readonly />   
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Lot No</label>
+                            <input type="text" formControlName="txtShiftDetailLotNo" id="txtShiftDetailLotNo" autocomplete="off"
+                              class="form-control form-control-sm" placeholder="" readonly />                              
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Brand Name </label>
+                            <input type="text" formControlName="txtBrandName" id="txtBrandName" autocomplete="off"
+                              class="form-control form-control-sm" placeholder="" readonly /> 
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Count In Packet</label>
+                            <input type="text" formControlName="txtpacketcount" id="txtpacketcount" autocomplete="off"
+                            class="form-control form-control-sm" placeholder="" readonly /> 
+                          </div>
+                         
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Balance Quantity</label>
+                            <input type="text" formControlName="txtBalquantity" id="txtBalquantity" autocomplete="off"
+                              class="form-control form-control-sm" placeholder="" required readonly/>                              
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Shifting Quantity</label>
+                            <input type="text" formControlName="txtShiftingQty" id="txtShiftingQty" autocomplete="off" #txtShiftingQty
+                            (keyup)="onKeyfilter(txtShiftingQty.value)" class="form-control form-control-sm" placeholder="" required />                              
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" formControlName="txtLocation" id="txtLocation" autocomplete="off"
+                              class="form-control form-control-sm" placeholder="" readonly />                              
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>To Location</label>
+                            <select class="form-control form-control-sm" (change)="OnToLocationSelect($event)"
+                              formControlName="cbToLocation" id="cbToLocation">
+                              <option [ngValue]="null" disabled>Select </option>
+                              <option *ngFor="let s of StorageAreas" value="{{s.StorageAreaID}}">{{s.Storage_Area_Name}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                                              
+                        <!-- /.col -->
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <label>Labour Contracter</label>
+                            <select class=" form-control form-control-sm" 
+                              formControlName="cblabourcontractor_id" id="cblabourcontractor_id">
+                              <option [ngValue]="null" disabled>Select </option>
+                              <option *ngFor="let l of labourContractorList" value="{{l.LabourContractorID}}">
+                                {{l.ContractorName}}</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group">
+                            <button type="button" (click)="OnAddClick()" class="btn btn-primary btn-sm"                             
+                            style="width: 85px !important; margin-top: 20px !important;"> Add </button>
+                          </div>
+                        </div>
+                          
+                      </div>
+                    </div>
+                  
+                  <div class="col-sm-4">
+                    <div class="card">
+                      <ag-grid-angular 
+                          style="height: 300px;"
+                          class="ag-theme-alpine"
+                          [rowData]="ShiftingServiceList"
+                          [columnDefs]="serviceColumns"                        
+                      >
+                      </ag-grid-angular>
+                     </div>
+                  </div>
                 </div>
-                <div class="col-sm-6">
+                </div>
+
+          <div class="col-12">
+            <hr>
+            <p class="font-weight-bold"> Shifting Detail List </p>
+              <mtx-grid [data]="ShiftingDetailList" #gridlist1
+              [columns]="ShiftingDetailColumns"
+              [loading]="false"
+              [columnResizable]="true"
+              [multiSelectable]="false"
+              [rowSelectable]="false"
+              [hideRowSelectionCheckbox]="false"
+              [rowHover]="true"
+              [rowStriped]="false"
+              [showToolbar]="false"
+              [toolbarTitle]="'Detail List'"
+              [columnHideable]="false"
+              [columnMovable]="true"
+              [expandable]="false"
+              [pageOnFront]="true"
+              [showPaginator]="false"
+              [pageSizeOptions]="[10,20,50,100,500]"
+              [pageIndex]="0"     
+              
+              >
+            </mtx-grid>
+  
+            <!-- (dblclick)="onRowDblclicked(gridlist,$event)"-->
+          </div>
+
+              </div>
+                <div class="col-sm-12">
                   <div class="form-group">
                     <button type="submit" [hidden]="!HideSaveButton"  [value]="submitted" class="btn btn-primary btn-sm"
                       style="width: 85px !important; margin-top: 20px !important;"> Save </button>
@@ -87,15 +255,45 @@
                 </div>
               </div>
               <!--/.col  click="onSubmit(form)"-->
-            </div>
+            
             <!--/.row-->
           </form>
         </mat-tab>
-        
-
+        <mat-tab label="Shifting List" >
+          <!-- <div class="form-control-sm" >
+            <label class="form-control-sm" >Filter  </label>
+            <input type="text" (keyup)="onKeyfilter(filtertext.value)" id="filtertext" #filtertext 
+            class="form-control-sm" />
+          </div> -->
+          <br>
+          <div style="height: 800px">
+          <mtx-grid
+          style="height: 790px"
+          [data]="ShiftingList"
+          [columns]="ShiftingListColumn"
+          [loading]="false"
+          [columnResizable]="true"
+          [multiSelectable]="false"
+          [rowSelectable]="false"
+          [hideRowSelectionCheckbox]="false"
+          [rowHover]="true"
+          [rowStriped]="false"
+          [showToolbar]="false"
+          [toolbarTitle]="'Item List'"
+          [columnHideable]="false"
+          [columnMovable]="true"
+          [expandable]="false"
+          [pageOnFront]="false"
+          [showPaginator]="false"
+          [pageSize]="10000000" 
+          
+          >            
+          </mtx-grid>
+        </div>
+        </mat-tab>
       </mat-tab-group>
     </mat-card>
   </div>
+  </div>
 
-</div>
 
