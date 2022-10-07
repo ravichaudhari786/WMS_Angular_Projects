@@ -48,7 +48,7 @@
                 [ngClass]="{'is-invalid': submitted && f.StorageAreaTypeID.invalid}"
                 formControlName="StorageAreaTypeID" id="StorageAreaTypeID">
                 <option value="null" disabled>Select </option>
-                <option *ngFor="let p of StorageAreaTypeList" value={{p.StorageAreaTypeID}}>{{p.ServiceName}}
+                <option *ngFor="let p of StorageAreaTypeList" value={{p.StorageAreaTypeID}}>{{p.StorageAreaType}}
                 </option>
               </select>
               <div *ngIf="submitted && f.StorageAreaTypeID.invalid" class="invalid-feedback">
