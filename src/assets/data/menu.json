@@ -83,6 +83,42 @@
         "only": "ADMIN"
       }
     },
+
+    {
+      "route": "genericmaster",
+      "name": "Generic Master",
+      "type": "sub",
+      "icon": "settings",
+      "children": [
+        {
+          "route": "countmaster",
+          "name": "Count Master",
+          "type": "link"
+        },  
+         {
+          "route": "departmentmaster",
+          "name": "Department Master",
+          "type": "link"
+        },
+        {
+          "route": "designationmaster",
+          "name": "Designation Master",
+          "type": "link"
+        },
+        {
+          "route": "itemtypemaster",
+          "name": "Item Type Master",
+          "type": "link"
+        }
+
+   
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
+
+
     {
       "route": "process",
       "name": "Process",
@@ -115,6 +151,34 @@
           "name": "Shifting",
           "type": "link"
         }
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
+
+    {
+      "route": "setup",
+      "name": "Setup",
+      "type": "sub",
+      "icon": "settings",
+      "children": [
+        {
+          "route": "Storagearea",
+          "name": "Storagearea",
+          "type": "link"
+        },
+        {
+          "route": "Company",
+          "name": "Company",
+          "type": "link"
+        },
+        {
+          "route": "servicemaster",
+          "name": "Service Master",
+          "type": "link"
+        }
+       
       ],
       "permissions": {
         "only": "ADMIN"

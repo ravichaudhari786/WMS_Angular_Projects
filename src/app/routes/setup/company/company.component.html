@@ -1,0 +1,204 @@
+<breadcrumb></breadcrumb>
+
+<div fxLayout="row wrap" class="matero-row">
+
+    <div fxFlex="100" class="matero-col">
+        <mat-card>
+            <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
+                <mat-tab label="Company Master">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+                        <div class="col-md-12">
+                            <div class="row pt-2">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Company Name</label>
+                                        <input type="text" formControlName="CompanyName" id="CompanyName"
+                                        [ngClass]="{'is-invalid': submitted && f.CompanyName.invalid}" class=" form-control form-control-sm" />
+                                        <div *ngIf="submitted && f.CompanyName.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.CompanyName?.errors?.required">Enter Company Name</span>
+                                          </div>
+                                    </div>
+                                   
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="company">Company Code</label>
+                                        <input type="text" formControlName="CompanyCode" id="CompanyCode"
+                                        [ngClass]="{'is-invalid': submitted && f.CompanyCode.invalid}" class=" form-control form-control-sm" />
+                                        <div *ngIf="submitted && f.CompanyCode.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.CompanyCode?.errors?.required">Enter Company Code</span>
+                                          </div>
+                                    </div>
+                                   
+
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Parent Company</label>
+                                        <select class="form-control form-control-sm" formControlName="ParentCompanyID"
+                                            id="ParentCompany"  [ngClass]="{'is-invalid': submitted && f.ParentCompanyID.invalid}">
+                                            <option value="null" disabled>Select </option>
+                                            <option *ngFor="let p of CompanyList" value={{p.ParentCompanyID}}>
+                                                {{p.ParentCompany}}</option>
+
+                                        </select>
+                                        <div *ngIf="submitted && f.ParentCompanyID.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.ParentCompanyID?.errors?.required">Enter Parent Company</span>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Mobile No</label>
+                                        <input type="text" formControlName="MobileNo" id="MobileNo"
+                                            class=" form-control form-control-sm"  [ngClass]="{'is-invalid': submitted && f.MobileNo.invalid}"/>
+                                            <div *ngIf="submitted && f.MobileNo.invalid" class="invalid-feedback">
+                                                <span *ngIf="f.MobileNo?.errors?.required">Enter Mobile No</span>
+                                              </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Contact No</label>
+                                        <input type="text" formControlName="ContactNo" id="ContactNo"
+                                        [ngClass]="{'is-invalid': submitted && f.ContactNo.invalid}" class=" form-control form-control-sm" />
+                                        <div *ngIf="submitted && f.ContactNo.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.ContactNo?.errors?.required">Enter Contact No</span>
+                                          </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>GST NO</label>
+                                        <input type="text" formControlName="GSTINNo" id="GSTINNo"
+                                        [ngClass]="{'is-invalid': submitted && f.GSTINNo.invalid}" class=" form-control form-control-sm" />
+                                        <div *ngIf="submitted && f.GSTINNo.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.GSTINNo?.errors?.required">Enter GST NO</span>
+                                          </div>
+                                    </div>
+                                    
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Pan No</label>
+                                        <input type="text" formControlName="PANNo" id="PANNo"
+                                        [ngClass]="{'is-invalid': submitted && f.PANNo.invalid}" class=" form-control form-control-sm" />
+                                        <div *ngIf="submitted && f.PANNo.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.PANNo?.errors?.required">Enter Pan No</span>
+                                          </div>
+                                    </div>
+                                   
+                                </div>
+
+                            </div>
+                            <div class="row pt-2 ">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Address 1</label>
+                                        <input type="text" formControlName="Address1" id="Address1"
+                                        [ngClass]="{'is-invalid': submitted && f.Address1.invalid}" class=" form-control form-control-sm" style="width: 750px; ;" />
+                                        <div *ngIf="submitted && f.Address1.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.Address1?.errors?.required">Enter Address 1</span>
+                                          </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <div class="row pt-2 ">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Address 2</label>
+                                        <input type="text" formControlName="Address2" id="Address2"
+                                        [ngClass]="{'is-invalid': submitted && f.Address2.invalid}" class=" form-control form-control-sm" style="width: 750px; ;" />
+                                        <div *ngIf="submitted && f.Address2.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.Address2?.errors?.required">Enter Address 2</span>
+                                          </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div class="row pt-2 ">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>Address 3</label>
+                                        <input type="text" formControlName="Address3" id="Address3"
+                                        [ngClass]="{'is-invalid': submitted && f.Address3.invalid}" class=" form-control form-control-sm" style="width: 750px; ;" />
+                                        <div *ngIf="submitted && f.Address3.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.Address3?.errors?.required">Enter Address 3</span>
+                                          </div>
+                                    </div>
+                                   
+                                </div>
+                            </div>
+                            <div class="row pt-2 ">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>City</label>
+                                        <select class="form-control form-control-sm" formControlName="CityID" id="City" [ngClass]="{'is-invalid': submitted && f.CityID.invalid}">
+                                            <option value="null" disabled>Select </option>
+                                            <option *ngFor="let p of CitiesList" value={{p.CityID}}>{{p.City}}</option>
+
+                                        </select>
+                                        <div *ngIf="submitted && f.CityID.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.CityID?.errors?.required">Enter City Name</span>
+                                          </div>
+                                    </div>
+                                   
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label>PinCode</label>
+                                        <input type="text" formControlName="PinCode" id="PinCode"
+                                        [ngClass]="{'is-invalid': submitted && f.PinCode.invalid}" class=" form-control form-control-sm" />
+                                        <div *ngIf="submitted && f.PinCode.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.PinCode?.errors?.required">Enter PinCode</span>
+                                          </div>
+                                       
+                                    </div>
+                                   
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-sm" [disabled]="submitted"
+                                            style="width: 85px !important; margin-top: 20px !important;margin-left: 20px !important;">
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+
+
+                            </div>
+
+                        </div>
+                    </form>
+                </mat-tab>
+                <mat-tab label="List">
+
+                    <mtx-grid [data]="CompanyList" [columns]="CompanylistColumn" [loading]="false"
+                        [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="false"
+                        [hideRowSelectionCheckbox]="false" [rowHover]="true" [rowStriped]="false" [showToolbar]="true"
+                        [toolbarTitle]="'Item List'" [columnHideable]="false" [columnMovable]="true"
+                        [expandable]="false" [pageOnFront]="true" [showPaginator]="true"
+                        [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0" [pageSize]="10"
+                        [toolbarTemplate]="toolbarTpl">
+                        <!-- (sortChange)="changeSort($event)"
+          (selectionChange)="changeSelect($event)"
+          [expansionTemplate]="expansionTpl"-->
+                    </mtx-grid>
+                    <ng-template #toolbarTpl>
+                        <input placeholder="Search">
+                    </ng-template>
+                    <!-- <ng-template #expansionTpl let-row>
+                      {{row.name}}
+                    </ng-template> -->
+                </mat-tab>
+
+            </mat-tab-group>
+        </mat-card>
+    </div>
+
+</div>
