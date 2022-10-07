@@ -104,6 +104,11 @@
           "route": "designationmaster",
           "name": "Designation Master",
           "type": "link"
+        },
+        {
+          "route": "itemtypemaster",
+          "name": "Item Type Master",
+          "type": "link"
         }
 
    
@@ -166,6 +171,11 @@
         {
           "route": "Company",
           "name": "Company",
+          "type": "link"
+        },
+        {
+          "route": "servicemaster",
+          "name": "Service Master",
           "type": "link"
         }
        

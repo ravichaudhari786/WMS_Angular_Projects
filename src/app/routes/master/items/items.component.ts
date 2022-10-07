@@ -99,8 +99,7 @@ get f() { return this.form.controls; }
     var temp: any = null;
     if (record.TemperatureCategory) {
       temp = this.TempCatList.filter((x: any) => x.TemperatureCategory === record.TemperatureCategory);
-
-    }
+}
 
     const item: any = {
       ItemID: record.ItemID,
