@@ -144,11 +144,15 @@
           "route": "outward",
           "name": "Outward",
           "type": "link"
-        }
-        ,
+        },
         {
           "route": "shifting",
           "name": "Shifting",
+          "type": "link"
+        },
+        {
+          "route": "transfer",
+          "name": "Transfer",
           "type": "link"
         }
       ],

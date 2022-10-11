@@ -119,7 +119,6 @@ export class ShiftingComponent implements OnInit {
       data=>{this.ShiftingList=data; },
       error=>{ console.error(error);}
     );
-
 }
  get f() { return this.form.controls; }
 
@@ -341,9 +340,6 @@ export class ShiftingComponent implements OnInit {
           });
         }        
     });
-    
-    //console.log("SHifting Detail main",this.SDetailSaveList);
-    //console.log("SHifting Detail save",this.SChargeSaveList);
     const SaveShiftingData={
       "ShiftingID":this.ShiftingID,
       "WarehouseID":this.currentUser.warehouseId,
@@ -357,12 +353,9 @@ export class ShiftingComponent implements OnInit {
     //console.log("SHifting Save",SaveShiftingData);
     this.api.post('/Shifting/Shifting_insert',SaveShiftingData).subscribe(
       data=>{data;
-        this.dialog.alert(data.Table[0].Column1)
-    },
-      error=>{ console.error(error);}
-    );
-    // console.log("SHifting Charges save",this.SChargeSaveList);
-  }  
+        this.dialog.alert(data.Table[0].Column1);
+      },error=>{ console.error(error);}
+    );}  
  }
 
  tabchange(event:any){
@@ -412,35 +405,84 @@ onShiftDetailRowDblclick(detailData:any,events:any){
 }
 
 
-onDeleteTestListRow(d:any)
-{
-  console.log(d);
+// onDeleteTestListRow(d:any)
+// {
+//   //console.log(d);
+//   const SearchData={
+//     remarks:'', 
+//     shiftingDID:0, 
+//     shiftingID:d.ShiftingID, 
+//     warehouseID:this.currentUser.warehouseId, 
+//     customerID:this.form.value.cbCustomerID, 
+//     createdBy:0, 
+//     shiftingDate:0, 
+//     loadingBy:0,          
+//     LotNo:this.form.value.txtLotNo,
+//     StatusID:d.StatusID,  
+//   };
+//   this.api.post('/Shifting/ShiftingStatus_validation',SearchData).subscribe(
+//     data=>{data;
+//       //console.log(data);
+//           if(Number(data[0])>0)
+//           {
+//             if(Number(d.StatusID)==62){
+//               this.dialog.alert("Sorry,this transaction has already cancelled ....!!!");
+//             }else 
+//             if(Number(d.StatusID)==61){
+//               const cancelDataParam={
+//                 warehouseID:this.currentUser.warehouseId,
+//                 StorageAreaID:0,
+//                 shiftingDID:d.ShiftingDID,
+//                 shiftingID:d.ShiftingID,
+//                 LTD_StorageAreaS:null,
+//                 BlockID:0,
+//                 remarks:"text",
+//                 createdBy:this.currentUser.userId,
+//               };
+//               this.api.post('/Shifting/Shifting_Cancelled',cancelDataParam).subscribe(
+//                 data=>{data;
+//                   this.dialog.alert(data);
+//                   this.BindShiftingList();
+//               },
+//                 error=>{ console.error(error);}
+//               );
+//             }
+//           }
+//           else
+//           {
+//             this.dialog.alert("Some data is updated. So Please reperform your delete operation...!!!");
+//           }
+//         },error=>{ console.error(error);});
+// }
+OnCancelledShifting(d:any) {
+  
   const SearchData={
     remarks:'', 
     shiftingDID:0, 
-    shiftingID:d.ShiftingID, 
+    shiftingID:d.rowData.ShiftingID, 
     warehouseID:this.currentUser.warehouseId, 
     customerID:this.form.value.cbCustomerID, 
     createdBy:0, 
     shiftingDate:0, 
     loadingBy:0,          
     LotNo:this.form.value.txtLotNo,
-    StatusID:d.StatusID,  
+    StatusID:d.rowData.StatusID,  
   };
+  console.log(SearchData);
   this.api.post('/Shifting/ShiftingStatus_validation',SearchData).subscribe(
     data=>{data;
-      console.log(data);
+    console.log(data);
           if(Number(data[0])>0)
           {
-            if(Number(d.StatusID)==62){
+            if(Number(d.rowData.StatusID)==62){
               this.dialog.alert("Sorry,this transaction has already cancelled ....!!!");
             }else 
-            if(Number(d.StatusID)==61){
+            if(Number(d.rowData.StatusID)==61){
               const cancelDataParam={
                 warehouseID:this.currentUser.warehouseId,
                 StorageAreaID:0,
-                shiftingDID:d.ShiftingDID,
-                shiftingID:d.ShiftingID,
+                shiftingDID:d.rowData.ShiftingDID,
+                shiftingID:d.rowData.ShiftingID,
                 LTD_StorageAreaS:null,
                 BlockID:0,
                 remarks:"text",
@@ -448,7 +490,7 @@ onDeleteTestListRow(d:any)
               };
               this.api.post('/Shifting/Shifting_Cancelled',cancelDataParam).subscribe(
                 data=>{data;
-                  alert(data);
+                  this.dialog.alert(data);
                   this.BindShiftingList();
               },
                 error=>{ console.error(error);}
@@ -459,10 +501,7 @@ onDeleteTestListRow(d:any)
           {
             this.dialog.alert("Some data is updated. So Please reperform your delete operation...!!!");
           }
-        },error=>{ console.error(error);});
-}
-onBtnClick1(e:any) {
-  console.log(e);
+         },error=>{ console.error(error);});
 }
 //----------------------------Grid Column
 BalanceStockColumn: MtxGridColumn[] = [
@@ -510,53 +549,52 @@ ShiftingDetailColumns: MtxGridColumn[] = [
   {    header:"ToLocationID",    field:"ToLocationID",hide:false,  },
   {    header:"LabourContractorID",    field:"LabourContractorID",  },
 ];
-ShiftingListColumn: MtxGridColumn[] = [
-  {
-    header: "Action",
-    field: 'Action',
-    minWidth: 105,
-    pinned:'left',    
-    type: 'button',
-    buttons: [{
-        color: 'warn',
-        type: 'icon',
-        icon: 'delete',
-        tooltip: 'delete',
-        pop: true,
-        popTitle:'Do you want to delete inward ....!!', //this.translate.stream('table_kitchen_sink.confirm_delete'),
-        popCloseText:'No', //this.translate.stream('table_kitchen_sink.close'),
-        popOkText:'Yes', 
-        popDescription:'',
-        popCloseColor:'warn',
-        popOkColor:'primary',
-        click: record => this.onDeleteTestListRow(record),
-      }
-    ]
-  },
-  {    header:'ShiftingDID',    field:'ShiftingDID', minWidth: 100, hide:false, sortable:true,  },
-  {    header:'ShiftingID',    field:'ShiftingID',    hide:true,  },
-  {    header:'ShiftingDate',    field:'ShiftingDate',    minWidth: 100,type:'date',  typeParameter:{ format:'dd-MM-yyyy'} },
-  {    header:'CustomerName',    field:'CustomerName',    minWidth: 200,  },
-  {    header:'LotNo',    field:'LotNo',    hide:true,  },
-  {    header:'ProductName',    field:'ProductName',    hide:true  },
-  {    header:'FromLocation',    field:'FromLocation',    minWidth: 100, },
-  {    header:'ToLocation',    field:'ToLocation',    minWidth: 100,  },
-  {    header:'Quantity',    field:'Quantity',    minWidth: 120,  },
-  {    header:'LabourContractorName',    field:'LabourContractorName',    hide:true,    minWidth: 120,  },
-  {    header:'LoadingBy',    field:'LoadingBy',    minWidth: 200,  },
-  {    header:'CreatedBy',    field:'CreatedBy',    minWidth: 120,  },
-  {    header:'CreatedDate',    field:'CreatedDate',    minWidth: 200,  },
-  {    header:'WarehouseID',    field:'WarehouseID',    minWidth: 200,  },
-  {    header:'StatusName',    field:'StatusName',    minWidth: 200,  },
-  {    header:'StatusID',    field:'StatusID',    minWidth: 200,  },
-];
+// ShiftingListColumn: MtxGridColumn[] = [
+//   {
+//     header: "Action",
+//     field: 'Action',
+//     minWidth: 105,
+//     pinned:'left',    
+//     type: 'button',
+//     buttons: [{
+//         color: 'warn',
+//         type: 'icon',
+//         icon: 'delete',
+//         tooltip: 'delete',
+//         pop: true,
+//         popTitle:'Do you want to delete inward ....!!', //this.translate.stream('table_kitchen_sink.confirm_delete'),
+//         popCloseText:'No', //this.translate.stream('table_kitchen_sink.close'),
+//         popOkText:'Yes', 
+//         popDescription:'',
+//         popCloseColor:'warn',
+//         popOkColor:'primary',
+//         click: record => this.onDeleteTestListRow(record),
+//       }
+//     ]
+//   },
+//   {    header:'ShiftingDID',    field:'ShiftingDID', minWidth: 100, hide:false, sortable:true,  },
+//   {    header:'ShiftingID',    field:'ShiftingID',    hide:true,  },
+//   {    header:'ShiftingDate',    field:'ShiftingDate',    minWidth: 100,type:'date',  typeParameter:{ format:'dd-MM-yyyy'} },
+//   {    header:'CustomerName',    field:'CustomerName',    minWidth: 200,  },
+//   {    header:'LotNo',    field:'LotNo',    hide:true,  },
+//   {    header:'ProductName',    field:'ProductName',    hide:true  },
+//   {    header:'FromLocation',    field:'FromLocation',    minWidth: 100, },
+//   {    header:'ToLocation',    field:'ToLocation',    minWidth: 100,  },
+//   {    header:'Quantity',    field:'Quantity',    minWidth: 120,  },
+//   {    header:'LabourContractorName',    field:'LabourContractorName',    hide:true,    minWidth: 120,  },
+//   {    header:'LoadingBy',    field:'LoadingBy',    minWidth: 200,  },
+//   {    header:'CreatedBy',    field:'CreatedBy',    minWidth: 120,  },
+//   {    header:'CreatedDate',    field:'CreatedDate',    minWidth: 200,  },
+//   {    header:'WarehouseID',    field:'WarehouseID',    minWidth: 200,  },
+//   {    header:'StatusName',    field:'StatusName',    minWidth: 200,  },
+//   {    header:'StatusID',    field:'StatusID',    minWidth: 200,  },
+// ];
 
-TransperdetailcolumnDefs: ColDef[] = [
-  {
-    headerName: 'Action', minWidth: 150,floatingFilter: false,
+ShiftingListColumnDefs: ColDef[] = [
+  {  headerName: 'Action', width:100 ,floatingFilter: false,
     cellRenderer: 'buttonRenderer',
     cellRendererParams: {
-      onClick: this.onBtnClick1.bind(this),
+      onClick: this.OnCancelledShifting.bind(this),
       label: 'Click 1'
     }
   },
@@ -577,6 +615,7 @@ TransperdetailcolumnDefs: ColDef[] = [
   {    headerName:'StatusName',    field:'StatusName',    minWidth: 200, filter: 'agTextColumnFilter',floatingFilter: true, },
   {    headerName:'StatusID',    field:'StatusID',    minWidth: 200, filter: 'agTextColumnFilter',floatingFilter: true, },
 ];
+
 //---end
 }
 //----------------Define Class

@@ -9,6 +9,7 @@ import { DispatchComponent } from './dispatch/dispatch.component';
 import { OutwardComponent } from './outward/outward.component';
 import { ShiftingComponent } from './shifting/shifting.component';
 import { ShiftingeditButtonComponent } from './shifting/shiftingedit-button/shiftingedit-button.component';
+import { TransferComponent } from './transfer/transfer.component';
 
 // import {
 //   DxDataGridModule,
@@ -22,7 +23,8 @@ import { ShiftingeditButtonComponent } from './shifting/shiftingedit-button/shif
     DispatchComponent,
     OutwardComponent,
     ShiftingComponent,
-    ShiftingeditButtonComponent
+    ShiftingeditButtonComponent,
+    TransferComponent
   ],
   imports: [
     SharedModule,
