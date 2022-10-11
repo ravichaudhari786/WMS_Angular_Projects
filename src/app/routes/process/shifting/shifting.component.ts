@@ -7,6 +7,8 @@ import { MtxDialog, MtxGridColumn } from '@ng-matero/extensions';
 import { DatePipe } from '@angular/common';
 import { User } from '@core/authentication/interface';
 import { ColDef,GridApi } from 'ag-grid-community';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { ShiftingeditButtonComponent} from './shiftingedit-button/shiftingedit-button.component'
 @Component({
   selector: 'app-shifting',
   templateUrl: './shifting.component.html',
@@ -16,6 +18,7 @@ export class ShiftingComponent implements OnInit {
   form!: FormGroup;
   //addShiftingdetail!: FormGroup;
   private currentUser:User;
+  frameworkComponents: any;
   submitted = false;
   HideSaveButton=true; customerList:any;
   dataSource = new MatTableDataSource<any>();
@@ -32,6 +35,8 @@ export class ShiftingComponent implements OnInit {
   ShiftingServiceList:any;
   ServiceList:Array<ShiftingCharege>=[];
   ShiftingDetailList:Array<ShiftingDetailsList>=[];
+  SDetailSaveList:Array<ShiftingDetailSave>=[];
+  SChargeSaveList:Array<ShiftingCharegeSave>=[];
   DetailList: Array<ShiftingDetailsList>=[];
   ShiftDetail: any = {};
   ShiftingList:any;
@@ -40,17 +45,26 @@ export class ShiftingComponent implements OnInit {
   WareHousesID:number=0;
   FromLocationID:number=0;
   shiftingsDID:number=0;
-  constructor(private fb: FormBuilder,private fbAdd: FormBuilder,private api:ApiService,public dialog: MtxDialog,) {
-    const dateSendingToServer = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd hh:mm:ss')
+  Flag:boolean=false;
+  ShiftingID:number=0;
+  constructor(private fb: FormBuilder,private fbAdd: FormBuilder,private api:ApiService,public dialog: MtxDialog,public dialogBox: MatDialog) {
+    const dateSendingToServer = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd hh:mm:ss');
     this.todayDate=dateSendingToServer;
     this.currentUser=this.api.getCurrentUser();
+    this.frameworkComponents = {
+      buttonRenderer: ShiftingeditButtonComponent,
     }
+    }
+
+//======================
+
+//===================
 
   ngOnInit(): void {
     this.form = this.fb.group({
       cbCustomerID : ['', Validators.required],
       txtLotNo : [''],
-      inward_date : ['', Validators.required],
+      shift_date : ['', Validators.required],
       cbloadingByID: [null,Validators.required],
       txtProductName: [''],
       txtShiftDetailLotNo: [''],
@@ -91,18 +105,7 @@ export class ShiftingComponent implements OnInit {
     data=>{this.StorageAreas=data},
     error=>{ console.error(error);}
   );
-  // this.api.get('/CountInPacket').subscribe(
-  //   data=>{this.packateCountList=data},
-  //   error=>{ console.error(error);}
-  // );
-  // this.api.get('/brand').subscribe(
-  //   data=>{this.brandList=data},
-  //   error=>{ console.error(error);}
-  // );
-  // this.api.get('/ProductList').subscribe(
-  //   data=>{this.productList=data},
-  //   error=>{ console.error(error);}
-  // );
+  
  }
  async BindShiftingList(){
   const DataParam={
@@ -113,7 +116,7 @@ export class ShiftingComponent implements OnInit {
     BlockID:0,
   };
     this.api.post('/Shifting/Shifting_List',DataParam).subscribe(
-      data=>{this.ShiftingList=data; console.log(data);},
+      data=>{this.ShiftingList=data; },
       error=>{ console.error(error);}
     );
 
@@ -236,21 +239,15 @@ export class ShiftingComponent implements OnInit {
       const ToLocationName=this.StorageAreas.filter((x:any)=>x.StorageAreaID==this.form.value.cbToLocation);
       const FromLocationName=this.StorageAreas.filter((x:any)=>x.StorageAreaID==this.FromLocationID);
       const LabourContractorName=this.labourContractorList.filter((x:any)=>x.LabourContractorID==this.form.value.cblabourcontractor_id);
-      this.shiftingsDID=this.shiftingsDID+1;
-      // this.InwardDID=0;
-      // this.InwardLocationID=0;
-      // this.WareHousesID=0;
-      // this.FromLocationID=0;
-  
-      // this.form.controls['txtProductName'].reset();
-      // this.form.controls['txtShiftDetailLotNo'].reset();
-      // this.form.controls['txtBrandName'].reset();
-      // this.form.controls['txtpacketcount'].reset();
-      // this.form.controls['txtBalquantity'].reset();
-      // this.form.controls['txtShiftingQty'].reset();
-      // this.form.controls['txtLocation'].reset();
-      // this.form.controls['cbToLocation'].reset();
-      // //this.form.controls['cblabourcontractor_id'].reset();
+      if(this.Flag==false){
+        this.shiftingsDID=this.shiftingsDID+1;  
+      }
+      
+      const SDetailList=this.ShiftingDetailList.filter((x:any)=>x.ShiftingDID!=this.shiftingsDID);
+      this.ShiftingDetailList=SDetailList;
+      const SChargeList=this.ServiceList.filter((x:any)=>x.ShiftingDID!=this.shiftingsDID);
+      this.ServiceList=SChargeList;
+
       this.ShiftDetail=[];
       this.ShiftDetail={
         ShiftingDID:this.shiftingsDID,
@@ -266,7 +263,7 @@ export class ShiftingComponent implements OnInit {
         ToLocation:ToLocationName[0].Storage_Area_Name,
         LabourContractor:LabourContractorName[0].ContractorName,
         FromLocationID:this.FromLocationID,
-        ToLocationID:this.form.value.cbToLocation,      
+        ToLocationID:Number(this.form.value.cbToLocation),      
         LabourContractorID:Number(this.form.value.cblabourcontractor_id),
       };  
       this.DetailList=this.ShiftingDetailList;
@@ -283,10 +280,10 @@ export class ShiftingComponent implements OnInit {
                 "Rate":i.Rate,
                 "Rate_L":i.Rate_L
               });
-              }        
-            });
-        console.log("SHifting Detail",this.ShiftingDetailList);
-        console.log("SHifting Charges",this.ServiceList);
+            }        
+          });
+        //console.log("SHifting Detail",this.ShiftingDetailList);
+        //console.log("SHifting Charges",this.ServiceList);
         this.InwardDID=0;
         this.InwardLocationID=0;
         this.WareHousesID=0;
@@ -300,6 +297,9 @@ export class ShiftingComponent implements OnInit {
         this.form.controls['txtShiftingQty'].reset();
         this.form.controls['txtLocation'].reset();
         this.form.controls['cbToLocation'].reset();
+        this.form.controls['txtLotNo'].reset();
+        this.BalanceStockList=[];
+        this.ShiftingServiceList=[];
     }
   };
 
@@ -309,10 +309,59 @@ export class ShiftingComponent implements OnInit {
   if(this.form.invalid){
     alert("invalid");
     return;
-  }else {
+  }else if(this.ShiftingDetailList.length==0)
+  {
+    alert("Enter Shifting Detail ...");
+  }else{
     this.HideSaveButton=false;
     alert("Save");
-
+    this.ShiftingDetailList.forEach((i:any)=>{ 
+      if(i.ShiftingDID>0){
+        this.SDetailSaveList.push(
+          {
+            "ShiftingDID":i.ShiftingDID,
+            "InwardLocationID":i.InwardLocationID,
+            "LotNo":i.LotNo,
+            "InwardDID":i.InwardDID,
+            "FromLocationID":i.FromLocationID,
+            "ToLocationID":i.ToLocationID,
+            "Quantity":i.ShiftingQuantity,
+            "LabourContractorID":i.LabourContractorID,
+          });
+        }        
+    });
+    this.ServiceList.forEach((i:any)=>{ 
+      if(i.Rate>0 || i.Rate_L>0){
+        this.SChargeSaveList.push(
+          {
+            "ShiftingDID":i.ShiftingDID,
+            "ServiceID":i.ServiceID,
+            "Rate":i.Rate,
+            "Rate_L":i.Rate_L,
+          });
+        }        
+    });
+    
+    //console.log("SHifting Detail main",this.SDetailSaveList);
+    //console.log("SHifting Detail save",this.SChargeSaveList);
+    const SaveShiftingData={
+      "ShiftingID":this.ShiftingID,
+      "WarehouseID":this.currentUser.warehouseId,
+      "CustomerID":this.form.value.cbCustomerID,
+      "CreatedBy":this.currentUser.userId,
+      "TD_ShiftingDetails":this.SDetailSaveList,
+      "TD_ShiftingCharges":this.SChargeSaveList,
+      "ShiftingDate":this.form.value.shift_date,
+      "LoadingBy":this.form.value.cbloadingByID,
+    };
+    //console.log("SHifting Save",SaveShiftingData);
+    this.api.post('/Shifting/Shifting_insert',SaveShiftingData).subscribe(
+      data=>{data;
+        this.dialog.alert(data.Table[0].Column1)
+    },
+      error=>{ console.error(error);}
+    );
+    // console.log("SHifting Charges save",this.SChargeSaveList);
   }  
  }
 
@@ -323,8 +372,98 @@ onReset(){
   this.submitted=false;
   this.HideSaveButton=true;
 }
-onEditTestListRow(e:any){}
-onDeleteTestListRow(d:any){}
+
+onShiftDetailRowDblclick(detailData:any,events:any){
+  //console.log("detailData ",detailData.cellSelection[0].rowData);
+    this.Flag=true;
+    this.InwardDID=0;
+    this.InwardLocationID=0;
+    this.WareHousesID=0;
+    this.FromLocationID=0;
+
+    this.form.controls['txtProductName'].reset();
+    this.form.controls['txtShiftDetailLotNo'].reset();
+    this.form.controls['txtBrandName'].reset();
+    this.form.controls['txtpacketcount'].reset();
+    this.form.controls['txtBalquantity'].reset();
+    this.form.controls['txtShiftingQty'].reset();
+    this.form.controls['txtLocation'].reset();
+    this.form.controls['cbToLocation'].reset();
+    this.form.controls['cblabourcontractor_id'].reset();
+    this.form.patchValue({
+      txtProductName:detailData.cellSelection[0].rowData["ProductName"],
+      txtShiftDetailLotNo:detailData.cellSelection[0].rowData["LotNo"],
+      txtBrandName:detailData.cellSelection[0].rowData["BrandName"],
+      txtpacketcount:detailData.cellSelection[0].rowData["ItemsInPacket"],
+      txtBalquantity:detailData.cellSelection[0].rowData["BalanceQuantity"],
+      txtShiftingQty:detailData.cellSelection[0].rowData["ShiftingQuantity"],
+      txtLocation:detailData.cellSelection[0].rowData["FromLocation"],
+      cbToLocation:detailData.cellSelection[0].rowData["ToLocationID"],
+      cblabourcontractor_id:detailData.cellSelection[0].rowData["LabourContractorID"],
+  });  
+    this.InwardDID=detailData.cellSelection[0].rowData["InwardDID"];
+    this.InwardLocationID=detailData.cellSelection[0].rowData["InwardLocationID"];
+    this.WareHousesID=this.currentUser.warehouseId;
+    this.FromLocationID=detailData.cellSelection[0].rowData["FromLocationID"];
+    this.shiftingsDID=detailData.cellSelection[0].rowData["ShiftingDID"];
+    
+    const SCharges=this.ServiceList.filter((x:any)=>x.ShiftingDID==this.shiftingsDID);
+    this.ShiftingServiceList=SCharges;
+}
+
+
+onDeleteTestListRow(d:any)
+{
+  console.log(d);
+  const SearchData={
+    remarks:'', 
+    shiftingDID:0, 
+    shiftingID:d.ShiftingID, 
+    warehouseID:this.currentUser.warehouseId, 
+    customerID:this.form.value.cbCustomerID, 
+    createdBy:0, 
+    shiftingDate:0, 
+    loadingBy:0,          
+    LotNo:this.form.value.txtLotNo,
+    StatusID:d.StatusID,  
+  };
+  this.api.post('/Shifting/ShiftingStatus_validation',SearchData).subscribe(
+    data=>{data;
+      console.log(data);
+          if(Number(data[0])>0)
+          {
+            if(Number(d.StatusID)==62){
+              this.dialog.alert("Sorry,this transaction has already cancelled ....!!!");
+            }else 
+            if(Number(d.StatusID)==61){
+              const cancelDataParam={
+                warehouseID:this.currentUser.warehouseId,
+                StorageAreaID:0,
+                shiftingDID:d.ShiftingDID,
+                shiftingID:d.ShiftingID,
+                LTD_StorageAreaS:null,
+                BlockID:0,
+                remarks:"text",
+                createdBy:this.currentUser.userId,
+              };
+              this.api.post('/Shifting/Shifting_Cancelled',cancelDataParam).subscribe(
+                data=>{data;
+                  alert(data);
+                  this.BindShiftingList();
+              },
+                error=>{ console.error(error);}
+              );
+            }
+          }
+          else
+          {
+            this.dialog.alert("Some data is updated. So Please reperform your delete operation...!!!");
+          }
+        },error=>{ console.error(error);});
+}
+onBtnClick1(e:any) {
+  console.log(e);
+}
 //----------------------------Grid Column
 BalanceStockColumn: MtxGridColumn[] = [
   {    header:"InwardDID",    field:"InwardDID",    hide:false,  },
@@ -345,8 +484,13 @@ BalanceStockColumn: MtxGridColumn[] = [
 serviceColumns:ColDef[]  = [
   { field: 'ShiftingID',  hide:true,}, { field: 'ServiceID', hide:true },
   { field: 'ServiceName', hide:false,resizable: true,width:120, },
-  { field: 'Rate' , hide:false,width:70,cellEditorPopup: true, editable: true, valueParser: "Number(newValue)"},
-  { field: 'Rate_L', hide:false ,width:80,cellEditorPopup: true, editable: true, valueParser: "Number(newValue)"}
+  { field: 'Rate' , hide:false,width:70,cellEditorPopup: true, editable: true, valueParser: "Number(newValue)",
+  cellStyle: params => {  if (params.value >0 ) {return {color: 'white', backgroundColor: '#FF0000'};
+    }else{ return {color: 'black', backgroundColor: '#98FB98'};  }}},
+  { field: 'Rate_L', hide:false ,width:80,cellEditorPopup: true, editable: true, valueParser: "Number(newValue)",
+  cellStyle: params => {
+    if (params.value >0 ) { return {color: 'white', backgroundColor: '#FF0000'};
+    }else{    return {color: 'black', backgroundColor: '#98FB98'};  }}}
 ];
 
 ShiftingDetailColumns: MtxGridColumn[] = [
@@ -373,14 +517,7 @@ ShiftingListColumn: MtxGridColumn[] = [
     minWidth: 105,
     pinned:'left',    
     type: 'button',
-    buttons: [
-      {
-        type: 'icon',
-        icon: 'edit',
-        tooltip: 'Edit',
-        click: record => this.onEditTestListRow(record),
-      }
-      ,{
+    buttons: [{
         color: 'warn',
         type: 'icon',
         icon: 'delete',
@@ -396,7 +533,7 @@ ShiftingListColumn: MtxGridColumn[] = [
       }
     ]
   },
-  {    header:'ShiftingDID',    field:'ShiftingDID',    hide:true,  },
+  {    header:'ShiftingDID',    field:'ShiftingDID', minWidth: 100, hide:false, sortable:true,  },
   {    header:'ShiftingID',    field:'ShiftingID',    hide:true,  },
   {    header:'ShiftingDate',    field:'ShiftingDate',    minWidth: 100,type:'date',  typeParameter:{ format:'dd-MM-yyyy'} },
   {    header:'CustomerName',    field:'CustomerName',    minWidth: 200,  },
@@ -413,6 +550,33 @@ ShiftingListColumn: MtxGridColumn[] = [
   {    header:'StatusName',    field:'StatusName',    minWidth: 200,  },
   {    header:'StatusID',    field:'StatusID',    minWidth: 200,  },
 ];
+
+TransperdetailcolumnDefs: ColDef[] = [
+  {
+    headerName: 'Action', minWidth: 150,floatingFilter: false,
+    cellRenderer: 'buttonRenderer',
+    cellRendererParams: {
+      onClick: this.onBtnClick1.bind(this),
+      label: 'Click 1'
+    }
+  },
+  {    headerName:'ShiftingDID',    field:'ShiftingDID',    hide:true, filter: 'agTextColumnFilter',floatingFilter: true, },
+  {    headerName:'ShiftingID',    field:'ShiftingID',    hide:true, filter: 'agTextColumnFilter',floatingFilter: true, },
+  // {    headerName:'ShiftingDate',    field:'ShiftingDate',    minWidth: 100,type:'date',filter: 'agTextColumnFilter',floatingFilter: true,},
+  {    headerName:'CustomerName',    field:'CustomerName',    minWidth: 200,  filter: 'agTextColumnFilter',floatingFilter: true,},
+  {    headerName:'LotNo',    field:'LotNo',    hide:true, filter: 'agTextColumnFilter',floatingFilter: true, },
+  {    headerName:'ProductName',    field:'ProductName',    hide:true,  filter: 'agTextColumnFilter',floatingFilter: true,},
+  {    headerName:'FromLocation',    field:'FromLocation',    minWidth: 100, filter: 'agTextColumnFilter',floatingFilter: true,},
+  {    headerName:'ToLocation',    field:'ToLocation',    minWidth: 100, filter: 'agTextColumnFilter',floatingFilter: true, },
+  {    headerName:'Quantity',    field:'Quantity',    minWidth: 120, filter: 'agTextColumnFilter',floatingFilter: true, },
+  {    headerName:'LabourContractorName',    field:'LabourContractorName',    hide:true,    minWidth: 120, filter: 'agTextColumnFilter',floatingFilter: true, },
+  {    headerName:'LoadingBy',    field:'LoadingBy',    minWidth: 200, filter: 'agTextColumnFilter',floatingFilter: true, },
+  {    headerName:'CreatedBy',    field:'CreatedBy',    minWidth: 120,  filter: 'agTextColumnFilter',floatingFilter: true,},
+  {    headerName:'CreatedDate',    field:'CreatedDate',    minWidth: 200, filter: 'agTextColumnFilter',floatingFilter: true, },
+  {    headerName:'WarehouseID',    field:'WarehouseID',    minWidth: 200,filter: 'agTextColumnFilter',floatingFilter: true,  },
+  {    headerName:'StatusName',    field:'StatusName',    minWidth: 200, filter: 'agTextColumnFilter',floatingFilter: true, },
+  {    headerName:'StatusID',    field:'StatusID',    minWidth: 200, filter: 'agTextColumnFilter',floatingFilter: true, },
+];
 //---end
 }
 //----------------Define Class
@@ -422,22 +586,15 @@ export class ShiftingCharege{
   ServiceName:string="";
   Rate:number=0;
   Rate_L:number=0;
-}
+};
+export class ShiftingCharegeSave{
+  ShiftingDID:number=0;
+  ServiceID:number=0;
+  Rate:number=0;
+  Rate_L:number=0;
+};
 export class ShiftingDetailsList{
-  // ShiftingDID:number=0;
-  // InwardLocationID:number=0;
-  // InwardDID:number=0;
-  // ProductName:string="";
-  // LotNo:string="";
-  // BrandName:string="";
-  // ItemInPackets:string="";
-  // BalanceQuantity:number=0;
-  // ShiftingQuantity:number=0;
-  // FromLocation:string="";
-  // ToLocation:string="";
-  // LabourContractor:number=0;
-  // FromLocationID:number=0;
-  // ToLocationID:number=0;
+  
   ShiftingDID:number=0;
   InwardLocationID:number=0;
   InwardDID:number=0;
@@ -453,14 +610,14 @@ export class ShiftingDetailsList{
   FromLocationID:number=0;
   ToLocationID:number=0;
   LabourContractorID:number=0;
-}
+};
 export class ShiftingDetailSave{
   ShiftingDID:number=0;
   InwardLocationID:number=0;
-  InwardDID:number=0;
   LotNo:string="";
-  FromLocation:string="";
-  ToLocation:string="";
+  InwardDID:number=0;  
+  FromLocationID:number=0;
+  ToLocationID:number=0;
   Quantity:number=0;
-  LabourContractor:number=0;
-}
+  LabourContractorID:number=0;
+};

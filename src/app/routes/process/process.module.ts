@@ -8,6 +8,7 @@ import { DeliveryorderComponent } from './deliveryorder/deliveryorder.component'
 import { DispatchComponent } from './dispatch/dispatch.component';
 import { OutwardComponent } from './outward/outward.component';
 import { ShiftingComponent } from './shifting/shifting.component';
+import { ShiftingeditButtonComponent } from './shifting/shiftingedit-button/shiftingedit-button.component';
 
 // import {
 //   DxDataGridModule,
@@ -20,7 +21,8 @@ import { ShiftingComponent } from './shifting/shifting.component';
     DeliveryorderComponent,
     DispatchComponent,
     OutwardComponent,
-    ShiftingComponent
+    ShiftingComponent,
+    ShiftingeditButtonComponent
   ],
   imports: [
     SharedModule,

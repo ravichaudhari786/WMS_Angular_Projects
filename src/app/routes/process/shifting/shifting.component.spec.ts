@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ShiftingComponent } from './shifting.component';
 
 describe('ShiftingComponent', () => {

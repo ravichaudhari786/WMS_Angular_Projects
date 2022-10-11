@@ -43,11 +43,11 @@
                 <div class="col-sm-4">
                   <div class="form-group">
                     <label for="company">Shifting Date</label>
-                    <input type="datetime-local" formControlName="inward_date" id="inward_date"
+                    <input type="datetime-local" formControlName="shift_date" id="shift_date"
                       class="form-control form-control-sm" placeholder="yyyy-MM-dd" 
-                      [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'"  name="inward_date" />  
-                    <div *ngIf="submitted && f.inward_date.invalid" class="invalid-feedback">
-                      <div *ngIf="f.inward_date?.errors?.required">Enter inward date</div>
+                      [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'"  name="shift_date" />  
+                    <div *ngIf="submitted && f.shift_date.invalid" class="invalid-feedback">
+                      <div *ngIf="f.shift_date?.errors?.required">Enter inward date</div>
                     </div>
                   </div>
                 </div>
@@ -153,14 +153,14 @@
                           <div class="form-group">
                             <label>Balance Quantity</label>
                             <input type="text" formControlName="txtBalquantity" id="txtBalquantity" autocomplete="off"
-                              class="form-control form-control-sm" placeholder="" required readonly/>                              
+                              class="form-control form-control-sm" placeholder="" readonly/>                              
                           </div>
                         </div>
                         <div class="col-sm-6">
                           <div class="form-group">
                             <label>Shifting Quantity</label>
                             <input type="text" formControlName="txtShiftingQty" id="txtShiftingQty" autocomplete="off" #txtShiftingQty
-                            (keyup)="onKeyfilter(txtShiftingQty.value)" class="form-control form-control-sm" placeholder="" required />                              
+                            (keyup)="onKeyfilter(txtShiftingQty.value)" class="form-control form-control-sm" placeholder=""  />                              
                           </div>
                         </div>
                         <div class="col-sm-6">
@@ -221,7 +221,7 @@
           <div class="col-12">
             <hr>
             <p class="font-weight-bold"> Shifting Detail List </p>
-              <mtx-grid [data]="ShiftingDetailList" #gridlist1
+              <mtx-grid [data]="ShiftingDetailList" #gridShiftDetailList
               [columns]="ShiftingDetailColumns"
               [loading]="false"
               [columnResizable]="true"
@@ -239,7 +239,7 @@
               [showPaginator]="false"
               [pageSizeOptions]="[10,20,50,100,500]"
               [pageIndex]="0"     
-              
+              (dblclick)="onShiftDetailRowDblclick(gridShiftDetailList,$event)"
               >
             </mtx-grid>
   
@@ -290,6 +290,16 @@
           >            
           </mtx-grid>
         </div>
+        </mat-tab>
+        <mat-tab label="Shifting List test" >
+          <ag-grid-angular 
+          style="height: 350px;"
+          class="ag-theme-alpine"
+          [rowData]="ShiftingList"
+          [columnDefs]="TransperdetailcolumnDefs"
+          [frameworkComponents]="frameworkComponents"
+          >
+      </ag-grid-angular>
         </mat-tab>
       </mat-tab-group>
     </mat-card>
