@@ -20,7 +20,7 @@ export class ServiceMasterComponent implements OnInit {
     UserID: any = 0;
     ServiceID: number = 0;
     ServiceTypeList: any;
-  
+    AreaTypeID: number = 0;
     constructor(private fb: FormBuilder, private api: ApiService, public dialog: MtxDialog,) {
       this.UserID = api.getUserID();
   }
@@ -53,7 +53,7 @@ export class ServiceMasterComponent implements OnInit {
         error => { console.error(error); }
       );
   
-      this.api.get('/StorageAreaType/ServieceStorageAreaType').subscribe(
+      this.api.get('/StorageAreaType/StorageAreaType_Select').subscribe(
         data => { this.StorageAreaTypeList = data; },
         error => { console.error(error); }
       );
@@ -84,19 +84,19 @@ export class ServiceMasterComponent implements OnInit {
             ServiceID:this.ServiceID,
             ServiceCode:formData.value.txtServiceCode,
             ServiceName:formData.value.txtServiceName,
-            ServiceTypeID:formData.value.ServiceTypeID,
+            ServiceTypeID:this.form.value.ServiceTypeID==null?0:this.form.value.ServiceTypeID,
             HCNCode:'',
-            BillingCycleID:formData.value.BillingCycleID,
-            StorageAreaTypeID:formData.value.StorageAreaTypeID,
+            BillingCycleID:this.form.value.BillingCycleID==null?0:this.form.value.BillingCycleID,
+            StorageAreaTypeID:this.form.value.StorageAreaTypeID==null?0:this.form.value.StorageAreaTypeID,
             IsActive: formData.value.IsActive,
             TaxID:0
           };
- 
+          console.log("dataitem",dataitem);
           this.api.post('/Services/Services_Insert', dataitem).subscribe(
             data => {
               this.dialog.alert(data[0], '', () => { window.location.reload(); });
-              this.onReset();
               this.BindinfDataToList();
+              
             },
             error => { console.error(error); }
           );
@@ -109,31 +109,38 @@ export class ServiceMasterComponent implements OnInit {
       this.ServiceID =0;
       this.submitted = false;
       this.HideSaveButton = true;
-      this.form.controls['chIsActive'].setValue(true);
+    
   
       this.BindinfDataToList();
   
     }
     editService(record: any) {
-      console.log("record",record);
+      
+      this.AreaTypeID=0;
       const Billingdata=this.BillingCycleNameIList.filter((x:any)=>x.BillingCyclesName==record.BillingCyclesName);
       const Servicedata=this.ServiceTypelist.filter((x:any)=>x.ServiceType==record.ServiceType);
-      const Storagedata=this.StorageAreaTypeList.filter((x:any)=>x.ServiceName==record.ServiceName);
+      const Storagedata=this.StorageAreaTypeList.filter((x:any)=>x.StorageAreaType==record.StorageAreaType);
+ 
         
       this.HideSaveButton = true;
       this.submitted = false;  
       this.ServiceID=record.ServiceID;
-  
+      if(Storagedata.length==0)
+      {
+        this.AreaTypeID=0;
+      }else{
+        this.AreaTypeID=Number(Storagedata[0].StorageAreaTypeID);
+      }
       const item: any = {
       
         txtServiceName:record.ServiceName,
-        txtServiceCode: record.ServiceCode==null?'':record.ServiceCode,      
-        ServiceTypeID:Servicedata[0].ServiceTypeID,
-        StorageAreaTypeID:Storagedata[0].StorageAreaTypeID==null?0:Storagedata[0].StorageAreaTypeID,
-        BillingCycleID:Billingdata[0].BillingCycleID,   
+        txtServiceCode:record.ServiceCode==null?'':record.ServiceCode,      
+        ServiceTypeID:Servicedata[0].ServiceTypeID==null?0:Servicedata[0].ServiceTypeID,
+        StorageAreaTypeID:this.AreaTypeID,
+        BillingCycleID:Billingdata[0].BillingCycleID==null?0:Billingdata[0].BillingCycleID,
         IsActive: record.IsActive,
        };
-
+      
    
       this.form.setValue(item);
     }
