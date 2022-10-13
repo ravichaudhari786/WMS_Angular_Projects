@@ -189,14 +189,14 @@
       }
     },
     {
-      "route": "customer_master",
-      "name": "Customer Master",
+      "route": "customers",
+      "name": "Customers",
       "type": "sub",
       "icon": "build",
       "children": [
         {
-          "route": "customer",
-          "name": "Customer",
+          "route": "customerMaster",
+          "name": "Customer Master",
           "type": "link"
         },
         {

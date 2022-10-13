@@ -1,9 +1,12 @@
-import { Injectable } from '@angular/core';
+import { Injectable,OnInit } from '@angular/core';
 import { HttpRequest } from '@angular/common/http';
 import { InMemoryDbService, RequestInfo, STATUS } from 'angular-in-memory-web-api';
 import { Observable } from 'rxjs';
 import { User } from '@core/authentication/interface';
 import { environment } from '@env/environment';
+import { LocalStorageService } from '@shared';
+import { ApiService } from '@core';
+import { JsonPipe } from '@angular/common';
 
 function urlSafeBase64Encode(text: string) {
   return btoa(text).replace(/[+/=]/g, m => {
@@ -68,16 +71,27 @@ function getUserFromJWTToken(req: HttpRequest<any>) {
 @Injectable({
   providedIn: 'root',
 })
-export class InMemDataService implements InMemoryDbService {
+export class InMemDataService implements OnInit,  InMemoryDbService {
+  constructor(
+    private store:LocalStorageService) {
+    }
+ 
+  ngOnInit() {
+   
+    // const currentUser=JSON.parse(this.store.get("currentUser"));
+  }
   private users: User[] = [
 
   ];
+  
 
   createDb(reqInfo?: RequestInfo): {} | Observable<{}> | Promise<{}> {
+    
     return { users: this.users };
   }
-
+  
   get(reqInfo: RequestInfo) {
+   
     if (is(reqInfo, 'sanctum/csrf-cookie')) {
       return reqInfo.utils.createResponse$(() => {
         const { headers, url } = reqInfo;
@@ -87,10 +101,17 @@ export class InMemDataService implements InMemoryDbService {
     }
 
     if (is(reqInfo, 'me/menu')) {
+      debugger;
       return reqInfo.utils.createResponse$(() => {
         const { headers, url } = reqInfo;
-        const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
-
+        
+        const currentUser=JSON.parse(this.store.get("currentUser"));
+      
+       
+       //const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
+        
+       const menu=  JSON.parse(this.fetch(environment.baseUrl+"/Menu/GetMenu?userid="+ currentUser.userId)).menu
+       
         return { status: STATUS.OK, headers, url, body: { menu } };
       });
     }
@@ -101,7 +122,8 @@ export class InMemDataService implements InMemoryDbService {
         const user = getUserFromJWTToken(reqInfo.req as HttpRequest<any>);
 
         if (!user) {
-          return { status: STATUS.UNAUTHORIZED, headers, url, body: {} };
+           return { status: STATUS.UNAUTHORIZED, headers, url, body: {} };
+          
         }
 
         return { status: STATUS.OK, headers, url, body: user };
@@ -112,6 +134,9 @@ export class InMemDataService implements InMemoryDbService {
   }
 
   post(reqInfo: RequestInfo) {
+   
+    
+
     if (is(reqInfo, 'auth/login')) {
       return this.login(reqInfo);
     }
@@ -128,6 +153,7 @@ export class InMemDataService implements InMemoryDbService {
   }
 
   private login(reqInfo: RequestInfo) {
+  
     return reqInfo.utils.createResponse$(() => {
       const { headers, url } = reqInfo;
       const req = reqInfo.req as HttpRequest<any>;
