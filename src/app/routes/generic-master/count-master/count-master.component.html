@@ -1,0 +1,68 @@
+<breadcrumb></breadcrumb>
+<div fxLayout="row wrap" class="matero-row">
+    <div fxFlex="100" class="matero-col">
+
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form)" label="Count Master">
+            <div class="col-md-12">
+                <div class="row pt-2">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Count</label>
+                            <input type="text" autocomplete="off"
+                                [ngClass]="{'is-invalid': submitted && f.txtCountName.invalid}"
+                                formControlName="txtCountName" id="txtCountName"
+                                class=" form-control form-control-sm" />
+
+                            <div *ngIf="submitted && f.txtCountName.invalid" class="invalid-feedback">
+                                <span *ngIf="f.txtCountName?.errors?.required">Enter Count</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Is Active</label>
+                        <input type="checkbox" style="margin-top: 30px !important; margin-left: 2px !important;"
+                            formControlName="chIsActive" id="chIsActive" class="form-check-input" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="submit" [hidden]="!HideSaveButton" [value]="submitted"
+                            class="btn btn-primary btn-sm" style="width: 85px !important; margin-top: 20px !important;">
+                            Save </button>
+                    </div>
+
+                </div>
+
+
+                <div>
+                    <hr>
+                    <br>
+
+
+
+                    <mtx-grid style="height: 300px" [data]="countList" #gridlist [columns]="CountListcolumns"
+                        [loading]="false" [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="false"
+                        [hideRowSelectionCheckbox]="false" [rowHover]="true" [rowStriped]="false" [showToolbar]="true"
+                        [toolbarTitle]="'Count List'" [columnHideable]="false" [columnMovable]="true"
+                        [expandable]="false" [pageOnFront]="true" [showPaginator]="true"
+                        [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0" [pageSize]="0">
+                    </mtx-grid>
+                    
+<!-- 
+
+                    <ng-template #toolbarTpl>
+                        <input placeholder="Search">
+                    </ng-template> -->
+                </div>
+
+            </div>
+
+
+        </form>
+
+    </div>
+</div>

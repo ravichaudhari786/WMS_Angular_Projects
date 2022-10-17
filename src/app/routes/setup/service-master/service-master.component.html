@@ -1,0 +1,112 @@
+<breadcrumb></breadcrumb>
+
+<div fxLayout="row wrap" class="matero-row">
+
+  <div fxFlex="100" class="matero-col">
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+      <div class="col-md-12">
+        <div class="row pt-2">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label>Service Name</label>
+              <input type="text" autocomplete="off" [ngClass]="{'is-invalid': submitted && f.txtServiceName.invalid}"
+                formControlName="txtServiceName" id="txtServiceName" class=" form-control form-control-sm" />
+              <div *ngIf="submitted && f.txtServiceName.invalid" class="invalid-feedback">
+                <span *ngIf="f.txtServiceName?.errors?.required">Enter Service Name</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="company">Service Code</label>
+              <input type="text" autocomplete="off" [ngClass]="{'is-invalid': submitted && f.txtServiceCode.invalid}"
+                formControlName="txtServiceCode" id="txtServiceCode" class=" form-control form-control-sm" />
+              <div *ngIf="submitted && f.txtServiceCode.invalid" class="invalid-feedback">
+                <div *ngIf="f.txtServiceCode?.errors?.required">Enter Servicecode</div>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label>Service Type</label>
+              <select class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f.ServiceTypeID.invalid}"
+                formControlName="ServiceTypeID" id="ServiceTypeID">
+                <option value="null" disabled>Select </option>
+                <option *ngFor="let i of ServiceTypelist" value={{i.ServiceTypeID}}>{{i.ServiceType}}</option>
+              </select>
+              <div *ngIf="submitted && f.ServiceTypeID.invalid" class="invalid-feedback">
+                <div *ngIf="f.ServiceTypeID.errors?.required">Select Service Type</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label>Storage Area Type</label>
+              <select class="form-control  form-control-sm"
+                [ngClass]="{'is-invalid': submitted && f.StorageAreaTypeID.invalid}"
+                formControlName="StorageAreaTypeID" id="StorageAreaTypeID">
+                <option value="null" disabled>Select </option>
+                <option *ngFor="let p of StorageAreaTypeList" value={{p.StorageAreaTypeID}}>{{p.StorageAreaType}}
+                </option>
+              </select>
+              <div *ngIf="submitted && f.StorageAreaTypeID.invalid" class="invalid-feedback">
+                <div *ngIf="f.StorageAreaTypeID.errors?.required">Select StorageAreaType</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label>Billing Cycle Name</label>
+              <select class="form-control  form-control-sm"
+                [ngClass]="{'is-invalid': submitted && f.BillingCycleID.invalid}"
+                formControlName="BillingCycleID" id="BillingCycleID">
+                <option value="null" disabled>Select </option>
+                <option *ngFor="let p of BillingCycleNameIList" value={{p.BillingCycleID}}>{{p.BillingCyclesName}}
+                </option>
+              </select>
+              <div *ngIf="submitted && f.BillingCycleID.invalid" class="invalid-feedback">
+                <div *ngIf="f.BillingCycleID.errors?.required">Select BillingCycleName</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label>Is Active</label>
+              <input type="checkbox" style="margin-top: 30px !important; margin-left: 2px !important;"
+                formControlName="IsActive" id="IsActive" class="form-check-input" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <button type="submit" [hidden]="!HideSaveButton" [value]="submitted" class="btn btn-primary btn-sm"
+                style="width: 85px !important; margin-top: 20px !important;"> Save </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+
+    <hr>
+    <br>
+    <mtx-grid [data]="ServiceList" #gridPendingDOdList [columns]="columns" [loading]="false" [columnResizable]="true"
+      [multiSelectable]="false" [rowSelectable]="true" [hideRowSelectionCheckbox]="true" [rowHover]="true"
+      [rowStriped]="false" [showToolbar]="false" [toolbarTitle]="'Detail List'" [columnHideable]="false"
+      [columnMovable]="true" [expandable]="false" [pageOnFront]="true" [showPaginator]="true"
+      [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0" [pageSize]="0">
+    </mtx-grid>
+
+    <ng-template #toolbarTpl>
+      <input placeholder="Search">
+    </ng-template>
+
+
+
+
+  </div>
+
+</div>

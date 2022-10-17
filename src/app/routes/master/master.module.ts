@@ -19,6 +19,7 @@ import { BrandsEditButtonComponent } from './brands/brands-edit-button/brands-ed
 import { DockMasterEditButtonComponent } from './dock-master/dock-master-edit-button/dock-master-edit-button.component';
 import { StatecityEditbuttonComponent } from './state-city/statecity-editbutton/statecity-editbutton.component';
 
+
 @NgModule({
   declarations: [
     ProductComponent,

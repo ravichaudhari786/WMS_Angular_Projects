@@ -1,0 +1,14 @@
+<breadcrumb></breadcrumb>
+<div fxLayout="row wrap" class="matero-row">
+    <div fxFlex="100" class="matero-col">
+      <mat-card>
+        <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
+          <mat-tab label="Shifting">
+            <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+            </form>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card>
+     </div>
+    </div>
+                

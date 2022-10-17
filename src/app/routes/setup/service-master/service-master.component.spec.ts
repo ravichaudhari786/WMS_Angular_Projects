@@ -1,19 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ShiftingComponent } from './shifting.component';
 
-describe('ShiftingComponent', () => {
-  let component: ShiftingComponent;
-  let fixture: ComponentFixture<ShiftingComponent>;
+import { ServiceMasterComponent } from './service-master.component';
+
+describe('ServiceMasterComponent', () => {
+  let component: ServiceMasterComponent;
+  let fixture: ComponentFixture<ServiceMasterComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShiftingComponent ]
+      declarations: [ ServiceMasterComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ShiftingComponent);
+    fixture = TestBed.createComponent(ServiceMasterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

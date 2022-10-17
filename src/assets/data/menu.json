@@ -83,6 +83,42 @@
         "only": "ADMIN"
       }
     },
+
+    {
+      "route": "genericmaster",
+      "name": "Generic Master",
+      "type": "sub",
+      "icon": "settings",
+      "children": [
+        {
+          "route": "countmaster",
+          "name": "Count Master",
+          "type": "link"
+        },  
+         {
+          "route": "departmentmaster",
+          "name": "Department Master",
+          "type": "link"
+        },
+        {
+          "route": "designationmaster",
+          "name": "Designation Master",
+          "type": "link"
+        },
+        {
+          "route": "itemtypemaster",
+          "name": "Item Type Master",
+          "type": "link"
+        }
+
+   
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
+
+
     {
       "route": "process",
       "name": "Process",
@@ -108,11 +144,15 @@
           "route": "outward",
           "name": "Outward",
           "type": "link"
-        }
-        ,
+        },
         {
           "route": "shifting",
           "name": "Shifting",
+          "type": "link"
+        },
+        {
+          "route": "transfer",
+          "name": "Transfer",
           "type": "link"
         }
       ],
@@ -162,8 +202,13 @@
           "type": "link"
         },
         {
+<<<<<<< HEAD
           "route": "Warehouse",
           "name": "Warehouse",
+=======
+          "route": "servicemaster",
+          "name": "Service Master",
+>>>>>>> 93a8eae4f7a83844c86d2015b1366122e5713676
           "type": "link"
         }
        
@@ -173,14 +218,14 @@
       }
     },
     {
-      "route": "customer_master",
-      "name": "Customer Master",
+      "route": "customers",
+      "name": "Customers",
       "type": "sub",
       "icon": "build",
       "children": [
         {
-          "route": "customer",
-          "name": "Customer",
+          "route": "customerMaster",
+          "name": "Customer Master",
           "type": "link"
         },
         {
