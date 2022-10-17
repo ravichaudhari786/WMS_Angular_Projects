@@ -43,6 +43,11 @@ const routes: Routes = [
         loadChildren: () =>
           import('./setup/setup.module').then(m => m.SetupModule),
       },
+      {
+        path: 'Rate Management',
+        loadChildren: () =>
+          import('./rate-management/rate-management.module').then(m => m.RateManagementModule),
+      },
     ],
   },
   {

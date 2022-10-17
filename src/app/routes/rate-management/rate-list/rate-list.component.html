@@ -1,0 +1,100 @@
+<breadcrumb></breadcrumb>
+
+<div fxLayout="row wrap" class="matero-row">
+
+    <div fxFlex="100" class="matero-col">
+        <mat-card>
+            <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
+                <mat-tab label="Rate">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+                        <div class="col-md-12">
+                            <div class="row pt-2">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Rate List</label>
+                                        <select class="form-control form-control-sm" formControlName="RateID"
+                                            id="RateID" [ngClass]="{'is-invalid': submitted && f.RateID.invalid}">
+                                            <option value="null" disabled>Select </option>
+                                            <option *ngFor="let p of ratedetail" value={{p.RateID}}>
+                                                {{p.RateDescription}}</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.RateID.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.RateID?.errors?.required">Enter
+                                                Rate</span>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="row pt-2">
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Product</label>
+                                        <select class="form-control form-control-sm" formControlName="ProductID"
+                                            id="ProductID" (change)="OnProductSelect($event)"
+                                            [ngClass]="{'is-invalid': submitted && f.ProductID.invalid}">
+                                            <option value="null" disabled>Select </option>
+                                            <option *ngFor="let p of productList" value={{p.ProductID}}>
+                                                {{p.ProductName}}</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.ProductID.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.ProductID?.errors?.required">Enter
+                                                Product</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <br>
+                            <div class="col-12">
+                                <p class="font-weight-bold"> Service Details</p>
+                                <div>
+                                    <ag-grid-angular style="height: 500px;" class="ag-theme-alpine"
+                                        [rowData]="RateServiceList" [columnDefs]="ServicecolumnDefs">
+                                    </ag-grid-angular>
+                                </div>
+                            </div>
+
+                            <div class="row pt-2">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                            style="width: 85px !important; margin-top: 20px !important;"> Save
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-primary btn-sm" (click)="ResetForm()"
+                                                style="width: 85px !important; margin-top: 20px !important ">
+                                                Reset
+                                            </button>
+                                        </div>
+                                    </div> -->
+
+                            </div>
+                            <!--/.col  click="onSubmit(form)"-->
+
+                            <!--/.row-->
+                        </div>
+                    </form>
+                </mat-tab>
+                <mat-tab label="List">
+                    <div style="height: 100%; box-sizing: border-box;">
+                        <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" [rowData]="rateList"
+                            [columnDefs]="RateColumn" [frameworkComponents]="frameworkComponents">
+                        </ag-grid-angular>
+                    </div>
+                </mat-tab>
+
+
+
+
+            </mat-tab-group>
+        </mat-card>
+    </div>
+
+</div>

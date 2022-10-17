@@ -12,44 +12,57 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="company">Brand Name</label>
-                                        <input type="text" [ngClass]="{ 'is-invalid': submitted && form.controls.BrandName.errors }"
+                                        <input type="text"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.BrandName.errors }"
                                             formControlName="BrandName" id="BrandName"
-                                            class=" form-control form-control-sm" />
-                                            <div *ngIf="submitted && form.controls.BrandName.errors" class="text-danger">
-                                                <div *ngIf="form.controls.BrandName.errors.required">Brand Name is required
-                                                </div>
+                                            class=" form-control form-control-sm" autocomplete="off" />
+                                        <div *ngIf="submitted && form.controls.BrandName.errors" class="text-danger">
+                                            <div *ngIf="form.controls.BrandName.errors.required">Brand Name is required
                                             </div>
-                                    </div>
-
-
-
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <button type="submit"  class="btn btn-primary btn-sm"
-                                                style="width: 85px !important; margin-top: 20px !important;  margin-left: 200px !important;"> Save
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
-                                <!--/.col  click="onSubmit(form)"-->
                             </div>
+
+                            <div class="row pt-2">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-sm"[value]="submitted" [hidden]="!HideSaveButton"
+                                            style="width: 85px !important; margin-top: 20px !important;  margin-left: 200px !important;">
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-sm-6 col-md-3">
+                                    <div class="form-group">
+                                        <button type="reset" class="btn btn-primary btn-sm" (click)="ResetForm()"
+                                            style="width: 85px !important; margin-top: 20px !important ">
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div> -->
+                            </div>
+                            <!--/.col  click="onSubmit(form)"-->
+
                             <!--/.row-->
                         </div>
                     </form>
-                </mat-tab>
-                <mat-tab label="List">
 
-                    <mtx-grid [data]="BrandsList" [columns]="columns" [loading]="false" [columnResizable]="true"
-                        [multiSelectable]="false" [rowSelectable]="false" [hideRowSelectionCheckbox]="false"
-                        [rowHover]="true" [rowStriped]="false" [showToolbar]="true" [toolbarTitle]="'Brands List'"
-                        [columnHideable]="false" [columnMovable]="true" [expandable]="false" [pageOnFront]="true"
-                        [showPaginator]="true" [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0" [pageSize]="10"
-                        [toolbarTemplate]="toolbarTpl">
-                    </mtx-grid>
-                    <ng-template #toolbarTpl>
-                        <input placeholder="Search">
-                      </ng-template>
+                    <!-- <mtx-grid [data]="BrandsList" style="height: 600px" [columns]="columns" [loading]="false"
+                        [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="false"
+                        [hideRowSelectionCheckbox]="false" [rowHover]="true" [rowStriped]="false" [showToolbar]="false"
+                        [toolbarTitle]="'Detail List'" [columnHideable]="false" [columnMovable]="true"
+                        [expandable]="false" [pageOnFront]="true" [showPaginator]="false" [pageSize]="100"
+                        [pageIndex]="0">
+                    </mtx-grid> -->
 
+                    <div style="height: 100%; box-sizing: border-box;">
+                        <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" [rowData]="BrandsList"
+                            [columnDefs]="columns" [frameworkComponents]="frameworkComponents">
+                        </ag-grid-angular>
+                    </div>
+
+                    
                 </mat-tab>
 
 

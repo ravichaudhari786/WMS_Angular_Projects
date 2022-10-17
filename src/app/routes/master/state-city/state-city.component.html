@@ -14,11 +14,10 @@
                                     <div class="form-group">
                                         <label>State Name</label>
                                         <input type="text" formControlName="State" class="form-control"
-                                            [ngClass]="{ 'is-invalid': submitted && form.controls.State.errors }" />
-                                        <div *ngIf="submitted && form.controls.State.errors" class="text-danger">
-                                            <div *ngIf="form.controls.State.errors.required">State Name is required
+                                            [ngClass]="{'is-invalid': submitted && f.State.invalid}" />
+                                            <div *ngIf="submitted && f.State.invalid" class="invalid-feedback">
+                                                <div *ngIf="f.State?.errors?.required">Enter State</div>
                                             </div>
-                                        </div>
 
                                     </div>
                                 </div>
@@ -26,10 +25,9 @@
                                     <div class="form-group">
                                         <label>State Code</label>
                                         <input type="text" formControlName="StateCode" class="form-control"
-                                            [ngClass]="{ 'is-invalid': submitted && form.controls.StateCode.errors }" />
-                                        <div *ngIf="submitted && form.controls.StateCode.errors" class="text-danger">
-                                            <div *ngIf="form.controls.StateCode.errors.required">StateCode is required
-                                            </div>
+                                            [ngClass]="{'is-invalid': submitted && f.StateCode.invalid}" autocomplete="off" />
+                                        <div *ngIf="submitted && f.StateCode.invalid" class="invalid-feedback">
+                                            <div *ngIf="f.StateCode?.errors?.required">Enter State Code</div>
                                         </div>
 
 
@@ -40,35 +38,51 @@
                                     <div class="form-group">
                                         <label>GST Code</label>
                                         <input type="text" formControlName="GstCode" class="form-control"
-                                            [ngClass]="{ 'is-invalid': submitted && form.controls.GstCode.errors }" />
-                                        <div *ngIf="submitted && form.controls.GstCode.errors" class="text-danger">
-                                            <div *ngIf="form.controls.GstCode.errors.required">GstCode is required</div>
+                                            [ngClass]="{'is-invalid': submitted && f.GstCode.invalid}" autocomplete="off" />
+                                        <div *ngIf="submitted && f.GstCode.invalid" class="invalid-feedback">
+                                            <div *ngIf="f.GstCode?.errors?.required">Enter GST Code</div>
                                         </div>
 
                                     </div>
                                 </div>
-
+                            </div>
+                            <div class="row pt-2">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-sm"
+                                        <button type="submit" class="btn btn-primary btn-sm" [hidden]="!HideSaveButton"
+                                            [value]="submitted"
                                             style="width: 85px !important; margin-top: 20px !important;"> Save
                                         </button>
                                     </div>
                                 </div>
+                                <!-- <div class="col-sm-6 col-md-3">
+                                    <div class="form-group">
+                                        <button type="reset" class="btn btn-primary btn-sm" (click)="ResetForm()"
+                                            style="width: 85px !important; margin-top: 20px !important ">
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div> -->
                             </div>
                             <!--/.col  click="onSubmit(form)"-->
                         </div>
-                        <!--/.row-->
-                        <mtx-grid [data]="StateList" [columns]="StateColumn" [loading]="false" [columnResizable]="true"
-                            [multiSelectable]="false" [rowSelectable]="false" [hideRowSelectionCheckbox]="false"
-                            [rowHover]="true" [rowStriped]="false" [showToolbar]="true" [toolbarTitle]="'Dock List'"
-                            [columnHideable]="false" [columnMovable]="true" [expandable]="false" [pageOnFront]="true"
-                            [showPaginator]="true" [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0"
-                            [pageSize]="10" [toolbarTemplate]="toolbarTpl">
-                        </mtx-grid>
+                      
+                        <!-- <mtx-grid style="height: 500px" [data]="StateList" [columns]="StateColumn" [loading]="false"
+                            [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="false"
+                            [hideRowSelectionCheckbox]="false" [rowHover]="true" [rowStriped]="false"
+                            [showToolbar]="false" [toolbarTitle]="'Item List'" [columnHideable]="false"
+                            [columnMovable]="true" [expandable]="false" [pageOnFront]="false" [showPaginator]="false"
+                            [pageSize]="100"></mtx-grid>
                         <ng-template #toolbarTpl>
                             <input placeholder="Search">
-                        </ng-template>
+                        </ng-template> -->
+
+                        <div style="height: 100%; box-sizing: border-box;">
+                            <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" [rowData]="StateList"
+                                [columnDefs]="StateColumn" [frameworkComponents]="frameworkComponents">
+                            </ag-grid-angular>
+                        </div>
+    
 
                     </form>
 
@@ -83,9 +97,9 @@
                                     <div class="form-group">
                                         <label>City</label>
                                         <input type="text" formControlName="City" class="form-control"
-                                            [ngClass]="{ 'is-invalid': submitted2 && form2.controls.City.errors }" />
-                                        <div *ngIf="submitted2 && form2.controls.City.errors" class="text-danger">
-                                            <div *ngIf="form2.controls.City.errors.required">City Name is required</div>
+                                            [ngClass]="{'is-invalid': submitted2 && f2.City.invalid}" autocomplete="off" />
+                                        <div *ngIf="submitted2 && f2.City.invalid" class="invalid-feedback">
+                                            <div *ngIf="f2.City?.errors?.required">Enter City</div>
                                         </div>
 
 
@@ -94,42 +108,60 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>State</label>
-                                        <select class="form-control form-control-sm" formControlName="StateID"
-                                            id="StateID"
-                                            [ngClass]="{ 'is-invalid': submitted2 && form2.controls.StateID.errors }">
+                                        <select class="form-control form-control-sm" formControlName="CStateID"
+                                            id="CStateID" [ngClass]="{'is-invalid': submitted2 && f2.CStateID.invalid}">
                                             <option value="null" disabled>Select </option>
                                             <option *ngFor="let i of StateList" value={{i.StateID}}>{{i.State}}</option>
                                         </select>
-                                        <div *ngIf="submitted2 && form2.controls.StateID.errors" class="text-danger">
-                                            <div *ngIf="form2.controls.StateID.errors.required">State is required</div>
+                                        <div *ngIf="submitted2 && f2.CStateID.invalid" class="invalid-feedback">
+                                            <div *ngIf="f2.CStateID?.errors?.required">Enter State</div>
                                         </div>
+
 
 
                                     </div>
                                 </div>
 
-
+                            </div>
+                            <div class="row pt-2">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-sm"
+                                        <button type="submit" class="btn btn-primary btn-sm" [hidden]="!HideSaveButton2"
+                                            [value]="submitted2"
                                             style="width: 85px !important; margin-top: 20px !important;"> Save
                                         </button>
                                     </div>
                                 </div>
+                                <!-- <div class="col-sm-6 col-md-3">
+                                    <div class="form-group">
+                                        <button type="reset" class="btn btn-primary btn-sm" (click)="ResetForm2()"
+                                            style="width: 85px !important; margin-top: 20px !important ">
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div> -->
                             </div>
+
 
                         </div>
 
-                        <mtx-grid [data]="Citylist" [columns]="CityColumn" [loading]="false" [columnResizable]="true"
-                            [multiSelectable]="false" [rowSelectable]="false" [hideRowSelectionCheckbox]="false"
-                            [rowHover]="true" [rowStriped]="false" [showToolbar]="true" [toolbarTitle]="'Dock List'"
-                            [columnHideable]="false" [columnMovable]="true" [expandable]="false" [pageOnFront]="true"
-                            [showPaginator]="true" [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0"
-                            [pageSize]="10" [toolbarTemplate]="toolbarTpl">
-                        </mtx-grid>
+                       
+                        <!-- <mtx-grid style="height: 400px" [data]="Citylist" [columns]="CityColumn" [loading]="false"
+                            [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="false"
+                            [hideRowSelectionCheckbox]="false" [rowHover]="true" [rowStriped]="false"
+                            [showToolbar]="false" [toolbarTitle]="'Item List'" [columnHideable]="false"
+                            [columnMovable]="true" [expandable]="false" [pageOnFront]="false" [showPaginator]="false"
+                            [pageSize]="100"></mtx-grid>
                         <ng-template #toolbarTpl>
                             <input placeholder="Search">
-                        </ng-template>
+                        </ng-template> -->
+
+                        <div style="height: 100%; box-sizing: border-box;">
+                            <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" [rowData]="Citylist"
+                                [columnDefs]="CityColumn" [frameworkComponents]="frameworkComponents">
+                            </ag-grid-angular>
+                        </div>
+    
 
                     </form>
 

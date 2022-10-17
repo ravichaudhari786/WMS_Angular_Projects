@@ -13,6 +13,11 @@ import { FinancialYearComponent } from './financial-year/financial-year.componen
 import { RemarksComponent } from './remarks/remarks.component';
 import { BrandsComponent } from './brands/brands.component';
 import { StateCityComponent } from './state-city/state-city.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { CommonModule } from '@angular/common';
+import { BrandsEditButtonComponent } from './brands/brands-edit-button/brands-edit-button.component';
+import { DockMasterEditButtonComponent } from './dock-master/dock-master-edit-button/dock-master-edit-button.component';
+import { StatecityEditbuttonComponent } from './state-city/statecity-editbutton/statecity-editbutton.component';
 
 @NgModule({
   declarations: [
@@ -32,11 +37,16 @@ import { StateCityComponent } from './state-city/state-city.component';
     FinancialYearComponent,
     RemarksComponent,
     BrandsComponent,
-    StateCityComponent
+    StateCityComponent,
+    BrandsEditButtonComponent,
+    DockMasterEditButtonComponent,
+    StatecityEditbuttonComponent
   ],
   imports: [
     SharedModule,
-    MasterRoutingModule
+    CommonModule,
+    MasterRoutingModule,
+    AgGridModule.withComponents([]),
   ]
 })
 export class MasterModule { }

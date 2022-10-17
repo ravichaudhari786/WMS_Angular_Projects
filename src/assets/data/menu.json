@@ -120,6 +120,30 @@
         "only": "ADMIN"
       }
     },
+    {
+      "route": "Rate Management",
+      "name": "Rate Management",
+      "type": "sub",
+      "icon": "build",
+      "children": [
+        {
+          "route": "RateList",
+          "name": "RateList",
+          "type": "link"
+        },
+        {
+          "route": "SpecialRates",
+          "name": "SpecialRates",
+          "type": "link"
+        }
+       
+        
+      
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
 
     {
       "route": "setup",
@@ -135,6 +159,11 @@
         {
           "route": "Company",
           "name": "Company",
+          "type": "link"
+        },
+        {
+          "route": "Warehouse",
+          "name": "Warehouse",
           "type": "link"
         }
        
