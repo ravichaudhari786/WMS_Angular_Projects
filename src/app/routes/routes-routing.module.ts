@@ -50,15 +50,16 @@ const routes: Routes = [
           import('./setup/setup.module').then(m => m.SetupModule),
       },
       {
-<<<<<<< HEAD
+
         path: 'Rate Management',
         loadChildren: () =>
           import('./rate-management/rate-management.module').then(m => m.RateManagementModule),
-=======
+      },
+      {
         path:'customers',
         loadChildren:() =>
         import('./customers/customers.module').then(m=>m.CustomersModule),
->>>>>>> 93a8eae4f7a83844c86d2015b1366122e5713676
+
       },
     ],
   },
