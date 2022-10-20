@@ -13,8 +13,8 @@ import { RemarksComponent } from './remarks/remarks.component';
 import { BrandsComponent } from './brands/brands.component';
 import { StateCityComponent } from './state-city/state-city.component';
 
- const routes:Routes=[{ path: 'product', component: ProductComponent },
-  { path: 'items', component: ItemsComponent },
+ const routes:Routes=[{ path: 'Product', component: ProductComponent },
+  { path: 'Items', component: ItemsComponent },
   { path: 'Labour Contractors', component: LabourContractorsComponent },
   { path: 'Report Print Info', component: ReportPrintInfoComponent },
   { path: 'Pellets', component: PelletsComponent },

@@ -4,8 +4,11 @@ import { CustomerMasterComponent } from './customer-master/customer-master.compo
 import { CustomerViewComponent } from './customer-view/customer-view.component';
 
 const routes: Routes = [
+
   { path: 'customerMaster', component: CustomerMasterComponent },
   { path: 'CustomerView', component: CustomerViewComponent },
+
+ 
 ];
 
 @NgModule({

@@ -9,6 +9,7 @@ export const environment = {
   //baseUrl:'http://localhost:50191/', 
   //baseUrl:'http://localhost:5281',  
   localUrl:'',
+  
   useHash: false,
   hmr: false,
 };
