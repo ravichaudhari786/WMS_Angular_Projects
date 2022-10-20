@@ -164,7 +164,7 @@ export class InMemDataService implements OnInit,  InMemoryDbService {
         const currentUser=JSON.parse(this.store.get("currentUser"));
       
        
-       //const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
+      //  const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
         
        const menu=  JSON.parse(this.fetch(environment.baseUrl+"/Menu/GetMenu?userid="+ currentUser.userId)).menu
        

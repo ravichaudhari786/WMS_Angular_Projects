@@ -27,54 +27,52 @@
           "type": "link"
         },
         {
-          "route":"Labour Contractors",
+          "route": "Labour Contractors",
           "name": "Labour Contractors",
           "type": "link"
         },
         {
-          "route":"Report Print Info",
+          "route": "Report Print Info",
           "name": "Report Print Info",
           "type": "link"
         },
         {
-          "route":"Pellets",
+          "route": "Pellets",
           "name": "Pellets",
           "type": "link"
         },
         {
-          "route":"Check List Master",
+          "route": "Check List Master",
           "name": "Check List Master",
           "type": "link"
         },
         {
-          "route":"Check List Detail",
+          "route": "Check List Detail",
           "name": "Check List Detail",
           "type": "link"
         },
         {
-          "route":"Dock Master",
+          "route": "Dock Master",
           "name": "Dock Master",
           "type": "link"
         },
-
         {
-          "route":"Brands",
+          "route": "Brands",
           "name": "Brands",
           "type": "link"
         },
         {
-          "route":"StateCity",
+          "route": "StateCity",
           "name": "StateCity",
           "type": "link"
         },
-
         {
-          "route":"Financial Year",
+          "route": "Financial Year",
           "name": "Financial Year",
           "type": "link"
         },
         {
-          "route":"Remarks",
+          "route": "Remarks",
           "name": "Remarks",
           "type": "link"
         }
@@ -83,7 +81,6 @@
         "only": "ADMIN"
       }
     },
-
     {
       "route": "genericmaster",
       "name": "Generic Master",
@@ -94,8 +91,8 @@
           "route": "countmaster",
           "name": "Count Master",
           "type": "link"
-        },  
-         {
+        },
+        {
           "route": "departmentmaster",
           "name": "Department Master",
           "type": "link"
@@ -110,15 +107,11 @@
           "name": "Item Type Master",
           "type": "link"
         }
-
-   
       ],
       "permissions": {
         "only": "ADMIN"
       }
     },
-
-
     {
       "route": "process",
       "name": "Process",
@@ -176,15 +169,11 @@
           "name": "SpecialRates",
           "type": "link"
         }
-       
-        
-      
       ],
       "permissions": {
         "only": "ADMIN"
       }
     },
-
     {
       "route": "setup",
       "name": "Setup",
@@ -202,16 +191,15 @@
           "type": "link"
         },
         {
-<<<<<<< HEAD
           "route": "Warehouse",
           "name": "Warehouse",
-=======
+          "type": "link"
+        },
+        {
           "route": "servicemaster",
           "name": "Service Master",
->>>>>>> 93a8eae4f7a83844c86d2015b1366122e5713676
           "type": "link"
         }
-       
       ],
       "permissions": {
         "only": "ADMIN"
