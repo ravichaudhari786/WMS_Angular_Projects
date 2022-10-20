@@ -8,7 +8,8 @@ import { LocalStorageService } from '@shared';
 import { ApiService } from '@core';
 import { JsonPipe } from '@angular/common';
 import { Router } from '@angular/router';
-
+import { MtxDialog } from '@ng-matero/extensions';
+import { MatDialog } from '@angular/material/dialog';
 function urlSafeBase64Encode(text: string) {
   return btoa(text).replace(/[+/=]/g, m => {
     return { '+': '-', '/': '_', '=': '' }[m] as string;
@@ -91,7 +92,10 @@ else{
 
   //const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
    if(flg==false){
+    
+   // this.dialog.alert("you are not autherised for this page");
 alert("you are not autherised for this page");
+
 //router.navigateByUrl('/dashboard');
 window.location.href="/dashboard";
 return false;
@@ -105,6 +109,7 @@ else{
 }
   
 }
+
 function getUserFromJWTToken(req: HttpRequest<any>) {
   const authorization = req.headers.get('Authorization');
   const [, token] = (authorization as string).split(' ');
