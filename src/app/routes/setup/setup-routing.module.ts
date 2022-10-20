@@ -11,7 +11,7 @@ const routes: Routes = [
 
   { path:"Warehouse", component: WarehouseComponent},
 
-  {path:"servicemaster",component:ServiceMasterComponent}
+  {path:"ServiceMaster",component:ServiceMasterComponent}
 
 
 

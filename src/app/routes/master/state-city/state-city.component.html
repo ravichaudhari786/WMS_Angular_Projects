@@ -111,7 +111,7 @@
                                         <select class="form-control form-control-sm" formControlName="CStateID"
                                             id="CStateID" [ngClass]="{'is-invalid': submitted2 && f2.CStateID.invalid}">
                                             <option value="null" disabled>Select </option>
-                                            <option *ngFor="let i of StateList" value={{i.StateID}}>{{i.State}}</option>
+                                            <option selected="true" *ngFor="let i of StateList" value={{i.StateID}}>{{i.State}}</option>
                                         </select>
                                         <div *ngIf="submitted2 && f2.CStateID.invalid" class="invalid-feedback">
                                             <div *ngIf="f2.CStateID?.errors?.required">Enter State</div>
