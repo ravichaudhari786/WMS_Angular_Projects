@@ -107,11 +107,11 @@ export class DockMasterComponent implements OnInit {
 
   editProduct(record: any) {
     console.log(record)
-    this.DocID=record.DockID;
+    this.DocID=record.rowData.DockID;
     const item: any = {     
-      dockNo: record.DockNo == null ? '' : record.DockNo,
-      dockName: record.DockName,     
-      CreatedBy: record.CreatedBy,
+      dockNo: record.rowData.DockNo == null ? '' : record.rowData.DockNo,
+      dockName: record.rowData.DockName,     
+      CreatedBy: record.rowData.CreatedBy,
       //isActive: true
     }
     this.form.setValue(item);
