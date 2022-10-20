@@ -3,10 +3,15 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '@core';
 import { MtxDialog, MtxGridColumn } from '@ng-matero/extensions';
-import { ColDef, GridApi } from 'ag-grid-community';
+import { ColDef, GridApi, ICellRendererComp, KeyCreatorParams } from 'ag-grid-community';
 import { User } from '@core/authentication/interface';
 import { SpecialRatesEditButtonComponent } from './special-rates-edit-button/special-rates-edit-button.component';
 import { DatePipe } from '@angular/common';
+import { ICellRendererAngularComp } from 'ag-grid-angular';
+import { ICellRendererParams } from 'ag-grid-community';
+import { DropdownGridSpecialRatesComponent } from './dropdown-grid-special-rates/dropdown-grid-special-rates.component';
+import { param } from 'jquery';
+import { MatSelectModule } from '@angular/material/select';
 @Component({
   selector: 'app-special-rates',
   templateUrl: './special-rates.component.html',
@@ -15,16 +20,19 @@ import { DatePipe } from '@angular/common';
 export class SpecialRatesComponent implements OnInit {
   form!: FormGroup; submitted = false; private currentUser: User;
   specialrateList: any; tab = 0; frameworkComponents: any;
-  HideSaveButton = true;
+  HideSaveButton = true; frameworkComponentscb: any
   todayDate: any; productdate: any;
-  productList: any; customerList: any;
+  productList: any; customerList: any; billingCycleList: any;
   SpecialServiceList: Array<any> = []; ServiceDatasave: any = {};
   SpecialRateID: number = 0; TaxID: number = 0
-  LTD_Customer: Array<any> = [];
+  LTD_Customer: Array<any> = []; BillingCycleID: number = 0;
   constructor(private fb: FormBuilder, private api: ApiService, public dialog: MtxDialog) {
     this.currentUser = this.api.getCurrentUser();
     this.frameworkComponents = {
       buttonRenderer: SpecialRatesEditButtonComponent,
+    }
+    this.frameworkComponentscb = {
+      comboxRender: DropdownGridSpecialRatesComponent,
     }
     const dateSendingToServer = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd hh:mm:ss')
     this.todayDate = dateSendingToServer;
@@ -39,14 +47,14 @@ export class SpecialRatesComponent implements OnInit {
     });
 
     this.BindDropdown()
+    this.billingCycleList = [];
 
-    console.log(this.todayDate);
   }
 
 
   async BindDropdown() {
     this.api.get('/SpecialRates/SpecialRate_List').subscribe(
-      data => { this.specialrateList = data; console.log(data) },
+      data => { this.specialrateList = data; },
       error => { console.error(error); }
     );
 
@@ -57,6 +65,10 @@ export class SpecialRatesComponent implements OnInit {
 
     this.api.get('/Customer').subscribe(
       data => { this.customerList = data },
+      error => { console.error(error); }
+    );
+    this.api.get('/BillingCycles/BillingCycle_Select').subscribe(
+      data => { this.billingCycleList = data; },
       error => { console.error(error); }
     );
   }
@@ -85,17 +97,18 @@ export class SpecialRatesComponent implements OnInit {
       CustomerID: this.form.value.cbCustomerID,
       wef: "",
     }
-    console.log(serviceData);
+    //console.log(serviceData);
 
     this.api.post('/SpecialRates/SpecialRate_Services', serviceData).subscribe(
       data => {
+        //console.log(data);
         if (data.Table.length == 0) {
           this.SpecialServiceList = data.Table1;
         } else {
           this.SpecialServiceList = data.Table;
         }
-        console.log(data.Table);
-        console.log(data.Table1);
+        // console.log(data.Table);
+        // console.log(data.Table1);
       },
       error => { console.error(error); }
     );
@@ -103,17 +116,14 @@ export class SpecialRatesComponent implements OnInit {
   }
 
   onSubmit(formData: any) {
-
-    console.log(formData)
+    // console.log(" this.SpecialServiceList", this.SpecialServiceList);
+    //console.log(formData)
     this.submitted = true;
     if (this.form.invalid) {
       //alert("invalid form");
       return;
-    } else if (this.form.value.dtWefDate == null) {
-      alert("Please... Enter inward date ..!!!");
-      document?.getElementById("dtWefDate")?.focus();
-      return;
-    } else {
+    }
+    else {
       this.HideSaveButton = false;
       this.ServiceDatasave = {
         SpecialRateID: this.SpecialRateID,
@@ -126,7 +136,7 @@ export class SpecialRatesComponent implements OnInit {
         CustomerID: this.form.value.cbCustomerID,
         wef: this.form.value.dtWefDate
       }
-      console.log(this.ServiceDatasave)
+      //console.log(this.ServiceDatasave)
       this.api.post('/SpecialRates/SpecialRatelist_Insert', this.ServiceDatasave).subscribe(
         data => {
 
@@ -135,6 +145,7 @@ export class SpecialRatesComponent implements OnInit {
           // this.ResetForm();
           this.BindDropdown();
           this.form.reset()
+
           this.form.controls['cbCustomerID'].setErrors(null);
           this.form.controls['cbProductID'].setErrors(null);
           const inwardeditedDate = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd hh:mm:ss');
@@ -149,8 +160,10 @@ export class SpecialRatesComponent implements OnInit {
 
   }
 
+
+
   onEditSpecialRate(record: any) {
-    console.log(record.rowData)
+    //console.log(record.rowData)
 
     const item: any = {
       cbCustomerID: record.rowData.CustomerID,
@@ -178,17 +191,17 @@ export class SpecialRatesComponent implements OnInit {
       CustomerID: record.rowData.CustomerID,
       wef: "",
     }
-    console.log("item", serviceData);
+    //console.log("item", serviceData);
     this.api.post('/SpecialRates/SpecialRate_Services', serviceData).subscribe(
       data => {
-        console.log(data);
+        // console.log(data);
         if (data.Table.length == 0) {
           this.SpecialServiceList = data.Table1;
         } else {
           this.SpecialServiceList = data.Table;
         }
-        console.log(data.Table);
-        console.log(data.Table1);
+        // console.log(data.Table);
+        // console.log(data.Table1);
       },
       error => { console.error(error); }
     );
@@ -279,10 +292,10 @@ export class SpecialRatesComponent implements OnInit {
   ServicecolumnDefs: ColDef[] = [
 
     { headerName: 'ServiceID ', field: 'ServiceID ', hide: true, },
-    { headerName: 'ServiceName', field: 'ServiceName', hide: false, filter: 'agTextColumnFilter', floatingFilter: true },
-    { headerName: 'ServiceType', field: 'ServiceType', hide: false, filter: 'agTextColumnFilter', floatingFilter: true },
+    { headerName: 'ServiceName', field: 'ServiceName', minWidth: 100, hide: false, filter: 'agTextColumnFilter', floatingFilter: true },
+    { headerName: 'ServiceType', field: 'ServiceType', minWidth: 50, hide: false, filter: 'agTextColumnFilter', floatingFilter: true },
     {
-      headerName: 'Rate', field: 'Rate', hide: false, cellEditorPopup: true, sort: "desc", filter: 'agNumberColumnFilter', floatingFilter: true,
+      headerName: 'Rate', field: 'Rate', hide: false, minWidth: 50, cellEditorPopup: true, sort: "desc", filter: 'agNumberColumnFilter', floatingFilter: true,
       valueParser: "Number(newValue)", editable: true, cellStyle: params => {
         if (params.value > 0) {
           return { color: 'white', backgroundColor: '#FF0000' };
@@ -292,7 +305,7 @@ export class SpecialRatesComponent implements OnInit {
       }
     },
     {
-      headerName: 'L_Rate', field: 'L_Rate', hide: false, cellEditorPopup: true, sort: "desc", filter: 'agNumberColumnFilter', floatingFilter: true,
+      headerName: 'L_Rate', field: 'L_Rate', hide: false, minWidth: 50, cellEditorPopup: true, sort: "desc", filter: 'agNumberColumnFilter', floatingFilter: true,
       valueParser: "Number(newValue)", editable: true, cellStyle: params => {
         if (params.value > 0) {
           return { color: 'white', backgroundColor: '#FF0000' };
@@ -301,9 +314,19 @@ export class SpecialRatesComponent implements OnInit {
         }
       }
     },
-    { headerName: 'BillingCycleID ', field: 'BillingCycleID ', hide: false, filter: 'agNumberColumnFilter', floatingFilter: true },
+    // { headerName: 'BillingCycleID', field: 'BillingCycleID'},
+    {
+      headerName: 'BillingCycleID', field: 'BillingCycleID', minWidth: 50, cellRenderer: 'comboxRender',
+      cellRendererParams: {
+
+        //onClick: this.OnCancelledShifting.bind(this),
+        label: 'Click 1'
+      }
+
+    }
   ];
 
 
-
 }
+
+

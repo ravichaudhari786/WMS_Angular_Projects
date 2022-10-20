@@ -8,7 +8,9 @@ import { RateListComponent } from './rate-list/rate-list.component';
 import { RateListButtonComponent } from './rate-list/rate-list-button/rate-list-button.component';
 import { SpecialRatesComponent } from './special-rates/special-rates.component';
 import { SpecialRatesEditButtonComponent } from './special-rates/special-rates-edit-button/special-rates-edit-button.component';
-
+import { DropdownGridSpecialRatesComponent } from './special-rates/dropdown-grid-special-rates/dropdown-grid-special-rates.component';
+import { DropdownButtonRatelistComponent } from './rate-list/dropdown-button-ratelist/dropdown-button-ratelist.component';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -17,6 +19,8 @@ import { SpecialRatesEditButtonComponent } from './special-rates/special-rates-e
     RateListButtonComponent,
     SpecialRatesComponent,
     SpecialRatesEditButtonComponent,
+    DropdownGridSpecialRatesComponent,
+    DropdownButtonRatelistComponent,
     
   ],
   imports: [

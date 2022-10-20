@@ -11,19 +11,21 @@
                             <div class="row pt-2">
                                 <div class="col-sm-12 col-md-12">
                                     <div class="form-group">
-                                      <label>Customer Name</label>
-                                      <select class="form-control form-control-sm" 
-                                        formControlName="cbCustomerID" id="cbCustomerID" [ngClass]="{'is-invalid': submitted && f.cbCustomerID.invalid}">
-                                        <option value="null" disabled>Select</option>
-                                        <option *ngFor="let c of customerList" value={{c.CustomerID}}>{{c.CustomerName}}</option>
-                                      </select>
-                                      <div *ngIf="submitted && f.cbCustomerID.invalid" class="invalid-feedback">
-                                        <span *ngIf="f.cbCustomerID?.errors?.required">Enter
-                                            Customer name</span>
+                                        <label>Customer Name</label>
+                                        <select class="form-control form-control-sm" formControlName="cbCustomerID"
+                                            id="cbCustomerID"
+                                            [ngClass]="{'is-invalid': submitted && f.cbCustomerID.invalid}">
+                                            <option value="null" disabled>Select</option>
+                                            <option *ngFor="let c of customerList" value={{c.CustomerID}}>
+                                                {{c.CustomerName}}</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.cbCustomerID.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.cbCustomerID?.errors?.required">Enter
+                                                Customer name</span>
+                                        </div>
                                     </div>
-                                    </div>
-                                   
-                                  </div>
+
+                                </div>
 
 
                             </div>
@@ -32,7 +34,8 @@
                                     <div class="form-group">
                                         <label>Product</label>
                                         <select class="form-control form-control-sm" formControlName="cbProductID"
-                                            id="cbProductID"  (change)="OnProductSelect($event)" [ngClass]="{'is-invalid': submitted && f.cbProductID.invalid}">
+                                            id="cbProductID" (change)="OnProductSelect($event)"
+                                            [ngClass]="{'is-invalid': submitted && f.cbProductID.invalid}">
                                             <option value="null" disabled>Select </option>
                                             <option *ngFor="let p of productList" value={{p.ProductID}}>
                                                 {{p.ProductName}}</option>
@@ -48,13 +51,14 @@
                                     <div class="form-group">
                                         <label>With Effective Date</label>
                                         <input type="datetime-local" formControlName="dtWefDate" id="dtWefDate"
-                                            class="form-control form-control-sm" placeholder="yyyy-MM-dd" name="dtWefDate"
-                                            class="form-control form-control-rounded"  [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'"
-                                            [ngClass]="{'is-invalid': submitted && f.dtWefDate.invalid}"/>
+                                            class="form-control form-control-sm" placeholder="yyyy-MM-dd"
+                                            name="dtWefDate" class="form-control form-control-rounded"
+                                            [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'"
+                                            [ngClass]="{'is-invalid': submitted && f.dtWefDate.invalid}" />
                                     </div>
                                     <div *ngIf="submitted && f.dtWefDate.invalid" class="invalid-feedback">
                                         <span *ngIf="f.dtWefDate?.errors?.required">Enter
-                                             Date And Time</span>
+                                            Date And Time</span>
                                     </div>
                                     <!-- /.form-group -->
                                 </div>
@@ -66,15 +70,18 @@
                                 <p class="font-weight-bold"> Service Details</p>
                                 <div>
                                     <ag-grid-angular style="height: 500px;" class="ag-theme-alpine"
-                                        [rowData]="SpecialServiceList" [columnDefs]="ServicecolumnDefs">
+                                        [rowData]="SpecialServiceList" [columnDefs]="ServicecolumnDefs"
+                                        [frameworkComponents]="frameworkComponentscb">
                                     </ag-grid-angular>
                                 </div>
                             </div>
 
+
                             <div class="row pt-2">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-sm" [value]="submitted" [hidden]="!HideSaveButton"
+                                        <button type="submit" class="btn btn-primary btn-sm" [value]="submitted"
+                                            [hidden]="!HideSaveButton"
                                             style="width: 85px !important; margin-top: 20px !important;"> Save
                                         </button>
                                     </div>

@@ -1,0 +1,14 @@
+<select id="cbbillingID" [(ngModel)]='nrSelect' (change)="GetBillingID($event)">
+  <option *ngFor="let i of billingCycleList" value={{i.BillingCycleID}}>{{i.BillingCyclesName}}</option>
+</select>
+
+
+
+<!-- <mat-form-field appearance="fill">
+  <mat-label>Favorite food</mat-label>
+  <mat-select id="cbbillingID" [(ngModel)]='nrSelect' (change)="GetBillingID($event)" >
+    <mat-option  *ngFor="let i of billingCycleList" value={{i.BillingCycleID}}>
+      {{i.BillingCyclesName}}
+    </mat-option>
+  </mat-select>
+</mat-form-field> -->

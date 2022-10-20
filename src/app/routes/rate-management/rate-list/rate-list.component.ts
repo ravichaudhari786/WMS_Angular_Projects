@@ -6,6 +6,7 @@ import { MtxDialog, MtxGridColumn } from '@ng-matero/extensions';
 import { ColDef, GridApi } from 'ag-grid-community';
 import { User } from '@core/authentication/interface';
 import { RateListButtonComponent } from './rate-list-button/rate-list-button.component';
+import { DropdownButtonRatelistComponent } from './dropdown-button-ratelist/dropdown-button-ratelist.component';
 
 @Component({
   selector: 'app-rate-list',
@@ -20,18 +21,21 @@ export class RateListComponent implements OnInit {
   dataSource = new MatTableDataSource<any>();
   tab = 0;
   UserID: any = 0;
-  rateList: any;
+  rateList: any; billingCycleList: any;
   HideSaveButton = true; ServiceDatasave: any = {};
   ratedetail: any; productList: any; RateServiceList: Array<any> = [];
   RateListID: number = 0;
   TaxID: number = 0
   LTD_Customer: Array<any> = [];
   RateID: number = 0;
-  ProductID: number = 0;
+  ProductID: number = 0; frameworkComponentscb: any
   constructor(private fb: FormBuilder, private api: ApiService, public dialog: MtxDialog) {
     this.currentUser = this.api.getCurrentUser();
     this.frameworkComponents = {
       buttonRenderer: RateListButtonComponent,
+    }
+    this.frameworkComponentscb = {
+      comboxRender: DropdownButtonRatelistComponent,
     }
   }
 
@@ -42,6 +46,7 @@ export class RateListComponent implements OnInit {
     });
 
     this.BindDropdown()
+    this.billingCycleList = [];
   }
 
   async BindDropdown() {
@@ -107,13 +112,14 @@ export class RateListComponent implements OnInit {
 
   onSubmit(formData: any) {
     // console.log(this.RateServiceList);
-    console.log(formData)
+    // console.log(formData)
     this.submitted = true;
     if (this.form.invalid) {
       //alert("invalid form");
       return;
     }
     else {
+      this.HideSaveButton = false;
       this.ServiceDatasave = {
         RateListID: this.RateListID,
         RateID: this.form.value.RateID,
@@ -134,6 +140,8 @@ export class RateListComponent implements OnInit {
           // this.ResetForm();
           this.BindDropdown();
           this.form.reset()
+          this.form.controls['RateID'].setErrors(null);
+          this.form.controls['ProductID'].setErrors(null);
           // window.location.reload();
         },
         error => { console.error(error); }
@@ -223,51 +231,51 @@ export class RateListComponent implements OnInit {
       hide: true
     },
     {
-      headerName: 'RateDescription ',
+      headerName: 'RateDescription',
       field: 'RateDescription',
 
       minWidth: 200,
     },
     {
-      headerName: 'ProductID ',
+      headerName: 'ProductID',
       field: 'ProductID',
 
       hide: true
 
     },
     {
-      headerName: 'ProductName ',
+      headerName: 'ProductName',
       field: 'ProductName',
       filter: 'agTextColumnFilter', floatingFilter: true,
       minWidth: 200,
 
     },
     {
-      headerName: 'ServiceName ',
+      headerName: 'ServiceName',
       field: 'ServiceName',
       filter: 'agTextColumnFilter', floatingFilter: true,
       minWidth: 200,
     },
     {
-      headerName: 'Rate ',
+      headerName: 'Rate',
       field: 'Rate',
       filter: 'agTextColumnFilter', floatingFilter: true,
       minWidth: 170,
     },
     {
-      headerName: 'L_Rate ',
+      headerName: 'L_Rate',
       field: 'L_Rate',
       filter: 'agTextColumnFilter', floatingFilter: true,
       minWidth: 170,
     },
     {
-      headerName: 'TaxDescription ',
+      headerName: 'TaxDescription',
       field: 'TaxDescription',
       filter: 'agTextColumnFilter', floatingFilter: true,
       minWidth: 200,
     },
     {
-      headerName: 'BillingCyclesName  ',
+      headerName: 'BillingCyclesName ',
       field: 'BillingCyclesName',
       filter: 'agTextColumnFilter', floatingFilter: true,
       minWidth: 170,
@@ -301,7 +309,15 @@ export class RateListComponent implements OnInit {
         }
       }
     },
-    { headerName: 'BillingCycleID ', field: 'BillingCycleID ', hide: false, filter: 'agNumberColumnFilter', floatingFilter: true },
+    {
+      headerName: 'BillingCycleID', field: 'BillingCycleID', minWidth: 50, cellRenderer: 'comboxRender',
+      cellRendererParams: {
+
+        //onClick: this.OnCancelledShifting.bind(this),
+        label: 'Click 1'
+      }
+
+    }
   ];
 
 
