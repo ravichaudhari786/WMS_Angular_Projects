@@ -22,6 +22,12 @@ export class StartupService {
 
   /** Load the application only after get the menu or other essential informations such as roles and permissions. */
   load(): Promise<any> {
+    debugger;
+   
+let strcollectionName=window.location.href;//reqInfo.collectionName;
+strcollectionName= strcollectionName.substring(strcollectionName.lastIndexOf("/") + 1, strcollectionName.length);
+strcollectionName=strcollectionName.replace("%20"," ");
+
     return new Promise((resolve, reject) => {
       this.token
         .change()
@@ -42,6 +48,44 @@ export class StartupService {
           // this.rolesSrv.addRolesWithPermissions({ ADMIN: permissions });
 
           resolve(null);
+debugger;
+
+let menu1=response.menu;
+let flg=false;
+for(var i=0;i<menu1.length;i++){
+    for(var j=0;j<menu1[0].children.length;j++){
+          if(strcollectionName==menu1[i].children[j].name){
+            flg=true;
+            break;
+          }
+          else{
+            continue;
+          }
+      }
+if(flg==true){
+break;
+}
+else{
+continue;
+}
+}      
+
+//const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
+if(flg==false && strcollectionName!="dashboard"){
+
+// this.dialog.alert("you are not autherised for this page");
+alert("you are not autherised for this page");
+
+//toastr.info("you are not autherised for this page")
+
+//router.navigateByUrl('/dashboard');
+window.location.href="/dashboard";
+
+return false;
+}else{
+return false;
+}
+          
         });
     });
   }

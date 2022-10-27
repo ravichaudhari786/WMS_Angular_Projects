@@ -37,7 +37,7 @@ const MODULES: any[] = [
   NgSelectModule,
   NgxPermissionsModule,
   ToastrModule,
-  TranslateModule,
+  TranslateModule
 ];
 const COMPONENTS: any[] = [BreadcrumbComponent, PageHeaderComponent, ErrorCodeComponent];
 const COMPONENTS_DYNAMIC: any[] = [];
