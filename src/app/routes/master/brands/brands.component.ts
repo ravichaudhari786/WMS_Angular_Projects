@@ -100,10 +100,11 @@ export class BrandsComponent implements OnInit {
   // }
 
   editProduct(record: any) {
-   this.BrandID=record.BrandID;
+    console.log(record)
+   this.BrandID=record.rowData.BrandID;
     const item: any = {
-      BrandName: record.BrandName,
-      CreatedBy: record.CreatedBy,
+      BrandName: record.rowData.BrandName,
+      CreatedBy: record.rowData.CreatedBy,
       IsActive: true
     }
     this.form.setValue(item);
