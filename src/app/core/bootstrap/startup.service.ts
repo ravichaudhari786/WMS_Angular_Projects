@@ -85,18 +85,10 @@ continue;
 //const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
 if(flg==false && strcollectionName!="dashboard"){
 
-// this.dialog.alert("you are not autherised for this page");
-//alert("you are not autherised for this page")
-//this.toastr.info("you are not autherised for this page")
-//toastr.info("you are not autherised for this page")
-//this.injector.get(ToastrService).info("hi","hi");
-//let toastr=this.injector.get<ToastrService>(ToastrService);
-//toastr.info("hi","hi");
-
-//router.navigateByUrl('/dashboard');
-this.injector.get<ToastrService>(ToastrService).info("you are not autherised for this page","Info");
+/
+this.injector.get<ToastrService>(ToastrService).info("you are not authorised for this page","Info");
 this.delay(2000,this.route);
-//window.location.href="/dashboard";
+
 
 return false;
 }else{
