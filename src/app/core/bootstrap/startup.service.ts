@@ -85,7 +85,6 @@ continue;
 //const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
 if(flg==false && strcollectionName!="dashboard"){
 
-/
 this.injector.get<ToastrService>(ToastrService).info("you are not authorised for this page","Info");
 this.delay(2000,this.route);
 
