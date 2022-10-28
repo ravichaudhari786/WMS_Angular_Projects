@@ -1,23 +1,35 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { iif, of, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { MenuService } from './menu.service';
 import { TokenService } from '../authentication/token.service';
 import { NgxPermissionsService, NgxRolesService } from 'ngx-permissions';
-
+import { ToastrService}  from 'ngx-toastr';
+import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
+
 export class StartupService {
   private menuReq$ = this.http.get('/me/menu');
-
+  delay(ms: number,route:Router) {
+    // return new Promise( resolve => setTimeout(resolve, ms) );
+    setTimeout(() => {
+      //window.location.href="/dashboard";
+      this.route.navigateByUrl('/dashboard');
+  }, ms);
+  }
   constructor(
+    private injector: Injector,
+    private route:Router,
     private token: TokenService,
     private menu: MenuService,
     private http: HttpClient,
     private permissonsSrv: NgxPermissionsService,
     private rolesSrv: NgxRolesService
+    
+   
   ) {}
 
   /** Load the application only after get the menu or other essential informations such as roles and permissions. */
@@ -74,12 +86,17 @@ continue;
 if(flg==false && strcollectionName!="dashboard"){
 
 // this.dialog.alert("you are not autherised for this page");
-alert("you are not autherised for this page");
-
+//alert("you are not autherised for this page")
+//this.toastr.info("you are not autherised for this page")
 //toastr.info("you are not autherised for this page")
+//this.injector.get(ToastrService).info("hi","hi");
+//let toastr=this.injector.get<ToastrService>(ToastrService);
+//toastr.info("hi","hi");
 
 //router.navigateByUrl('/dashboard');
-window.location.href="/dashboard";
+this.injector.get<ToastrService>(ToastrService).info("you are not autherised for this page","Info");
+this.delay(2000,this.route);
+//window.location.href="/dashboard";
 
 return false;
 }else{
