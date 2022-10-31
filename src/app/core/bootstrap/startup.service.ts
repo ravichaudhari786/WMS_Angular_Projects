@@ -90,16 +90,17 @@ else if(strcollectionName=="login"){
   return true;
 }
 //if(flg==false && strcollectionName!="dashboard"){
-else{
+else if(flg==false){
+  
 this.injector.get<ToastrService>(ToastrService).info("you are not authorised for this page","Info");
 this.delay(2000,this.route);
 
 
 return false;
 }
-// else{
-// return false;
-// }
+else{
+return false;
+}
           
         });
     });
