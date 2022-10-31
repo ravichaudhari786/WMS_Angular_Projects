@@ -82,6 +82,7 @@ continue;
 }
 }      
 
+
 //const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
 if(strcollectionName=="dashboard"){
   return true;
