@@ -86,7 +86,7 @@ continue;
 if(strcollectionName=="dashboard"){
   return true;
 }
-else if(strcollectionName=="login"){
+else if(strcollectionName=="login"){ 
   return true;
 }
 //if(flg==false && strcollectionName!="dashboard"){
