@@ -178,8 +178,15 @@ export class InMemDataService implements OnInit,  InMemoryDbService {
       });
     }
 
-    if (is1(reqInfo,this.store.get("currentUser"), 'me')) {
+
+    //if (is1(reqInfo,this.store.get("currentUser"), 'me')) {
+      if (is(reqInfo, 'me')) {
 // debugger;
+
+    //if (is1(reqInfo,this.store.get("currentUser"), 'me')) {
+      if (is(reqInfo, 'me')) {
+debugger;
+
      
 
       return reqInfo.utils.createResponse$(() => {
