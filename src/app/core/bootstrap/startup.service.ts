@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 @Injectable({
   providedIn: 'root',
 })
-
 export class StartupService {
   private menuReq$ = this.http.get('/me/menu');
   delay(ms: number,route:Router) {
@@ -31,7 +30,6 @@ export class StartupService {
     
    
   ) {}
-
   /** Load the application only after get the menu or other essential informations such as roles and permissions. */
   load(): Promise<any> {
     debugger;
@@ -39,7 +37,6 @@ export class StartupService {
 let strcollectionName=window.location.href;//reqInfo.collectionName;
 strcollectionName= strcollectionName.substring(strcollectionName.lastIndexOf("/") + 1, strcollectionName.length);
 strcollectionName=strcollectionName.replace("%20"," ");
-
     return new Promise((resolve, reject) => {
       this.token
         .change()
@@ -50,22 +47,18 @@ strcollectionName=strcollectionName.replace("%20"," ");
         .subscribe((response: any) => {
          // this.menu.addNamespace(response.menu, 'menu');
           this.menu.set(response.menu);
-
           // Demo purposes only. You can add essential permissions and roles with your own cases.
           const permissions = ['canAdd', 'canDelete', 'canEdit', 'canRead'];
           this.permissonsSrv.loadPermissions(permissions);
           this.rolesSrv.addRoles({ ADMIN: permissions });
-
           // Tips: Alternative you can add permissions with role at the same time.
           // this.rolesSrv.addRolesWithPermissions({ ADMIN: permissions });
-
           resolve(null);
 debugger;
-
 let menu1=response.menu;
 let flg=false;
 for(var i=0;i<menu1.length;i++){
-    for(var j=0;j<menu1[0].children.length;j++){
+    for(var j=0;j<menu1[i].children.length;j++){
           if(strcollectionName==menu1[i].children[j].name){
             flg=true;
             break;
@@ -95,8 +88,6 @@ else if(flg==false){
   
 this.injector.get<ToastrService>(ToastrService).info("you are not authorised for this page","Info");
 this.delay(2000,this.route);
-
-
 return false;
 }
 else{
