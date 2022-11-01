@@ -60,17 +60,18 @@ function fetch1(url: string) {
   return content;
 }
 function is1(reqInfo: RequestInfo,userid:string,path: string) {
-  debugger;
+  // debugger;
   let flg=false;
 const strbaseapi=reqInfo.apiBase;
 let strcollectionName=window.location.href;//reqInfo.collectionName;
 strcollectionName= strcollectionName.substring(strcollectionName.lastIndexOf("/") + 1, strcollectionName.length);
 strcollectionName=strcollectionName.replace("%20"," ");
 
+
 const currentUser=JSON.parse(userid);
 if(strbaseapi!="me" && strcollectionName!="menu"){
   let menu=fetch1(environment.baseUrl+"/Menu/GetMenu?userid="+currentUser.userId);
-
+console.log(menu);
        menu=JSON.parse(menu);
       for(var i=0;i<menu.menu.length;i++){
           for(var j=0;j<menu.menu[0].children.length;j++){
@@ -162,7 +163,7 @@ export class InMemDataService implements OnInit,  InMemoryDbService {
     }
 
     if (is(reqInfo, 'me/menu')) {
-      debugger;
+      // debugger;
       return reqInfo.utils.createResponse$(() => {
         const { headers, url } = reqInfo;
         
@@ -178,7 +179,7 @@ export class InMemDataService implements OnInit,  InMemoryDbService {
     }
 
     if (is1(reqInfo,this.store.get("currentUser"), 'me')) {
-debugger;
+// debugger;
      
 
       return reqInfo.utils.createResponse$(() => {

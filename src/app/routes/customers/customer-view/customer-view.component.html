@@ -13,7 +13,7 @@
                                 <div class="form-group">
                                     <label>Customer Name</label>
                                     <select class="form-control form-control-sm" formControlName="cbCustomerID"
-                                        id="cbCustomerID">
+                                        id="cbCustomerID" (change)="OnCustomerSelect($event)">
                                         <option value="null" disabled>Select</option>
                                         <option *ngFor="let c of customerList" value={{c.CustomerID}}>
                                             {{c.CustomerName}}</option>
@@ -34,19 +34,72 @@
                         <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)"
                             [(selectedIndex)]="tab">
 
-                            <mat-tab label="Inward"> Content 1 </mat-tab>
-                            <mat-tab label="Pending Stock"> Content 2 </mat-tab>
-                            <mat-tab label="Pending DO"> Content 3 </mat-tab>
-                            <mat-tab label="Product Stock"> Content 4</mat-tab>
-                            <mat-tab label="Storage Stock"> Content 5 </mat-tab>
-                            <mat-tab label="Dispatch"> Content 6 </mat-tab>
-                            <mat-tab label="outward"> Content 7 </mat-tab>
-                            <mat-tab label="LotNoTrack"> Content 8 </mat-tab>
+                            <mat-tab label="Inward">
+                                <div style="height: 100%; box-sizing: border-box; " class="grid">
+                                    <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
+                                        [rowData]="CustomerData" [columnDefs]="customerdatacolumn">
+                                    </ag-grid-angular>
+                                </div>
+
+                            </mat-tab>
+                            <mat-tab label="Pending Stock">
+                                <div style="height: 100%; box-sizing: border-box; " class="grid">
+                                    <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
+                                        [rowData]="CustomerData" [columnDefs]="PendingStockDataColumn">
+                                    </ag-grid-angular>
+                                </div>
+                            </mat-tab>
+
+                            <mat-tab label="Pending DO">
+                                <div style="height: 100%; box-sizing: border-box; " class="grid">
+                                    <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
+                                        [rowData]="CustomerData" [columnDefs]="PendingDOColumn">
+                                    </ag-grid-angular>
+                                </div>
+                            </mat-tab>
+
+                            <mat-tab label="Product Stock">
+                                <div style="height: 100%; box-sizing: border-box; " class="grid">
+                                    <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
+                                        [rowData]="CustomerData" [columnDefs]="ProductStockDO">
+                                    </ag-grid-angular>
+                                </div>
+                            </mat-tab>
+
+                            <mat-tab label="Storage Stock">
+                                <div style="height: 100%; box-sizing: border-box; " class="grid">
+                                    <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
+                                        [rowData]="CustomerData" [columnDefs]="StorageStockColumn">
+                                    </ag-grid-angular>
+                                </div>
+                            </mat-tab>
+
+                            <mat-tab label="Dispatch">
+                                <div style="height: 100%; box-sizing: border-box; " class="grid">
+                                    <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
+                                        [rowData]="CustomerData" [columnDefs]="DispatchColumn">
+                                    </ag-grid-angular>
+                                </div>
+                            </mat-tab>
+
+                            <mat-tab label="Outward">
+                                <div style="height: 100%; box-sizing: border-box; " class="grid">
+                                    <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
+                                        [rowData]="CustomerData" [columnDefs]="OutWardColumn">
+                                    </ag-grid-angular>
+                                </div>
+                            </mat-tab>
+
+                            <mat-tab label="LotNoTrack">
+                                Content 8 </mat-tab>
 
 
 
                         </mat-tab-group>
                     </div>
+
+
+
                 </form>
             </div>
 

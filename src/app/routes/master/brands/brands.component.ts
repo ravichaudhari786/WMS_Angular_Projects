@@ -49,8 +49,9 @@ export class BrandsComponent implements OnInit {
 
   async BindDropdown() {
     this.api.get('/Brands/Brand_Select').subscribe(
-      data => { this.BrandsList = data;  },
-      error => { console.error(error); }
+      data => { this.BrandsList = data; console.log(data); },
+      error1 => { //console.error('abc');//.error(error); 
+      }
     );
   }
 

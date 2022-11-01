@@ -51,8 +51,8 @@ export class RateListComponent implements OnInit {
 
   async BindDropdown() {
     this.api.get('/Rate/RateList_Select').subscribe(
-      data => { this.rateList = data, console.log("rateList", data) },
-      error => { console.error(error); }
+      data => { this.rateList = data; //console.log("rateList", data)
+     }, error => { console.error(error); }
     );
 
     this.api.get('/RateMaster/Rate_Select').subscribe(
