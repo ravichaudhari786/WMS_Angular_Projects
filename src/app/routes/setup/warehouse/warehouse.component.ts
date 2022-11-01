@@ -54,12 +54,13 @@ export class WarehouseComponent implements OnInit {
     this.BindDropdown();
   }
   async BindDropdown() {
+    debugger;
     // const WarehouseData={
     //   id: this.currentUser.warehouseId,
     //   userid:0,
     //   companyId :0
     //   };
-    this.api.get('/Company_Select/Company_Select').subscribe(
+    this.api.get('/Company_Select/Company_Select1').subscribe(
       data => { this.CompanyList = data; console.log("company", data) },
       error => { console.error(error); }
     );
@@ -68,7 +69,7 @@ export class WarehouseComponent implements OnInit {
       error => { console.error(error); }
     );
 
-    this.api.get('/Warehouse/api/Warehouse').subscribe(
+    this.api.get('/Warehouse/GetWarehouse').subscribe(
       data => { this.WarehouseList = data; console.log(data); },
       error => { console.error(error); }
     );

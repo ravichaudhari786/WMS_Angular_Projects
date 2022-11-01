@@ -51,7 +51,7 @@ export class CompanyComponent implements OnInit {
 
 
   async BindDropdown() {
-    this.api.get('/Company_Select/Company_Select').subscribe(
+    this.api.get('/Company_Select/Company_Select1').subscribe(
       data => { this.CompanyList = data; console.log("company",data) },
       error => { console.error(error); }
     );

@@ -65,7 +65,7 @@ debugger;
 let menu1=response.menu;
 let flg=false;
 for(var i=0;i<menu1.length;i++){
-    for(var j=0;j<menu1[0].children.length;j++){
+    for(var j=0;j<menu1[i].children.length;j++){
           if(strcollectionName==menu1[i].children[j].name){
             flg=true;
             break;
