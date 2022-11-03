@@ -60,7 +60,7 @@ function fetch1(url: string) {
   return content;
 }
 function is1(reqInfo: RequestInfo,userid:string,path: string) {
-  debugger;
+  // debugger;
   let flg=false;
 const strbaseapi=reqInfo.apiBase;
 let strcollectionName=window.location.href;//reqInfo.collectionName;
@@ -162,7 +162,7 @@ export class InMemDataService implements OnInit,  InMemoryDbService {
     }
 
     if (is(reqInfo, 'me/menu')) {
-      debugger;
+      // debugger;
       return reqInfo.utils.createResponse$(() => {
         const { headers, url } = reqInfo;
         
@@ -179,7 +179,7 @@ export class InMemDataService implements OnInit,  InMemoryDbService {
 
     //if (is1(reqInfo,this.store.get("currentUser"), 'me')) {
       if (is(reqInfo, 'me')) {
-debugger;
+// debugger;
      
 
       return reqInfo.utils.createResponse$(() => {

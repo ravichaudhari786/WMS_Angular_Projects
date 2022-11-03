@@ -6,25 +6,53 @@
         <mat-card>
             <!-- <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab"> -->
             <div>
+
                 <form [formGroup]="form">
                     <div class="col-md-12">
+
+
                         <div class="row pt-2">
-                            <div class="col-sm-12 col-md-12">
+                            <div class="col-sm-6 col-md-6">
                                 <div class="form-group">
                                     <label>Customer Name</label>
                                     <select class="form-control form-control-sm" formControlName="cbCustomerID"
-                                        id="cbCustomerID" (change)="OnCustomerSelect($event)">
+                                        id="cbCustomerID"
+                                        [ngClass]="{'is-invalid': submitted && f.cbCustomerID.invalid}">
                                         <option value="null" disabled>Select</option>
                                         <option *ngFor="let c of customerList" value={{c.CustomerID}}>
                                             {{c.CustomerName}}</option>
                                     </select>
 
                                 </div>
-
                             </div>
+
+                            <div class="col-sm-md-6">
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-sm" (click)="OnCustomerSelect($event)"
+                                        style="width: 85px !important; margin-top: 20px !important;  margin-left: 80px !important;">
+                                        Search
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-md-6">
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-sm" (click)="ExportExcel()" type=""
+                                        style="width: 85px !important; margin-top: 20px !important;  margin-left: 100px !important;">
+                                        Export
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-2">
+
+                           
 
 
                         </div>
+
+
+
 
 
                     </div>
@@ -35,17 +63,18 @@
                             [(selectedIndex)]="tab">
 
                             <mat-tab label="Inward">
-                                <div style="height: 100%; box-sizing: border-box; " class="grid">
+                                <div style="height: 100%; box-sizing: border-box; " id="grid">
                                     <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
-                                        [rowData]="CustomerData" [columnDefs]="customerdatacolumn">
+                                        [rowData]="InwardData" [columnDefs]="inwardDatadatacolumn"
+                                        (gridReady)="onGridReady($event)">
                                     </ag-grid-angular>
                                 </div>
 
                             </mat-tab>
                             <mat-tab label="Pending Stock">
                                 <div style="height: 100%; box-sizing: border-box; " class="grid">
-                                    <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
-                                        [rowData]="CustomerData" [columnDefs]="PendingStockDataColumn">
+                                    <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" id="griddata"
+                                        [rowData]="PendingStockData" [columnDefs]="PendingStockDataColumn">
                                     </ag-grid-angular>
                                 </div>
                             </mat-tab>
@@ -53,7 +82,7 @@
                             <mat-tab label="Pending DO">
                                 <div style="height: 100%; box-sizing: border-box; " class="grid">
                                     <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
-                                        [rowData]="CustomerData" [columnDefs]="PendingDOColumn">
+                                        [rowData]="PendingDOData" [columnDefs]="PendingDOColumn">
                                     </ag-grid-angular>
                                 </div>
                             </mat-tab>
@@ -61,7 +90,7 @@
                             <mat-tab label="Product Stock">
                                 <div style="height: 100%; box-sizing: border-box; " class="grid">
                                     <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
-                                        [rowData]="CustomerData" [columnDefs]="ProductStockDO">
+                                        [rowData]="ProductStockData" [columnDefs]="ProductStockDO">
                                     </ag-grid-angular>
                                 </div>
                             </mat-tab>
@@ -69,7 +98,7 @@
                             <mat-tab label="Storage Stock">
                                 <div style="height: 100%; box-sizing: border-box; " class="grid">
                                     <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
-                                        [rowData]="CustomerData" [columnDefs]="StorageStockColumn">
+                                        [rowData]="StorageStockData" [columnDefs]="StorageStockColumn">
                                     </ag-grid-angular>
                                 </div>
                             </mat-tab>
@@ -77,7 +106,7 @@
                             <mat-tab label="Dispatch">
                                 <div style="height: 100%; box-sizing: border-box; " class="grid">
                                     <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
-                                        [rowData]="CustomerData" [columnDefs]="DispatchColumn">
+                                        [rowData]="DispatchData" [columnDefs]="DispatchColumn">
                                     </ag-grid-angular>
                                 </div>
                             </mat-tab>
@@ -85,13 +114,41 @@
                             <mat-tab label="Outward">
                                 <div style="height: 100%; box-sizing: border-box; " class="grid">
                                     <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
-                                        [rowData]="CustomerData" [columnDefs]="OutWardColumn">
+                                        [rowData]="OutwardData" [columnDefs]="OutWardColumn">
                                     </ag-grid-angular>
                                 </div>
                             </mat-tab>
 
                             <mat-tab label="LotNoTrack">
-                                Content 8 </mat-tab>
+                                <div class="col-md-12">
+                                    <div class="row pt-2">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Lot No</label>
+                                                <input type="text" class=" form-control form-control-sm"
+                                                    formControlName="Lotno" id="Lotno" />
+
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <button class="btn btn-primary btn-sm" (click)="OnLotNoSelect($event)"
+                                                    style="width: 85px !important; margin-top: 20px !important;">
+                                                    Search
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+
+                                    <div>
+                                        <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
+                                            [rowData]="LotNoData" [columnDefs]="LotColumn">
+                                        </ag-grid-angular>
+                                    </div>
+                                </div>
+                            </mat-tab>
 
 
 

@@ -32,7 +32,7 @@ export class StartupService {
   ) {}
   /** Load the application only after get the menu or other essential informations such as roles and permissions. */
   load(): Promise<any> {
-    debugger;
+    // debugger;
    
 let strcollectionName=window.location.href;//reqInfo.collectionName;
 strcollectionName= strcollectionName.substring(strcollectionName.lastIndexOf("/") + 1, strcollectionName.length);
@@ -54,7 +54,7 @@ strcollectionName=strcollectionName.replace("%20"," ");
           // Tips: Alternative you can add permissions with role at the same time.
           // this.rolesSrv.addRolesWithPermissions({ ADMIN: permissions });
           resolve(null);
-debugger;
+// debugger;
 let menu1=response.menu;
 let flg=false;
 for(var i=0;i<menu1.length;i++){
