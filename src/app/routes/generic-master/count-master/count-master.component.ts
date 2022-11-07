@@ -45,12 +45,14 @@ export class CountMasterComponent implements OnInit {
 
   onSubmit(formData: any) {
     console.log(formData.value);
+    console.log(this.form);
     this.submitted = true;
     if (this.form.invalid) {
-
+      
       return;
     }
     else {
+      //this.form.setValidators(Validators.required);
       const count = {
         CountID: this.CountsID,
         Counts: this.form.value.txtCountName,
@@ -60,12 +62,34 @@ export class CountMasterComponent implements OnInit {
       this.api.post('/CountMaster/CountMaster_Insert_Update', count).subscribe(
         data => {
 
-          this.dialog.alert(data[0], '', () => { window.location.reload(); });
+         
+
+          this.dialog.alert(data[0], '', );
+          
+          // //this.form.controls['txtCountName'].setErrors(null);
+          // this.form.controls['txtCountName'].clearValidators();
+          // this.form.controls['txtCountName'].setValue('');
+          this.BindinfDataToList();
+          //
+          // this.form.controls['chIsActive'].setErrors(null);
+          
+        
+         
+
+         
+          this.form.reset()
+          this.form.invalid;
+         // this.ngOnInit();
+          console.log("form",this.form.value)
+         
         },
         error => { console.error(error); }
       );
+      
     }
+   
   }
+
   onReset() {
     this.form.reset();
     this.CountsID = 0;
