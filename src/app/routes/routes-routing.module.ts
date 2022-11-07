@@ -61,6 +61,12 @@ const routes: Routes = [
         import('./customers/customers.module').then(m=>m.CustomersModule),
 
       },
+      {
+        path:'Accounts',
+        loadChildren:() =>
+        import('./accounts/accounts.module').then(m=>m.AccountsModule),
+
+      },
     ],
   },
   {
