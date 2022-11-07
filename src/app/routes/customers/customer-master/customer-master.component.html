@@ -1,546 +1,579 @@
 <div fxLayout="row wrap" class="matero-row">
     <div fxFlex="100" class="matero-col">
         <mat-card>
-            <mat-tab-group animationDuration="1ms" (selectedIndexChange)="tabCustomerschange($event)" [(selectedIndex)]="tab" >
-                <mat-tab  label="AddCustomer">
-        <h4>Customer</h4>
-        <form [formGroup]="form" (ngSubmit)="onSubmit(form)" label="Customer Master">
-            <div class="col-md-12">
-                <div class="row pt-2">
+            <mat-tab-group animationDuration="1ms" (selectedIndexChange)="tabCustomerchange($event)"
+                [(selectedIndex)]="tab">
+                <mat-tab label="AddCustomer">
+                    <h4>Customer</h4>
 
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>Initial</label>
-                            <select class="form-control form-control-sm" formControlName="NameIniID"
-                                id="NameIniID">
-                                <option value="null" disabled>Select</option>
-                                <option *ngFor="let c of NameIniList" value={{c.NameIniID}}>{{c.NameIniID}}</option>
-                            </select>
-                        </div>
-                    </div>
+                    <form [formGroup]="form" (ngSubmit)="OnSubmit(form)" label="Customer Master">
+                        <div class="col-md-12">
+                            <div class="row pt-2">
 
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>Customer Name</label>
-                            <input type="text" autocomplete="off"
-                                [ngClass]="{'is-invalid': submitted && f.txtCustomerName.invalid}"
-                                formControlName="txtCustomerName" id="txtCustomerName"
-                                class=" form-control form-control-sm" />
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label>Initial</label>
+                                        <select class="form-control form-control-sm" formControlName="NameIniID"
+                                            id="NameIniID">
+                                            <option value="null" disabled>Select</option>
 
-                            <div *ngIf="submitted && f.txtCustomerName.invalid" class="invalid-feedback">
-                                <span *ngIf="f.txtCustomerName?.errors?.required">Enter Customer Name</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 col-md-3">
-                        <label>Customer code</label>
-                        <input type="text" autocomplete="off"
-                            [ngClass]="{'is-invalid': submitted && f.txtCustomerCode.invalid}"
-                            formControlName="txtCustomerCode" id="txtCustomerCode"
-                            class=" form-control form-control-sm" />
-
-                        <div *ngIf="submitted && f.txtCustomerCode.invalid" class="invalid-feedback">
-                            <span *ngIf="f.txtCustomerCode?.errors?.required">Enter Customer Code</span>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>Customer Type</label>
-                            <select class="form-control form-control-sm"
-                                [ngClass]="{'is-invalid': submitted && f.CustomerTypeID.invalid}"
-                                formControlName="CustomerTypeID" id="CustomerTypeID">
-                                <option value="null" disabled>Select </option>
-                                <option *ngFor="let i of CustomerTypelist" value={{i.CustomerTypeID}}>
-                                    {{i.CustomerTypeID}}</option>
-                            </select>
-                            <div *ngIf="submitted && f.CustomerTypeID.invalid" class="invalid-feedback">
-                                <div *ngIf="f.CustomerTypeID.errors?.required">Select Customer Type</div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-
-
-
-                
-                <div class="row pt-1">
-
-                    <div class="col-sm-3 col-md-3">
-                        <label>Group Name </label>
-                        <input type="text" autocomplete="off"
-                            [ngClass]="{'is-invalid': submitted && f.txtGroupName.invalid}"
-                            formControlName="txtGroupName" id="txtGroupName" class=" form-control form-control-sm" />
-
-                        <div *ngIf="submitted && f.txtGroupName.invalid" class="invalid-feedback">
-                            <span *ngIf="f.txtGroupName?.errors?.required">Enter Group Name</span>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" autocomplete="off"
-                                [ngClass]="{'is-invalid': submitted && f.email.invalid}" formControlName="email"
-                                id="email" class=" form-control form-control-sm" />
-
-                            <div *ngIf="submitted && f.emailinvalid" class="invalid-feedback">
-                                <span *ngIf="f.email?.errors?.required">Enter Email</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 col-md-3">
-                        <label>Pan No</label>
-                        <input type="text" autocomplete="off"
-                            [ngClass]="{'is-invalid': submitted && f.txtPanNo.invalid}" formControlName="txtPanNo"
-                            id="txtPanNo" class=" form-control form-control-sm" />
-
-                        <div *ngIf="submitted && f.txtPanNo.invalid" class="invalid-feedback">
-                            <span *ngIf="f.txtPanNo?.errors?.required">Enter PAN NO</span>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 col-md-3">
-                        <label>GST NO</label>
-                        <input type="text" autocomplete="off"
-                            [ngClass]="{'is-invalid': submitted && f.txtGSTNO.invalid}" formControlName="txtGSTNO"
-                            id="txtGSTNO" class=" form-control form-control-sm" />
-
-                        <div *ngIf="submitted && f.txtGSTNO.invalid" class="invalid-feedback">
-                            <span *ngIf="f.txtGSTNO?.errors?.required">Enter GST NO</span>
-                        </div>
-                    </div>
-
-                </div>
-
-
-
-                
-                <div class="row pt-1">
-                    <div class="col-sm-3 col-md-3">
-                        <label>FSSAI NO</label>
-                        <input type="text" autocomplete="off"
-                            [ngClass]="{'is-invalid': submitted && f.txtFSSAI.invalid}" formControlName="txtFSSAI"
-                            id="txtFSSAI" class=" form-control form-control-sm" />
-
-                        <div *ngIf="submitted && f.txtFSSAI.invalid" class="invalid-feedback">
-                            <span *ngIf="f.txtFSSAI?.errors?.required">Enter FSSAI NO</span>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>State</label>
-                            <select class="form-control form-control-sm"
-                                [ngClass]="{'is-invalid': submitted && f.StateID.invalid}" formControlName="StateID"
-                                id="StateID">
-                                <option value="null" disabled>Select </option>
-                                <option *ngFor="let i of Statelist" value={{i.StateID}}>{{i.StateID}}</option>
-                            </select>
-                            <div *ngIf="submitted && f.StateID.invalid" class="invalid-feedback">
-                                <div *ngIf="f.StateID.errors?.required">Select State</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>City</label>
-                            <select class="form-control form-control-sm"
-                                [ngClass]="{'is-invalid': submitted && f.CityID.invalid}" formControlName="CityID"
-                                id="CityID">
-                                <option value="null" disabled>Select </option>
-                                <option *ngFor="let i of Citylist" value={{i.CityID}}>{{i.CityID}}</option>
-                            </select>
-                            <div *ngIf="submitted && f.CityID.invalid" class="invalid-feedback">
-                                <div *ngIf="f.CityID.errors?.required">Select City</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>GST State Code</label>
-                            <input type="text" autocomplete="off"
-                                [ngClass]="{'is-invalid': submitted && f.txtGSTStateCode.invalid}"
-                                formControlName="txtGSTStateCode" id="txtGSTStateCode"
-                                class=" form-control form-control-sm" />
-
-                            <div *ngIf="submitted && f.txtGSTStateCode" class="invalid-feedback">
-                                <span *ngIf="f.txtGSTStateCode?.errors?.required">Enter GST State Code</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="row pt-1">
-                    <div class="col-sm-12 col-md-12">
-                        <div class="form-group">
-                            <label>Address 1</label>
-                            <input type="text" autocomplete="off"
-                                [ngClass]="{'is-invalid': submitted && f.txtAddress1.invalid}"
-                                formControlName="txtAddress1" id="txtAddress1" class=" form-control form-control-sm" />
-
-                            <div *ngIf="submitted && f.txtAddress1.invalid" class="invalid-feedback">
-                                <span *ngIf="f.txtAddress1?.errors?.required">Enter Address1</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row pt-1">
-                    <div class="col-sm-12 col-md-8">
-                        <div class="form-group">
-                            <label>Address 2</label>
-                            <input type="text" autocomplete="off"
-                                [ngClass]="{'is-invalid': submitted && f.txtAddress2.invalid}"
-                                formControlName="txtAddress2" id="txtAddress2" class=" form-control form-control-sm" />
-
-                            <div *ngIf="submitted && f.txtAddress2.invalid" class="invalid-feedback">
-                                <span *ngIf="f.txtAddress2?.errors?.required">Enter Address2</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-12 col-md-4">
-                        <div class="form-group">
-                            <label>PIN CODE</label>
-                            <input type="text" autocomplete="off"
-                                [ngClass]="{'is-invalid': submitted && f.txtPINCODE.invalid}"
-                                formControlName="txtPINCODE" id="txtPINCODE" class=" form-control form-control-sm" />
-
-                            <div *ngIf="submitted && f.txtPINCODE.invalid" class="invalid-feedback">
-                                <span *ngIf="f.txtPINCODE?.errors?.required">Enter PIN CODE</span>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row pt-1">
-
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>Storage Discount %</label>
-                            <input type="text" autocomplete="off"
-                                [ngClass]="{'is-invalid': submitted && f.txtStorageDiscount.invalid}"
-                                formControlName="txtStorageDiscount" id="txtStorageDiscount"
-                                class=" form-control form-control-sm" />
-
-                            <div *ngIf="submitted && f.txtStorageDiscount.invalid" class="invalid-feedback">
-                                <span *ngIf="f.txtStorageDiscount?.errors?.required">Enter Storage Discount</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>Labour Discount %</label>
-                            <input type="text" autocomplete="off"
-                                [ngClass]="{'is-invalid': submitted && f.txtLabourDiscount.invalid}"
-                                formControlName="txtLabourDiscount" id="txtLabourDiscount"
-                                class=" form-control form-control-sm" />
-
-                            <div *ngIf="submitted && f.txtLabourDiscount.invalid" class="invalid-feedback">
-                                <span *ngIf="f.txtLabourDiscount?.errors?.required">Enter Labour Discount</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 col-md-3">
-                        <label>Reffered By</label>
-                        <input type="text" autocomplete="off"
-                            [ngClass]="{'is-invalid': submitted && f.txtRefferedBy.invalid}"
-                            formControlName="txtRefferedBy" id="txtRefferedBy" class=" form-control form-control-sm" />
-
-                        <div *ngIf="submitted && f.txtRefferedBy.invalid" class="invalid-feedback">
-                            <span *ngIf="f.txtRefferedBy?.errors?.required">Enter Reffered By</span>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>Rate List</label>
-                            <select class="form-control form-control-sm"
-                                [ngClass]="{'is-invalid': submitted && f.RateListID.invalid}"
-                                formControlName="RateListID" id="RateListID">
-                                <option value="null" disabled>Select </option>
-                                <option *ngFor="let i of Ratelist" value={{i.RateListID}}>{{i.RateListID}}</option>
-                            </select>
-                            <div *ngIf="submitted && f.RateListID.invalid" class="invalid-feedback">
-                                <div *ngIf="f.RateListID.errors?.required">Select Rate</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr>
-                <br>
-
-              
-                <h5>Customer Contact</h5>
-                <div class="row pt-2">
-                    
-                   
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>Contact Name</label>
-                            <input type="text" autocomplete="off"
-                                [ngClass]="{'is-invalid': submitted && f.txtContactName.invalid}"
-                                formControlName="txtContactName" id="txtContactName"
-                                class=" form-control form-control-sm" />
-
-                            <div *ngIf="submitted && f.txtContactName.invalid" class="invalid-feedback">
-                                <span *ngIf="f.txtContactName?.errors?.required">Enter Contact Name</span>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="emails" autocomplete="off"
-                                [ngClass]="{'is-invalid': submitted && f.emails.invalid}" formControlName="emails"
-                                id="emails" class=" form-control form-control-sm" />
-
-                            <div *ngIf="submitted && f.emails.invalid" class="invalid-feedback">
-                                <span *ngIf="f.emails?.errors?.required">Enter Email</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row pt-2">
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>Department</label>
-                            <select class="form-control form-control-sm"
-                                [ngClass]="{'is-invalid': submitted && f.DepartmentID.invalid}"
-                                formControlName="DepartmentID" id="DepartmentID">
-                                <option value="null" disabled>Select </option>
-                                <option *ngFor="let i of Departmentlist" value={{i.DepartmentID}}>{{i.DepartmentID}}
-                                </option>
-                            </select>
-                            <div *ngIf="submitted && f.DepartmentID.invalid" class="invalid-feedback">
-                                <div *ngIf="f.DepartmentID.errors?.required">Select Department</div>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>Designation</label>
-                            <select class="form-control form-control-sm"
-                                [ngClass]="{'is-invalid': submitted && f.DesignationID.invalid}"
-                                formControlName="DesignationID" id="DesignationID">
-                                <option value="null" disabled>Select </option>
-                                <option *ngFor="let i of Designationlist" value={{i.DesignationID}}>{{i.DesignationID}}
-                                </option>
-                            </select>
-                            <div *ngIf="submitted && f.DesignationID.invalid" class="invalid-feedback">
-                                <div *ngIf="f.DesignationID.errors?.required">Select Designation</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                    <div class="row pt-2">
-
-                        <div class="col-sm-3 col-md-3">
-                            <div class="form-group">
-                                <label>Mobile No</label>
-                                <input type="text" autocomplete="off"
-                                    [ngClass]="{'is-invalid': submitted && f.txtMobileNo.invalid}"
-                                    formControlName="txtMobileNo" id="txtMobileNo"
-                                    class=" form-control form-control-sm" />
-
-                                <div *ngIf="submitted && f.txtMobileNo.invalid" class="invalid-feedback">
-                                    <span *ngIf="f.txtMobileNo?.errors?.required">Enter Mobile No</span>
+                                            <option value="Mr.">Mr.</option>
+                                            <option value="Mrs.">Mrs.</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.NameIniID.invalid" class="invalid-feedback">
+                                            <div *ngIf="f.NameIniID.errors?.required">Select Initial</div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="col-sm-3 col-md-3">
-                            <div class="form-group">
-                                <label>Contact No</label>
-                                <input type="text" autocomplete="off"
-                                    [ngClass]="{'is-invalid': submitted && f.txtContactNo.invalid}"
-                                    formControlName="txtContactNo" id="txtContactNo"
-                                    class=" form-control form-control-sm" />
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label>Customer Name</label>
+                                        <input type="text" autocomplete="off"
+                                            [ngClass]="{'is-invalid': submitted && f.txtCustomerName.invalid}"
+                                            formControlName="txtCustomerName" id="txtCustomerName"
+                                            class=" form-control form-control-sm" />
 
-                                <div *ngIf="submitted && f.txtContactNo.invalid" class="invalid-feedback">
-                                    <span *ngIf="f.txtContactNo?.errors?.required">Enter Contact No</span>
+                                        <div *ngIf="submitted && f.txtCustomerName.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.txtCustomerName?.errors?.required">Enter Customer Name</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <label>Customer code</label>
+                                    <input type="text" autocomplete="off"
+                                        [ngClass]="{'is-invalid': submitted && f.txtCustomerCode.invalid}"
+                                        formControlName="txtCustomerCode" id="txtCustomerCode"
+                                        class=" form-control form-control-sm" />
+
+                                    <div *ngIf="submitted && f.txtCustomerCode.invalid" class="invalid-feedback">
+                                        <span *ngIf="f.txtCustomerCode?.errors?.required">Enter Customer Code</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label>Customer Type</label>
+                                        <select class="form-control form-control-sm"
+                                            [ngClass]="{'is-invalid': submitted && f.CustomerTypeID.invalid}"
+                                            formControlName="CustomerTypeID" id="CustomerTypeID">
+                                            <option value="null" disabled>Select </option>
+                                            <option *ngFor="let i of CustomerTypelist" value={{i.CustomerTypeID}}>
+                                                {{i.CustomerType}}</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.CustomerTypeID.invalid" class="invalid-feedback">
+                                            <div *ngIf="f.CustomerTypeID.errors?.required">Select Customer Type</div>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
-                        </div>
 
-                      </div>
-                      <div class="row pt-2">
-                        <div class="col-sm-3 col-md-3">
-                            <div class="form-group">
-                                <label>Send SMS</label>
-                                <input type="checkbox" style="margin-top: 30px !important; margin-left: 2px !important;"
-                                    formControlName="SendSms" id="SendSms" class="form-check-input" />
+
+
+
+
+                            <div class="row pt-1">
+
+                                <div class="col-sm-3 col-md-3">
+                                    <label>Group Name </label>
+                                    <input type="text" autocomplete="off"
+                                        [ngClass]="{'is-invalid': submitted && f.txtGroupName.invalid}"
+                                        formControlName="txtGroupName" id="txtGroupName"
+                                        class=" form-control form-control-sm" />
+
+                                    <div *ngIf="submitted && f.txtGroupName.invalid" class="invalid-feedback">
+                                        <span *ngIf="f.txtGroupName?.errors?.required">Enter Group Name</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" autocomplete="off"
+                                            [ngClass]="{'is-invalid': submitted && f.email.invalid}"
+                                            formControlName="email" id="email" class=" form-control form-control-sm" />
+
+                                        <div *ngIf="submitted && f.emailinvalid" class="invalid-feedback">
+                                            <span *ngIf="f.email?.errors?.required">Enter Email</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <label>Pan No</label>
+                                    <input type="text" autocomplete="off"
+                                        [ngClass]="{'is-invalid': submitted && f.txtPanNo.invalid}"
+                                        formControlName="txtPanNo" id="txtPanNo"
+                                        class=" form-control form-control-sm" />
+
+                                    <div *ngIf="submitted && f.txtPanNo.invalid" class="invalid-feedback">
+                                        <span *ngIf="f.txtPanNo?.errors?.required">Enter PAN NO</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <label>GST NO</label>
+                                    <input type="text" autocomplete="off"
+                                        [ngClass]="{'is-invalid': submitted && f.txtGSTNO.invalid}"
+                                        formControlName="txtGSTNO" id="txtGSTNO"
+                                        class=" form-control form-control-sm" />
+
+                                    <div *ngIf="submitted && f.txtGSTNO.invalid" class="invalid-feedback">
+                                        <span *ngIf="f.txtGSTNO?.errors?.required">Enter GST NO</span>
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
-                        <div class="col-sm-3 col-md-3">
-                            <div class="form-group">
-                                <label>Send Email</label>
-                                <input type="checkbox" style="margin-top: 30px !important; margin-left: 2px !important;"
-                                    formControlName="SendEmail" id="SendEmail" class="form-check-input" />
+
+
+
+
+                            <div class="row pt-1">
+                                <div class="col-sm-3 col-md-3">
+                                    <label>FSSAI NO</label>
+                                    <input type="text" autocomplete="off"
+                                        [ngClass]="{'is-invalid': submitted && f.txtFSSAI.invalid}"
+                                        formControlName="txtFSSAI" id="txtFSSAI"
+                                        class=" form-control form-control-sm" />
+
+                                    <div *ngIf="submitted && f.txtFSSAI.invalid" class="invalid-feedback">
+                                        <span *ngIf="f.txtFSSAI?.errors?.required">Enter FSSAI NO</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label>State</label>
+                                        <select class="form-control form-control-sm"
+                                            [ngClass]="{'is-invalid': submitted && f.StateID.invalid}"
+                                            formControlName="StateID" id="StateID">
+                                            <option value="null" disabled>Select </option>
+                                            <option *ngFor="let i of Statelist" value={{i.StateID}}>{{i.State}}</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.StateID.invalid" class="invalid-feedback">
+                                            <div *ngIf="f.StateID.errors?.required">Select State</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label>City</label>
+                                        <select class="form-control form-control-sm"
+                                            [ngClass]="{'is-invalid': submitted && f.CityID.invalid}"
+                                            formControlName="CityID" id="CityID">
+                                            <option value="null" disabled>Select </option>
+                                            <option *ngFor="let i of Citylist" value={{i.CityID}}>{{i.City}}</option>
+                                        </select>
+                                        <div *ngIf="submitted && f.CityID.invalid" class="invalid-feedback">
+                                            <div *ngIf="f.CityID.errors?.required">Select City</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label>GST State Code</label>
+                                        <input type="text" autocomplete="off"
+                                            [ngClass]="{'is-invalid': submitted && f.txtGSTStateCode.invalid}"
+                                            formControlName="txtGSTStateCode" id="txtGSTStateCode"
+                                            class=" form-control form-control-sm" />
+
+                                        <div *ngIf="submitted && f.txtGSTStateCode" class="invalid-feedback">
+                                            <span *ngIf="f.txtGSTStateCode?.errors?.required">Enter GST State
+                                                Code</span>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
-                        </div>
 
-                    </div>
-                </div>
-                    
-                <div class="row">
 
-                    <div class="col-md-6">
-                        <button type="submit" [hidden]="!HideAddButton" [value]="submitted"
-                            class="btn btn-primary btn-sm"
-                            style="width: 85px !important; margin-top: 20px !important;">
-                           Add </button>
-                    </div>
+                            <div class="row pt-1">
+                                <div class="col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <label>Address 1</label>
+                                        <input type="text" autocomplete="off"
+                                            [ngClass]="{'is-invalid': submitted && f.txtAddress1.invalid}"
+                                            formControlName="txtAddress1" id="txtAddress1"
+                                            class=" form-control form-control-sm" />
 
-                </div>
+                                        <div *ngIf="submitted && f.txtAddress1.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.txtAddress1?.errors?.required">Enter Address1</span>
+                                        </div>
+                                    </div>
+                                </div>
 
-                <hr>
-
-                <h5>Customer Documents</h5>
-                <div class="row pt-2">
-                    
-                   
-                    <div class="col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <label>Document Name</label>
-                            <input type="text" autocomplete="off"
-                                [ngClass]="{'is-invalid': submitted && f.txtDocumentName.invalid}"
-                                formControlName="txtDocumentName" id="txtDocumentName"
-                                class=" form-control form-control-sm" />
-
-                            <div *ngIf="submitted && f.txtDocumentName.invalid" class="invalid-feedback">
-                                <span *ngIf="f.txtDocumentName?.errors?.required">Enter Document Name</span>
                             </div>
+
+                            <div class="row pt-1">
+                                <div class="col-sm-12 col-md-8">
+                                    <div class="form-group">
+                                        <label>Address 2</label>
+                                        <input type="text" autocomplete="off"
+                                            [ngClass]="{'is-invalid': submitted && f.txtAddress2.invalid}"
+                                            formControlName="txtAddress2" id="txtAddress2"
+                                            class=" form-control form-control-sm" />
+
+                                        <div *ngIf="submitted && f.txtAddress2.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.txtAddress2?.errors?.required">Enter Address2</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-md-4">
+                                    <div class="form-group">
+                                        <label>PIN CODE</label>
+                                        <input type="text" autocomplete="off"
+                                            [ngClass]="{'is-invalid': submitted && f.txtPINCODE.invalid}"
+                                            formControlName="txtPINCODE" id="txtPINCODE"
+                                            class=" form-control form-control-sm" />
+
+                                        <div *ngIf="submitted && f.txtPINCODE.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.txtPINCODE?.errors?.required">Enter PIN CODE</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row pt-1">
+
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label>Storage Discount %</label>
+                                        <input type="text" autocomplete="off"
+                                            [ngClass]="{'is-invalid': submitted && f.txtStorageDiscount.invalid}"
+                                            formControlName="txtStorageDiscount" id="txtStorageDiscount"
+                                            class=" form-control form-control-sm" />
+
+                                        <div *ngIf="submitted && f.txtStorageDiscount.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.txtStorageDiscount?.errors?.required">Enter Storage
+                                                Discount</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label>Labour Discount %</label>
+                                        <input type="text" autocomplete="off"
+                                            [ngClass]="{'is-invalid': submitted && f.txtLabourDiscount.invalid}"
+                                            formControlName="txtLabourDiscount" id="txtLabourDiscount"
+                                            class=" form-control form-control-sm" />
+
+                                        <div *ngIf="submitted && f.txtLabourDiscount.invalid" class="invalid-feedback">
+                                            <span *ngIf="f.txtLabourDiscount?.errors?.required">Enter Labour
+                                                Discount</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <label>Reffered By</label>
+                                    <input type="text" autocomplete="off"
+                                        [ngClass]="{'is-invalid': submitted && f.txtRefferedBy.invalid}"
+                                        formControlName="txtRefferedBy" id="txtRefferedBy"
+                                        class=" form-control form-control-sm" />
+
+                                    <div *ngIf="submitted && f.txtRefferedBy.invalid" class="invalid-feedback">
+                                        <span *ngIf="f.txtRefferedBy?.errors?.required">Enter Reffered By</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <div class="form-group">
+                                        <label>Rate List</label>
+                                        <select class="form-control form-control-sm"
+                                            [ngClass]="{'is-invalid': submitted && f.RateID.invalid}"
+                                            formControlName="RateID" id="RateID">
+                                            <option value="null" disabled>Select </option>
+                                            <option *ngFor="let i of Ratelist" value={{i.RateID}}>{{i.RateDescription}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && f.RateID.invalid" class="invalid-feedback">
+                                            <div *ngIf="f.RateID.errors?.required">Select Rate</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <br>
+
+
+                            <div class="row">
+                                <div class="col-6  container-border">
+                                    <h5>Customer Contact</h5>
+
+                                    <div class="row pt-2">
+
+
+                                        <div class="col-sm-3 col-md-6">
+                                            <div class="form-group">
+                                                <label>Contact Name</label>
+                                                <input type="text" autocomplete="off"
+                                                    [ngClass]="{'is-invalid': submitted && f.txtContactName.invalid}"
+                                                    formControlName="txtContactName" id="txtContactName"
+                                                    class=" form-control form-control-sm" />
+
+                                                <div *ngIf="submitted && f.txtContactName.invalid"
+                                                    class="invalid-feedback">
+                                                    <span *ngIf="f.txtContactName?.errors?.required">Enter Contact
+                                                        Name</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-sm-3 col-md-6">
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                <input type="emails" autocomplete="off"
+                                                    [ngClass]="{'is-invalid': submitted && f.emails.invalid}"
+                                                    formControlName="emails" id="emails"
+                                                    class=" form-control form-control-sm" />
+
+                                                <div *ngIf="submitted && f.emails.invalid" class="invalid-feedback">
+                                                    <span *ngIf="f.emails?.errors?.required">Enter Email</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row pt-2">
+                                        <div class="col-sm-3 col-md-6">
+                                            <div class="form-group">
+                                                <label>Department</label>
+                                                <select class="form-control form-control-sm"
+                                                    [ngClass]="{'is-invalid': submitted && f.DepartmentID.invalid}"
+                                                    formControlName="DepartmentID" id="DepartmentID">
+                                                    <option value="null" disabled>Select </option>
+                                                    <option *ngFor="let i of Departmentlist" value={{i.DepartmentID}}>
+                                                        {{i.DepartmentName}}
+                                                    </option>
+                                                </select>
+                                                <div *ngIf="submitted && f.DepartmentID.invalid"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="f.DepartmentID.errors?.required">Select Department</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+
+                                        <div class="col-sm-3 col-md-6">
+                                            <div class="form-group">
+                                                <label>Designation</label>
+                                                <select class="form-control form-control-sm"
+                                                    [ngClass]="{'is-invalid': submitted && f.DesignationID.invalid}"
+                                                    formControlName="DesignationID" id="DesignationID">
+                                                    <option value="null" disabled>Select </option>
+                                                    <option *ngFor="let i of Designationlist" value={{i.DesignationID}}>
+                                                        {{i.DesignationName}}
+                                                    </option>
+                                                </select>
+                                                <div *ngIf="submitted && f.DesignationID.invalid"
+                                                    class="invalid-feedback">
+                                                    <div *ngIf="f.DesignationID.errors?.required">Select Designation
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row pt-2">
+
+                                        <div class="col-sm-3 col-md-6">
+                                            <div class="form-group">
+                                                <label>Mobile No</label>
+                                                <input type="text" autocomplete="off"
+                                                    [ngClass]="{'is-invalid': submitted && f.txtMobileNo.invalid}"
+                                                    formControlName="txtMobileNo" id="txtMobileNo"
+                                                    class=" form-control form-control-sm" />
+
+                                                <div *ngIf="submitted && f.txtMobileNo.invalid"
+                                                    class="invalid-feedback">
+                                                    <span *ngIf="f.txtMobileNo?.errors?.required">Enter Mobile No</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3 col-md-6">
+                                            <div class="form-group">
+                                                <label>Contact No</label>
+                                                <input type="text" autocomplete="off"
+                                                    [ngClass]="{'is-invalid': submitted && f.txtContactNo.invalid}"
+                                                    formControlName="txtContactNo" id="txtContactNo"
+                                                    class=" form-control form-control-sm" />
+
+                                                <div *ngIf="submitted && f.txtContactNo.invalid"
+                                                    class="invalid-feedback">
+                                                    <span *ngIf="f.txtContactNo?.errors?.required">Enter Contact
+                                                        No</span>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-sm-3 col-md-3">
+                                            <div class="form-group">
+                                                <label>Send SMS</label>
+                                                <input type="checkbox"
+                                                    style="margin-top: 30px !important; margin-left: 2px !important;"
+                                                    formControlName="SendSms" id="SendSms" class="form-check-input" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3 col-md-3">
+                                            <div class="form-group">
+                                                <label>Send Email</label>
+                                                <input type="checkbox"
+                                                    style="margin-top: 30px !important; margin-left: 2px !important;"
+                                                    formControlName="SendEmail" id="SendEmail"
+                                                    class="form-check-input" />
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-md-3">
+                                            <button type="button" (click)="OnAddClick()" class="btn btn-secondary"
+                                                style="width: 85px !important; margin-top: 20px !important;">
+                                                Add </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div></div>
+                                <div class="col-6">
+                                    <h5>Documents</h5>
+                                    <mat-tab-group>
+                                        <mat-tab label="Documents">
+                                           
+                                            <div class="row pt-2">
+
+                                                <div class="col-sm-4 col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Document</label>
+                                                        <select class="form-control form-control-sm"
+                                                            formControlName="txtDocumentName" id="txtDocumentName">
+                                                            <option value="null" disabled>Select</option>
+                                                            <option *ngFor="let c of rowDataDock" value={{c.DocID}}>
+                                                                {{c.DockName}}</option>
+                                                        </select>
+
+                                                        <div *ngIf="submitted && f.txtDocumentName.invalid"
+                                                            class="invalid-feedback">
+                                                            <div *ngIf="f.txtDocumentName.errors?.required">Select
+                                                                Document Type </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-4 col-md-4">
+                                                    <div class="form-group">
+                                                        <label>File Path</label>
+                                                        <input type="text" autocomplete="off" readonly
+                                                            [ngClass]="{'is-invalid': submitted && f.txtDocumentpath.invalid}"
+                                                            formControlName="txtDocumentpath" id="txtDocumentpath"
+                                                            class=" form-control form-control-sm" />
+
+                                                        <div *ngIf="submitted && f.txtDocumentpath.invalid"
+                                                            class="invalid-feedback">
+                                                            <span *ngIf="f.txtDocumentpath?.errors?.required">Select
+                                                                File</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-3 col-md-3">
+                                                    <div class="form-group">
+                                                        <label></label>
+                                                        <input class="hidden-input form-control-sm"
+                                                            (change)="onFilechange($event)" formControlName="UploadFile"
+                                                            multiple accept="image/*" type="file" id="UploadFile">
+
+                                                        <div *ngIf="submitted && f.UploadFile.invalid"
+                                                            class="invalid-feedback">
+                                                            <span *ngIf="f.UploadFile?.errors?.required">Choose
+                                                                File</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 col-md-6">
+                                                    <div class="form-group">
+                                                        <button type="button" (click)="OnAddFileClick()"
+                                                    class="btn btn-secondary"
+                                                    style="width: 100px !important; margin-top: 20px !important;">AddFile</button>
+                                                        </div>
+                                                        </div>
+
+
+                                            </div>
+                                        </mat-tab>
+
+                                        <mat-tab label="Documents List">
+                                            <div class="col-md-12">
+                                                <mtx-grid style="height: 300px" [data]="CustomerDocumentlist1" #gridlist
+                                                    [columns]="CustomerDocumentListcolumns" [loading]="false"
+                                                    [columnResizable]="true" [multiSelectable]="false"
+                                                    [rowSelectable]="false" [hideRowSelectionCheckbox]="false"
+                                                    [rowHover]="true" [rowStriped]="false" [showToolbar]="true"
+                                                    [toolbarTitle]="'Customer Document list'" [columnHideable]="false"
+                                                    [columnMovable]="true" [expandable]="false" [pageOnFront]="true"
+                                                    [showPaginator]="false" [pageSizeOptions]="[10,20,50,100,500]"
+                                                    [pageIndex]="0" [pageSize]="0">
+                                                </mtx-grid>
+                                            </div>
+
+
+                                        </mat-tab>
+                                    </mat-tab-group>
+                                </div>
+                            </div>
+                         </div>
+                         <hr>
+                         <div class="col-12">
+
+                            <mtx-grid [data]="CustomerDetailList" #gridlist123 [columns]="CustomerListcolumns"
+                                [loading]="false" [columnResizable]="true" [multiSelectable]="false"
+                                [rowSelectable]="false" [hideRowSelectionCheckbox]="false" [rowHover]="true"
+                                [rowStriped]="false" [showToolbar]="false" [toolbarTitle]="'Detail List'"
+                                [columnHideable]="false" [columnMovable]="true" [expandable]="false"
+                                [pageOnFront]="true" [showPaginator]="false" [pageSizeOptions]="[10,20,50,100,500]"
+                                [pageIndex]="0" (dblclick)="onRowDblclicked(gridlist123,$event)">
+                            </mtx-grid>
                         </div>
-                    </div>
-
-                  
 
 
-                    <div>
-                        <label for="image_uploads">Choose image</label>
-                        <input
-                          type="file"
-                          id="image_uploads"
-                          name="image_uploads"
-                          accept=".jpg, .jpeg, .png"
-                          multiple />
-                      </div>
-                      <div class="preview">
-                        <p>No files currently selected for upload</p>
-                      </div>
-                      <div>
-
-                        
-
-
-                        <button>Submit</button>
-                      </div>
-                      </div>
-
-                     
-                      <div class="input-group">
-                        <input type="file" id="fileUploadField" style="display: none;">
-                        <input type="text" id="fileNameDisplayField" class="form-control" 
-                        ng-model="vm.uploadFileName" placeholder="File to Upload" readonly="readonly">
-                        <div class="input-group-addon btn btn-default" 
-                        ng-click="vm.clickSelectFile()"><i class="glyphicon glyphicon-file"></i></div>
-                     </div>
-
-                     
-                        
                         <div class="row">
 
                             <div class="col-md-6">
-                                <button type="submit" [hidden]="!HideSaveButton" [value]="submitted"
-                                    class="btn btn-primary btn-sm"
-                                    style="width: 85px !important; margin-top: 20px !important;">
+                                <button type="submit" class="btn btn-secondary btn-sm"
+                                    style="width: 100px !important; margin-top: 20px !important;">
                                     Save </button>
                             </div>
 
                         </div>
 
-                        <div class="row">
 
-                            <div class="col-md-12">
-                                <mtx-grid style="height: 300px" [data]="CustomerTypelist" #gridlist [columns]="CustomerListcolumns"
-                                [loading]="false" [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="false"
-                                [hideRowSelectionCheckbox]="false" [rowHover]="true" [rowStriped]="false" [showToolbar]="true"
-                                [toolbarTitle]="'Contact List'" [columnHideable]="false" [columnMovable]="true"
-                                [expandable]="false" [pageOnFront]="true" [showPaginator]="true"
-                                [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0" [pageSize]="0">
-                            </mtx-grid>
-                            </div>
+                    </form>
+                    <hr>
+                    <br>
+                     <ng-template #toolbarTpl>
+                        <input placeholder="Search">
+                    </ng-template>
 
-                        </div>
-                 
-            
-        </form>
-        <hr>
-        <br>
-        <div>
-          
+                </mat-tab>
+                <mat-tab label="Customer List">
+                 <br>
+                    <div>
 
-        </div>
-        
-    
-        <ng-template #toolbarTpl>
-          <input placeholder="Search">
-        </ng-template>
-    
-    </mat-tab>
-    <mat-tab label="Customer List">
-        <div class="form-control-sm" >
-          <label class="form-control-sm" >Filter  </label>
-          <input type="text" (keyup)="onKeyfilter(filtertext.value)" id="filtertext" #filtertext 
-          class="form-control-sm" />
-        </div>
-        <br>
-        <div style="height: 800px">
-        <mtx-grid
-        style="height: 790px"
-        [data]="CustomersList"
-        [columns]="columnsCustomersList"
-        [loading]="false"
-        [columnResizable]="true"
-        [multiSelectable]="false"
-        [rowSelectable]="false"
-        [hideRowSelectionCheckbox]="false"
-        [rowHover]="true"
-        [rowStriped]="false"
-        [showToolbar]="false"
-        [toolbarTitle]="CustomersList"
-        [columnHideable]="false"
-        [columnMovable]="true"
-        [expandable]="false"
-        [pageSizeOptions]="[10,20,50,100,500]"
-        [pageIndex]="0"
-        [pageOnFront]="false"
-        [showPaginator]="false"
-        [pageSize]="0" 
-        
-        >            
-        </mtx-grid>
-      </div>
-      </mat-tab>
-    </mat-tab-group>
-    </mat-card>   
-        </div>
+                      <ag-grid-angular style="width: 100%; height: 500px;" class="ag-theme-alpine"
+                        [rowData]="customerList" [columnDefs]="columnDefs"
+                        [frameworkComponents]="frameworkComponents">
+                      </ag-grid-angular>
+                </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card>
     </div>
+</div>

@@ -753,6 +753,7 @@ this.newDynamicInwardDetails={
 this.DetailList=this.InwardDetailList;
  this.DetailList.push(this.newDynamicInwardDetails);
  this.InwardDetailList=this.DetailList.slice();
+ console.log("this.InwardDetailList",this.InwardDetailList);
 
 ////--------------Inward Transfer
 // this.newDynamicInwardtransfer={

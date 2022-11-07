@@ -26,6 +26,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import{MaterialModule} from './material.module';
 import { AgGridModule } from 'ag-grid-angular';
 
+
 // Required for AOT compilation
 // export function TranslateHttpLoaderFactory(http: HttpClient) {
 //   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -44,7 +45,8 @@ import { AgGridModule } from 'ag-grid-angular';
     MaterialModule,
     //FormlyConfigModule.forRoot(),
     NgxPermissionsModule.forRoot(),
-    ToastrModule.forRoot(),AgGridModule.withComponents([]),
+    ToastrModule.forRoot(),
+    AgGridModule.withComponents([]),
     // TranslateModule.forRoot({
     //   loader: {
     //     provide: TranslateLoader,
