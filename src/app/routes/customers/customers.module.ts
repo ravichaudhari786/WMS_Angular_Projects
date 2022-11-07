@@ -4,27 +4,24 @@ import { SharedModule } from '@shared/shared.module';
 import { CustomersRoutingModule } from './customers-routing.module';
 import { CustomerMasterComponent } from './customer-master/customer-master.component';
 
-import { AgGridModule } from 'ag-grid-angular';
-import { CustomermastereditButtonComponent } from './customer-master/customermasteredit-button/customermasteredit-button.component';
 import { CustomerViewComponent } from './customer-view/customer-view.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { CustomerUsersComponent } from './customer-users/customer-users.component';
+import { CustomeruserEditButtonComponent } from './customer-users/customeruser-edit-button/customeruser-edit-button.component';
 
 
 @NgModule({
   declarations: [
     CustomerMasterComponent,
-    CustomermastereditButtonComponent,
-    CustomerMasterComponent,
     CustomerViewComponent,
+    CustomerUsersComponent,
+    CustomeruserEditButtonComponent
   ],
   imports: [
-    CommonModule,SharedModule,
-    CustomersRoutingModule,AgGridModule,
-    CommonModule,SharedModule,
+    CommonModule,
+    SharedModule,
     CustomersRoutingModule,
     AgGridModule.withComponents([]),
-
-
-
 
   ]
 })

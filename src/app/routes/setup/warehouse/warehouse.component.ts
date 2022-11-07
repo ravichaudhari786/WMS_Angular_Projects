@@ -165,18 +165,18 @@ export class WarehouseComponent implements OnInit {
     
     const item: any = {
       // CompanyID:record.CompanyID,
-      Address1: record.Address1,
-      Address2: record.Address2,
-      Address3: record.Address3,
-     CBCityID: record.CityID==null? 0 :record.CityID,
+      Address1: record.rowData.Address1,
+      Address2: record.rowData.Address2,
+      Address3: record.rowData.Address3,
+     CBCityID: record.rowData.CityID==null? 0 :record.rowData.CityID,
       CompanyID:CompanyData[0].CompanyID,
-      EmailID: record.EmailID,
-      Fax: record.Fax,
-      IsActive: record.IsActive,
-      Logo: record.Logo,
-      TelNumber: record.TelNumber,
-      WareHouseCode: record.WareHouseCode,
-      WareHouseName: record.WareHouseName
+      EmailID: record.rowData.EmailID,
+      Fax: record.rowData.Fax,
+      IsActive: record.rowData.IsActive,
+      Logo: record.rowData.Logo,
+      TelNumber: record.rowData.TelNumber,
+      WareHouseCode: record.rowData.WareHouseCode,
+      WareHouseName: record.rowData.WareHouseName
 
 
     }

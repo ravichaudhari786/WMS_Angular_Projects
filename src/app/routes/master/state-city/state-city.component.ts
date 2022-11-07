@@ -170,9 +170,9 @@ export class StateCityComponent implements OnInit {
     const item: any = {
 
       // StateID: record.StateID,
-      State: record.State,
-      StateCode: record.StateCode,
-      GstCode: record.GstCode,
+      State: record.rowData.State,
+      StateCode: record.rowData.StateCode,
+      GstCode: record.rowData.GstCode,
       CreatedBy: this.currentUser.userId,
 
     }
@@ -188,8 +188,8 @@ export class StateCityComponent implements OnInit {
     const cityitem: any = {
 
       // CityID: record.CityID,
-      City: record.City,
-      CStateID: record.StateID,
+      City: record.rowData.City,
+      CStateID: record.rowData.StateID,
       CreatedBy: this.currentUser.userId,
 
     }

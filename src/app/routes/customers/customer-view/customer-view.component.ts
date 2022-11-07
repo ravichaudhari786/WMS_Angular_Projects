@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '@core';
 import { MtxDialog, MtxGridColumn } from '@ng-matero/extensions';
-import { ColDef, GridApi, ICellRendererComp, KeyCreatorParams,GridReadyEvent, } from 'ag-grid-community';
+import { ColDef, GridApi, ICellRendererComp, KeyCreatorParams, GridReadyEvent, } from 'ag-grid-community';
 import { HttpClient } from '@angular/common/http';
 import { User } from '@core/authentication/interface';
-import { AllModules } from '@ag-grid-enterprise/all-modules';
+import { jsPDF } from "jspdf";
 import { DatePipe } from '@angular/common';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
@@ -18,11 +18,12 @@ import * as XLSX from 'xlsx';
   styleUrls: ['./customer-view.component.scss']
 })
 export class CustomerViewComponent implements OnInit {
-  tab = 0;gridApi!: GridApi;
-  private currentUser: User;modules = AllModules;
-  customerList: any; InwardData: any;PendingStockData: any;PendingDOData: any;ProductStockData:any;
-  StorageStockData:any;DispatchData:any;OutwardData:any;LotNoData:any;
-  form!: FormGroup;submitted = false;  fileName= 'ExcelSheet.xlsx';
+  tab = 0; gridApi!: GridApi;
+  private currentUser: User;
+  customerList: any; InwardData: any; PendingStockData: any; PendingDOData: any; ProductStockData: any;
+  StorageStockData: any; DispatchData: any; OutwardData: any; LotNoData: any;
+  form!: FormGroup; submitted = false; fileName = 'ExcelSheet.xlsx';
+
   constructor(private fb: FormBuilder, private api: ApiService, public dialog: MtxDialog, private http: HttpClient) {
     this.currentUser = this.api.getCurrentUser();
   }
@@ -30,7 +31,7 @@ export class CustomerViewComponent implements OnInit {
   ngOnInit(): void {
     this.form = this.fb.group({
       cbCustomerID: ['', Validators.required],
-      Lotno:['', Validators.required]
+      Lotno: ['', Validators.required]
     });
     this.BindDropdown()
   }
@@ -51,66 +52,95 @@ export class CustomerViewComponent implements OnInit {
   get f() { return this.form.controls; }
 
   OnCustomerSelect(id: any) {
-    this.submitted = false;
+
+  
     const custData = {
       CustomerID: this.form.value.cbCustomerID,
       WarehouseID: this.currentUser.warehouseId,
       LotNo: "",
     };
+    if(this.form.value.cbCustomerID==null || this.form.value.cbCustomerID==""){
+      alert("Please .... Select Customer Name");
+      document?.getElementById("cbCustomerID")?.focus();
+      return;
+    }else
+    {
+     
 
-    this.api.post('/Customer/CustomerView_GetData', custData).subscribe(
+      this.api.post('/Customer/CustomerView_GetData', custData).subscribe(
 
-      data => {  console.log(data)
-        this.InwardData = data.Table;
-        this.PendingStockData = data.Table1;
-        this.PendingDOData = data.Table2;
-        this.ProductStockData = data.Table3;
-        this.StorageStockData = data.Table4;
-        this.DispatchData = data.Table7;
-        this.OutwardData = data.Table5;
-      },
-      error => { console.error(error); }
-    );
+        data => {
+          console.log(data)
+          this.InwardData = data.Table;
+          this.PendingStockData = data.Table1;
+          this.PendingDOData = data.Table2;
+          this.ProductStockData = data.Table3;
+          this.StorageStockData = data.Table4;
+          this.DispatchData = data.Table7;
+          this.OutwardData = data.Table5;
+        },
+        error => { console.error(error); }
+      );
+    
   }
+}
 
   OnLotNoSelect(id: any) {
-    const lotdata ={
+    const lotdata = {
       CustomerID: this.form.value.cbCustomerID,
       WarehouseID: this.currentUser.warehouseId,
       LotNo: this.form.value.Lotno,
     };
-    
+
 
     this.api.post('/Customer/CustomerView_GetData', lotdata).subscribe(
 
-      data => {  
+      data => {
         this.LotNoData = data.Table6;
-       
+
       },
       error => { console.error(error); }
     );
   }
 
 
-  
-    ExportExcel(): void
-    {
-     
-        console.log(this.InwardData);
-      const ws: XLSX.WorkSheet=XLSX.utils.json_to_sheet(this.InwardData);
-      const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-  
-      /* save to file */
-      XLSX.writeFile(wb, 'ExportAllData_Ind.xlsx');
-   
-    }
-    onGridReady(params:GridReadyEvent) {
-      this.gridApi = params.api;
-  
-     
-    }
-  
+
+  ExportExcel(): void {
+
+    console.log(this.InwardData);
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.InwardData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+    /* save to file */
+    XLSX.writeFile(wb, 'ExportAllData_Ind.xlsx');
+
+  }
+  // onGridReady(params: GridReadyEvent) {
+  //   this.gridApi = params.api;
+
+
+  // }
+
+
+
+  ExportPdf(): void {
+    console.log(this.InwardData);
+    const doc = new jsPDF(this.InwardData);
+    // const source = document.getElementById("content");
+
+    doc.save("abcd.pdf");
+
+
+  }
+
+
+
+
+
+
+
+
 
   inwardDatadatacolumn: ColDef[] = [
 
@@ -134,7 +164,7 @@ export class CustomerViewComponent implements OnInit {
       minWidth: 150,
       filter: 'agTextColumnFilter', floatingFilter: true,
     },
-   
+
     {
       headerName: 'StorageArea',
       field: 'StorageArea',
@@ -236,7 +266,7 @@ export class CustomerViewComponent implements OnInit {
       minWidth: 150,
       filter: 'agTextColumnFilter', floatingFilter: true,
     },
-    
+
     {
       headerName: 'StorageArea',
       field: 'StorageArea',
@@ -740,7 +770,7 @@ export class CustomerViewComponent implements OnInit {
       minWidth: 150,
       filter: 'agTextColumnFilter', floatingFilter: true,
     },
- 
+
   ]
 }
 

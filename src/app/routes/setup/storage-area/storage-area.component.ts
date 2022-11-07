@@ -167,29 +167,29 @@ export class StorageAreaComponent implements OnInit {
 
     const TempID = this.TempCatList.filter((x: any) => x.TemperatureCategory == record.TemperatureCategory);
     console.log(record);
-    this.StorageAreaID = record.StorageAreaID;
-    this.WareHouseID= record.WareHouseID;
+    this.StorageAreaID = record.rowData.StorageAreaID;
+    this.WareHouseID= record.rowData.WareHouseID;
     const item: any = {
 
-      AreaBreadth: record.AreaBreadth,
-      AreaHeight: record.AreaHeight,
-      AreaLength: record.AreaLength,
-      IsStorable: record.IsStorable,
-      IsTemparatureControlled: record.IsTemparatureControlled,
-      MaxTempareture: record.MaxTempareture,
-      MinTempareture: record.MinTempareture,
+      AreaBreadth: record.rowData.AreaBreadth,
+      AreaHeight: record.rowData.AreaHeight,
+      AreaLength: record.rowData.AreaLength,
+      IsStorable: record.rowData.IsStorable,
+      IsTemparatureControlled: record.rowData.IsTemparatureControlled,
+      MaxTempareture: record.rowData.MaxTempareture,
+      MinTempareture: record.rowData.MinTempareture,
       //ParentStorageAreaID: record.ParentStorageAreaID,
-      Preference: record.Preference,
-      Storage_Area_Name: record.Storage_Area_Name,
-      StorageAreaCode: record.StorageAreaCode,
+      Preference: record.rowData.Preference,
+      Storage_Area_Name: record.rowData.Storage_Area_Name,
+      StorageAreaCode: record.rowData.StorageAreaCode,
       //StorageAreaID: record.StorageAreaID,
       //StorageAreaMasterID: record.ParentStorageAreaID,
       //StorageAreaType: record.StorageAreaType,
       StorageAreaTypeID: 1,
-      StorageCapacity: record.StorageCapacity,
+      StorageCapacity: record.rowData.StorageCapacity,
       //StorageName: record.StorageName,
       //Storage_Area_Name: record.Storage_Area_Name,
-      TemperatureCategoryID: TempID[0].TemperatureCategoryID,//record.TemperatureCategoryID == null ? null : record.TemperatureCategoryID,
+      TemperatureCategoryID: record.rowData.TempID[0].TemperatureCategoryID,//record.TemperatureCategoryID == null ? null : record.TemperatureCategoryID,
       //WareHouseID: record.WareHouseID,
       //WareHouseName: record.WareHouseName,
       //createdBy: this.currentUser.userId,
