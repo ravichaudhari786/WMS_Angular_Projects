@@ -3,69 +3,71 @@
 <div fxLayout="row wrap" class="matero-row">
 
     <div fxFlex="100" class="matero-col">
-
-        <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
-            <div class="col-md-12">
-                <div class="row pt-2">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="company">Brand Name</label>
-                            <input type="text" autocomplete="off"
-                                [ngClass]="{ 'is-invalid': submitted && form.controls.BrandName.errors }"
-                                formControlName="BrandName" id="BrandName" class=" form-control form-control-sm" />
-                            <div *ngIf="submitted && form.controls.BrandName.errors" class="text-danger">
-                                <div *ngIf="form.controls.BrandName.errors.required">Brand Name is required
+        <mat-card>
+            <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
+                <mat-tab label="Brands">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+                        <div class="col-md-12">
+                            <div class="row pt-2">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="company">Brand Name</label>
+                                        <input type="text"
+                                            [ngClass]="{ 'is-invalid': submitted && form.controls.BrandName.errors }"
+                                            formControlName="BrandName" id="BrandName"
+                                            class=" form-control form-control-sm" autocomplete="off" />
+                                        <div *ngIf="submitted && form.controls.BrandName.errors" class="text-danger">
+                                            <div *ngIf="form.controls.BrandName.errors.required">Brand Name is required
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label>Is Active</label>
-                                <input type="checkbox" style="margin-top: 30px !important; margin-left: 2px !important;"
-                                    formControlName="IsActive" id="IsActive" class="form-check-input" />
+                            <div class="row pt-2">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-sm"[value]="submitted" [hidden]="!HideSaveButton"
+                                            style="width: 85px !important; margin-top: 20px !important;  margin-left: 200px !important;">
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-sm-6 col-md-3">
+                                    <div class="form-group">
+                                        <button type="reset" class="btn btn-primary btn-sm" (click)="ResetForm()"
+                                            style="width: 85px !important; margin-top: 20px !important ">
+                                            Reset
+                                        </button>
+                                    </div>
+                                </div> -->
                             </div>
+                            <!--/.col  click="onSubmit(form)"-->
+
+                            <!--/.row-->
                         </div>
+                    </form>
 
+                    <!-- <mtx-grid [data]="BrandsList" style="height: 600px" [columns]="columns" [loading]="false"
+                        [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="false"
+                        [hideRowSelectionCheckbox]="false" [rowHover]="true" [rowStriped]="false" [showToolbar]="false"
+                        [toolbarTitle]="'Detail List'" [columnHideable]="false" [columnMovable]="true"
+                        [expandable]="false" [pageOnFront]="true" [showPaginator]="false" [pageSize]="100"
+                        [pageIndex]="0">
+                    </mtx-grid> -->
 
-
-
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <button type="submit" [hidden]="!HideSaveButton" [value]="submitted"
-                                    class="btn btn-primary btn-sm"
-                                    style="width: 85px !important; margin-top: 20px !important;"> Save </button>
-                            </div>
-
-                        </div>
+                    <div style="height: 100%; box-sizing: border-box;">
+                        <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" [rowData]="BrandsList"
+                            [columnDefs]="columns" [frameworkComponents]="frameworkComponents">
+                        </ag-grid-angular>
                     </div>
 
-                </div>
-
-            </div>
-        </form>
-
-        <hr>
-        <br>
+                    
+                </mat-tab>
 
 
-
-        <div>
-            <mtx-grid style="height: 300px" [data]="BrandsList" #gridlist [columns]="columns" [loading]="false"
-                [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="false"
-                [hideRowSelectionCheckbox]="false" [rowHover]="true" [rowStriped]="false" [showToolbar]="true"
-                [toolbarTitle]="'Brand List'" [columnHideable]="false" [columnMovable]="true" [expandable]="false"
-                [pageOnFront]="true" [showPaginator]="true" [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0"
-                [pageSize]="0">
-            </mtx-grid>
-
-        </div>
-        <ng-template #toolbarTpl>
-            <input placeholder="Search">
-        </ng-template>
-
+            </mat-tab-group>
+        </mat-card>
     </div>
 
 </div>

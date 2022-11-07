@@ -8,13 +8,13 @@ import { ShiftingComponent } from './shifting/shifting.component';
 import {TransferComponent} from './transfer/transfer.component'
 
 const routes: Routes = [
-  { path: 'inward', component: InwardComponent },
-  { path: 'deliveryorder', component: DeliveryorderComponent },
-  { path: 'dispatch', component: DispatchComponent },
-  { path: 'dispatch', component: DispatchComponent },
-  { path: 'outward', component: OutwardComponent },
-  { path: 'shifting', component: ShiftingComponent },
-  { path: 'transfer', component: TransferComponent },
+  { path: 'Inward', component: InwardComponent },
+  { path: 'DeliveryOrder', component: DeliveryorderComponent },
+  
+  { path: 'Dispatch', component: DispatchComponent },
+  { path: 'Outward', component: OutwardComponent },
+  { path: 'Shifting', component: ShiftingComponent },
+  { path: 'Transfer', component: TransferComponent },
 ];
 
 @NgModule({

@@ -4,11 +4,12 @@
 
 export const environment = {
   production: false,
-  //baseUrl: 'https://localhost:44383/api',
-  baseUrl:'http://localhost:50191/api', 
+  baseUrl: 'http://localhost:50999/api',
+//  baseUrl:'http://localhost:50191/api', 
   //baseUrl:'http://localhost:50191/', 
   //baseUrl:'http://localhost:5281',  
   localUrl:'',
+  
   useHash: false,
   hmr: false,
 };
