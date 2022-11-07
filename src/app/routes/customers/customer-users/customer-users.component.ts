@@ -60,9 +60,14 @@ export class CustomerUsersComponent implements OnInit {
   }
 
   onSubmit(formData:any){
- 
+    this.submitted = true;
+    if (this.form.invalid) {
+
+      return;
+    }
+    else{
     this.SaveData = {
-      CustomerLoginID :0,
+      CustomerLoginID :this.CustomerLoginID,
       CustomerID : this.form.value.cbCustomerID,
       UserName : this.form.value.userName,
       Password : this.form.value.password,
@@ -81,11 +86,12 @@ export class CustomerUsersComponent implements OnInit {
       },
       error => { console.error(error); }
     );
+    }
   }
 
   editCustomerView(record: any) {
     console.log(record);
-   this.CustomerLoginID=record.rowData.CustomerLoginID;
+    this.CustomerLoginID = record.rowData.CustomerLoginID;
     const item: any = {
       cbCustomerID: record.rowData.CustomerID,
       userName: record.rowData.UserName,
@@ -149,6 +155,7 @@ export class CustomerUsersComponent implements OnInit {
       field: 'Password',
       sortable: true,
       minWidth: 80,
+      hide:true
     },
     {
       headerName: 'Is_Active',
