@@ -60,6 +60,7 @@
     "devextreme-angular": "21.2.6",
     "husky": "^8.0.1",
     "jquery": "^3.6.0",
+    "jspdf": "^2.5.1",
     "moment": "^2.29.3",
     "moment-timezone": "^0.5.33",
     "ngx-permissions": "^8.1.1",
@@ -69,6 +70,7 @@
     "rxjs": "~6.6.0",
     "screenfull": "^5.1.0",
     "tslib": "^2.3.0",
+    "xlsx": "^0.18.5",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -82,6 +84,7 @@
     "@types/jasmine": "~3.8.1",
     "@types/jasminewd2": "~2.0.10",
     "@types/jquery": "^3.5.14",
+    "@types/jspdf": "^2.0.0",
     "@types/node": "^16.4.10",
     "@types/parse5": "^5.0.3",
     "angular-cli-ghpages": "^1.0.0-rc.2",
