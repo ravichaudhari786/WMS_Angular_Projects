@@ -380,15 +380,8 @@ $.ajax({
   success: function (file) {
     debugger;
      
-  }
-  // ,xhr: function () {
-   
-  //     var fileXhr = $.ajaxSettings.xhr();
-  //     if (fileXhr.upload) {
-          
-  //     }
-  //     return fileXhr;
-  // }
+}
+
 });
 
 }
