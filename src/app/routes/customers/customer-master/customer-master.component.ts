@@ -366,14 +366,17 @@ if(event.target.files.length>0){
 $.ajax({
   //url: 'http://localhost:50191/GenricFileUpload.ashx',
   url:environment.FileUploadUrl,
-  crossDomain: true,
+  //crossDomain: true,
   type: 'POST',
-  xhrFields: { withCredentials: true },
+  //xhrFields: { withCredentials: false },
   data: data,
   cache: false,
   contentType: false,
   processData: false,
-  
+  headers: {
+    
+    'Access-Control-Allow-Origin': '*'
+        },
   success: function (file) {
     debugger;
      
