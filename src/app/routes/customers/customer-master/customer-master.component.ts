@@ -360,10 +360,10 @@ uploadfiledata(data:any){
     processData: false,  
     success: function (file) {
      
-     
+     $("#txtDocumentpath").val(file.url);
      //this.form.controls["txtDocumentpath"].setValue(file.url);
      //this.form.value.txtDocumentPath=file.url;
-    this.UploadFilePath=file.url;
+    //this.UploadFilePath=file.url;
     console.log(this.UploadFilePath);
       debugger;
        
