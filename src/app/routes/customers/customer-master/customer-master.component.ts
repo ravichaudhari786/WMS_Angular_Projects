@@ -14,8 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { ColDef,GridApi } from 'ag-grid-community';
 import { AgGridAngular} from "ag-grid-angular";
 import { CustomermastereditButtonComponent} from './customermasteredit-button/customermasteredit-button.component';
-
-
+import * as $ from 'jquery'
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-customer-master',
@@ -79,7 +79,11 @@ throw new Error('Method not implemented.');
   element:string='';
   rowDataDock:any;
   // private currentUser: User;
- constructor(private fb: FormBuilder,private api:ApiService,public dialog: MtxDialog, private modalService: NgbModal) { 
+ constructor(
+  private fb: FormBuilder,
+  private api:ApiService,
+  public dialog: MtxDialog,
+   private modalService: NgbModal) { 
     this.currentUser=this.api.getCurrentUser();
     this.frameworkComponents = {
       buttonRenderer: CustomermastereditButtonComponent,
@@ -338,15 +342,55 @@ BindCustomersList(){
 }
 
 //on file browse click take file fakepath and assign to txtDocumentpath form field
+
+
 onFilechange(event: any) {
+  debugger;
+if(event.target.files.length>0){
+  let data = new FormData();
+
+  for (let j = 0; j < event.target.files.length; j++) {
+   
+    let fileItem = event.target.files[j];
+    console.log(fileItem.name);
+    data.append('file', fileItem);
+  }
+
+  // this.api.post('/FileUplaod/Upload',data).subscribe(
+  //   data=>{
+  //   },
+  //   error=>{ console.error(error);}
+  // );
   
-  this.str1=event.target.value;
- 
-  this.form.controls['txtDocumentpath'].setValue(this.str1);
+
+$.ajax({
+  //url: 'http://localhost:50191/GenricFileUpload.ashx',
+  url:environment.FileUploadUrl,
+  crossDomain: true,
+  type: 'POST',
+  xhrFields: { withCredentials: true },
+  data: data,
+  cache: false,
+  contentType: false,
+  processData: false,
   
+  success: function (file) {
+    debugger;
+     
+  }
+  // ,xhr: function () {
+   
+  //     var fileXhr = $.ajaxSettings.xhr();
+  //     if (fileXhr.upload) {
+          
+  //     }
+  //     return fileXhr;
+  // }
+});
+
 }
 
-
+}
 ///grid row selection 
 onRowDblclicked(a:any,e:any)
 {
