@@ -471,18 +471,12 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-4 col-md-4">
-                                                    <div class="form-group">
+                                                    <div >
                                                         <label>File Path</label>
-                                                        <input type="text" autocomplete="off" readonly
-                                                            [ngClass]="{'is-invalid': submitted && f.txtDocumentpath.invalid}"
-                                                            formControlName="txtDocumentpath" id="txtDocumentpath"
-                                                            class=" form-control form-control-sm" />
+                                                        <input type="text" autocomplete="off" 
+                                                        [(ngModel)]="UploadFilePath"  formControlName="txtDocumentpath" id="txtDocumentpath"/>
 
-                                                        <div *ngIf="submitted && f.txtDocumentpath.invalid"
-                                                            class="invalid-feedback">
-                                                            <span *ngIf="f.txtDocumentpath?.errors?.required">Select
-                                                                File</span>
-                                                        </div>
+                                                       
                                                     </div>
                                                 </div>
 

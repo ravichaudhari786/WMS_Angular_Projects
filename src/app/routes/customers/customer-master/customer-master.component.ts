@@ -17,6 +17,7 @@ import { CustomermastereditButtonComponent} from './customermasteredit-button/cu
 import * as $ from 'jquery'
 import { environment } from '@env/environment';
 
+
 @Component({
   selector: 'app-customer-master',
   templateUrl: './customer-master.component.html',
@@ -26,6 +27,8 @@ export class CustomerMasterComponent implements OnInit {
 tabCustomerschange($event: number) {
 throw new Error('Method not implemented.');
 }
+UploadFilePath:string = '';
+
   form!: FormGroup; submitted = false; Reseted = false;
   frameworkComponents: any;
   customerList: any;
@@ -91,6 +94,7 @@ throw new Error('Method not implemented.');
   }
 
   ngOnInit(): void {
+    this.UploadFilePath="Please Select File";
     this.CustomerTypelist = [];
     ///initialisation of form fields also for validation
     this.form = this.fb.group({
@@ -343,6 +347,31 @@ BindCustomersList(){
 
 //on file browse click take file fakepath and assign to txtDocumentpath form field
 
+uploadfiledata(data:any){
+  $.ajax({
+    //url: 'http://localhost:50191/GenricFileUpload.ashx',
+    url:environment.FileUploadUrl,
+    //crossDomain: true,
+    type: 'POST',
+    //xhrFields: { withCredentials: false },
+    data: data,
+    cache: false,
+    contentType: false,
+    processData: false,  
+    success: function (file) {
+     
+     
+     //this.form.controls["txtDocumentpath"].setValue(file.url);
+     //this.form.value.txtDocumentPath=file.url;
+    this.UploadFilePath=file.url;
+    console.log(this.UploadFilePath);
+      debugger;
+       
+  }
+  
+  });
+}
+
 
 onFilechange(event: any) {
   debugger;
@@ -354,36 +383,9 @@ if(event.target.files.length>0){
     let fileItem = event.target.files[j];
     console.log(fileItem.name);
     data.append('file', fileItem);
-  }
-
-  // this.api.post('/FileUplaod/Upload',data).subscribe(
-  //   data=>{
-  //   },
-  //   error=>{ console.error(error);}
-  // );
+  }  
+  this.uploadfiledata(data);
   
-
-$.ajax({
-  //url: 'http://localhost:50191/GenricFileUpload.ashx',
-  url:environment.FileUploadUrl,
-  //crossDomain: true,
-  type: 'POST',
-  //xhrFields: { withCredentials: false },
-  data: data,
-  cache: false,
-  contentType: false,
-  processData: false,
-  headers: {
-    
-    'Access-Control-Allow-Origin': '*'
-        },
-  success: function (file) {
-    debugger;
-     
-}
-
-});
-
 }
 
 }
