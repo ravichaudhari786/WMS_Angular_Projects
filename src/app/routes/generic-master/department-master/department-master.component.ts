@@ -8,6 +8,8 @@ import { ApiService } from '@core';
 import { MtxDialog, MtxGridColumn } from '@ng-matero/extensions';
 import { count } from 'console';
 import { User } from '@core/authentication/interface';
+import { ColDef,GridApi } from 'ag-grid-community';
+import { DepartmentmastereditbuttonComponent } from './departmentmastereditbutton/departmentmastereditbutton.component';
 
 @Component({
   selector: 'app-department-master',
@@ -17,14 +19,20 @@ import { User } from '@core/authentication/interface';
 export class DepartmentMasterComponent implements OnInit {
   form!: FormGroup; submitted = false; Reseted = false;
   HideSaveButton = true;
-
+  frameworkComponents: any;
+  tab: any;
   ItemTypelist: any; DepartmentList: any;
   DeptID: number = 0;
+  dapartmentdid:number=0;
   UserID: any = 0;
+  
   private currentUser: User;
   constructor(private fb: FormBuilder, private api: ApiService, public dialog: MtxDialog,) {
     this.UserID = api.getUserID();
     this.currentUser = this.api.getCurrentUser();
+    this.frameworkComponents = {
+      buttonRenderer: DepartmentmastereditbuttonComponent
+      }
 
   }
 
@@ -57,7 +65,7 @@ export class DepartmentMasterComponent implements OnInit {
       this.HideSaveButton = true;
     }
     const Department = {
-      DepartmentID: this.DeptID,
+      DepartmentID: this.dapartmentdid,
       DepartmentName: this.form.value.txtDepartmentName,
       DepartmentCode: this.form.value.txtDepartmentCode,
       IsActive: this.form.value.chIsActive,
@@ -65,7 +73,7 @@ export class DepartmentMasterComponent implements OnInit {
     console.log("Department", Department);
     this.api.post('/Department/Department_Insert_Update', Department).subscribe(
       data => {
-        this.dialog.alert(data[0], '', () => { window.location.reload(); });
+        this.dialog.alert(data[0]);
         this.onReset();
         this.BindinfDataToList();
       },
@@ -81,61 +89,107 @@ export class DepartmentMasterComponent implements OnInit {
     this.form.controls['chIsActive'].setValue(true);
     this.BindinfDataToList();
   }
-  editDepartment(record: any) {
-    this.HideSaveButton = true;
-    console.log(record);
-    this.DeptID = record.DepartmentID;
-    const item: any = {
-      txtDepartmentName: record.DepartmentName,
-      txtDepartmentCode: record.DepartmentCode,
-      chIsActive: record.IsActive,
-    };
-    console.log("item", item);
-    this.form.setValue(item);
-  }
-  columns: MtxGridColumn[] = [
-    {
-      header: "Action",
-      field: 'Action',
-      minWidth: 90,
-      width: '90px',
-      pinned: 'right',
-      type: 'button',
-      buttons: [
-        {
-          type: 'icon',
-          icon: 'edit',
-          tooltip: 'Edit',
-          click: record => this.editDepartment(record),
-        }
-      ]
-    },
+  // editDepartment(record: any) {
+  //   this.HideSaveButton = true;
+  //   console.log(record);
+  //   this.DeptID = record.DepartmentID;
+  //   const item: any = {
+  //     txtDepartmentName: record.DepartmentName,
+  //     txtDepartmentCode: record.DepartmentCode,
+  //     chIsActive: record.IsActive,
+  //   };
+  //   console.log("item", item);
+  //   this.form.setValue(item);
+  // }
+  // columns: MtxGridColumn[] = [
+  //   {
+  //     header: "Action",
+  //     field: 'Action',
+  //     minWidth: 90,
+  //     width: '90px',
+  //     pinned: 'right',
+  //     type: 'button',
+  //     buttons: [
+  //       {
+  //         type: 'icon',
+  //         icon: 'edit',
+  //         tooltip: 'Edit',
+  //         click: record => this.editDepartment(record),
+  //       }
+  //     ]
+  //   },
 
-    {
-      header: 'DepartmentID',
-      field: 'DepartmentID',
-      sortable: true,
-      minWidth: 250,
-    },
-    {
-      header: 'DepartmentName',
-      field: 'DepartmentName',
-      sortable: true,
-      minWidth: 250,
-    },
-    {
-      header: 'DepartmentCode',
-      field: 'DepartmentCode',
-      sortable: true,
-      minWidth: 250,
-    },
-    {
-      header: 'IsActive',
-      field: 'IsActive',
-      sortable: true,
-      minWidth: 120
+  //   {
+  //     header: 'DepartmentID',
+  //     field: 'DepartmentID',
+  //     sortable: true,
+  //     minWidth: 250,
+  //   },
+  //   {
+  //     header: 'DepartmentName',
+  //     field: 'DepartmentName',
+  //     sortable: true,
+  //     minWidth: 250,
+  //   },
+  //   {
+  //     header: 'DepartmentCode',
+  //     field: 'DepartmentCode',
+  //     sortable: true,
+  //     minWidth: 250,
+  //   },
+  //   {
+  //     header: 'IsActive',
+  //     field: 'IsActive',
+  //     sortable: true,
+  //     minWidth: 120
+  //   }
+  // ]
+  oneditDepartment(d:any){
+
+    const strdepartmentId=this.DepartmentList.filter((x:any)=>x.DepartmentID==d.rowData.DepartmentID);
+  
+  
+    console.log("on edit data",d);
+    
+   
+   this.form.controls['txtDepartmentName'].reset();
+   this.form.controls['txtDepartmentCode'].reset()
+  
+  //fill the selected grid row data and patch to form fields
+      departmentID:d.rowData["DeapartmentID"];
+      this.form.patchValue({
+        
+        
+        txtDepartmentName :d.rowData["DepartmentName"],
+        txtDepartmentCode :d.rowData["DepartmentCode"],
+        
+      });
+   
+  this.dapartmentdid=d.rowData["DepartmentID"];//dapartmentdid used to save Customerid  on grid row selection 
+  console.log("Wprk3333",d.rowData);//cellselaction array contain whole selected row of customerlist and place on 0th position of its own array
+  this.tab = 0;
+  
+  
+  }
+  
+  columnDefs: ColDef[] = [
+
+    {  headerName: 'Action', width:100 ,floatingFilter: false,
+    cellRenderer: 'buttonRenderer',
+    cellRendererParams: {
+      onClick: this.oneditDepartment.bind(this),
+      label: 'Click 1'
     }
-  ]
+  },
+    { headerName:'DepartmentID',field: 'DepartmentID',hide:false, filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'DepartmentName',field: 'DepartmentName' ,  filter: 'agTextColumnFilter', floatingFilter: true, },
+    { headerName:'DepartmentCode',field: 'DepartmentCode' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'IsActive',field: 'IsActive' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+   
+ 
+
+
+   ]
 }
 
 

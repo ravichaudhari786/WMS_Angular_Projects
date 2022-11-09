@@ -7,6 +7,8 @@ import { ApiService } from '@core';
 import { MtxDialog, MtxGridColumn } from '@ng-matero/extensions';
 import { count } from 'console';
 import { User } from '@core/authentication/interface';
+import { ColDef,GridApi } from 'ag-grid-community';
+import { CountmastereditbuttonComponent } from './countmastereditbutton/countmastereditbutton.component';
 
 @Component({
   selector: 'app-count-master',
@@ -16,13 +18,20 @@ import { User } from '@core/authentication/interface';
 export class CountMasterComponent implements OnInit {
   form!: FormGroup; submitted = false; Reseted = false;
   ItemTypelist: any; countList: any;
+  frameworkComponents: any;
   HideSaveButton = true;
   CountsID: number = 0;
+  countdid:number=0;
   UserID: any = 0;
+  tab: any;
   private currentUser: User;
   constructor(private fb: FormBuilder, private api: ApiService, public dialog: MtxDialog,) {
     this.UserID = api.getUserID();
     this.currentUser = this.api.getCurrentUser();
+    this.frameworkComponents = {
+    buttonRenderer: CountmastereditbuttonComponent
+    }
+  
   }
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -54,7 +63,7 @@ export class CountMasterComponent implements OnInit {
     else {
       //this.form.setValidators(Validators.required);
       const count = {
-        CountID: this.CountsID,
+        CountID: this.countdid,
         Counts: this.form.value.txtCountName,
         IsActive: this.form.value.chIsActive,
         CreatedBy: this.currentUser.userId
@@ -111,57 +120,53 @@ export class CountMasterComponent implements OnInit {
     this.form.setValue(item);
 
   }
-  CountListcolumns: MtxGridColumn[] = [
-    {
-      header: "Action",
-      field: 'Action',
-      minWidth: 90,
-      width: '90px',
-      pinned: 'right',
 
-      type: 'button',
-      buttons: [
-        {
-          type: 'icon',
-          icon: 'edit',
-          tooltip: 'Edit',
-          click: record => this.editCount(record),
-        }
-      ]
-    },
+  
+  oneditCount(d:any){
 
-    {
-      header: 'CountID',
-      field: 'CountID',
-      sortable: true,
-      minWidth: 250,
+  const strcountId=this.countList.filter((x:any)=>x.CountID==d.rowData.CountID);
 
-    },
-    {
-      header: 'Counts',
-      field: 'Counts',
-      sortable: true,
-      minWidth: 250,
-    },
-    {
-      header: 'IsActive',
-      field: 'IsActive',
-      sortable: true,
-      minWidth: 120
-    },
-    {
-      header: 'CreatedBy',
-      field: 'CreatedBy',
-      sortable: true,
-      minWidth: 170
-    },
-    {
-      header: 'CreatedDate',
-      field: 'CreatedDate',
-      sortable: true,
-      minWidth: 170,
+
+  console.log("on edit data",d);
+  
+ 
+ this.form.controls['txtCountName'].reset();
+
+//fill the selected grid row data and patch to form fields
+    countID:d.rowData["CountID"];
+    this.form.patchValue({
+      
+      
+      txtCountName :d.rowData["Counts"],
+      
+    });
+ 
+this.countdid=d.rowData["CountID"];//countdid used to save Customerid  on grid row selection 
+console.log("Wprk3333",d.rowData);//cellselaction array contain whole selected row of customerlist and place on 0th position of its own array
+this.tab = 0;
+
+
+}
+
+
+
+  columnDefs: ColDef[] = [
+
+    {  headerName: 'Action', width:100 ,floatingFilter: false,
+    cellRenderer: 'buttonRenderer',
+    cellRendererParams: {
+      onClick: this.oneditCount.bind(this),
+      label: 'Click 1'
     }
+  },
+    { headerName:'CountID',field: 'CountID',hide:false, filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'Counts',field: 'Counts' ,  filter: 'agTextColumnFilter', floatingFilter: true, },
+    { headerName:'IsActive',field: 'IsActive' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'CreatedBy',field: 'CreatedBy' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'CreatedDate',field: 'CreatedDate' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+ 
 
-  ]
+
+   ]
 }
 

@@ -554,48 +554,7 @@ OnEditCustomerMaster(d:any){
 
   console.log("on edit data",d);
   
-  // const EditData={
-  //   // remarks:'', 
-  //   // shiftingDID:0, 
-  //   // shiftingID:d.rowData.ShiftingID, 
-  //   // warehouseID:this.currentUser.warehouseId, 
-  //   // customerID:this.form.value.cbCustomerID, 
-  //   // createdBy:0, 
-  //   // shiftingDate:0, 
-  //   // loadingBy:0,          
-  //   // LotNo:this.form.value.txtLotNo,
-  //   // StatusID:d.rowData.StatusID,  
-  //   CustomerID:d.rowData.CustomerID,
-  //   NameIniID:d.rowData.Initials,
-  //   txtCustomerName:d.rowData.CustomerName,
-  //   txtCustomerCode:d.rowData.CustomerCode,
-  //   CustomerTypeID:d.rowData.CustomerType,
-  //   CustomerType:d.rowData.CustomerType,
-  //   txtAddress1 :d.rowData.Address1,
-  //   txtAddress2 :d.rowData.Address2,
-  //   txtGroupName :d.rowData.GroupName,
-  //   CityId :d.rowData.City,
-  //   City:d.rowData.City,
-  //   Email :d.rowData.Email,
-  //   Gstno: d.rowData.Gstno, 
-  //   Panno :d.rowData.Panno, 
-  //   customerContacts: this.CustomerDetailList, ///assing list to customerContacts  array
-  //   TD_CustomerDocuments: this.CustomerDocumentlistFinal, ///assing list to TD_CustomerDocuments array
-  //   State:d.rowData.State,
-  //   FICINo:d.rowData.FICINo, 
-  //   StorageDiscount:d.rowData.StorageDiscount, 
-  //   LabourDiscount:d.rowData.LabourDiscount, 
-  //   ReferredBy: d.rowData.ReferredBy, 
-  //   PinCode:d.rowData.PinCode, 
-  //   GSTStateCode:d.rowData.GSTStateCode, 
-  //   RateID:d.rowData.Rate,
-  //   Rate:d.rowData.RateID,
-  //   WarehouseID:this.currentUser.warehouseId,
-  //   createdby:this.currentUser.userId,
-
-  // };
-  
-  //   //-----------------------------------------------------Reset form filled
+ 
  this.form.controls['NameIniID'].reset();
  this.form.controls['txtCustomerName'].reset();
  this.form.controls['txtCustomerCode'].reset();
