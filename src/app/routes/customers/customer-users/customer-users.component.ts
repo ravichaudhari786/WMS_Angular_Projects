@@ -48,6 +48,7 @@ export class CustomerUsersComponent implements OnInit {
     this.tab = event;
   }
   onSubmit(formData:any){
+<<<<<<< HEAD
     this.submitted = true;
     if (this.form.invalid) {
       return;
@@ -55,6 +56,11 @@ export class CustomerUsersComponent implements OnInit {
     else{
     this.SaveData = {
       CustomerLoginID :this.CustomerLoginID,
+=======
+ 
+    this.SaveData = {
+      CustomerLoginID :0,
+>>>>>>> 3fb164968cf165c993ed655540e1d0037c1ecde8
       CustomerID : this.form.value.cbCustomerID,
       UserName : this.form.value.userName,
       Password : this.form.value.password,
@@ -71,11 +77,18 @@ export class CustomerUsersComponent implements OnInit {
       },
       error => { console.error(error); }
     );
+<<<<<<< HEAD
     }
+=======
+>>>>>>> 3fb164968cf165c993ed655540e1d0037c1ecde8
   }
   editCustomerView(record: any) {
     console.log(record);
+<<<<<<< HEAD
     this.CustomerLoginID = record.rowData.CustomerLoginID;
+=======
+   this.CustomerLoginID=record.rowData.CustomerLoginID;
+>>>>>>> 3fb164968cf165c993ed655540e1d0037c1ecde8
     const item: any = {
       cbCustomerID: record.rowData.CustomerID,
       userName: record.rowData.UserName,
@@ -126,7 +139,13 @@ export class CustomerUsersComponent implements OnInit {
       field: 'Password',
       sortable: true,
       minWidth: 80,
+<<<<<<< HEAD
       hide:true
+=======
+
+      hide:true
+
+>>>>>>> 3fb164968cf165c993ed655540e1d0037c1ecde8
     },
     {
       headerName: 'Is_Active',

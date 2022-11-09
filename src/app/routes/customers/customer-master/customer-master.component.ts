@@ -14,7 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { ColDef,GridApi } from 'ag-grid-community';
 import { AgGridAngular} from "ag-grid-angular";
 import { CustomermastereditButtonComponent} from './customermasteredit-button/customermasteredit-button.component';
-
+import * as $ from 'jquery'
+import { environment } from '@env/environment';
 
 
 @Component({
@@ -26,6 +27,8 @@ export class CustomerMasterComponent implements OnInit {
 tabCustomerschange($event: number) {
 throw new Error('Method not implemented.');
 }
+UploadFilePath:string = '';
+
   form!: FormGroup; submitted = false; Reseted = false;
   frameworkComponents: any;
   customerList: any;
@@ -79,7 +82,11 @@ throw new Error('Method not implemented.');
   element:string='';
   rowDataDock:any;
   // private currentUser: User;
- constructor(private fb: FormBuilder,private api:ApiService,public dialog: MtxDialog, private modalService: NgbModal) { 
+ constructor(
+  private fb: FormBuilder,
+  private api:ApiService,
+  public dialog: MtxDialog,
+   private modalService: NgbModal) { 
     this.currentUser=this.api.getCurrentUser();
     this.frameworkComponents = {
       buttonRenderer: CustomermastereditButtonComponent,
@@ -87,6 +94,7 @@ throw new Error('Method not implemented.');
   }
 
   ngOnInit(): void {
+    this.UploadFilePath="Please Select File";
     this.CustomerTypelist = [];
     ///initialisation of form fields also for validation
     this.form = this.fb.group({
@@ -338,15 +346,49 @@ BindCustomersList(){
 }
 
 //on file browse click take file fakepath and assign to txtDocumentpath form field
-onFilechange(event: any) {
+
+uploadfiledata(data:any){
+  $.ajax({
+    //url: 'http://localhost:50191/GenricFileUpload.ashx',
+    url:environment.FileUploadUrl,
+    //crossDomain: true,
+    type: 'POST',
+    //xhrFields: { withCredentials: false },
+    data: data,
+    cache: false,
+    contentType: false,
+    processData: false,  
+    success: function (file) {
+     
+     $("#txtDocumentpath").val(file.url);
+     //this.form.controls["txtDocumentpath"].setValue(file.url);
+     //this.form.value.txtDocumentPath=file.url;
+    //this.UploadFilePath=file.url;
+    console.log(this.UploadFilePath);
+      debugger;
+       
+  }
   
-  this.str1=event.target.value;
- 
-  this.form.controls['txtDocumentpath'].setValue(this.str1);
-  
+  });
 }
 
 
+onFilechange(event: any) {
+  debugger;
+if(event.target.files.length>0){
+  let data = new FormData();
+
+  for (let j = 0; j < event.target.files.length; j++) {
+   
+    let fileItem = event.target.files[j];
+    console.log(fileItem.name);
+    data.append('file', fileItem);
+  }  
+  this.uploadfiledata(data);
+  
+}
+
+}
 ///grid row selection 
 onRowDblclicked(a:any,e:any)
 {

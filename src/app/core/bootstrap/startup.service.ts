@@ -56,6 +56,7 @@ strcollectionName=strcollectionName.replace("%20"," ");
           resolve(null);
 // debugger;
 let menu1=response.menu;
+debugger;
 let flg=false;
 for(var i=0;i<menu1.length;i++){
     for(var j=0;j<menu1[i].children.length;j++){
@@ -74,9 +75,14 @@ else{
 continue;
 }
 }      
-
+console.log("cntrol name : "+ strcollectionName);
 
 //const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
+if(strcollectionName==""){
+  console.log("cntrol name : "+ "Blank");
+  return true;
+}
+
 if(strcollectionName=="dashboard"){
   return true;
 }
