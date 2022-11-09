@@ -73,7 +73,7 @@ export class DepartmentMasterComponent implements OnInit {
     console.log("Department", Department);
     this.api.post('/Department/Department_Insert_Update', Department).subscribe(
       data => {
-        this.dialog.alert(data[0], '', () => { window.location.reload(); });
+        this.dialog.alert(data[0]);
         this.onReset();
         this.BindinfDataToList();
       },

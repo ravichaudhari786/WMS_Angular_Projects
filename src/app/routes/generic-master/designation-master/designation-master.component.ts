@@ -65,7 +65,7 @@ export class DesignationMasterComponent implements OnInit {
       }
       this.api.post('/Designation/Designation_Insert_Update', Designation).subscribe(
         data => {
-          this.dialog.alert(data[0], '', () => { window.location.reload(); });
+          this.dialog.alert(data[0]);
           this.onReset();
           this.BindinfDataToList();
         },

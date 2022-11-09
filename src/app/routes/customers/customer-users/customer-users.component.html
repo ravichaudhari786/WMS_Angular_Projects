@@ -11,39 +11,38 @@
                                     <div class="form-group">
                                         <label>Customer Name</label>
                                         <select class="form-control form-control-sm" formControlName="cbCustomerID"
-<<<<<<< HEAD
+
                                             id="cbCustomerID" [ngClass]="{'is-invalid': submitted && f.cbCustomerID.invalid}">
-=======
+
                                             id="cbCustomerID">
->>>>>>> 3fb164968cf165c993ed655540e1d0037c1ecde8
+
                                             <option value="null" disabled>Select</option>
                                             <option *ngFor="let c of customerList" value={{c.CustomerID}}>
                                                 {{c.CustomerName}}</option>
                                         </select>
-<<<<<<< HEAD
+
                                         <div *ngIf="submitted && form.controls.cbCustomerID.errors" class="text-danger">
                                             <div *ngIf="form.controls.cbCustomerID.errors.required">Customer Name is Required
                                             </div>
                                         </div>
-=======
->>>>>>> 3fb164968cf165c993ed655540e1d0037c1ecde8
+
+
                                     </div>
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>User Name</label>
                                         <input type="text" formControlName="userName" id="userName"
-<<<<<<< HEAD
+
                                             class=" form-control form-control-sm"
                                             [ngClass]="{'is-invalid': submitted && f.userName.invalid}" />
                                             <div *ngIf="submitted && form.controls.userName.errors" class="text-danger">
                                                 <div *ngIf="form.controls.userName.errors.required">UserName is Required
                                                 </div>
                                             </div>
-=======
-                                            class=" form-control form-control-sm" />
+                                           
 
->>>>>>> 3fb164968cf165c993ed655540e1d0037c1ecde8
+
                                     </div>
                                 </div>
                             </div>
@@ -52,17 +51,16 @@
                                     <div class="form-group">
                                         <label>Password</label>
                                         <input type="text" formControlName="password" id="password"
-<<<<<<< HEAD
+
                                             class=" form-control form-control-sm"
                                             [ngClass]="{'is-invalid': submitted && f.password.invalid}" />
                                             <div *ngIf="submitted && form.controls.password.errors" class="text-danger">
                                                 <div *ngIf="form.controls.password.errors.required">Password is Required
                                                 </div>
                                             </div>
-=======
-                                            class=" form-control form-control-sm" />
 
->>>>>>> 3fb164968cf165c993ed655540e1d0037c1ecde8
+
+
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-3">
@@ -78,10 +76,9 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary btn-sm"
-<<<<<<< HEAD
-=======
+
                                             
->>>>>>> 3fb164968cf165c993ed655540e1d0037c1ecde8
+
                                             style="width: 85px !important; margin-top: 20px !important;"> Save
                                         </button>
                                     </div>
@@ -93,11 +90,10 @@
                 <mat-tab label="List">
                     <div style="height: 100%; box-sizing: border-box;">
                         <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" [rowData]="customergridlist"
-<<<<<<< HEAD
                             [columnDefs]="columns" [frameworkComponents]="frameworkComponents">
-=======
+
                             [columnDefs]="columns"  [frameworkComponents]="frameworkComponents">
->>>>>>> 3fb164968cf165c993ed655540e1d0037c1ecde8
+
                         </ag-grid-angular>
                     </div>
                 </mat-tab>

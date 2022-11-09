@@ -72,7 +72,7 @@ get f() { return this.form.controls; }
     this.api.post('/ItemTypeMaster/ItemTypeMaster_Insert_Update', Item).subscribe(
       data => {
 
-        this.dialog.alert(data[0], '', () => { window.location.reload(); });
+        this.dialog.alert(data[0]);
         this.onReset();
         this.BindinfDataToList();
       },
