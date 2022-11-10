@@ -381,13 +381,6 @@ uploadfiledata(data:any){
 }
 
 
-convertFile(file : File) : Observable<string> {
-  const result = new ReplaySubject<string>(1);
-  const reader = new FileReader();
-  reader.readAsBinaryString(file);
-  reader.onloadend = (event) => result.next();
-  return result;
-}
  
 onFilechange(event: any) {
   debugger;
@@ -402,7 +395,17 @@ if(event.target.files.length>0){
   // }  
  // this.uploadfiledata(data);
   
+this.UploadFileBinaryFormat(event);
 
+}
+
+
+
+
+}
+
+UploadFileBinaryFormat(event:any){
+  
   let file = event.target.files[0];
   
   let type = file.type;
@@ -431,12 +434,6 @@ if(event.target.files.length>0){
   
 
   };
-
-}
-
-
-
-
 }
 ///grid row selection 
 onRowDblclicked(a:any,e:any)
