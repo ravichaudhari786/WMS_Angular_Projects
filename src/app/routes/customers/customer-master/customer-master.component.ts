@@ -16,7 +16,8 @@ import { AgGridAngular} from "ag-grid-angular";
 import { CustomermastereditButtonComponent} from './customermasteredit-button/customermasteredit-button.component';
 import * as $ from 'jquery'
 import { environment } from '@env/environment';
-
+import { LocalStorageService } from '@shared';
+import { Observable, ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-customer-master',
@@ -27,7 +28,7 @@ export class CustomerMasterComponent implements OnInit {
 tabCustomerschange($event: number) {
 throw new Error('Method not implemented.');
 }
-UploadFilePath:string = '';
+
 
   form!: FormGroup; submitted = false; Reseted = false;
   frameworkComponents: any;
@@ -50,6 +51,8 @@ UploadFilePath:string = '';
   documentdid:number=0;
   DockDid:number=0;
   CONTDid:number=0;
+  imageblob:any={};
+  
  
   CustomerDocumentlist = [];
   // CustomerDetailList1:any;
@@ -81,8 +84,11 @@ UploadFilePath:string = '';
   str1:string='';
   element:string='';
   rowDataDock:any;
+
+  fileuploadlist:any={};
+  base64textString:any;
   // private currentUser: User;
- constructor(
+ constructor( private store:LocalStorageService,
   private fb: FormBuilder,
   private api:ApiService,
   public dialog: MtxDialog,
@@ -94,7 +100,8 @@ UploadFilePath:string = '';
   }
 
   ngOnInit(): void {
-    this.UploadFilePath="Please Select File";
+    
+    
     this.CustomerTypelist = [];
     ///initialisation of form fields also for validation
     this.form = this.fb.group({
@@ -359,12 +366,13 @@ uploadfiledata(data:any){
     contentType: false,
     processData: false,  
     success: function (file) {
-     
+      
      $("#txtDocumentpath").val(file.url);
+    this.store.set("FilePath",file.url);
      //this.form.controls["txtDocumentpath"].setValue(file.url);
      //this.form.value.txtDocumentPath=file.url;
-    //this.UploadFilePath=file.url;
-    console.log(this.UploadFilePath);
+    
+    
       debugger;
        
   }
@@ -373,20 +381,61 @@ uploadfiledata(data:any){
 }
 
 
+convertFile(file : File) : Observable<string> {
+  const result = new ReplaySubject<string>(1);
+  const reader = new FileReader();
+  reader.readAsBinaryString(file);
+  reader.onloadend = (event) => result.next();
+  return result;
+}
+ 
 onFilechange(event: any) {
   debugger;
 if(event.target.files.length>0){
   let data = new FormData();
 
-  for (let j = 0; j < event.target.files.length; j++) {
+  // for (let j = 0; j < event.target.files.length; j++) {
    
-    let fileItem = event.target.files[j];
-    console.log(fileItem.name);
-    data.append('file', fileItem);
-  }  
-  this.uploadfiledata(data);
+  //   let fileItem = event.target.files[j];
+  //   console.log(fileItem.name);
+  //   data.append('file', fileItem);
+  // }  
+ // this.uploadfiledata(data);
   
+
+  let file = event.target.files[0];
+  
+  let type = file.type;
+  let nameFile = file.name;
+  let size = file.size;
+  let reader = new FileReader();
+
+  reader.readAsDataURL(file);
+  
+  reader.onload = async () => {
+     
+      this.fileuploadlist={
+        "base64":String(reader.result),
+         "size":size,
+         "name":nameFile,
+         "type":type
+        };
+      //this.fileuploadlist.slice();
+     
+  this.api.post('/FileUpload/FileUplaodInfo',this.fileuploadlist).subscribe(
+    data => {
+      let y="";
+    },
+    error => { console.error(error); }
+  );
+  
+
+  };
+
 }
+
+
+
 
 }
 ///grid row selection 
@@ -499,6 +548,12 @@ console.log("Wprk3333",a.cellSelection[0].rowData);//cellselaction array contain
 
 
 OnAddFileClick(){
+  
+
+
+  
+
+
   this.DocumentList=[];
   //validation of customer Document form
     if(this.form.value.txtDocumentName==null || this.form.value.txtDocumentName==""){
@@ -529,7 +584,7 @@ this.customerdocumentList={
   CustomerID:this.CustomerID,
   DocumentID:this.form.value.txtDocumentName,
  DocumentName:DockNames[0].DockName,
- FilePath:this.form.value.txtDocumentpath,
+ FilePath:this.store.get("FilePath"),
 
 };
 
@@ -801,4 +856,10 @@ export class customerDocumentsFinals{
 CustomerID:number=0;
 DocumentID:number=0;
 FilePath:string="";
+}
+export class FileUplaod{
+  base64:string="";
+  name:string="";
+  type:string="";
+  size:number=0;
 }
