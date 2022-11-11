@@ -1,11 +1,301 @@
-<breadcrumb></breadcrumb>
+<!-- <breadcrumb></breadcrumb> -->
 <div fxLayout="row wrap" class="matero-row">
     <div fxFlex="100" class="matero-col">
       <mat-card>
         <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
-          <mat-tab label="Shifting">
-            <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+          <mat-tab label="Transfer">
+            <form [formGroup]="form" (ngSubmit)="OnSaveTransfer(form)">
+                <div class="col-md-12">
+                    <div class="row pt-2">
+                        <div class="col-sm-7">
+                            <div class="form-group">
+                              <label>Customer Name</label>
+                              <select class="form-control form-control-sm" (change)="GetCustomerID($event)" [ngClass]="{'is-invalid': submitted && f.cbCustomerID.invalid}" 
+                                  formControlName="cbCustomerID" id="cbCustomerID">
+                                <option value="null" disabled>Select </option>
+                                <option *ngFor="let i of customerList" value={{i.CustomerID}}>{{i.CustomerName}}</option>
+                              </select>
+                              <div *ngIf="submitted && f.cbCustomerID.invalid" class="invalid-feedback">
+                                <span *ngIf="f.cbCustomerID?.errors?.required">Select Customer</span>
+                              </div>
+                            </div>
+                        </div> 
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label for="company">Transfer Date</label>
+                              <input type="datetime-local" formControlName="Transfer_date" id="Transfer_date"
+                                class="form-control form-control-sm" placeholder="yyyy-MM-dd" 
+                                [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'"  name="Transfer_date" />  
+                              <div *ngIf="submitted && f.Transfer_date.invalid" class="invalid-feedback">
+                                <div *ngIf="f.Transfer_date?.errors?.required">select Transfer date</div>
+                              </div>
+                            </div>
+                          </div>
+                    
+                          <div class="col-sm-2">
+                            <div class="form-group">
+                              <label for="company">Transfer No</label>  <!-- [ngClass]="{'is-invalid': submitted && f.txtLotNo.invalid}" -->
+                              <input type="text" readonly
+                                formControlName="txtTransfeNo" id="txtTransfeNo" class=" form-control form-control-sm" />
+                              <div *ngIf="submitted && f.txtTransfeNo.invalid" class="invalid-feedback">
+                                <div *ngIf="f.txtTransfeNo?.errors?.required">Enter Lot No</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-6">
+                            <div class="form-group">
+                              <label>To Customer</label>
+                              <select class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f.cbToCustomerID.invalid}" 
+                                  formControlName="cbToCustomerID" id="cbToCustomerID">
+                                <option value="null" disabled>Select </option>
+                                <option *ngFor="let i of customerList" value={{i.CustomerID}}>{{i.CustomerName}}</option>
+                              </select>
+                              <div *ngIf="submitted && f.cbToCustomerID.invalid" class="invalid-feedback">
+                                <span *ngIf="f.cbToCustomerID?.errors?.required">Select To Customer</span>
+                              </div>
+                            </div>
+                        </div> 
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                              <label for="company">Order Given By</label>
+                              <input type="text" [ngClass]="{ 'is-invalid': submitted && form.controls.txtOrderGivenBy.errors }"
+                                formControlName="txtOrderGivenBy" id="txtOrderGivenBy" class=" form-control form-control-sm" />
+                              <div *ngIf="submitted && f.txtOrderGivenBy.invalid" class="invalid-feedback">
+                                <div *ngIf="f.txtOrderGivenBy?.errors?.required">Order Given By</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-3">
+                            <div class="form-group">
+                              <label for="company">Remarks</label>  <!-- [ngClass]="{'is-invalid': submitted && f.txtLotNo.invalid}" -->
+                              <input type="text" 
+                                formControlName="txtRemarks" id="txtRemarks" class=" form-control form-control-sm" />
+                              <div *ngIf="submitted && f.txtRemarks.invalid" class="invalid-feedback">
+                                <div *ngIf="f.txtRemarks?.errors?.required">Enter Lot No</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="col-sm-12">
+                            <hr>
+                            <p class="font-weight-bold">Product List</p>                                
+                                <div style="height: 100%; box-sizing: border-box;">
+                                  <ag-grid-angular 
+                                    style="height: 450px;"
+                                    class="ag-theme-alpine"
+                                    [rowData]="ProductList"
+                                    [columnDefs]="ShiftingProductListCol"
+                                    [rowSelection]="'single'"
+                                    (rowDoubleClicked)="onProductListRowClicked($event)"
+                                    >
+                                  </ag-grid-angular>
+                                </div>
+                          </div>
+                          <div class="col-sm-12">
+                            <hr>
+                            <mat-card>
+                              <mat-tab-group animationDuration="0ms" [(selectedIndex)]="TransferDetailtab">
+                                <mat-tab label="Transfer Product Details">
+                                  <div class="row pt-2">
+                                    <div class="col-sm-9">
+                                      <div class="row">
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label>Lot No</label>
+                                            <input type="text" formControlName="txtLotNo" id="txtLotNo" autocomplete="off"
+                                              class="form-control form-control-sm" placeholder="" readonly />   
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label>Product Name</label>
+                                            <select class="form-control form-control-sm" formControlName="cbproduct_id" id="cbproduct_id" >
+                                              <option value="null" disabled>Select </option>
+                                              <option *ngFor="let p of ProductNameList" value="{{p.ProductID}}" disabled>{{p.ProductName}}</option>
+                                            </select>  
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label>Balance Qty</label>
+                                            <input type="text" formControlName="txtBalanceQty" id="txtBalanceQty" autocomplete="off"
+                                              class="form-control form-control-sm" placeholder="" readonly />   
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label>Brand</label>
+                                            <input type="text" formControlName="txtBrand" id="txtBrand" autocomplete="off"
+                                              class="form-control form-control-sm" placeholder="" readonly />   
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label>Transfer Qty</label>
+                                            <input type="text" formControlName="txtTransferQty" id="txtTransferQty" autocomplete="off" #txtTransferQty
+                                              class="form-control form-control-sm" placeholder=""  (keyup)="onKeyTransferQty(txtTransferQty.value)"/>   
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label>Count</label>
+                                            <input type="text" formControlName="txtCount" id="txtCount" autocomplete="off"
+                                              class="form-control form-control-sm" placeholder="" readonly/>   
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label>Storage Type</label>
+                                            <select class="form-control form-control-sm"
+                                              formControlName="cbStorageAreaType" id="cbStorageAreaType" readonly>
+                                              <option [ngValue]="null" disabled></option>
+                                              <option *ngFor="let s of StorageAreaTypeList" value="{{s.StorageAreaTypeID}}" disabled>{{s.ServiceName}}
+                                              </option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label>Billing Cycle</label>
+                                            <input type="text" formControlName="txtBillingCycle" id="txtBillingCycle" autocomplete="off"
+                                              class="form-control form-control-sm" placeholder="" readonly/>   
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label >Use To Customer Area</label>
+                                              <input type="checkbox" class="form-check-input" formControlName="ckCustomerarea" class="form-control" id="ckCustomerarea"  (change)="OnCustomerarea($event)" />
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label>New Lot No</label>
+                                            <input type="text" formControlName="txtNewLotNo" id="txtNewLotNo" autocomplete="off"
+                                              class="form-control form-control-sm" placeholder="" readonly/>   
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label>Location</label>
+                                            <select class="form-control form-control-sm"
+                                              formControlName="cbLocation" id="cbLocation">
+                                              <option [ngValue]="null" disabled></option>
+                                              <option *ngFor="let s of LocationList" value="{{s.StorageAreaID}}" >{{s.StorageArea}}
+                                              </option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                            <label>Labour Contractor</label>
+                                            <select class="form-control form-control-sm"
+                                              formControlName="cbLabourContractor" id="cbLabourContractor">
+                                              <option [ngValue]="null" disabled></option>
+                                              <option *ngFor="let l of labourContractorList" value="{{l.LabourContractorID}}" >{{l.ContractorName}}
+                                              </option>
+                                            </select>
+                                          </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                          <div class="form-group">
+                                            <label>Remarks</label>
+                                            <select class="form-control form-control-sm"
+                                              formControlName="cbRemarks" id="cbRemarks">
+                                              <option [ngValue]="null" disabled></option>
+                                              <option *ngFor="let r of remarkList" value="{{r.Remarks}}" >{{r.Remarks}}
+                                              </option>
+                                            </select>
+                                          </div>
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                      <div class="card">
+                                        <ag-grid-angular 
+                                            style="height: 300px;"
+                                            class="ag-theme-alpine"
+                                            [rowData]="TransferServiceList"
+                                            [columnDefs]="serviceColumns"                        
+                                        >
+                                        </ag-grid-angular>
+                                       </div>
+                                    </div>
+                                    <div class="col-sm-9">
+                                      <div class="form-group">
+                                        <button type="button" class="btn btn-primary btn-sm" (click)="OnAddClick()"
+                                          style="width: 85px !important; margin-top: 20px !important;">Add</button>
+                                      </div>
+                                  </div>
+                                  
+                                  </div>
+
+
+
+                                </mat-tab>
+                                <mat-tab label="Product Detail List">
+                                  <div class="col-12 " >
+                                    <hr>
+                                    <!-- <p class="font-weight-bold"> Shifting Detail List </p> -->
+                                      <mtx-grid style="height: 400px;"
+                                      [data]="TransferDetailsList" #gridTransferDetailList
+                                      [columns]="TransferDetailColumns"
+                                      [loading]="false"
+                                      [columnResizable]="false"
+                                      [multiSelectable]="false"
+                                      [rowSelectable]="false"
+                                      [hideRowSelectionCheckbox]="false"
+                                      [rowHover]="true"
+                                      [rowStriped]="false"
+                                      [showToolbar]="false"
+                                      [toolbarTitle]="'Detail List'"
+                                      [columnHideable]="false"
+                                      [columnMovable]="true"
+                                      [expandable]="false"
+                                      [pageOnFront]="true"
+                                      [showPaginator]="false"
+                                      [pageSizeOptions]="[10,20,50,100,500]"
+                                      [pageIndex]="0"    
+                                      (dblclick)="onRowDblclickedTransfer(gridTransferDetailList,$event)" 
+                                      >
+                                    </mtx-grid>
+                          
+                                    <!-- (dblclick)="onRowDblclicked(gridlist,$event)"-->
+                                  </div>
+                                </mat-tab>
+                              </mat-tab-group>
+                            </mat-card>
+                          </div>
+                          
+                    </div>
+                  
+
+
+
+
+                    <div class="col-sm-9">
+                      <div class="form-group">
+                        <button type="submit" [hidden]="!HideSaveButton"  [value]="submitted" class="btn btn-primary btn-sm"
+                          style="width: 85px !important; margin-top: 20px !important;"> Save </button>
+                      </div>
+                  </div>
+                </div>
             </form>
+          </mat-tab>
+          <mat-tab label="Transfer List" >
+            <div style="height: 100%; box-sizing: border-box;">
+              <ag-grid-angular 
+                style="height: 450px;"
+                class="ag-theme-alpine"
+                [rowData]="TransferList"
+                [columnDefs]="TransferListColumnDefs"   
+                [frameworkComponents]="frameworkComponents"             
+                >
+              </ag-grid-angular>
+            </div>
           </mat-tab>
         </mat-tab-group>
       </mat-card>

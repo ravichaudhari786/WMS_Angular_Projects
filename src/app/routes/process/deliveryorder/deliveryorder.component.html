@@ -1,4 +1,4 @@
-<breadcrumb></breadcrumb>
+<!-- <breadcrumb></breadcrumb> -->
 <div fxLayout="row wrap" class="matero-row">
     <div fxFlex="100" class="matero-col">
       <mat-card>
@@ -29,7 +29,7 @@
                           </div>
                           <div class="col-sm-3 col-md-3">
                             <div class="form-group pt-4">
-                              <button type="button" class="btn btn-primary btn-block" (click)="OnSearchClick()" [disabled]="checkCust">Search</button>
+                              <button type="button" class="btn btn-secondary btn-block" (click)="OnSearchClick()" [disabled]="checkCust">Search</button>
                               <mat-error id="customer_id_error"></mat-error>
                             </div>
                           </div>
@@ -64,7 +64,7 @@
                           </div>
                           <div class="col-sm-3 col-md-3">
                             <div class="form-group pt-3">
-                              <button type="button" class="btn btn-primary btn-block"
+                              <button type="button" class="btn btn-secondary btn-block"
                               (click)="onCustomerPartyContact(CustomerPartycontent)"
                               >ADD Party</button>
                             </div>
@@ -178,7 +178,7 @@
 
                   </div>
                   <div class="modal-footer" >
-                    <button type="button" class="btn btn-primary" (click)="onAddCustomerParty(CustomerPartycontent)">ADD</button> 
+                    <button type="button" class="btn btn-secondary" (click)="onAddCustomerParty(CustomerPartycontent)">ADD</button> 
                     <button type="button" class="btn btn-info" (click)="onCloseCustpmerParty(CustomerPartycontent)">Cancel</button> 
                   </div>
                 </ng-template>
@@ -189,7 +189,7 @@
                   <p class="font-weight-bold"> Delivery Order Details</p>
                   <div>
                     <ag-grid-angular 
-                          style="height: 500px;"
+                          style="height: 500px; font-size: 12px!important;"
                           class="ag-theme-alpine"
                           [rowData]="DeliveryOrdersearchList"
                           [columnDefs]="DeliveryOrdercolumnDefs"
@@ -207,8 +207,15 @@
                     </div>
                   </div>
                 </div>
-                <button type="button" class="btn btn-primary" style="width:20%;" (click)="onSaveDeliveryOrder()" [disabled]="clickSave">Save</button>
-                <button type="button" class="btn btn-primary ml-3" style="width:20%;" (click)="onResetDeliveryOrder()" >Reset</button>
+
+                <div class="row">
+                  <div class="col-sm-3 mt-1 mb-1">
+                    <button type="button" class="btn btn-secondary" style="width:100%;" (click)="onSaveDeliveryOrder()" [disabled]="clickSave">Save</button>
+                  </div>
+                  <div class="col-sm-3 mt-1 mb-1">
+                    <button type="button" class="btn btn-secondary" style="width:100%;" (click)="onResetDeliveryOrder()" >Reset</button>
+                  </div>
+                </div>
             </form>
             </mat-tab>
             <mat-tab label="Delivery Order List">
