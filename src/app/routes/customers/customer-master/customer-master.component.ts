@@ -428,6 +428,7 @@ UploadFileBinaryFormat(event:any){
   this.api.post('/FileUpload/FileUplaodInfo',this.fileuploadlist).subscribe(
     data => {
       let y="";
+      this.form.controls.txtDocumentpath.setValue(data.FilePath)
     },
     error => { console.error(error); }
   );
@@ -581,7 +582,7 @@ this.customerdocumentList={
   CustomerID:this.CustomerID,
   DocumentID:this.form.value.txtDocumentName,
  DocumentName:DockNames[0].DockName,
- FilePath:this.store.get("FilePath"),
+ FilePath:this.form.controls.txtDocumentpath.value,
 
 };
 
