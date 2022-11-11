@@ -4,131 +4,143 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '@core';
 import { MtxDialog, MtxGridColumn } from '@ng-matero/extensions';
 import { User } from '@core/authentication/interface';
+import { BrandsEditButtonComponent } from './brands-edit-button/brands-edit-button.component';
+import { ColDef, GridApi } from 'ag-grid-community';
 @Component({
   selector: 'app-brands',
   templateUrl: './brands.component.html',
   styleUrls: ['./brands.component.scss']
 })
 export class BrandsComponent implements OnInit {
-  form!: FormGroup; submitted = false; Reseted = false;
-  UserID: any = 0; BrandsList: any;
-  HideSaveButton = true;
-  SaveData: any = {};
-  BrandID: number = 0;
 
+  form!: FormGroup; submitted = false;
+  UserID: any = 0; BrandsList: any;
+  SaveData: any = {};
+  tab = 0;
+  BrandID:number=0;
   private currentUser: User;
+  HideSaveButton = true;
+  frameworkComponents: any;
 
   constructor(private fb: FormBuilder, private api: ApiService, public dialog: MtxDialog) {
     this.currentUser = this.api.getCurrentUser();
+    this.frameworkComponents = {
+      buttonRenderer: BrandsEditButtonComponent,
+    }
   }
+
+
   ngOnInit(): void {
+
     this.form = this.fb.group({
 
-      BrandID: [0, Validators.required],
+      // BrandID: [0, Validators.required],
       BrandName: ["", Validators.required],
       IsActive: true,
       CreatedBy: [this.UserID]
+
     });
-    this.BindinfDataToList();
+
+    this.BindDropdown();
+
 
   }
 
-  BindinfDataToList() {
+
+  async BindDropdown() {
     this.api.get('/Brands/Brand_Select').subscribe(
-      data => { this.BrandsList = data; console.log("initialdata", this.BrandsList) },
-      error => { console.error(error); }
+      data => { this.BrandsList = data; console.log(data); },
+      error1 => { //console.error('abc');//.error(error); 
+      }
     );
   }
 
   get f() { return this.form.controls; }
-  onSubmit(formData: any) {
 
+
+  onSubmit(formData: any) {
+    // console.log(formData)
     this.submitted = true;
     if (this.form.invalid) {
+
       return;
     }
     else {
-      this.HideSaveButton = true;
-
-      {
-        this.SaveData = {
-          BrandID: this.form.value.BrandID,
-          BrandName: this.form.value.BrandName,
-          isActive: this.form.value.IsActive,
-          CreatedBy: this.currentUser.userId
-        }
-        console.log("SaveData", this.SaveData);
-        this.api.post('/Brands/Brand_Insert_Update', this.SaveData).subscribe(
-          data => {
-            this.dialog.alert(data[0], '', () => { window.location.reload(); });
-            this.onReset();
-            this.BindinfDataToList();
-          },
-          error => { console.error(error); }
-        );
+      this.HideSaveButton = false;
+      this.SaveData = {
+        BrandID: this.BrandID,
+        BrandName: this.form.value.BrandName,
+        isActive: true,
+        CreatedBy: this.currentUser.userId
       }
+      
+      this.api.post('/Brands/Brand_Insert_Update', this.SaveData).subscribe(
+        data => {
+          this.dialog.alert(data[0], '',);
+          // window.location.reload();
+          this.BindDropdown();
+          this.form.reset()
+          this.form.controls['BrandName'].setErrors(null);
+          
+
+        },
+        error => { console.error(error); }
+      );
     }
-
   }
-  onReset() {
-    this.form.reset();
-    this.BrandID = 0;
-    this.submitted = false;
-    this.HideSaveButton = true;
 
-    this.BindinfDataToList();
-
+  tabchange(event: any) {
+    this.tab = event;
   }
+  // ResetForm() {
+  //   this.BrandID=0;
+  //   this.form.reset();
+  //   this.HideSaveButton = true;
+  //   this.submitted = false;
+  //   this.BindDropdown();
+  // }
 
   editProduct(record: any) {
-    console.log("record ", record);
-
-    this.HideSaveButton = true;
+    console.log(record)
+   this.BrandID=record.rowData.BrandID;
     const item: any = {
-
-      BrandID: record.BrandID,
-      BrandName: record.BrandName,
-      CreatedBy: record.CreatedBy,
-      IsActive: record.IsActive,
+      BrandName: record.rowData.BrandName,
+      CreatedBy: record.rowData.CreatedBy,
+      IsActive: true
     }
     this.form.setValue(item);
     console.log(this.form.value);
+    this.tab = 0;
   }
-  columns: MtxGridColumn[] = [
-    {
-      header: "Action",
-      field: 'Action',
-      minWidth: 90,
-      width: '90px',
-      pinned: 'right',
 
-      type: 'button',
-      buttons: [
-        {
-          type: 'icon',
-          icon: 'edit',
-          tooltip: 'Edit',
-          click: record => this.editProduct(record),
-        }
-      ]
+  columns: ColDef[] = [
+    {
+      headerName: 'Action', width: 100, floatingFilter: false,
+      cellRenderer: "buttonRenderer",
+      cellRendererParams: {
+        // onClick: this.onBtnClick1.bind(this),
+        onClick: this.editProduct.bind(this),
+        label: 'Click 1'
+      }
     },
     {
-      header: 'BrandID',
+      headerName: 'BrandID',
       field: 'BrandID',
       sortable: true,
       hide: true
     },
 
     {
-      header: 'BrandName',
+      headerName: 'BrandName',
       field: 'BrandName',
       sortable: true,
+      filter: 'agTextColumnFilter', floatingFilter: true,
       minWidth: 290,
 
     },
 
     {
-      header: 'CreatedBy',
+      headerName: 'CreatedBy',
       field: 'CreatedBy',
       sortable: true,
       minWidth: 280,
@@ -136,10 +148,21 @@ export class BrandsComponent implements OnInit {
 
 
     {
-      header: 'CreatedDate',
+      headerName: 'CreatedDate',
       field: 'CreatedDate',
       sortable: true,
       minWidth: 280,
     }
+
+
+
   ]
+
+
+
+
+
+
+
+
 }

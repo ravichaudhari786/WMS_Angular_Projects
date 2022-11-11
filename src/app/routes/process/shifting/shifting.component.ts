@@ -7,7 +7,12 @@ import { DatePipe } from '@angular/common';
 import { User } from '@core/authentication/interface';
 import { ColDef,GridApi } from 'ag-grid-community';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+<<<<<<< HEAD
 import { ShiftingeditButtonComponent} from './shiftingedit-button/shiftingedit-button.component';
+=======
+import { ShiftingeditButtonComponent} from './shiftingedit-button/shiftingedit-button.component'
+
+>>>>>>> 961fa10d90fae1b4fcf8a4117b2c61c7f065b37f
 @Component({
   selector: 'app-shifting',
   templateUrl: './shifting.component.html',

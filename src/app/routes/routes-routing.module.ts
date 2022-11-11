@@ -6,6 +6,7 @@ import { AuthLayoutComponent } from '../theme/auth-layout/auth-layout.component'
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './sessions/login/login.component';
 import { AuthGuard } from '@core/authentication/auth.guard';
+import {CustomersModule} from './customers/customers.module'
 
 const routes: Routes = [
   {
@@ -47,6 +48,24 @@ const routes: Routes = [
         path: 'setup',
         loadChildren: () =>
           import('./setup/setup.module').then(m => m.SetupModule),
+      },
+      {
+
+        path: 'Rate Management',
+        loadChildren: () =>
+          import('./rate-management/rate-management.module').then(m => m.RateManagementModule),
+      },
+      {
+        path:'customers',
+        loadChildren:() =>
+        import('./customers/customers.module').then(m=>m.CustomersModule),
+
+      },
+      {
+        path:'Accounts',
+        loadChildren:() =>
+        import('./accounts/accounts.module').then(m=>m.AccountsModule),
+
       },
     ],
   },

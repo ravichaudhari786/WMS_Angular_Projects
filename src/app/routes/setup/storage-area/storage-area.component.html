@@ -15,9 +15,9 @@
                                         <label>Storage Area Name</label>
                                         <input type="text" formControlName="Storage_Area_Name" id="Storage_Area_Name"
                                             [ngClass]="{'is-invalid': submitted && f.Storage_Area_Name.invalid}"
-                                            class=" form-control form-control-sm" />
+                                            class=" form-control form-control-sm" autocomplete="off" />
                                         <div *ngIf="submitted && f.Storage_Area_Name.invalid" class="invalid-feedback">
-                                            <span *ngIf="f.Storage_Area_Name?.errors?.required">Enter StorageArea
+                                            <span *ngIf="f.Storage_Area_Name?.errors?.required">Enter Storage Area
                                                 Name</span>
                                         </div>
                                     </div>
@@ -27,7 +27,7 @@
                                         <label>Storage Code</label>
                                         <input type="text" formControlName="StorageAreaCode" id="StorageAreaCode"
                                             [ngClass]="{'is-invalid': submitted && f.StorageAreaCode.invalid}"
-                                            class=" form-control form-control-sm" />
+                                            class=" form-control form-control-sm" autocomplete="off" />
                                         <div *ngIf="submitted && f.StorageAreaCode.invalid" class="invalid-feedback">
                                             <span *ngIf="f.StorageAreaCode?.errors?.required">Enter Storage AreaCode
                                                 Name</span>
@@ -49,7 +49,7 @@
                                             </option>
                                         </select>
                                         <div *ngIf="submitted && f.StorageAreaTypeID.invalid" class="invalid-feedback">
-                                            <span *ngIf="f.StorageAreaTypeID?.errors?.required">Enter StorageArea Type
+                                            <span *ngIf="f.StorageAreaTypeID?.errors?.required">Enter Storage Area Type
                                                 Name</span>
                                         </div>
 
@@ -61,14 +61,8 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label>Preference</label>
-                                        <input type="text" formControlName="Preference" id="Preference"
-                                            [ngClass]="{'is-invalid': submitted && f.Preference.invalid}"
-                                            class=" form-control form-control-sm" />
-                                        <div *ngIf="submitted && f.Preference.invalid" class="invalid-feedback">
-                                            <span *ngIf="f.Preference?.errors?.required">Enter Preference</span>
-                                        </div>
-
-
+                                        <input type="text" formControlName="Preference" id="Preference" readonly
+                                            class=" form-control form-control-sm" autocomplete="off" />
                                     </div>
                                 </div>
 
@@ -104,7 +98,7 @@
                                         <div *ngIf="submitted && f.TemperatureCategoryID.invalid"
                                             class="invalid-feedback">
                                             <span *ngIf="f.TemperatureCategoryID?.errors?.required">Enter
-                                                TemperatureCategory Name</span>
+                                                Temperature Category Name</span>
                                         </div>
                                     </div>
                                 </div>
@@ -139,9 +133,9 @@
                                         <label>AreaLength</label>
                                         <input type="text" formControlName="AreaLength" id="AreaLength"
                                             [ngClass]="{'is-invalid': submitted && f.AreaLength.invalid}"
-                                            class=" form-control form-control-sm" />
+                                            class=" form-control form-control-sm" autocomplete="off" />
                                         <div *ngIf="submitted && f.AreaLength.invalid" class="invalid-feedback">
-                                            <span *ngIf="f.AreaLength?.errors?.required">Enter AreaLength</span>
+                                            <span *ngIf="f.AreaLength?.errors?.required">Enter Area Length</span>
                                         </div>
 
 
@@ -152,7 +146,7 @@
                                         <label>AreaBreadth</label>
                                         <input type="text" formControlName="AreaBreadth" id="AreaBreadth"
                                             [ngClass]="{'is-invalid': submitted && f.AreaBreadth.invalid}"
-                                            class=" form-control form-control-sm" />
+                                            class=" form-control form-control-sm" autocomplete="off" />
                                         <div *ngIf="submitted && f.AreaBreadth.invalid" class="invalid-feedback">
                                             <span *ngIf="f.AreaBreadth?.errors?.required">Enter Area Breadth</span>
                                         </div>
@@ -165,7 +159,7 @@
                                         <label>Area Height</label>
                                         <input type="text" formControlName="AreaHeight" id="AreaHeight"
                                             [ngClass]="{'is-invalid': submitted && f.AreaHeight.invalid}"
-                                            class=" form-control form-control-sm" />
+                                            class=" form-control form-control-sm" autocomplete="off" />
                                         <div *ngIf="submitted && f.AreaHeight.invalid" class="invalid-feedback">
                                             <span *ngIf="f.AreaHeight?.errors?.required">Enter Area Height</span>
                                         </div>
@@ -179,9 +173,10 @@
                                         <label> Storage Capacity</label>
                                         <input type="text" formControlName="StorageCapacity" id="StorageCapacity"
                                             [ngClass]="{'is-invalid': submitted && f.StorageCapacity.invalid}"
-                                            class=" form-control form-control-sm" />
+                                            class=" form-control form-control-sm" autocomplete="off" />
                                         <div *ngIf="submitted && f.StorageCapacity.invalid" class="invalid-feedback">
-                                            <span *ngIf="f.StorageCapacity?.errors?.required"> Enter Storage Capacity</span>
+                                            <span *ngIf="f.StorageCapacity?.errors?.required"> Enter Storage
+                                                Capacity</span>
                                         </div>
 
 
@@ -200,22 +195,22 @@
 
 
                             </div>
-                            <div>
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-sm" [disabled]="submitted"
-                                            style="width: 85px !important; margin-top: 20px !important;  margin-left: 300px !important;">
-                                            Save
-                                        </button>
-                                    </div>
+
+                            <div class="col-sm-6 col-md-3">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-sm" [hidden]="!HideSaveButton"
+                                        [value]="submitted"
+                                        style="width: 85px !important; margin-top: 20px !important;  margin-left: 300px !important;">
+                                        Save
+                                    </button>
                                 </div>
-
+                                <!-- <div class="form-group">
+                                    <button type="button" class="btn btn-primary btn-sm" (click)="ResetForm()"
+                                        style="width: 85px !important; ">
+                                        Reset
+                                    </button>
+                                </div> -->
                             </div>
-
-
-
-
-
                         </div>
 
 
@@ -224,18 +219,21 @@
                 </mat-tab>
                 <mat-tab label="List">
 
-                    <mtx-grid [data]="StorageAreaList" [columns]="StorageArea1" [loading]="false"
-                        [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="false"
-                        [hideRowSelectionCheckbox]="false" [rowHover]="true" [rowStriped]="false" [showToolbar]="true"
-                        [toolbarTitle]="'Item List'" [columnHideable]="false" [columnMovable]="true"
-                        [expandable]="false" [pageOnFront]="true" [showPaginator]="true"
-                        [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0" [pageSize]="10"
-                        [toolbarTemplate]="toolbarTpl">
 
-                    </mtx-grid>
-                    <ng-template #toolbarTpl>
-                        <input placeholder="Search">
-                    </ng-template>
+                    <!-- <mtx-grid style="height: 600px" [data]="StorageAreaList" [columns]="StorageArea1" [loading]="false"
+                        [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="false"
+                        [hideRowSelectionCheckbox]="false" [rowHover]="true" [rowStriped]="false" [showToolbar]="false"
+                        [toolbarTitle]="'Item List'" [columnHideable]="false" [columnMovable]="true"
+                        [expandable]="false" [pageOnFront]="false" [showPaginator]="false" [pageSize]="100"></mtx-grid> -->
+
+
+
+                        <div style="height: 100%; box-sizing: border-box;">
+                            <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" [rowData]="StorageAreaList"
+                                [columnDefs]="StorageArea1" [frameworkComponents]="frameworkComponents">
+                            </ag-grid-angular>
+                        </div>
+                   
 
                 </mat-tab>
 

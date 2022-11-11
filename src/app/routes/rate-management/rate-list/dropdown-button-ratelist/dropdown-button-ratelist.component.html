@@ -1,0 +1,3 @@
+<select id="cbbillingID" [(ngModel)]='nrSelect' (change)="GetBillingID($event)">
+  <option *ngFor="let i of billingCycleList" value={{i.BillingCycleID}}>{{i.BillingCyclesName}}</option>
+</select>

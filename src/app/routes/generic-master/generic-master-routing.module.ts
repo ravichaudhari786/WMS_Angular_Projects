@@ -6,10 +6,10 @@ import { DesignationMasterComponent } from './designation-master/designation-mas
 import { ItemTypeMasterComponent } from './item-type-master/item-type-master.component';
 
 const routes: Routes = [
-  {path:"countmaster",component:CountMasterComponent},
-  {path:"departmentmaster",component:DepartmentMasterComponent},
-  {path:"designationmaster",component:DesignationMasterComponent},
-  {path:"itemtypemaster",component:ItemTypeMasterComponent}
+  {path:"CountMaster",component:CountMasterComponent},
+  {path:"DepartmentMaster",component:DepartmentMasterComponent},
+  {path:"DesignationMaster",component:DesignationMasterComponent},
+  {path:"Item Type Master",component:ItemTypeMasterComponent}
 
 ];
 

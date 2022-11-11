@@ -48,7 +48,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <button type="submit" [hidden]="!HideSaveButton" [value]="submitted" class="btn btn-primary btn-sm"
+                    <button type="submit" [hidden]="!HideSaveButton" [value]="submitted" class="btn btn-secondary btn-sm"
                         style="width: 85px !important; margin-top: 20px !important;"> Save </button>
                 </div>
 
@@ -70,11 +70,17 @@
         <hr>
         <br>
 
+
+        <ag-grid-angular style="width: 100%; height: 500px;" class="ag-theme-alpine"
+        [rowData]="DepartmentList" [columnDefs]="columnDefs"
+        [frameworkComponents]="frameworkComponents">
+      </ag-grid-angular>
+<!-- 
         <mtx-grid style="height: 300px" [data]="DepartmentList" #gridlist [columns]="columns" [loading]="false"
             [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="false"
             [hideRowSelectionCheckbox]="false" [rowHover]="true" [rowStriped]="false" [showToolbar]="true"
             [toolbarTitle]="'Department List'" [columnHideable]="false" [columnMovable]="true" [expandable]="false"
             [pageOnFront]="true" [showPaginator]="true" [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0"
             [pageSize]="0">
-        </mtx-grid>
+        </mtx-grid> -->
     </div>

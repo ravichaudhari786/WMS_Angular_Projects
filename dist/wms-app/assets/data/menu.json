@@ -1,0 +1,281 @@
+{
+  "menu": [
+    {
+      "route": "dashboard",
+      "name": "Dashboard",
+      "type": "link",
+      "icon": "dashboard",
+      "badge": {
+        "color": "red-500",
+        "value": "5"
+      }
+    },
+    {
+      "route": "master",
+      "name": "Master",
+      "type": "sub",
+      "icon": "settings",
+      "children": [
+        {
+          "route": "product",
+          "name": "Product",
+          "type": "link"
+        },
+        {
+          "route": "items",
+          "name": "Items",
+          "type": "link"
+        },
+        {
+          "route": "Labour Contractors",
+          "name": "Labour Contractors",
+          "type": "link"
+        },
+        {
+          "route": "Report Print Info",
+          "name": "Report Print Info",
+          "type": "link"
+        },
+        {
+          "route": "Pellets",
+          "name": "Pellets",
+          "type": "link"
+        },
+        {
+          "route": "Check List Master",
+          "name": "Check List Master",
+          "type": "link"
+        },
+        {
+          "route": "Check List Detail",
+          "name": "Check List Detail",
+          "type": "link"
+        },
+        {
+          "route": "Dock Master",
+          "name": "Dock Master",
+          "type": "link"
+        },
+        {
+          "route": "Brands",
+          "name": "Brands",
+          "type": "link"
+        },
+        {
+          "route": "StateCity",
+          "name": "StateCity",
+          "type": "link"
+        },
+        {
+          "route": "Financial Year",
+          "name": "Financial Year",
+          "type": "link"
+        },
+        {
+          "route": "Remarks",
+          "name": "Remarks",
+          "type": "link"
+        }
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
+    {
+      "route": "genericmaster",
+      "name": "Generic Master",
+      "type": "sub",
+      "icon": "settings",
+      "children": [
+        {
+          "route": "countmaster",
+          "name": "Count Master",
+          "type": "link"
+        },
+        {
+          "route": "departmentmaster",
+          "name": "Department Master",
+          "type": "link"
+        },
+        {
+          "route": "designationmaster",
+          "name": "Designation Master",
+          "type": "link"
+        },
+        {
+          "route": "itemtypemaster",
+          "name": "Item Type Master",
+          "type": "link"
+        }
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
+    {
+      "route": "process",
+      "name": "Process",
+      "type": "sub",
+      "icon": "build",
+      "children": [
+        {
+          "route": "inward",
+          "name": "Inward",
+          "type": "link"
+        },
+        {
+          "route": "deliveryorder",
+          "name": "DeliveryOrder",
+          "type": "link"
+        },
+        {
+          "route": "dispatch",
+          "name": "Dispatch",
+          "type": "link"
+        },
+        {
+          "route": "outward",
+          "name": "Outward",
+          "type": "link"
+        },
+        {
+          "route": "shifting",
+          "name": "Shifting",
+          "type": "link"
+        },
+        {
+          "route": "transfer",
+          "name": "Transfer",
+          "type": "link"
+        }
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
+    {
+      "route": "Rate Management",
+      "name": "Rate Management",
+      "type": "sub",
+      "icon": "build",
+      "children": [
+        {
+          "route": "RateList",
+          "name": "RateList",
+          "type": "link"
+        },
+        {
+          "route": "SpecialRates",
+          "name": "SpecialRates",
+          "type": "link"
+        }
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
+    {
+      "route": "setup",
+      "name": "Setup",
+      "type": "sub",
+      "icon": "settings",
+      "children": [
+        {
+          "route": "Storagearea",
+          "name": "Storagearea",
+          "type": "link"
+        },
+        {
+          "route": "Company",
+          "name": "Company",
+          "type": "link"
+        },
+        {
+          "route": "Warehouse",
+          "name": "Warehouse",
+          "type": "link"
+        },
+        {
+          "route": "servicemaster",
+          "name": "Service Master",
+          "type": "link"
+        }
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
+    {
+      "route": "customers",
+      "name": "Customers",
+      "type": "sub",
+      "icon": "build",
+      "children": [
+        {
+          "route": "customerMaster",
+          "name": "Customer Master",
+          "type": "link"
+        },
+        {
+          "route": "customer_contract",
+          "name": "Customer Contract",
+          "type": "link"
+        }
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
+    {
+      "route": "forms",
+      "name": "Forms",
+      "type": "sub",
+      "icon": "description",
+      "label": {
+        "color": "indigo-500",
+        "value": "new"
+      },
+      "children": [
+        {
+          "route": "elements",
+          "name": "Form elements",
+          "type": "link"
+        },
+        {
+          "route": "dynamic",
+          "name": "Dynamic form",
+          "type": "link"
+        },
+        {
+          "route": "select",
+          "name": "Select",
+          "type": "link"
+        },
+        {
+          "route": "datetime",
+          "name": "Datetime",
+          "type": "link"
+        }
+      ],
+      "permissions": {
+        "except": "GUEST"
+      }
+    },
+    {
+      "route": "tables",
+      "name": "Tables",
+      "type": "sub",
+      "icon": "format_line_spacing",
+      "children": [
+        {
+          "route": "sample-table",
+          "name": "Sample Table",
+          "type": "link"
+        }
+      ],
+      "permissions": {
+        "except": "GUEST"
+      }
+    }
+  ]
+}
