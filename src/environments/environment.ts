@@ -7,7 +7,7 @@ export const environment = {
   //baseUrl: 'http://localhost:50999/api',
 baseUrl:'http://localhost:50191/api', 
 FileUploadUrl:'http://localhost:50191/GenricFileUpload.ashx',
-ServerDomianUrl:'http://www.apaar.com/FileLOcation/',
+ServerDomianFileLocationUrl:'http://www.apaar.com/FileLOcation/',
   //baseUrl:'http://localhost:50191/', 
   //baseUrl:'http://localhost:5281',  
   localUrl:'',
