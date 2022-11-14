@@ -84,6 +84,7 @@ throw new Error('Method not implemented.');
   str1:string='';
   element:string='';
   rowDataDock:any;
+  rowdatainitial:any;
 
   fileuploadlist:any={};
   base64textString:any;
@@ -107,7 +108,7 @@ throw new Error('Method not implemented.');
     this.form = this.fb.group({
 
       customer_id: [0, Validators.required],
-      NameIniID: [null, Validators.required],
+      NameIniID: ['',Validators.required],
       txtCustomerName: ['', Validators.required],
       txtCustomerCode: ['', Validators.required],
       CustomerTypeID: [null, Validators.required],
@@ -123,8 +124,8 @@ throw new Error('Method not implemented.');
       txtGSTNO: ['', Validators.required],
       txtPanNo: ['', Validators.required],
       txtGSTStateCode: ['', Validators.required],
-      txtStorageDiscount: ['', Validators.required],
-      txtLabourDiscount: ['', Validators.required],
+      txtStorageDiscount: [0.00, Validators.required],
+      txtLabourDiscount: [0.00, Validators.required],
       txtRefferedBy: ['', Validators.required],
       IsActive: ['', Validators.required],
       CreatedBy: ['', Validators.required],
@@ -159,6 +160,12 @@ throw new Error('Method not implemented.');
       { DocID: 3, DockName: 'AadharCard'},
       { DocID: 4, DockName: 'FASSICertificate'},
   ];
+
+  //json for initial
+  this.rowdatainitial=[
+    {IniId:'Mr.',IniName:'Mr.'},
+    {IniId:'Mrs.',IniName:'Mrs.'},
+  ]
   }
 
   get f() { return this.form.controls; }
@@ -211,83 +218,90 @@ throw new Error('Method not implemented.');
   }
   //whole form submit
   OnSubmit(data:any) {
-    if(this.form.value.NameIniID==null || this.form.value.NameIniID==""){
-      alert("Please .... Select initial");
-      document?.getElementById("NameIniID")?.focus();
+    console.log(this.form);
+    this.submitted = true;
+     if (this.form.invalid) {
+      
       return;
-    }else if (this.form.value.txtCustomerName==null || this.form.value.txtCustomerName==""){
-      alert("Please .... provide CustomerName ....");
-      document?.getElementById("txtCustomerName")?.focus();
-      return;
-    }else if (this.form.value.txtCustomerCode==null || this.form.value.txtCustomerCode==""){
-      alert("Please .... provide CustomerCode ....");
-      document?.getElementById("txtCustomerCode")?.focus();
-      return;
-    }else if (this.form.value.CustomerTypeID==null || this.form.value.CustomerTypeID==""){
-      alert("Please .... select CustomerType ....");
-      document?.getElementById("CustomerTypeID")?.focus();
-      return;
-    }else if (this.form.value.txtGroupName==null || this.form.value.txtGroupName==""){
-      alert("Please .... provide GroupName ....");
-      document?.getElementById("txtGroupName")?.focus();
-      return;
-    }else if (this.form.value.email==null || this.form.value.email==""){
-      alert("Please .... provide email ....");
-      document?.getElementById("email")?.focus();
-      return;
-    }else if (this.form.value.txtPanNo==null || this.form.value.txtPanNo==""){
-      alert("Please .... provide PanNo ....");
-      document?.getElementById("txtPanNo")?.focus();
-      return;
-    }else if (this.form.value.txtGSTNO==null || this.form.value.txtGSTNO==""){
-      alert("Please .... provide GSTNO ....");
-      document?.getElementById("txtGSTNO")?.focus();
-      return;
-    }else if (this.form.value.txtFSSAI==null || this.form.value.txtFSSAI==""){
-      alert("Please .... provide FSSAI ....");
-      document?.getElementById("txtFSSAI")?.focus();
-      return;
-    }else if (this.form.value.StateID==null || this.form.value.StateID==""){
-      alert("Please .... select State ....");
-      document?.getElementById("StateID")?.focus();
-      return;
-    }else if (this.form.value.CityID==null || this.form.value.CityID==""){
-      alert("Please .... select City ....");
-      document?.getElementById("CityID")?.focus();
-      return;
-    }else if (this.form.value.txtGSTStateCode==null || this.form.value.txtGSTStateCode==""){
-      alert("Please .... provide GSTStateCode ....");
-      document?.getElementById("txtGSTStateCode")?.focus();
-      return;
-    }else if (this.form.value.txtAddress1==null || this.form.value.txtAddress1==""){
-      alert("Please .... provide Address1 ....");
-      document?.getElementById("txtAddress1")?.focus();
-      return;
-    }else if (this.form.value.txtAddress2==null || this.form.value.txtAddress2==""){
-      alert("Please .... provide Address2 ....");
-      document?.getElementById("txtAddress1")?.focus();
-      return;
-    }else if (this.form.value.txtPINCODE==null || this.form.value.txtPINCODE==""){
-      alert("Please .... provide PINCODE ....");
-      document?.getElementById("txtPINCODE")?.focus();
-      return;
-    }else if (this.form.value.txtStorageDiscount==null || this.form.value.txtStorageDiscount==""){
-      alert("Please .... provide StorageDiscount ....");
-      document?.getElementById("txtStorageDiscount")?.focus();
-      return;
-    }else if (this.form.value.txtLabourDiscount==null || this.form.value.txtLabourDiscount==""){
-      alert("Please .... provide LabourDiscount ....");
-      document?.getElementById("txtLabourDiscount")?.focus();
-      return;
-    }else if (this.form.value.txtRefferedBy==null || this.form.value.txtRefferedBy==""){
-      alert("Please .... provide RefferedBy ....");
-      document?.getElementById("txtRefferedBy")?.focus();
-      return;
-    }else if (this.form.value.RateID==null || this.form.value.RateID==""){
-      alert("Please .... select Rate ....");
-      document?.getElementById("RateID")?.focus();
-      return;
-    }else{
+    }else if( this.CustomerDetailList.length==0){
+      alert("please ....Provide Customer Contact Details");
+    }
+
+//  if (this.form.value.txtCustomerName==null || this.form.value.txtCustomerName==""){
+//       alert("Please .... provide CustomerName ....");
+//       document?.getElementById("txtCustomerName")?.focus();
+//       return;
+//     }else if (this.form.value.txtCustomerCode==null || this.form.value.txtCustomerCode==""){
+//       alert("Please .... provide CustomerCode ....");
+//       document?.getElementById("txtCustomerCode")?.focus();
+//       return;
+//     }else if (this.form.value.CustomerTypeID==null || this.form.value.CustomerTypeID==""){
+//       alert("Please .... select CustomerType ....");
+//       document?.getElementById("CustomerTypeID")?.focus();
+//       return;
+//     }else if (this.form.value.txtGroupName==null || this.form.value.txtGroupName==""){
+//       alert("Please .... provide GroupName ....");
+//       document?.getElementById("txtGroupName")?.focus();
+//       return; 
+//     }else if (this.form.value.email==null || this.form.value.email==""){
+//       alert("Please .... provide email ....");
+//       document?.getElementById("email")?.focus();
+//       return;
+//     }else if (this.form.value.txtPanNo==null || this.form.value.txtPanNo==""){
+//       alert("Please .... provide PanNo ....");
+//       document?.getElementById("txtPanNo")?.focus();
+//       return;
+//     }else if (this.form.value.txtGSTNO==null || this.form.value.txtGSTNO==""){
+//       alert("Please .... provide GSTNO ....");
+//       document?.getElementById("txtGSTNO")?.focus();
+//       return;
+//     }else if (this.form.value.txtFSSAI==null || this.form.value.txtFSSAI==""){
+//       alert("Please .... provide FSSAI ....");
+//       document?.getElementById("txtFSSAI")?.focus();
+//       return;
+//     }else if (this.form.value.StateID==null || this.form.value.StateID==""){
+//       alert("Please .... select State ....");
+//       document?.getElementById("StateID")?.focus();
+//       return;
+//     }else if (this.form.value.CityID==null || this.form.value.CityID==""){
+//       alert("Please .... select City ....");
+//       document?.getElementById("CityID")?.focus();
+//       return;}
+//       else if (this.form.value.txtGSTStateCode==null || this.form.value.txtGSTStateCode==""){
+//       alert("Please .... provide GSTStateCode ....");
+//       document?.getElementById("txtGSTStateCode")?.focus();
+//       return;
+//     }else if (this.form.value.txtAddress1==null || this.form.value.txtAddress1==""){
+//       alert("Please .... provide Address1 ....");
+//       document?.getElementById("txtAddress1")?.focus();
+//       return;
+//     }else if (this.form.value.txtAddress2==null || this.form.value.txtAddress2==""){
+//       alert("Please .... provide Address2 ....");
+//       document?.getElementById("txtAddress1")?.focus();
+//       return;
+//     }else if (this.form.value.txtPINCODE==null || this.form.value.txtPINCODE==""){
+//       alert("Please .... provide PINCODE ....");
+//       document?.getElementById("txtPINCODE")?.focus();
+//       return;
+//     }else if (this.form.value.txtStorageDiscount==null || this.form.value.txtStorageDiscount==""){
+//       alert("Please .... provide StorageDiscount ....");
+//       document?.getElementById("txtStorageDiscount")?.focus();
+//       return;
+//     }else if (this.form.value.txtLabourDiscount==null || this.form.value.txtLabourDiscount==""){
+//       alert("Please .... provide LabourDiscount ....");
+//       document?.getElementById("txtLabourDiscount")?.focus();
+//       return;
+//     }else if (this.form.value.txtRefferedBy==null || this.form.value.txtRefferedBy==""){
+//       alert("Please .... provide RefferedBy ....");
+//       document?.getElementById("txtRefferedBy")?.focus();
+//       return;
+//     }else if (this.form.value.RateID==null || this.form.value.RateID==""){
+//       alert("Please .... select Rate ....");
+//       document?.getElementById("RateID")?.focus();
+//       return;}
+
+
+      else{
 
       // this.CustomerSaveDetails=[];
       
@@ -342,7 +356,10 @@ throw new Error('Method not implemented.');
     this.BindCustomersList();
     }    
     this.form.reset()
+    this.CustomerDocumentlist1=[];
+    this.CustomerDetailList=[];
     this.BindCustomersList();
+  
     }
     //for binding data to list after save
 BindCustomersList(){
@@ -384,6 +401,7 @@ uploadfiledata(data:any){
  
 onFilechange(event: any) {
   debugger;
+  //event.target.files contain file
 if(event.target.files.length>0){
   let data = new FormData();
 
@@ -405,7 +423,7 @@ this.UploadFileBinaryFormat(event);
 }
 
 UploadFileBinaryFormat(event:any){
-  
+  //file object created to assing file
   let file = event.target.files[0];
   
   let type = file.type;
@@ -428,6 +446,7 @@ UploadFileBinaryFormat(event:any){
   this.api.post('/FileUpload/FileUplaodInfo',this.fileuploadlist).subscribe(
     data => {
       let y="";
+      //set document path to form field
       this.form.controls.txtDocumentpath.setValue(data.FilePath)
     },
     error => { console.error(error); }
@@ -477,27 +496,28 @@ console.log("Wprk3333",a.cellSelection[0].rowData);//cellselaction array contain
     alert("Please .... Enter ContactName");
     document?.getElementById("txtContactName")?.focus();
     return;
-  }else if(this.form.value.emails==null){
-      alert("Please... Enter Email");
-      document?.getElementById("emails")?.focus();
-      return;
-  }else if (this.form.value.DepartmentID==null){
-    alert("Please .... select Department");
-    document?.getElementById("DepartmentID")?.focus();
-    return;
-  }else if (this.form.value.DesignationID==null){
-    alert("Please .... select Designation");
-    document?.getElementById("DesignationID")?.focus();
-    return;
-  }else if(this.form.value.txtMobileNo==null){
+  }
+  // else if(this.form.value.emails==null){
+  //     alert("Please... Enter Email");
+  //     document?.getElementById("emails")?.focus();
+  //     return;}
+  // else if (this.form.value.DepartmentID==null){
+  //   alert("Please .... select Department");
+  //   document?.getElementById("DepartmentID")?.focus();
+  //   return;}
+    // else if (this.form.value.DesignationID==null){
+    // alert("Please .... select Designation");
+    // document?.getElementById("DesignationID")?.focus();
+    // return;}
+    else if(this.form.value.txtMobileNo==null){
     alert("Please... Enter MobileNo");
     document?.getElementById("txtMobileNo")?.focus();
-    return;
-  }else if(this.form.value.txtContactNo==null){
-    alert("Please... Enter ContactNo");
-    document?.getElementById("txtContactNo")?.focus();
-    return;
-  }else{
+    return;}
+    // else if(this.form.value.txtContactNo==null){
+    // alert("Please... Enter ContactNo");
+    // document?.getElementById("txtContactNo")?.focus();
+    // return;}
+    else{
     // indexCustomerDetail is used to store other than selected row  by filtering selected row from CustomerDetailList
     let indexCustomerDetail=this.CustomerDetailList.filter((x:any)=>x.CustomerContactID!=this.CONTDid);
 

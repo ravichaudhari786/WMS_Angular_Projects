@@ -16,15 +16,29 @@
                                     <div class="form-group">
                                         <label>Initial</label>
                                         <select class="form-control form-control-sm" formControlName="NameIniID"
-                                            id="NameIniID">
+                                        [ngClass]="{'is-invalid': submitted && f.NameIniID.invalid}" 
+                                            id="NameIniID" minlength="2">
                                             <option value="null" disabled>Select</option>
-
-                                            <option value="Mr.">Mr.</option>
-                                            <option value="Mrs.">Mrs.</option>
+                                            <option *ngFor="let a of rowdatainitial" value={{a.IniId}}>
+                                                {{a.IniName}}</option>
                                         </select>
+                                        
                                         <div *ngIf="submitted && f.NameIniID.invalid" class="invalid-feedback">
                                             <div *ngIf="f.NameIniID.errors?.required">Select Initial</div>
                                         </div>
+
+
+                                        <!-- <select class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f.cbCustomerID.invalid}" 
+                                        formControlName="cbCustomerID" id="cbCustomerID">
+                                      <option value="null" disabled>Select </option>
+                                      <option *ngFor="let i of customerList" value={{i.CustomerID}}>{{i.CustomerName}}</option>
+                                    </select>
+                                    <div *ngIf="submitted && f.cbCustomerID.invalid" class="invalid-feedback">
+                                      <span *ngIf="f.cbCustomerID?.errors?.required">Customer Name</span>
+                                    </div> -->
+
+
+
                                     </div>
                                 </div>
 
@@ -247,10 +261,10 @@
                                             formControlName="txtStorageDiscount" id="txtStorageDiscount"
                                             class=" form-control form-control-sm" />
 
-                                        <div *ngIf="submitted && f.txtStorageDiscount.invalid" class="invalid-feedback">
+                                        <!-- <div *ngIf="submitted && f.txtStorageDiscount.invalid" class="invalid-feedback">
                                             <span *ngIf="f.txtStorageDiscount?.errors?.required">Enter Storage
                                                 Discount</span>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
 
@@ -262,10 +276,10 @@
                                             formControlName="txtLabourDiscount" id="txtLabourDiscount"
                                             class=" form-control form-control-sm" />
 
-                                        <div *ngIf="submitted && f.txtLabourDiscount.invalid" class="invalid-feedback">
+                                        <!-- <div *ngIf="submitted && f.txtLabourDiscount.invalid" class="invalid-feedback">
                                             <span *ngIf="f.txtLabourDiscount?.errors?.required">Enter Labour
                                                 Discount</span>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                                 <div class="col-sm-3 col-md-3">
@@ -311,15 +325,15 @@
                                             <div class="form-group">
                                                 <label>Contact Name</label>
                                                 <input type="text" autocomplete="off"
-                                                    [ngClass]="{'is-invalid': submitted && f.txtContactName.invalid}"
+                                                    
                                                     formControlName="txtContactName" id="txtContactName"
                                                     class=" form-control form-control-sm" />
 
-                                                <div *ngIf="submitted && f.txtContactName.invalid"
+                                                <!-- <div *ngIf="submitted && f.txtContactName.invalid"
                                                     class="invalid-feedback">
                                                     <span *ngIf="f.txtContactName?.errors?.required">Enter Contact
                                                         Name</span>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
 
@@ -328,13 +342,13 @@
                                             <div class="form-group">
                                                 <label>Email</label>
                                                 <input type="emails" autocomplete="off"
-                                                    [ngClass]="{'is-invalid': submitted && f.emails.invalid}"
+                                                    
                                                     formControlName="emails" id="emails"
                                                     class=" form-control form-control-sm" />
 
-                                                <div *ngIf="submitted && f.emails.invalid" class="invalid-feedback">
+                                                <!-- <div *ngIf="submitted && f.emails.invalid" class="invalid-feedback">
                                                     <span *ngIf="f.emails?.errors?.required">Enter Email</span>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -344,17 +358,17 @@
                                             <div class="form-group">
                                                 <label>Department</label>
                                                 <select class="form-control form-control-sm"
-                                                    [ngClass]="{'is-invalid': submitted && f.DepartmentID.invalid}"
+                                                  
                                                     formControlName="DepartmentID" id="DepartmentID">
                                                     <option value="null" disabled>Select </option>
                                                     <option *ngFor="let i of Departmentlist" value={{i.DepartmentID}}>
                                                         {{i.DepartmentName}}
                                                     </option>
                                                 </select>
-                                                <div *ngIf="submitted && f.DepartmentID.invalid"
+                                                <!-- <div *ngIf="submitted && f.DepartmentID.invalid"
                                                     class="invalid-feedback">
                                                     <div *ngIf="f.DepartmentID.errors?.required">Select Department</div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
 
@@ -365,18 +379,18 @@
                                             <div class="form-group">
                                                 <label>Designation</label>
                                                 <select class="form-control form-control-sm"
-                                                    [ngClass]="{'is-invalid': submitted && f.DesignationID.invalid}"
+                                                    
                                                     formControlName="DesignationID" id="DesignationID">
                                                     <option value="null" disabled>Select </option>
                                                     <option *ngFor="let i of Designationlist" value={{i.DesignationID}}>
                                                         {{i.DesignationName}}
                                                     </option>
                                                 </select>
-                                                <div *ngIf="submitted && f.DesignationID.invalid"
+                                                <!-- <div *ngIf="submitted && f.DesignationID.invalid"
                                                     class="invalid-feedback">
                                                     <div *ngIf="f.DesignationID.errors?.required">Select Designation
                                                     </div>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -387,14 +401,14 @@
                                             <div class="form-group">
                                                 <label>Mobile No</label>
                                                 <input type="text" autocomplete="off"
-                                                    [ngClass]="{'is-invalid': submitted && f.txtMobileNo.invalid}"
+                                               
                                                     formControlName="txtMobileNo" id="txtMobileNo"
                                                     class=" form-control form-control-sm" />
-
+<!-- 
                                                 <div *ngIf="submitted && f.txtMobileNo.invalid"
                                                     class="invalid-feedback">
                                                     <span *ngIf="f.txtMobileNo?.errors?.required">Enter Mobile No</span>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
 
@@ -402,15 +416,15 @@
                                             <div class="form-group">
                                                 <label>Contact No</label>
                                                 <input type="text" autocomplete="off"
-                                                    [ngClass]="{'is-invalid': submitted && f.txtContactNo.invalid}"
+                                                    
                                                     formControlName="txtContactNo" id="txtContactNo"
                                                     class=" form-control form-control-sm" />
 
-                                                <div *ngIf="submitted && f.txtContactNo.invalid"
+                                                <!-- <div *ngIf="submitted && f.txtContactNo.invalid"
                                                     class="invalid-feedback">
                                                     <span *ngIf="f.txtContactNo?.errors?.required">Enter Contact
                                                         No</span>
-                                                </div>
+                                                </div> -->
 
                                             </div>
                                         </div>
@@ -470,6 +484,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
+                                                <div class="row pt-1">
                                                 <div class="col-sm-4 col-md-4">
                                                     <div >
                                                         <label>File Path</label>
@@ -479,6 +494,7 @@
                                                        
                                                     </div>
                                                 </div>
+                                            </div>
 
                                                 <div class="col-sm-3 col-md-3">
                                                     <div class="form-group">
