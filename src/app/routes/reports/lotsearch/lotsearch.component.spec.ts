@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LotSearchComponent } from './lot-search.component';
+import { LotsearchComponent } from './lotsearch.component';
 
-describe('LotSearchComponent', () => {
-  let component: LotSearchComponent;
-  let fixture: ComponentFixture<LotSearchComponent>;
+describe('LotsearchComponent', () => {
+  let component: LotsearchComponent;
+  let fixture: ComponentFixture<LotsearchComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LotSearchComponent ]
+      declarations: [ LotsearchComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LotSearchComponent);
+    fixture = TestBed.createComponent(LotsearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

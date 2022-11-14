@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ReportsRoutingModule } from './reports-routing.module';
-import { LotSearchComponent } from './lot-search/lot-search.component';
+
+import { LotsearchComponent } from './lotsearch/lotsearch.component';
 
 
 @NgModule({
   declarations: [
-    LotSearchComponent
+ 
+    LotsearchComponent,
   ],
   imports: [
     CommonModule,
