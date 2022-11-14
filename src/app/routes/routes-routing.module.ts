@@ -40,7 +40,7 @@ const routes: Routes = [
           import('./generic-master/generic-master.module').then(m => m.GenericMasterModule),
       },
       {
-        path: 'lotsearch',
+        path: 'Reports',
         loadChildren: () =>
           import('./reports/reports.module').then(m => m.ReportsModule),
       },
