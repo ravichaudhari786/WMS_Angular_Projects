@@ -7,6 +7,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { ColDef,GridApi } from 'ag-grid-community';
 import { AgGridAngular} from "ag-grid-angular";
 import { MtxDialog, MtxGridCellSelectionDirective, MtxGridColumn,MtxGridRowClassFormatter  } from '@ng-matero/extensions';
+import {OutwarddeletebuttonComponent} from './outwarddeletebutton/outwarddeletebutton.component';
 @Component({
   selector: 'app-outward',
   templateUrl: './outward.component.html',
@@ -35,6 +36,8 @@ export class OutwardComponent implements OnInit {
   ChargesListData: Array<OutwardCharege>=[];
   OutwardDetailList: Array<OutwardDetail>=[];
   OutwardList: any={};
+  OutwardList12: any;
+  frameworkComponents: any;
   config = {
     backdrop: false,
     ignoreBackdropClick: true
@@ -43,13 +46,16 @@ export class OutwardComponent implements OnInit {
   GetPendingDO: any = {};  
   newArr:any=[];
   Saveclick : boolean = false;
-  private gridApi!: GridApi;
+
   private currentUser:User;
-  constructor(private api:ApiService,private fb: FormBuilder,private fbParty: FormBuilder,private modalService: NgbModal) {
+  constructor(private api:ApiService,private fb: FormBuilder,private fbParty: FormBuilder,public dialogs: MtxDialog,private modalService: NgbModal) {
     this.currentUser=this.api.getCurrentUser();
     const dateSendingToServer = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd hh:mm:ss')
     this.todayDate=dateSendingToServer;
     this.currentUser=this.api.getCurrentUser();
+    this.frameworkComponents = {
+      buttonRenderer: OutwarddeletebuttonComponent,
+    };
     this.form = this.fb.group({
       customer_id: [null, Validators.required],
       Outward_Date: [null, Validators.required],
@@ -69,6 +75,7 @@ export class OutwardComponent implements OnInit {
       txtShippingAddress2: ['', Validators.required],
       txtPinCode: ['', Validators.required],
     });
+    
    }
 //------Innitialize
   ngOnInit(): void {
@@ -135,13 +142,14 @@ export class OutwardComponent implements OnInit {
   };
   this.api.post('/Outward/GetOutwardList',OutwardListData).subscribe(
     data=>{this.OutwardList=data;
-    //  console.log(data);
+      this.OutwardList12=data;
+     console.log(this.OutwardList12);
     },error=>{ console.error(error);}
   );
  }
  tabOutward(event:any){
   this.tab=event;
-  this.BindOutwardList();
+  //this.BindOutwardList();
   }
 
   //----------- Button click event on pending DO 
@@ -320,10 +328,9 @@ export class OutwardComponent implements OnInit {
      });
      if(params.value.toString()=="true"){
         this.api.post('/Outward/GetOutwardServices',DODetailData).subscribe(
-        data=>{this.DeliveryOrderDetailChargeList=[]; //console.log(data);
+        data=>{this.DeliveryOrderDetailChargeList=[]; 
           this.DeliveryOrderDetailChargeList=data;
           this.DID=this.DID+1;
-
           this.OutwardDetailsData={
               OutwardDID:this.DID,
               DeliveryOrderDID:params.data.DeliveryOrderDID,
@@ -581,7 +588,59 @@ onDeleteOutward(records:any){
   );
   
 }
+OnCancelledOutward(deletedata:any)
+{
+  if(window.confirm("Do you want to cancel your Outward...!!!")){
+        const OutwardDeleteData={
+          outwardID: deletedata.rowData.OutWardID,
+          warehouseID: deletedata.rowData.WarehouseID,
+          outWardDate: "",
+          billStartDate: "",
+          deliveryOrderID: 0,
+          customerPartyID: 0,
+          truckNo: "",
+          containerNo: "",
+          transporterName: "",
+          remarks: "BY test",
+          createdBy: this.currentUser.userId,
+          customerID: 0,
+          driverName: "",
+          driverNo: "",
+          docID: 0,
+          loadingBy: 0,
+          transferID: 0,
+          dispatchID: 0,
+          StatusID:deletedata.rowData.StatusID,
+      };
+    this.api.post('/Outward/OutwardStatus_validation',OutwardDeleteData).subscribe(
+      data=>{//console.log("process ",data[0].Count);
+          if(data[0].Count==0){          
+            alert("Some data is updated. So Please, reperform your cancelled operation");
+            this.BindOutwardList();
+          }else
+          {
+            if(deletedata.rowData.StatusID=82){
+              alert("Sorry,Outward already deactivated or deleted ....!!!");
+            }
+            else
+            {
+              this.api.post('/Outward/OutWard_Cancelled',OutwardDeleteData).subscribe(
+                data=>{ 
+                  alert(data);
+                    this.BindOutwardList();
+                  },error=>{ console.error(error);}
+              );
+            }
+          }
+        },error=>{ console.error(error);}
+    );
+  }else{
+    console.log('Cancel');
+  }
+}
 //----------------------------Grid Column
+
+
 PendingDOListColum: MtxGridColumn[] = [
   {    header:"DispatchID",    field:"DispatchID",    hide:true,  },
   {    header:"DeliveryOrderID",    field:"DeliveryOrderID",    hide:true,  },
@@ -594,7 +653,7 @@ PendingDOListColum: MtxGridColumn[] = [
   {    header:"Remarks",    field:"Remarks",    hide:false,  },
   {    header:"TruckNo",    field:"TruckNo",    hide:false,  },
   {    header:"ContainerNo",    field:"ContainerNo",  },
-]
+];
 
 OutWardListColumn: MtxGridColumn[] = [
   {
@@ -638,7 +697,7 @@ OutWardListColumn: MtxGridColumn[] = [
   {header:"DocID",field:"DocID",hide:true,  },
   {header:"LoadingBy",field:"LoadingBy",hide:true,minWidth: 80,  },
   {header:"StatusID",field:"StatusID",hide:true,  },
-{header:"StatusName",field:"StatusName",minWidth: 80,  },
+  {header:"StatusName",field:"StatusName",minWidth: 80,  },
 ]
 
 DeliveryOrderDetailColumns:ColDef[]  = [
@@ -655,15 +714,37 @@ DeliveryOrderDetailChargeColumns:ColDef[]  = [
   { field: 'ServiceName', hide:false,resizable: true },
   { field: 'C_Rate' , hide:true}, { field: 'L_Rate', hide:true }
 ];
-// serviceColumns:ColDef[]  = [
-//   {
-//     field: 'Add', cellRenderer: (params:any) => this.checkBoxCellEditRenderer(params), 
-//     hide:false,width:10,     
-//   },
-//   { field: 'InwardDID', hide:true },
-//   { field: 'ServiceID', hide:true,resizable: true },
-//   { field: 'ServiceName' }, { field: 'C_Rate', hide:true }, { field: 'L_Rate', hide:true },
-// ];
+Columnsdata:ColDef[]  = [
+   {  headerName: 'Action', width:100 ,floatingFilter: false,
+      cellRenderer: 'buttonRenderer',
+    cellRendererParams: {
+      onClick: this.OnCancelledOutward.bind(this),
+      label: 'Click 1'
+    }
+   },
+  {headerName:"OutWardID",field:"OutWardID", filter: 'agTextColumnFilter',floatingFilter: true },
+  {headerName:"OutWardNo",field:"OutWardNo", filter: 'agTextColumnFilter',floatingFilter: true  },
+  {headerName:"WarehouseID",field:"WarehouseID", filter: 'agTextColumnFilter',floatingFilter: true  },
+  {headerName:"CustomerName",field:"CustomerName", filter: 'agTextColumnFilter',floatingFilter: true },
+  {headerName:"WareHouseName",field:"WareHouseName", filter: 'agTextColumnFilter',floatingFilter: true },
+  {headerName:"OutWardDate",field:"OutWardDate", filter: 'agTextColumnFilter',floatingFilter: true },
+  {headerName:"DeliveryOrderNo",field:"DeliveryOrderNo", filter: 'agTextColumnFilter',floatingFilter: true},
+  {headerName:"DispatchNo",field:"DispatchNo", filter: 'agTextColumnFilter',floatingFilter: true},
+  {headerName:"DeliverTo",field:"DeliverTo", filter: 'agTextColumnFilter',floatingFilter: true },
+  {headerName:"TruckNo",field:"TruckNo"  , filter: 'agTextColumnFilter',floatingFilter: true },
+  {headerName:"ContainerNo",field:"ContainerNo", filter: 'agTextColumnFilter',floatingFilter: true },
+  {headerName:"TransporterName",field:"TransporterName", filter: 'agTextColumnFilter',floatingFilter: true  },
+  {headerName:"Remarks",field:"Remarks", filter: 'agTextColumnFilter',floatingFilter: true },  
+  {headerName:"IsCancelled",field:"IsCancelled", filter: 'agTextColumnFilter',floatingFilter: true },
+  {headerName:"DriverName",field:"DriverName", filter: 'agTextColumnFilter',floatingFilter: true  },
+  {headerName:"DocID",field:"DocID", filter: 'agTextColumnFilter',floatingFilter: true},
+  {headerName:"LoadingBy",field:"LoadingBy", filter: 'agTextColumnFilter',floatingFilter: true},
+  {headerName:"StatusID",field:"StatusID", filter: 'agTextColumnFilter',floatingFilter: true},
+  {headerName:"StatusName",field:"StatusName", filter: 'agTextColumnFilter',floatingFilter: true},
+];
+
+
+
 }
 //----------------Define Class
 export class OutwardCharege{

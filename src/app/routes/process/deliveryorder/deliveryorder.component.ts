@@ -479,20 +479,19 @@ export class DeliveryorderComponent implements OnInit {
   //---------end
 
   DeliveryOrdercolumnDefs: ColDef[] = [
-      { headerName:'DeliveryOrderID',field: 'DeliveryOrderID',hide:true},
+      { headerName:'DeliveryOrderID',field: 'DeliveryOrderID',hide:true, },
       { headerName:'InwardDID',field: 'InwardDID',hide:true,},
       { headerName:'InwardLocationID',field: 'InwardLocationID',hide:true},
       { headerName:'StorageAreaID',field: 'StorageAreaID',hide:true},
     	{ headerName:'ProductID',field: 'ProductID',hide:true},
-    	{ headerName:'ProductName',field: 'ProductName',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,},
-    	{ headerName:'Remarks',field: 'Remarks',hide:false,filter: 'agTextColumnFilter',floatingFilter: true},
-    	{ headerName:'LotNo',field: 'LotNo',hide:false,filter: 'agTextColumnFilter',floatingFilter: true},
-    	{ headerName:'FirstLotNo',field: 'FirstLotNo',hide:false,filter: 'agTextColumnFilter',floatingFilter: true},
-    	{ headerName:'StorageAreaName',field: 'StorageAreaName',hide:false,filter: 'agTextColumnFilter',floatingFilter: true},
-    	{ headerName:'InQuantity',field: 'InQuantity',hide:false,filter: 'agNumberColumnFilter' ,floatingFilter: true},
-    	{ headerName:'PendingDO',field: 'PendingDO',hide:false,filter: 'agNumberColumnFilter',floatingFilter: true},
-    	{ headerName:'OutQuantity',field: 'OutQuantity',hide:false,filter: 'agNumberColumnFilter',floatingFilter: true},
-    	{ headerName:'BalanceQuantity',field: 'BalanceQuantity',hide:false,filter: 'agNumberColumnFilter',floatingFilter: true},
+    	{ headerName:'ProductName',field: 'ProductName',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
+    	{ headerName:'LotNo',field: 'LotNo',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},resizable:true},
+    	{ headerName:'FirstLotNo',field: 'FirstLotNo',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
+    	{ headerName:'StorageAreaName',field: 'StorageAreaName',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
+    	{ headerName:'InQuantity',field: 'InQuantity',hide:false,filter: 'agNumberColumnFilter' ,floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
+    	{ headerName:'PendingDO',field: 'PendingDO',hide:false,filter: 'agNumberColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
+    	{ headerName:'OutQuantity',field: 'OutQuantity',hide:false,filter: 'agNumberColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
+    	{ headerName:'BalanceQuantity',field: 'BalanceQuantity',hide:false,filter: 'agNumberColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
     	{ headerName:'DOQuantity',field: 'DOQuantity',hide:false,cellEditorPopup: true,sort:"desc",filter: 'agNumberColumnFilter',floatingFilter: true,
       valueParser: "Number(newValue)" ,editable: true,cellStyle: params => {
         if (params.value >0 ) {
@@ -500,9 +499,10 @@ export class DeliveryorderComponent implements OnInit {
         }else{
           return {color: 'black', backgroundColor: '#98FB98'};
         }}},
-    	{ headerName:'BrandID',field: 'BrandID',hide:true},
-    	{ headerName:'BrandName',field: 'BrandName',hide:false,filter: 'agTextColumnFilter',floatingFilter: true},
-      { headerName:'ItemsInPacket',field: 'ItemsInPacket',hide:false,filter: 'agTextColumnFilter',floatingFilter: true},    
+    	{ headerName:'BrandID',field: 'BrandID',hide:true,cellStyle: {fontSize: '12px'},width:200},
+    	{ headerName:'BrandName',field: 'BrandName',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
+      { headerName:'ItemsInPacket',field: 'ItemsInPacket',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},    
+      { headerName:'Remarks',field: 'Remarks',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
   ];
 
   columnsDeliveryOrderList: MtxGridColumn[] = [

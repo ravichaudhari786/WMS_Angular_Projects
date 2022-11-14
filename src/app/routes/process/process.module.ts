@@ -10,6 +10,9 @@ import { OutwardComponent } from './outward/outward.component';
 import { ShiftingComponent } from './shifting/shifting.component';
 import { ShiftingeditButtonComponent } from './shifting/shiftingedit-button/shiftingedit-button.component';
 import { TransferComponent } from './transfer/transfer.component';
+import { OutwarddeletebuttonComponent } from './outward/outwarddeletebutton/outwarddeletebutton.component';
+import { TransferdeletebuttonComponent } from './transfer/transferdeletebutton/transferdeletebutton.component';
+
 
 // import {
 //   DxDataGridModule,
@@ -24,7 +27,10 @@ import { TransferComponent } from './transfer/transfer.component';
     OutwardComponent,
     ShiftingComponent,
     ShiftingeditButtonComponent,
-    TransferComponent
+    TransferComponent,
+    OutwarddeletebuttonComponent,
+    TransferdeletebuttonComponent,
+    
   ],
   imports: [
     SharedModule,
