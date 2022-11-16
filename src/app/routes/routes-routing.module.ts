@@ -8,6 +8,7 @@ import { LoginComponent } from './sessions/login/login.component';
 import { AuthGuard } from '@core/authentication/auth.guard';
 import {CustomersModule} from './customers/customers.module'
 
+
 const routes: Routes = [
   {
     path: '',

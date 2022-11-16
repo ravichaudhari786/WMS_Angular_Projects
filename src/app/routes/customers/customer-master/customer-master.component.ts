@@ -227,81 +227,7 @@ throw new Error('Method not implemented.');
       alert("please ....Provide Customer Contact Details");
     }
 
-//  if (this.form.value.txtCustomerName==null || this.form.value.txtCustomerName==""){
-//       alert("Please .... provide CustomerName ....");
-//       document?.getElementById("txtCustomerName")?.focus();
-//       return;
-//     }else if (this.form.value.txtCustomerCode==null || this.form.value.txtCustomerCode==""){
-//       alert("Please .... provide CustomerCode ....");
-//       document?.getElementById("txtCustomerCode")?.focus();
-//       return;
-//     }else if (this.form.value.CustomerTypeID==null || this.form.value.CustomerTypeID==""){
-//       alert("Please .... select CustomerType ....");
-//       document?.getElementById("CustomerTypeID")?.focus();
-//       return;
-//     }else if (this.form.value.txtGroupName==null || this.form.value.txtGroupName==""){
-//       alert("Please .... provide GroupName ....");
-//       document?.getElementById("txtGroupName")?.focus();
-//       return; 
-//     }else if (this.form.value.email==null || this.form.value.email==""){
-//       alert("Please .... provide email ....");
-//       document?.getElementById("email")?.focus();
-//       return;
-//     }else if (this.form.value.txtPanNo==null || this.form.value.txtPanNo==""){
-//       alert("Please .... provide PanNo ....");
-//       document?.getElementById("txtPanNo")?.focus();
-//       return;
-//     }else if (this.form.value.txtGSTNO==null || this.form.value.txtGSTNO==""){
-//       alert("Please .... provide GSTNO ....");
-//       document?.getElementById("txtGSTNO")?.focus();
-//       return;
-//     }else if (this.form.value.txtFSSAI==null || this.form.value.txtFSSAI==""){
-//       alert("Please .... provide FSSAI ....");
-//       document?.getElementById("txtFSSAI")?.focus();
-//       return;
-//     }else if (this.form.value.StateID==null || this.form.value.StateID==""){
-//       alert("Please .... select State ....");
-//       document?.getElementById("StateID")?.focus();
-//       return;
-//     }else if (this.form.value.CityID==null || this.form.value.CityID==""){
-//       alert("Please .... select City ....");
-//       document?.getElementById("CityID")?.focus();
-//       return;}
-//       else if (this.form.value.txtGSTStateCode==null || this.form.value.txtGSTStateCode==""){
-//       alert("Please .... provide GSTStateCode ....");
-//       document?.getElementById("txtGSTStateCode")?.focus();
-//       return;
-//     }else if (this.form.value.txtAddress1==null || this.form.value.txtAddress1==""){
-//       alert("Please .... provide Address1 ....");
-//       document?.getElementById("txtAddress1")?.focus();
-//       return;
-//     }else if (this.form.value.txtAddress2==null || this.form.value.txtAddress2==""){
-//       alert("Please .... provide Address2 ....");
-//       document?.getElementById("txtAddress1")?.focus();
-//       return;
-//     }else if (this.form.value.txtPINCODE==null || this.form.value.txtPINCODE==""){
-//       alert("Please .... provide PINCODE ....");
-//       document?.getElementById("txtPINCODE")?.focus();
-//       return;
-//     }else if (this.form.value.txtStorageDiscount==null || this.form.value.txtStorageDiscount==""){
-//       alert("Please .... provide StorageDiscount ....");
-//       document?.getElementById("txtStorageDiscount")?.focus();
-//       return;
-//     }else if (this.form.value.txtLabourDiscount==null || this.form.value.txtLabourDiscount==""){
-//       alert("Please .... provide LabourDiscount ....");
-//       document?.getElementById("txtLabourDiscount")?.focus();
-//       return;
-//     }else if (this.form.value.txtRefferedBy==null || this.form.value.txtRefferedBy==""){
-//       alert("Please .... provide RefferedBy ....");
-//       document?.getElementById("txtRefferedBy")?.focus();
-//       return;
-//     }else if (this.form.value.RateID==null || this.form.value.RateID==""){
-//       alert("Please .... select Rate ....");
-//       document?.getElementById("RateID")?.focus();
-//       return;}
-
-
-      else{
+    else{
 
       // this.CustomerSaveDetails=[];
       
@@ -347,7 +273,7 @@ throw new Error('Method not implemented.');
         
   /////////save insert 
    
-    this.api.post('/Customer/Customers_Insert',this.CustomerSaveDetails).subscribe(
+    this.api.get('/Customer/Customers_Insert',this.CustomerSaveDetails).subscribe(
       data=>{data;
         alert(data.Table[0].message);      
     },    
@@ -390,7 +316,7 @@ uploadfiledata(data:any){
      //this.form.value.txtDocumentPath=file.url;
     
     
-      debugger;
+      //debugger;
        
   }
   
@@ -400,7 +326,7 @@ uploadfiledata(data:any){
 
  
 onFilechange(event: any) {
-  debugger;
+ // debugger;
   //event.target.files contain file
 if(event.target.files.length>0){
   let data = new FormData();
@@ -443,7 +369,7 @@ UploadFileBinaryFormat(event:any){
         };
       //this.fileuploadlist.slice();
      
-  this.api.post('/FileUpload/FileUplaodInfo',this.fileuploadlist).subscribe(
+  this.api.get('/FileUpload/FileUplaodInfo',this.fileuploadlist).subscribe(
     data => {
       let y="";
       //set document path to form field
@@ -497,26 +423,12 @@ console.log("Wprk3333",a.cellSelection[0].rowData);//cellselaction array contain
     document?.getElementById("txtContactName")?.focus();
     return;
   }
-  // else if(this.form.value.emails==null){
-  //     alert("Please... Enter Email");
-  //     document?.getElementById("emails")?.focus();
-  //     return;}
-  // else if (this.form.value.DepartmentID==null){
-  //   alert("Please .... select Department");
-  //   document?.getElementById("DepartmentID")?.focus();
-  //   return;}
-    // else if (this.form.value.DesignationID==null){
-    // alert("Please .... select Designation");
-    // document?.getElementById("DesignationID")?.focus();
-    // return;}
+
     else if(this.form.value.txtMobileNo==null){
     alert("Please... Enter MobileNo");
     document?.getElementById("txtMobileNo")?.focus();
     return;}
-    // else if(this.form.value.txtContactNo==null){
-    // alert("Please... Enter ContactNo");
-    // document?.getElementById("txtContactNo")?.focus();
-    // return;}
+ 
     else{
     // indexCustomerDetail is used to store other than selected row  by filtering selected row from CustomerDetailList
     let indexCustomerDetail=this.CustomerDetailList.filter((x:any)=>x.CustomerContactID!=this.CONTDid);
@@ -676,7 +588,7 @@ OnEditCustomerMaster(d:any){
       RateID  :strRateId[0].RateID,
     });
  
-this.customerdid=d.rowData["CustomerID"];//customerdid used to save Customerid  on grid row selection 
+this.customerdid=d.rowData["CustomerID"];//customerdid used to save Customerid  on grid row selection  on edit
 console.log("Wprk3333",d.rowData);//cellselaction array contain whole selected row of customerlist and place on 0th position of its own array
 this.tab = 0;
 
@@ -689,7 +601,7 @@ const CustomerData={
   IsActive:false,
  CreatedBy:0
 }
-
+//To attach Contact list
 this.api.post('/Customer/CustomerContact_Select',CustomerData).subscribe(
   data=>{this.CustomerDetailList=data;
     console.log(this.customercontactList);
@@ -705,7 +617,7 @@ const CustomerDockData={
   IsActive:false,
  CreatedBy:0
 }
-
+//To Attach Document list
 this.api.post('/Customer/CustomerDocument_Select',CustomerDockData).subscribe(
   data=>{this.CustomerDocumentlist1=data;
     console.log(this.CustomerDocumentlist1);
@@ -714,7 +626,7 @@ this.api.post('/Customer/CustomerDocument_Select',CustomerDockData).subscribe(
 );
  
   }
-  
+  //contact grid Structure
 CustomerListcolumns: MtxGridColumn[] = [
     { header: 'ContactPersonName',field: 'ContactPersonName',minWidth: 250,},
     { header: 'EmailID',field: 'EmailID',minWidth: 170,},
@@ -728,33 +640,35 @@ CustomerListcolumns: MtxGridColumn[] = [
     { header: 'DepartmentID',field: 'DepartmentID',hide:true,minWidth: 170,},
     { header: 'DesignationID',field: 'DesignationID',hide:true,minWidth: 170,},
   ]
+// //Customer list Grid srtucture
+// columnsCustomersList: MtxGridColumn[] = [
 
-columnsCustomersList: MtxGridColumn[] = [
+
+//     { header: 'Initials',field: 'Initials',minWidth: 170,  },
+//     { header: 'CustomerName',field: 'CustomerName',minWidth: 170,},
+//     { header: 'CustomerCode',field: 'CustomerCode',minWidth: 170,},
+//     { header: 'CustomerType',field: 'CustomerType',minWidth: 170,},
+//     { header: 'Address1',field: 'Address1',minWidth: 170,},
+//     { header: 'Address2',field: 'Address2',minWidth: 170,},
+//     { header: 'GroupName',field: 'GroupName',minWidth: 170,},
+//     { header: 'EmailID',field: 'EmailID',minWidth: 170,},
+//     {header: 'GSTStateCode',field: 'GSTStateCode',minWidth: 170,},
+//     { header: 'CityID',field: 'CityID',minWidth: 170,},
+//     { header: 'City',field: 'City',minWidth: 170,},
+//     { header: 'FICINo',field: 'FICINo',minWidth: 170,},
+//     { header: 'GSTINNo',field: 'GSTINNo',minWidth: 170,},
+//     { header: 'LabourDiscount',field: 'LabourDiscount',minWidth: 170,},
+//     { header: 'PANNo',field: 'PANNo',minWidth: 170,},
+//     { header: 'PinCode',field: 'PinCode',minWidth: 170,},
+//     { header: 'ReferredBy',field: 'ReferredBy',minWidth: 170,},
+//     { header: 'State',field: 'State',minWidth: 170,},
+//     { header: 'StorageDiscount',field: 'StorageDiscount',minWidth: 170,},
+//     { header: 'CustomerID',field: 'CustomerID ',minWidth: 170,},
+//     { header: 'Rate',field: 'RateID ',minWidth: 170,},
+//     ]
 
 
-    { header: 'Initials',field: 'Initials',minWidth: 170,  },
-    { header: 'CustomerName',field: 'CustomerName',minWidth: 170,},
-    { header: 'CustomerCode',field: 'CustomerCode',minWidth: 170,},
-    { header: 'CustomerType',field: 'CustomerType',minWidth: 170,},
-    { header: 'Address1',field: 'Address1',minWidth: 170,},
-    { header: 'Address2',field: 'Address2',minWidth: 170,},
-    { header: 'GroupName',field: 'GroupName',minWidth: 170,},
-    { header: 'EmailID',field: 'EmailID',minWidth: 170,},
-    {header: 'GSTStateCode',field: 'GSTStateCode',minWidth: 170,},
-    { header: 'CityID',field: 'CityID',minWidth: 170,},
-    { header: 'City',field: 'City',minWidth: 170,},
-    { header: 'FICINo',field: 'FICINo',minWidth: 170,},
-    { header: 'GSTINNo',field: 'GSTINNo',minWidth: 170,},
-    { header: 'LabourDiscount',field: 'LabourDiscount',minWidth: 170,},
-    { header: 'PANNo',field: 'PANNo',minWidth: 170,},
-    { header: 'PinCode',field: 'PinCode',minWidth: 170,},
-    { header: 'ReferredBy',field: 'ReferredBy',minWidth: 170,},
-    { header: 'State',field: 'State',minWidth: 170,},
-    { header: 'StorageDiscount',field: 'StorageDiscount',minWidth: 170,},
-    { header: 'CustomerID',field: 'CustomerID ',minWidth: 170,},
-    { header: 'Rate',field: 'RateID ',minWidth: 170,},
-    ]
-
+//Document List Grid Structure
   CustomerDocumentListcolumns: MtxGridColumn[] = [
 
     { header: 'CustomerDocID',field: 'CustomerDocID',minWidth: 250,hide:true,},
@@ -764,6 +678,8 @@ columnsCustomersList: MtxGridColumn[] = [
     { header: 'FilePath',field: 'FilePath',minWidth: 120},
   ]
 
+
+  //grid column define for customer list Ag grid
   columnDefs: ColDef[] = [
 
     {  headerName: 'Action', width:100 ,floatingFilter: false,
