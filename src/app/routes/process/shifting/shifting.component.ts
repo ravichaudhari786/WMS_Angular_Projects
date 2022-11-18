@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { noUndefined } from '@angular/compiler/src/util';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '@core';
 import { MtxDialog, MtxGridColumn } from '@ng-matero/extensions';
 import { DatePipe } from '@angular/common';
@@ -22,7 +21,6 @@ export class ShiftingComponent implements OnInit {
   frameworkComponents: any;
   submitted = false;
   HideSaveButton=true; customerList:any;
-  dataSource = new MatTableDataSource<any>();
   tab=0;
   UserID:any=0;
   todayDate : any ;
@@ -456,7 +454,7 @@ onShiftDetailRowDblclick(detailData:any,events:any){
 //         },error=>{ console.error(error);});
 // }
 OnCancelledShifting(d:any) {
-  
+  if(window.confirm("Do you want to cancel your Shifting...!!!")){
   const SearchData={
     remarks:'', 
     shiftingDID:0, 
@@ -503,6 +501,7 @@ OnCancelledShifting(d:any) {
             this.dialog.alert("Some data is updated. So Please reperform your delete operation...!!!");
           }
          },error=>{ console.error(error);});
+        }
 }
 //----------------------------Grid Column
 BalanceStockColumn: MtxGridColumn[] = [

@@ -1,4 +1,4 @@
-<breadcrumb></breadcrumb>
+<!-- <breadcrumb></breadcrumb> -->
 
 <div fxLayout="row wrap" class="matero-row">
 
@@ -23,9 +23,9 @@
                         <!-- /.form-group -->
                       </div>
 
-                      <div class="col-sm-6 col-md-3">
+                      <div class="col-sm-2 col-md-2">
                         <div class="form-group">
-                          <label>Enter Challan</label>
+                          <label>Challan No.</label>
                           <input type="text" formControlName="challan_no" id="challan_no"
                             [ngClass]="{ 'is-invalid': submitted && f.challan_no.errors }"
                             class=" form-control form-control-sm" autocomplete="off"/>
@@ -34,23 +34,20 @@
                         <!-- /.form-group -->
                       </div>
                       <!-- /.col -->
-                      <div class="col-sm-6 col-md-3">
-                        <div class="row">
-                        <div class="form-group pl-2">
+                      <div class="col-sm-2 col-md-2">
+                        <div class="form-group">
                           <button (click)="OnApplyClick(f.customer_id.value,f.challan_no.value)"
-                            class="btn btn-primary btn-sm" style="width: 85px !important; margin-top: 20px !important;">
+                            class="btn btn-secondary btn-sm" style="width: 100% !important; margin-top: 20px !important;">
                             Apply </button>
                         </div>
-                        <div class="form-group pl-2">
-                          <button (click)="onCustomerContact(CustomerContactcontent)" class="btn btn-primary btn-sm"
-                            style="width: 85px !important; margin-top: 20px !important;"> Contact </button>
+                      </div>
+
+                      <div class="col-sm-2 col-md-2">
+                        <div class="form-group">
+                          <button (click)="onCustomerContact(CustomerContactcontent)" class="btn btn-secondary btn-sm"
+                            style="width: 100% !important; margin-top: 20px !important;"> Contact </button>
                         </div>
                       </div>
-                      </div>
-                    
-                      <!-- <div class="col-sm-6 col-md-3 text-center">
-
-                      </div> -->
                       <div class="col-sm-6 col-md-3">
                         <div class="form-group">
                           <label>Dock Name</label>
@@ -98,7 +95,7 @@
               <hr>
 
               <div class="col-12">
-                  <p class="font-weight-bold"> Transfer Details </p>
+                  <p class="font-weight-bold">Transporter Details </p>
                   <div class="row">
                       <div class="col">
                         <div class="row">
@@ -131,7 +128,7 @@
 
                           <div class="col-sm-6 col-md-3">
                             <div class="form-group">
-                              <button (click)="OnTransportAdd(TranspoterDetailcontent)" class="btn btn-primary btn-sm"
+                              <button (click)="OnTransportAdd(TranspoterDetailcontent)" class="btn btn-secondary btn-sm"
                                 style="width: 85px !important; margin-top: 20px !important;"> Add </button>
                             </div>
                           </div>
@@ -319,7 +316,7 @@
                         
                         <div class="col-3">
                           <div class="form-group">
-                            <button (click)="OnAddClick()" class="btn btn-primary btn-sm" [id]="OnAddClick"
+                            <button (click)="OnAddClick()" class="btn btn-secondary btn-sm" [id]="OnAddClick"
                             [disabled]="OnAddProductClick"
                               style="width: 85px !important; margin-top: 20px !important;"> Add </button>
                           </div>
@@ -329,7 +326,7 @@
 
                         <div class="col-3">
                           <div class="form-group">
-                            <button (click)="openStorageArea(StorageAreacontent)" class="btn btn-primary btn-sm" 
+                            <button (click)="openStorageArea(StorageAreacontent)" class="btn btn-secondary btn-sm" 
                             id="BtnStorageArea"
                               style="width: 100px !important; margin-top: 20px !important;"> Storage Area </button>
                           </div>
@@ -339,7 +336,7 @@
                         <!-- /.col -->
                         <div class="col-3">
                           <div class="form-group">
-                            <button class="btn btn-primary btn-sm"
+                            <button class="btn btn-secondary btn-sm"
                               style="width: 100px !important; margin-top: 20px !important;"> Label Print </button>
                           </div>
                         </div>
@@ -347,7 +344,7 @@
                         <!-- /.form-group -->
                         <div class="col-3">
                           <div class="form-group">
-                            <button class="btn btn-primary btn-sm"
+                            <button class="btn btn-secondary btn-sm"
                               style="width: 105px !important; margin-top: 20px !important;"> Receipt Print </button>
                           </div>
                         </div>
@@ -543,10 +540,10 @@
         <hr>
         <div class="row">
           <div class="col-md-6">
-                <button class="btn btn-primary btn-sm" (click)="OnSaveinward()" style="width: 85px !important; " [disabled]="click">Save</button>
+                <button class="btn btn-secondary btn-sm" (click)="OnSaveinward()" style="width: 85px !important; " [disabled]="click">Save</button>
           </div>
           <div class="col-md-6">
-            <button class="btn btn-primary btn-sm" (click)="OnResetInward()" style="width: 85px !important; ">Reset</button>
+            <button class="btn btn-secondary btn-sm" (click)="OnResetInward()" style="width: 85px !important; ">Reset</button>
       </div>
         </div>
       </div>

@@ -162,7 +162,7 @@ filtertext!:string;
       FinancialYear :"",
     }
     this.BindDropdown();
-    
+    this.inwardservicelist=[];
     // console.log(this.todayDate+'----'+this.productdate);
      console.log(this.todayDate);
   }
@@ -227,13 +227,13 @@ filtertext!:string;
   get f() { return this.form.controls; }
 
   GetCustomerID(id:any){
-    //console.log(this.form.value)
-    id=this.form.value.customer_id;
-    this.api.post('/Inward/GetCustomerProducts',this.BindDropdownData).subscribe(
-      data=>{this.productList=data;//console.log(this.productList);
-    },
-      error=>{ console.error(error);}
-    );
+    console.log("customer_id =",this.form.value.customer_id)
+    // id=this.form.value.customer_id;
+    // this.api.post('/Inward/GetCustomerProducts',this.BindDropdownData).subscribe(
+    //   data=>{this.productList=data;//console.log(this.productList);
+    // },
+    //   error=>{ console.error(error);}
+    // );
   }
 GetServicedetail(){
   this.api.get('/StorageAreaType/servieceStorageAreaType').subscribe(
@@ -362,12 +362,17 @@ if(e.row.data.Status==51 || e.row.data.Status==5)
         StorageAreaMasterID :1,
         FinancialYear :"",
       };
-      this.api.post('/Inward/GetCustomerContacts',CustomerData).subscribe(
-        data=>{this.customercontactList=data;
-          //console.log(this.customercontactList);
-        },
-        error=>{ console.error(error);}
-      );
+      this.api.post('/Inward/GetCustomerContact',CustomerData).subscribe(
+        data=>{this.customercontactList=data;},
+        error=>{ console.error(error);} );
+  
+      
+      // this.api.post('/Inward/GetCustomerContacts',CustomerData).subscribe(
+      //   data=>{this.customercontactList=data;
+      //     //console.log(this.customercontactList);
+      //   },
+      //   error=>{ console.error(error);}
+      // );
       this.modalService.open(CustomerContactcontent);
     }
     
@@ -1079,7 +1084,7 @@ tabInwardchange(event:any){
       
       this.api.post('/Inward/SaveInward',this.newDynamicSaveInward).subscribe(
         data=>{data;
-          alert(data.Table[0]["Column1"]);
+          this.dialog.alert(data.Table[0]["Column1"]);
           this.OnResetInward();
       },
         error=>{ console.error(error);}

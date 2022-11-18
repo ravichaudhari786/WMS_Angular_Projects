@@ -1,4 +1,4 @@
-<breadcrumb></breadcrumb>
+<!-- <breadcrumb></breadcrumb> -->
 <div fxLayout="row wrap" class="matero-row">
     <div fxFlex="100" class="matero-col">
       <mat-card>
@@ -20,7 +20,7 @@
                           </div>
                           <div class="col-sm-3 col-md-3">
                             <div class="form-group pt-3">
-                              <button type="button" class="btn btn-primary btn-block" (click)="OnSearchPendingDO()">Pending DO</button>
+                              <button type="button" class="btn btn-secondary btn-block" (click)="OnSearchPendingDO()">Pending DO</button>
                             </div>
                           </div>
                           <div class="col-sm-4 col-md-4">
@@ -60,7 +60,7 @@
                           </div>
                           <div class="col-sm-3 col-md-3">
                             <div class="form-group pt-3">
-                                <button type="button" class="btn btn-primary btn-block" (click)="openPartyWindow(AddPartyContent)">ADD Party</button>
+                                <button type="button" class="btn btn-secondary btn-block" (click)="openPartyWindow(AddPartyContent)">ADD Party</button>
                             </div>
                           </div>
                           <div class="col-sm-5 col-md-5">
@@ -178,16 +178,19 @@
                 </ag-grid-angular>
                 </div>
               </div>
+              
+              
+
 
             </div>
             <hr>
           
             <div class="row">              
               <div class="col-sm-4">
-                <button class="btn btn-primary btn-sm" (click)="OnSaveOutward()" style="width: 85px !important; " [disabled]="Saveclick" >Save</button>
+                <button class="btn btn-secondary btn-sm" (click)="OnSaveOutward()" style="width: 85px !important; " [disabled]="Saveclick" >Save</button>
               </div>
               <div class="col-sm-4">
-                <button class="btn btn-primary btn-sm" (click)="OnResetOuward()" style="width: 85px !important; ">Reset</button>
+                <button class="btn btn-secondary btn-sm" (click)="OnResetOuward()" style="width: 85px !important; ">Reset</button>
               </div>
             </div>
 
@@ -220,11 +223,21 @@
                   [expandable]="false"
                   [pageOnFront]="false"
                   [showPaginator]="false"
-                  [pageSize]="10000000" 
-                  
+                  [pageSize]="10000000"                   
                   >            
                   </mtx-grid>
                 </div>
+                </mat-tab>
+                <mat-tab label="Outward test List" >
+                  <div class="col-12"><!---test-->
+                      <ag-grid-angular 
+                      style="height: 400px;"
+                      class="ag-theme-alpine"
+                      [rowData]="OutwardList12"
+                      [columnDefs]="Columnsdata" 
+                      [frameworkComponents]="frameworkComponents">
+                    </ag-grid-angular>
+                  </div>
                 </mat-tab>
                 </mat-tab-group>
             </mat-card>

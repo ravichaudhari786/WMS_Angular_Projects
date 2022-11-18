@@ -4,11 +4,8 @@
       "route": "dashboard",
       "name": "Dashboard",
       "type": "link",
-      "icon": "dashboard",
-      "badge": {
-        "color": "red-500",
-        "value": "5"
-      }
+      "icon": "dashboard"
+      
     },
     {
       "route": "master",
@@ -259,6 +256,23 @@
       ],
       "permissions": {
         "except": "GUEST"
+      }
+    },
+    {
+      "route": "reports",
+      "name": "Reports",
+      "type": "sub",
+      "icon": "settings",
+      "children": [
+        {
+          "route": "lotsearch",
+          "name": "Lot Search",
+          "type": "link"
+        }
+      
+      ],
+      "permissions": {
+        "only": "ADMIN"
       }
     },
     {

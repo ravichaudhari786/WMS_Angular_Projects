@@ -33,8 +33,8 @@ export class StartupService {
   /** Load the application only after get the menu or other essential informations such as roles and permissions. */
   load(): Promise<any> {
     // debugger;
-   
-let strcollectionName=window.location.href;//reqInfo.collectionName;
+    let strcollectionName="";
+ strcollectionName=window.location.href;//reqInfo.collectionName;
 strcollectionName= strcollectionName.substring(strcollectionName.lastIndexOf("/") + 1, strcollectionName.length);
 strcollectionName=strcollectionName.replace("%20"," ");
     return new Promise((resolve, reject) => {
@@ -56,27 +56,55 @@ strcollectionName=strcollectionName.replace("%20"," ");
           resolve(null);
 // debugger;
 let menu1=response.menu;
-let flg=false;
+//debugger;
+// let flg=false;
+// for(var i=0;i<menu1.length;i++){
+//     for(var j=0;j<menu1[i].children.length;j++){
+//           if(strcollectionName==menu1[i].children[j].name){
+//             flg=true;
+//             break;
+//           }
+//           else{
+//             continue;
+//           }
+//       }
+// if(flg==true){
+// break;
+// }
+// else{
+// continue;
+// }
+// }  
+
+let flg=0;
+
 for(var i=0;i<menu1.length;i++){
     for(var j=0;j<menu1[i].children.length;j++){
           if(strcollectionName==menu1[i].children[j].name){
-            flg=true;
+            flg=1;
             break;
           }
           else{
+            flg=2;
             continue;
           }
       }
-if(flg==true){
+if(flg==1){
 break;
 }
 else{
+  flg=2;
 continue;
 }
-}      
-
+}
+console.log("cntrol name : "+ strcollectionName);
 
 //const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
+if(strcollectionName==""){
+  console.log("cntrol name : "+ "Blank");
+  return true;
+}
+
 if(strcollectionName=="dashboard"){
   return true;
 }
@@ -84,8 +112,8 @@ else if(strcollectionName=="login"){
   return true;
 }
 //if(flg==false && strcollectionName!="dashboard"){
-else if(flg==false){
-  
+else if(flg==2){
+  strcollectionName="";
 this.injector.get<ToastrService>(ToastrService).info("you are not authorised for this page","Info");
 this.delay(2000,this.route);
 return false;

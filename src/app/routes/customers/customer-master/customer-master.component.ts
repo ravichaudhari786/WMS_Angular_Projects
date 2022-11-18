@@ -14,8 +14,10 @@ import { FormsModule } from '@angular/forms';
 import { ColDef,GridApi } from 'ag-grid-community';
 import { AgGridAngular} from "ag-grid-angular";
 import { CustomermastereditButtonComponent} from './customermasteredit-button/customermasteredit-button.component';
-
-
+import * as $ from 'jquery'
+import { environment } from '@env/environment';
+import { LocalStorageService } from '@shared';
+import { Observable, ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-customer-master',
@@ -26,6 +28,8 @@ export class CustomerMasterComponent implements OnInit {
 tabCustomerschange($event: number) {
 throw new Error('Method not implemented.');
 }
+
+
   form!: FormGroup; submitted = false; Reseted = false;
   frameworkComponents: any;
   customerList: any;
@@ -47,6 +51,8 @@ throw new Error('Method not implemented.');
   documentdid:number=0;
   DockDid:number=0;
   CONTDid:number=0;
+  imageblob:any={};
+  
  
   CustomerDocumentlist = [];
   // CustomerDetailList1:any;
@@ -78,8 +84,16 @@ throw new Error('Method not implemented.');
   str1:string='';
   element:string='';
   rowDataDock:any;
+  rowdatainitial:any;
+
+  fileuploadlist:any={};
+  base64textString:any;
   // private currentUser: User;
- constructor(private fb: FormBuilder,private api:ApiService,public dialog: MtxDialog, private modalService: NgbModal) { 
+ constructor( private store:LocalStorageService,
+  private fb: FormBuilder,
+  private api:ApiService,
+  public dialog: MtxDialog,
+   private modalService: NgbModal) { 
     this.currentUser=this.api.getCurrentUser();
     this.frameworkComponents = {
       buttonRenderer: CustomermastereditButtonComponent,
@@ -87,12 +101,14 @@ throw new Error('Method not implemented.');
   }
 
   ngOnInit(): void {
+    
+    
     this.CustomerTypelist = [];
     ///initialisation of form fields also for validation
     this.form = this.fb.group({
 
       customer_id: [0, Validators.required],
-      NameIniID: [null, Validators.required],
+      NameIniID: ['',Validators.required],
       txtCustomerName: ['', Validators.required],
       txtCustomerCode: ['', Validators.required],
       CustomerTypeID: [null, Validators.required],
@@ -108,8 +124,8 @@ throw new Error('Method not implemented.');
       txtGSTNO: ['', Validators.required],
       txtPanNo: ['', Validators.required],
       txtGSTStateCode: ['', Validators.required],
-      txtStorageDiscount: ['', Validators.required],
-      txtLabourDiscount: ['', Validators.required],
+      txtStorageDiscount: [0.00, Validators.required],
+      txtLabourDiscount: [0.00, Validators.required],
       txtRefferedBy: ['', Validators.required],
       IsActive: ['', Validators.required],
       CreatedBy: ['', Validators.required],
@@ -144,6 +160,12 @@ throw new Error('Method not implemented.');
       { DocID: 3, DockName: 'AadharCard'},
       { DocID: 4, DockName: 'FASSICertificate'},
   ];
+
+  //json for initial
+  this.rowdatainitial=[
+    {IniId:'Mr.',IniName:'Mr.'},
+    {IniId:'Mrs.',IniName:'Mrs.'},
+  ]
   }
 
   get f() { return this.form.controls; }
@@ -196,83 +218,16 @@ throw new Error('Method not implemented.');
   }
   //whole form submit
   OnSubmit(data:any) {
-    if(this.form.value.NameIniID==null || this.form.value.NameIniID==""){
-      alert("Please .... Select initial");
-      document?.getElementById("NameIniID")?.focus();
+    console.log(this.form);
+    this.submitted = true;
+     if (this.form.invalid) {
+      
       return;
-    }else if (this.form.value.txtCustomerName==null || this.form.value.txtCustomerName==""){
-      alert("Please .... provide CustomerName ....");
-      document?.getElementById("txtCustomerName")?.focus();
-      return;
-    }else if (this.form.value.txtCustomerCode==null || this.form.value.txtCustomerCode==""){
-      alert("Please .... provide CustomerCode ....");
-      document?.getElementById("txtCustomerCode")?.focus();
-      return;
-    }else if (this.form.value.CustomerTypeID==null || this.form.value.CustomerTypeID==""){
-      alert("Please .... select CustomerType ....");
-      document?.getElementById("CustomerTypeID")?.focus();
-      return;
-    }else if (this.form.value.txtGroupName==null || this.form.value.txtGroupName==""){
-      alert("Please .... provide GroupName ....");
-      document?.getElementById("txtGroupName")?.focus();
-      return;
-    }else if (this.form.value.email==null || this.form.value.email==""){
-      alert("Please .... provide email ....");
-      document?.getElementById("email")?.focus();
-      return;
-    }else if (this.form.value.txtPanNo==null || this.form.value.txtPanNo==""){
-      alert("Please .... provide PanNo ....");
-      document?.getElementById("txtPanNo")?.focus();
-      return;
-    }else if (this.form.value.txtGSTNO==null || this.form.value.txtGSTNO==""){
-      alert("Please .... provide GSTNO ....");
-      document?.getElementById("txtGSTNO")?.focus();
-      return;
-    }else if (this.form.value.txtFSSAI==null || this.form.value.txtFSSAI==""){
-      alert("Please .... provide FSSAI ....");
-      document?.getElementById("txtFSSAI")?.focus();
-      return;
-    }else if (this.form.value.StateID==null || this.form.value.StateID==""){
-      alert("Please .... select State ....");
-      document?.getElementById("StateID")?.focus();
-      return;
-    }else if (this.form.value.CityID==null || this.form.value.CityID==""){
-      alert("Please .... select City ....");
-      document?.getElementById("CityID")?.focus();
-      return;
-    }else if (this.form.value.txtGSTStateCode==null || this.form.value.txtGSTStateCode==""){
-      alert("Please .... provide GSTStateCode ....");
-      document?.getElementById("txtGSTStateCode")?.focus();
-      return;
-    }else if (this.form.value.txtAddress1==null || this.form.value.txtAddress1==""){
-      alert("Please .... provide Address1 ....");
-      document?.getElementById("txtAddress1")?.focus();
-      return;
-    }else if (this.form.value.txtAddress2==null || this.form.value.txtAddress2==""){
-      alert("Please .... provide Address2 ....");
-      document?.getElementById("txtAddress1")?.focus();
-      return;
-    }else if (this.form.value.txtPINCODE==null || this.form.value.txtPINCODE==""){
-      alert("Please .... provide PINCODE ....");
-      document?.getElementById("txtPINCODE")?.focus();
-      return;
-    }else if (this.form.value.txtStorageDiscount==null || this.form.value.txtStorageDiscount==""){
-      alert("Please .... provide StorageDiscount ....");
-      document?.getElementById("txtStorageDiscount")?.focus();
-      return;
-    }else if (this.form.value.txtLabourDiscount==null || this.form.value.txtLabourDiscount==""){
-      alert("Please .... provide LabourDiscount ....");
-      document?.getElementById("txtLabourDiscount")?.focus();
-      return;
-    }else if (this.form.value.txtRefferedBy==null || this.form.value.txtRefferedBy==""){
-      alert("Please .... provide RefferedBy ....");
-      document?.getElementById("txtRefferedBy")?.focus();
-      return;
-    }else if (this.form.value.RateID==null || this.form.value.RateID==""){
-      alert("Please .... select Rate ....");
-      document?.getElementById("RateID")?.focus();
-      return;
-    }else{
+    }else if( this.CustomerDetailList.length==0){
+      alert("please ....Provide Customer Contact Details");
+    }
+
+    else{
 
       // this.CustomerSaveDetails=[];
       
@@ -318,7 +273,7 @@ throw new Error('Method not implemented.');
         
   /////////save insert 
    
-    this.api.post('/Customer/Customers_Insert',this.CustomerSaveDetails).subscribe(
+    this.api.get('/Customer/Customers_Insert',this.CustomerSaveDetails).subscribe(
       data=>{data;
         alert(data.Table[0].message);      
     },    
@@ -327,7 +282,10 @@ throw new Error('Method not implemented.');
     this.BindCustomersList();
     }    
     this.form.reset()
+    this.CustomerDocumentlist1=[];
+    this.CustomerDetailList=[];
     this.BindCustomersList();
+  
     }
     //for binding data to list after save
 BindCustomersList(){
@@ -338,15 +296,91 @@ BindCustomersList(){
 }
 
 //on file browse click take file fakepath and assign to txtDocumentpath form field
-onFilechange(event: any) {
+
+uploadfiledata(data:any){
+  $.ajax({
+    //url: 'http://localhost:50191/GenricFileUpload.ashx',
+    url:environment.FileUploadUrl,
+    //crossDomain: true,
+    type: 'POST',
+    //xhrFields: { withCredentials: false },
+    data: data,
+    cache: false,
+    contentType: false,
+    processData: false,  
+    success: function (file) {
+      
+     $("#txtDocumentpath").val(file.url);
+    this.store.set("FilePath",file.url);
+     //this.form.controls["txtDocumentpath"].setValue(file.url);
+     //this.form.value.txtDocumentPath=file.url;
+    
+    
+      //debugger;
+       
+  }
   
-  this.str1=event.target.value;
- 
-  this.form.controls['txtDocumentpath'].setValue(this.str1);
-  
+  });
 }
 
 
+ 
+onFilechange(event: any) {
+ // debugger;
+  //event.target.files contain file
+if(event.target.files.length>0){
+  let data = new FormData();
+
+  // for (let j = 0; j < event.target.files.length; j++) {
+   
+  //   let fileItem = event.target.files[j];
+  //   console.log(fileItem.name);
+  //   data.append('file', fileItem);
+  // }  
+ // this.uploadfiledata(data);
+  
+this.UploadFileBinaryFormat(event);
+
+}
+
+
+
+
+}
+
+UploadFileBinaryFormat(event:any){
+  //file object created to assing file
+  let file = event.target.files[0];
+  
+  let type = file.type;
+  let nameFile = file.name;
+  let size = file.size;
+  let reader = new FileReader();
+
+  reader.readAsDataURL(file);
+  
+  reader.onload = async () => {
+     
+      this.fileuploadlist={
+        "base64":String(reader.result),
+         "size":size,
+         "name":nameFile,
+         "type":type
+        };
+      //this.fileuploadlist.slice();
+     
+  this.api.get('/FileUpload/FileUplaodInfo',this.fileuploadlist).subscribe(
+    data => {
+      let y="";
+      //set document path to form field
+      this.form.controls.txtDocumentpath.setValue(data.FilePath)
+    },
+    error => { console.error(error); }
+  );
+  
+
+  };
+}
 ///grid row selection 
 onRowDblclicked(a:any,e:any)
 {
@@ -388,27 +422,14 @@ console.log("Wprk3333",a.cellSelection[0].rowData);//cellselaction array contain
     alert("Please .... Enter ContactName");
     document?.getElementById("txtContactName")?.focus();
     return;
-  }else if(this.form.value.emails==null){
-      alert("Please... Enter Email");
-      document?.getElementById("emails")?.focus();
-      return;
-  }else if (this.form.value.DepartmentID==null){
-    alert("Please .... select Department");
-    document?.getElementById("DepartmentID")?.focus();
-    return;
-  }else if (this.form.value.DesignationID==null){
-    alert("Please .... select Designation");
-    document?.getElementById("DesignationID")?.focus();
-    return;
-  }else if(this.form.value.txtMobileNo==null){
+  }
+
+    else if(this.form.value.txtMobileNo==null){
     alert("Please... Enter MobileNo");
     document?.getElementById("txtMobileNo")?.focus();
-    return;
-  }else if(this.form.value.txtContactNo==null){
-    alert("Please... Enter ContactNo");
-    document?.getElementById("txtContactNo")?.focus();
-    return;
-  }else{
+    return;}
+ 
+    else{
     // indexCustomerDetail is used to store other than selected row  by filtering selected row from CustomerDetailList
     let indexCustomerDetail=this.CustomerDetailList.filter((x:any)=>x.CustomerContactID!=this.CONTDid);
 
@@ -457,6 +478,12 @@ console.log("Wprk3333",a.cellSelection[0].rowData);//cellselaction array contain
 
 
 OnAddFileClick(){
+  
+
+
+  
+
+
   this.DocumentList=[];
   //validation of customer Document form
     if(this.form.value.txtDocumentName==null || this.form.value.txtDocumentName==""){
@@ -487,7 +514,7 @@ this.customerdocumentList={
   CustomerID:this.CustomerID,
   DocumentID:this.form.value.txtDocumentName,
  DocumentName:DockNames[0].DockName,
- FilePath:this.form.value.txtDocumentpath,
+ FilePath:this.form.controls.txtDocumentpath.value,
 
 };
 
@@ -512,48 +539,7 @@ OnEditCustomerMaster(d:any){
 
   console.log("on edit data",d);
   
-  // const EditData={
-  //   // remarks:'', 
-  //   // shiftingDID:0, 
-  //   // shiftingID:d.rowData.ShiftingID, 
-  //   // warehouseID:this.currentUser.warehouseId, 
-  //   // customerID:this.form.value.cbCustomerID, 
-  //   // createdBy:0, 
-  //   // shiftingDate:0, 
-  //   // loadingBy:0,          
-  //   // LotNo:this.form.value.txtLotNo,
-  //   // StatusID:d.rowData.StatusID,  
-  //   CustomerID:d.rowData.CustomerID,
-  //   NameIniID:d.rowData.Initials,
-  //   txtCustomerName:d.rowData.CustomerName,
-  //   txtCustomerCode:d.rowData.CustomerCode,
-  //   CustomerTypeID:d.rowData.CustomerType,
-  //   CustomerType:d.rowData.CustomerType,
-  //   txtAddress1 :d.rowData.Address1,
-  //   txtAddress2 :d.rowData.Address2,
-  //   txtGroupName :d.rowData.GroupName,
-  //   CityId :d.rowData.City,
-  //   City:d.rowData.City,
-  //   Email :d.rowData.Email,
-  //   Gstno: d.rowData.Gstno, 
-  //   Panno :d.rowData.Panno, 
-  //   customerContacts: this.CustomerDetailList, ///assing list to customerContacts  array
-  //   TD_CustomerDocuments: this.CustomerDocumentlistFinal, ///assing list to TD_CustomerDocuments array
-  //   State:d.rowData.State,
-  //   FICINo:d.rowData.FICINo, 
-  //   StorageDiscount:d.rowData.StorageDiscount, 
-  //   LabourDiscount:d.rowData.LabourDiscount, 
-  //   ReferredBy: d.rowData.ReferredBy, 
-  //   PinCode:d.rowData.PinCode, 
-  //   GSTStateCode:d.rowData.GSTStateCode, 
-  //   RateID:d.rowData.Rate,
-  //   Rate:d.rowData.RateID,
-  //   WarehouseID:this.currentUser.warehouseId,
-  //   createdby:this.currentUser.userId,
-
-  // };
-  
-  //   //-----------------------------------------------------Reset form filled
+ 
  this.form.controls['NameIniID'].reset();
  this.form.controls['txtCustomerName'].reset();
  this.form.controls['txtCustomerCode'].reset();
@@ -602,7 +588,7 @@ OnEditCustomerMaster(d:any){
       RateID  :strRateId[0].RateID,
     });
  
-this.customerdid=d.rowData["CustomerID"];//customerdid used to save Customerid  on grid row selection 
+this.customerdid=d.rowData["CustomerID"];//customerdid used to save Customerid  on grid row selection  on edit
 console.log("Wprk3333",d.rowData);//cellselaction array contain whole selected row of customerlist and place on 0th position of its own array
 this.tab = 0;
 
@@ -615,7 +601,7 @@ const CustomerData={
   IsActive:false,
  CreatedBy:0
 }
-
+//To attach Contact list
 this.api.post('/Customer/CustomerContact_Select',CustomerData).subscribe(
   data=>{this.CustomerDetailList=data;
     console.log(this.customercontactList);
@@ -631,7 +617,7 @@ const CustomerDockData={
   IsActive:false,
  CreatedBy:0
 }
-
+//To Attach Document list
 this.api.post('/Customer/CustomerDocument_Select',CustomerDockData).subscribe(
   data=>{this.CustomerDocumentlist1=data;
     console.log(this.CustomerDocumentlist1);
@@ -640,7 +626,7 @@ this.api.post('/Customer/CustomerDocument_Select',CustomerDockData).subscribe(
 );
  
   }
-  
+  //contact grid Structure
 CustomerListcolumns: MtxGridColumn[] = [
     { header: 'ContactPersonName',field: 'ContactPersonName',minWidth: 250,},
     { header: 'EmailID',field: 'EmailID',minWidth: 170,},
@@ -654,33 +640,35 @@ CustomerListcolumns: MtxGridColumn[] = [
     { header: 'DepartmentID',field: 'DepartmentID',hide:true,minWidth: 170,},
     { header: 'DesignationID',field: 'DesignationID',hide:true,minWidth: 170,},
   ]
+// //Customer list Grid srtucture
+// columnsCustomersList: MtxGridColumn[] = [
 
-columnsCustomersList: MtxGridColumn[] = [
+
+//     { header: 'Initials',field: 'Initials',minWidth: 170,  },
+//     { header: 'CustomerName',field: 'CustomerName',minWidth: 170,},
+//     { header: 'CustomerCode',field: 'CustomerCode',minWidth: 170,},
+//     { header: 'CustomerType',field: 'CustomerType',minWidth: 170,},
+//     { header: 'Address1',field: 'Address1',minWidth: 170,},
+//     { header: 'Address2',field: 'Address2',minWidth: 170,},
+//     { header: 'GroupName',field: 'GroupName',minWidth: 170,},
+//     { header: 'EmailID',field: 'EmailID',minWidth: 170,},
+//     {header: 'GSTStateCode',field: 'GSTStateCode',minWidth: 170,},
+//     { header: 'CityID',field: 'CityID',minWidth: 170,},
+//     { header: 'City',field: 'City',minWidth: 170,},
+//     { header: 'FICINo',field: 'FICINo',minWidth: 170,},
+//     { header: 'GSTINNo',field: 'GSTINNo',minWidth: 170,},
+//     { header: 'LabourDiscount',field: 'LabourDiscount',minWidth: 170,},
+//     { header: 'PANNo',field: 'PANNo',minWidth: 170,},
+//     { header: 'PinCode',field: 'PinCode',minWidth: 170,},
+//     { header: 'ReferredBy',field: 'ReferredBy',minWidth: 170,},
+//     { header: 'State',field: 'State',minWidth: 170,},
+//     { header: 'StorageDiscount',field: 'StorageDiscount',minWidth: 170,},
+//     { header: 'CustomerID',field: 'CustomerID ',minWidth: 170,},
+//     { header: 'Rate',field: 'RateID ',minWidth: 170,},
+//     ]
 
 
-    { header: 'Initials',field: 'Initials',minWidth: 170,},
-    { header: 'CustomerName',field: 'CustomerName',minWidth: 170,},
-    { header: 'CustomerCode',field: 'CustomerCode',minWidth: 170,},
-    { header: 'CustomerType',field: 'CustomerType',minWidth: 170,},
-    { header: 'Address1',field: 'Address1',minWidth: 170,},
-    { header: 'Address2',field: 'Address2',minWidth: 170,},
-    { header: 'GroupName',field: 'GroupName',minWidth: 170,},
-    { header: 'EmailID',field: 'EmailID',minWidth: 170,},
-    {header: 'GSTStateCode',field: 'GSTStateCode',minWidth: 170,},
-    { header: 'CityID',field: 'CityID',minWidth: 170,},
-    { header: 'City',field: 'City',minWidth: 170,},
-    { header: 'FICINo',field: 'FICINo',minWidth: 170,},
-    { header: 'GSTINNo',field: 'GSTINNo',minWidth: 170,},
-    { header: 'LabourDiscount',field: 'LabourDiscount',minWidth: 170,},
-    { header: 'PANNo',field: 'PANNo',minWidth: 170,},
-    { header: 'PinCode',field: 'PinCode',minWidth: 170,},
-    { header: 'ReferredBy',field: 'ReferredBy',minWidth: 170,},
-    { header: 'State',field: 'State',minWidth: 170,},
-    { header: 'StorageDiscount',field: 'StorageDiscount',minWidth: 170,},
-    { header: 'CustomerID',field: 'CustomerID ',minWidth: 170,},
-    { header: 'Rate',field: 'RateID ',minWidth: 170,},
-    ]
-
+//Document List Grid Structure
   CustomerDocumentListcolumns: MtxGridColumn[] = [
 
     { header: 'CustomerDocID',field: 'CustomerDocID',minWidth: 250,hide:true,},
@@ -690,6 +678,8 @@ columnsCustomersList: MtxGridColumn[] = [
     { header: 'FilePath',field: 'FilePath',minWidth: 120},
   ]
 
+
+  //grid column define for customer list Ag grid
   columnDefs: ColDef[] = [
 
     {  headerName: 'Action', width:100 ,floatingFilter: false,
@@ -699,27 +689,27 @@ columnsCustomersList: MtxGridColumn[] = [
       label: 'Click 1'
     }
   },
-    { headerName:'Initials',field: 'Initials',hide:false},
-    { headerName:'CustomerName',field: 'CustomerName' ,  filter:true },
-    { headerName:'CustomerCode',field: 'CustomerCode' ,filter:true},
-    { headerName:'CustomerType',field: 'CustomerType' ,filter:true},
-    { headerName:'Address1',field: 'Address1' ,filter:true},
-    { headerName:'Address2',field: 'Address2' ,filter:true},
-    { headerName:'GroupName',field: 'GroupName' ,filter:true},
-    { headerName:'EmailID',field: 'EmailID',hide:false},
-    { headerName:'GSTStateCode',field: 'GSTStateCode' ,  filter:true },
-    { headerName:'CityID',field: 'CityID' ,filter:true},
-    { headerName:'City',field: 'City' ,filter:true},
-    { headerName:'FICINo',field: 'FICINo' ,filter:true},
-    { headerName:'GSTINNo',field: 'GSTINNo' ,filter:true},
-    { headerName:'LabourDiscount',field: 'LabourDiscount' ,filter:true},
-    { headerName:'PANNo',field: 'PANNo' ,filter:true},
-    { headerName:'PinCode',field: 'PinCode' ,filter:true},
-    { headerName:'ReferredBy',field: 'ReferredBy' ,filter:true},
-    { headerName:'State',field: 'State' ,filter:true},
-    { headerName:'StorageDiscount',field: 'StorageDiscount' ,filter:true},
-    { headerName:'CustomerID',field: 'CustomerID' ,filter:true},
-    { headerName:'Rate',field: 'RateID' ,filter:true},
+    { headerName:'Initials',field: 'Initials',hide:false, filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'CustomerName',field: 'CustomerName' ,  filter: 'agTextColumnFilter', floatingFilter: true, },
+    { headerName:'CustomerCode',field: 'CustomerCode' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'CustomerType',field: 'CustomerType' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'Address1',field: 'Address1' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'Address2',field: 'Address2' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'GroupName',field: 'GroupName' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'EmailID',field: 'EmailID',hide:false,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'GSTStateCode',field: 'GSTStateCode' ,  filter: 'agTextColumnFilter', floatingFilter: true, },
+    { headerName:'CityID',field: 'CityID' ,filter: 'agTextColumnFilter', floatingFilter: true,hide:true},
+    { headerName:'City',field: 'City' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'FICINo',field: 'FICINo' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'GSTINNo',field: 'GSTINNo' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'LabourDiscount',field: 'LabourDiscount' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'PANNo',field: 'PANNo' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'PinCode',field: 'PinCode' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'ReferredBy',field: 'ReferredBy' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'State',field: 'State' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'StorageDiscount',field: 'StorageDiscount' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'CustomerID',field: 'CustomerID' ,filter: 'agTextColumnFilter', floatingFilter: true,},
+    { headerName:'Rate',field: 'RateID' ,filter: 'agTextColumnFilter', floatingFilter: true,},
   ];
 
 }
@@ -800,4 +790,10 @@ export class customerDocumentsFinals{
 CustomerID:number=0;
 DocumentID:number=0;
 FilePath:string="";
+}
+export class FileUplaod{
+  base64:string="";
+  name:string="";
+  type:string="";
+  size:number=0;
 }
