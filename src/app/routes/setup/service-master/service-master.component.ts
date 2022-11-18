@@ -115,7 +115,7 @@ export class ServiceMasterComponent implements OnInit {
   
     }
     editService(record: any) {
-      
+      console.log(record)
       this.AreaTypeID=0;
       const Billingdata=this.BillingCycleNameIList.filter((x:any)=>x.BillingCyclesName==record.BillingCyclesName);
       const Servicedata=this.ServiceTypelist.filter((x:any)=>x.ServiceType==record.ServiceType);

@@ -6,7 +6,7 @@ import { CustomerViewComponent } from './customer-view/customer-view.component';
 
 const routes: Routes = [
 
-  { path: 'customerMaster', component: CustomerMasterComponent },
+  { path: 'CustomerMaster', component: CustomerMasterComponent },
   { path: 'CustomerView', component: CustomerViewComponent },
   { path: 'CustomerUsers', component: CustomerUsersComponent }
 

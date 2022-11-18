@@ -12,7 +12,7 @@ import { CustomeruserEditButtonComponent } from './customeruser-edit-button/cust
   styleUrls: ['./customer-users.component.scss']
 })
 export class CustomerUsersComponent implements OnInit {
-  UserID: any = 0; BrandsList: any; form!: FormGroup; submitted = false;
+  UserID: any = 0;  form!: FormGroup; submitted = false;
   private currentUser: User; customerList: any; tab = 0; customergridlist: any;SaveData:any;
   frameworkComponents: any;CustomerLoginID:number=0;
   constructor(private fb: FormBuilder, private api: ApiService, public dialog: MtxDialog) {
