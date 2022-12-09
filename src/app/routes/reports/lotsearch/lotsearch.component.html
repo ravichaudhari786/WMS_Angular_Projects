@@ -1,0 +1,131 @@
+
+
+<div fxLayout="row wrap" class="matero-row">
+    <div fxFlex="100" class="matero-col">
+        <div>
+            <form [formGroup]="form" >
+                <div class="col-md-12">
+
+                    
+                    <div class="row pt-2">
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label class="L">Lot Number</label>
+                                <input class="i" type="text" autocomplete="off" formControlName="lotNo" id="lotNo"
+                                    class=" form-control form-control-sm" />
+
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-md-6">
+                            <div class="form-group">
+                                <button class="btn btn-secondary btn-sm" (click)="OnEnterLotNumber($event)" type="submit" 
+                                    style="width: 85px !important; margin-top: 20px !important;  margin-left: 80px !important;">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-md-6">
+                            <div class="form-group">
+                                <button class="btn btn-secondary btn-sm" (click)="PrintReport('lotprint')" 
+                                    style="width: 85px !important; margin-top: 20px !important;  margin-left: 100px !important;">
+                                    Print
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-md-6">
+                            <div class="form-group">
+                                <button class="btn btn-secondary btn-sm" (click)="ExportExcel()"
+                                    style="width: 85px !important; margin-top: 20px !important;  margin-left: 100px !important;">
+                                    Export
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-sm-md-6">
+                            <div class="form-group">
+                                <button class="btn btn-secondary btn-sm" (click)="OnReset()"
+                                    style="width: 85px !important; margin-top: 20px !important;  margin-left: 100px !important;">
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                       
+                        
+                    </div>
+                    <div class="row pt-2">
+                        <h6>Customer Details:</h6>
+                        <div class="container-fluid" style="border:1px solid #cecece">
+                            <div class="row pt-2">
+                                
+                                    <div class="col-sm-6 "><label class="a">Customer Name :</label><Label class="ad-label">{{CustomerName}}</Label></div>
+                                 
+                                   <div class="col-sm-6 "><label class="a">Customer Address :</label><Label class="ad-label">{{CustomerAddress}}</Label></div>
+                                   
+                                   
+                                </div>
+                            
+                            <br>
+                            <div class="row pt-2">
+
+                                <div class="col-sm-6 "><label class="a">Inward Date :</label><Label class="ad-label">{{InwardDate}}</Label></div>
+                              
+                               <div class="col-sm-6 "><label class="a">Receipt No :</label><Label class="ad-label">{{ReceiptNo}}</Label></div>
+                               
+                               </div>
+                            <br>
+                            <div class="row pt-2">
+
+                                <div class="col-sm-6 "><label class="a">Product Name :</label><Label class="ad-label">{{ProductName}}</Label></div>
+                           
+                               <div class="col-sm-6 "><label class="a">Brand :</label><Label class="ad-label">{{BrandName}}</Label></div>
+                              
+                            
+                            </div>
+                            <br>
+                            <div class="row pt-2">
+
+
+                                <div class="col-sm-6 "><label class="a">Items In Packet :</label><Label class="ad-label">{{ItemsInPacket}}</Label></div>
+                              
+                               <div class="col-sm-6 "><label class="a">Contact Person :</label><Label class="ad-label">{{ContactPerson}}</Label></div>
+                                
+                               </div>
+                            <br>
+                         
+                       
+                            <div class="row pt-2">
+
+                                <div class="col-sm-6 "><label class="a">Dock Name :</label><Label class="ad-label">{{DockName}}</Label></div>
+                           
+                               <div class="col-sm-6 "><label class="a">Unloading By :</label><Label class="ad-label">{{Unloadingby}}</Label></div>
+                              
+                            </div>
+                    </div>
+
+                    </div>
+
+                  <br>
+                  <!-- <hr> -->
+                  
+                        <div id="lotprint">
+                            <ag-grid-angular #printgrid
+                            style="width: 100%; height: 500px;" class="ag-theme-alpine"
+            [rowData]="LotList" [columnDefs]="LotDatadatacolumn">
+          </ag-grid-angular>
+                        </div>
+
+                    
+                     
+        
+                </div>
+
+          
+
+
+            </form>
+        </div>
+    </div>
+</div>

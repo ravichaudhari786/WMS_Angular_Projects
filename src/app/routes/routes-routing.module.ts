@@ -8,6 +8,7 @@ import { LoginComponent } from './sessions/login/login.component';
 import { AuthGuard } from '@core/authentication/auth.guard';
 import {CustomersModule} from './customers/customers.module'
 
+
 const routes: Routes = [
   {
     path: '',
@@ -38,6 +39,11 @@ const routes: Routes = [
         path: 'genericmaster',
         loadChildren: () =>
           import('./generic-master/generic-master.module').then(m => m.GenericMasterModule),
+      },
+      {
+        path: 'Reports',
+        loadChildren: () =>
+          import('./reports/reports.module').then(m => m.ReportsModule),
       },
       {
         path: 'process',

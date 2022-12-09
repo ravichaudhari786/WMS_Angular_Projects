@@ -1,1 +1,375 @@
-<p>additional-services works!</p>
+<breadcrumb></breadcrumb>
+
+<div fxLayout="row wrap" class="matero-row">
+
+
+    <div fxFlex="100" class="matero-col">
+        <mat-card>
+            <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange($event)" [(selectedIndex)]="tab">
+                <mat-tab label="Additional Services Master">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+                        <div class="col-md-12">
+                            <div class="row pt-2">
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Customer Name</label>
+                                        <select class="form-control form-control-sm" formControlName="CustomerID"
+                                            id="CustomerID" [ngClass]="{'is-invalid': submitted && f.CustomerID.invalid}">
+                                            <option value="null" disabled>Select</option>
+                                            <option *ngFor="let c of customerList" value={{c.CustomerID}}>
+                                                {{c.CustomerName}}</option>
+                                        </select>
+                                        <div *ngIf="submitted && form.controls.CustomerID.errors" class="text-danger">
+                                            <div *ngIf="form.controls.CustomerID.errors.required">Customer Name is Required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Bill No</label>
+                                        <input type="text" formControlName="BillNumber" id="BillNumber" 
+                                            class=" form-control form-control-sm" readonly/>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Bill Date</label>
+                                        <input type="datetime-local" formControlName="BillDate" id="BillDate"
+                                            class="form-control form-control-sm" placeholder="yyyy-MM-dd"
+                                            name="BillDate" class="form-control form-control-rounded"
+                                            [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'" />
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="row pt-2">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>LabourContractor</label>
+                                        <select class="form-control form-control-sm"
+                                            formControlName="cbLabourContractorID" id="cbLabourContractorID">
+                                            <option value="null" disabled>Select</option>
+                                            <option *ngFor="let c of LabourContractorList"
+                                                value={{c.LabourContractorID}}>
+                                                {{c.ContractorName}}</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Remarks</label>
+                                        <input type="text" formControlName="Remarks" id="Remarks"
+                                            class=" form-control form-control-sm" />
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label>Add To Monthly Bill</label>
+                                        <input type="checkbox"
+                                            style="margin-top: 30px !important; margin-left: 2px !important;"
+                                            formControlName="AddonMonthlyBill" id="AddonMonthlyBill"
+                                            class="form-check-input" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr>
+
+
+
+                            <h4>Service Details</h4>
+                            <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange2($event)"
+                                [(selectedIndex)]="tab2">
+                                <mat-tab label="Service Details">
+
+                                    <div class="col-md-12">
+                                        <div class="row pt-2">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Service Name</label>
+                                                    <select class="form-control form-control-sm"
+                                                        (change)="OnServiceSelect($event)" formControlName="cbServiceID"
+                                                        id="cbServiceID" (change)="OnServiceSelectDate($event)">
+                                                        <option value="null" disabled>Select</option>
+                                                        <option *ngFor="let c of ServiceidData" value={{c.ServiceID}}>
+                                                            {{c.ServiceName}}</option>
+                                                    </select>
+
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Unit Name</label>
+                                                    <select class="form-control form-control-sm"
+                                                        formControlName="CbUnitName" id="CbUnitName">
+                                                        <!-- <option value="null" disabled>Select</option> -->
+                                                        <option *ngFor="let c of UnitNameData"  
+                                                            value={{c.ServiceChargeID}}>
+                                                            {{c.ServiesCharges}}</option>
+                                                    </select>
+
+                                                </div>
+
+
+
+
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Quantity</label>
+                                                    <input type="text" formControlName="Quantity" id="Quantity"
+                                                        class=" form-control form-control-sm" />
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row pt-2">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Description</label>
+                                                    <input type="text" formControlName="Description" id="Description"
+                                                        class=" form-control form-control-sm" />
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Truck No</label>
+                                                    <input type="text" formControlName="TruckNo" id="TruckNo"
+                                                        class=" form-control form-control-sm" />
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Container No</label>
+                                                    <input type="text" formControlName="ContainerNo" id="ContainerNo"
+                                                        class=" form-control form-control-sm" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pt-2">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Per Unit Charges</label>
+                                                    <input type="text" formControlName="PerUnitCharges"
+                                                        id="PerUnitCharges" class=" form-control form-control-sm" />
+
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Charges</label>
+                                                    <input type="text" formControlName="Charges" id="Charges"
+                                                        class=" form-control form-control-sm" />
+
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Remarks</label>
+                                                    <input type="text" formControlName="Remarks1" id="Remarks1"
+                                                        class=" form-control form-control-sm" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row pt-2" [hidden]="!show">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Start Time</label>
+                                                    <input type="datetime-local" formControlName="StartTime"
+                                                        id="StartTime" class="form-control form-control-sm"
+                                                        placeholder="yyyy-MM-dd" name="StartTime"
+                                                        class="form-control form-control-rounded"
+                                                        [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'" />
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>End Time</label>
+                                                    <input type="datetime-local" formControlName="EndTime" id="EndTime"
+                                                        class="form-control form-control-sm" placeholder="yyyy-MM-dd"
+                                                        name="EndTime" class="form-control form-control-rounded"
+                                                        [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'" />
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row"></div>
+                                        <div>
+                                            <button  type="button" class="btn btn-primary btn-sm"
+                                                (click)="OnAddDetails()"
+                                                style="width: 90px !important;margin-left: 15px !important; ">
+                                                Add </button>
+                                        </div>
+
+
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Service Details List">
+                                    <div style="height: 100%; box-sizing: border-box;">
+                                        <ag-grid-angular style="height: 250px;" class="ag-theme-alpine"
+                                            [rowData]="ServiceListDetail"[columnDefs]="ServiceDetailsColumn"  
+                                            (rowDoubleClicked)="onRowDblclickedDetail($event)">
+                                        </ag-grid-angular>
+                                    </div>
+                                </mat-tab>
+
+
+                            </mat-tab-group>
+
+                            <hr>
+
+                            <h4>Labour Service Charges</h4>
+                            <mat-tab-group animationDuration="0ms" (selectedIndexChange)="tabchange3($event)"
+                                [(selectedIndex)]="tab3">
+                                <mat-tab label="Labour Service Charges">
+                                    <div class="col-md-12">
+                                        <div class="row pt-2">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Product</label>
+                                                    <select class="form-control form-control-sm"
+                                                        formControlName="ProductID" id="ProductID">
+                                                        <option value="null" disabled>Select </option>
+                                                        <option *ngFor="let p of productList" value={{p.ProductID}}>
+                                                            {{p.ProductName}}</option>
+                                                    </select>
+
+                                                </div>
+
+
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Service Name</label>
+                                                    <select class="form-control form-control-sm"
+                                                        formControlName="Serviceid" id="Serviceid" (change)="OnServiceSelectCharges($event)">
+                                                        <option value="null" disabled>Select</option>
+                                                        <option *ngFor="let p of ServiceNameData" value={{p.ServiceID}}>
+                                                            {{p.ServiceName}}</option>
+                                                    </select>
+
+                                                </div>
+
+
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Quantity</label>
+                                                    <input type="text" formControlName="Quantitys" id="Quantitys"
+                                                        class=" form-control form-control-sm" />
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="row pt-2">
+
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Rate</label>
+                                                    <input type="text" formControlName="Rate" id="Rate"  [(ngModel)]="servicerates"
+                                                        class=" form-control form-control-sm" />
+
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Rate_L</label>
+                                                    <input type="text" formControlName="Rate_L" id="Rate_L" [(ngModel)]="servicerates2"
+                                                        class=" form-control form-control-sm" />
+
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label>Remarks</label>
+                                                    <input type="text" formControlName="Remarkss" id="Remarkss"
+                                                        class=" form-control form-control-sm" />
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row pt-2">
+
+
+                                            <div class="col-sm-4">
+                                                <button  type="button" class="btn btn-primary btn-sm"
+                                                    (click)="OnAddChargesClick()"
+                                                    style="width: 90px !important;margin-left: 15px !important; "> Add
+                                                </button>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Labour Service Charges List">
+                                    <div style="height: 100%; box-sizing: border-box;">
+                                        <ag-grid-angular style="height: 250px;" class="ag-theme-alpine"
+                                            [rowData]="labourChargeDetail" [columnDefs]="LabourChargesColumn"
+                                            (rowDoubleClicked)="onRowDblclickedCharges($event)" [getRowStyle]="getRowStyle">
+                                        </ag-grid-angular>
+                                    </div>
+
+                                </mat-tab>
+                            </mat-tab-group>
+                            <div class="row pt-2">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-sm"
+                                            style="width: 85px !important; margin-top: 20px !important; margin-left: 250px !important;"> Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </form>
+
+                </mat-tab>
+                <mat-tab label="List">
+
+                    <div style="height: 100%; box-sizing: border-box;">
+                        <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
+                            [rowData]="AdditionalServicesData" [columnDefs]="AdditionalServicesDataColumn"
+                            [frameworkComponents]="frameworkComponents">
+                        </ag-grid-angular>
+                    </div>
+                </mat-tab>
+
+            </mat-tab-group>
+
+
+            
+        </mat-card>
+    </div>
+
+</div>

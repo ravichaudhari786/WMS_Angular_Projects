@@ -259,6 +259,23 @@
       }
     },
     {
+      "route": "reports",
+      "name": "Reports",
+      "type": "sub",
+      "icon": "settings",
+      "children": [
+        {
+          "route": "lotsearch",
+          "name": "Lot Search",
+          "type": "link"
+        }
+      
+      ],
+      "permissions": {
+        "only": "ADMIN"
+      }
+    },
+    {
       "route": "tables",
       "name": "Tables",
       "type": "sub",
