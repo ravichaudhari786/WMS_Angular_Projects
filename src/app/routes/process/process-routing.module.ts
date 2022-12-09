@@ -6,6 +6,7 @@ import { DispatchComponent } from './dispatch/dispatch.component';
 import { OutwardComponent } from './outward/outward.component';
 import { ShiftingComponent } from './shifting/shifting.component';
 import {TransferComponent} from './transfer/transfer.component'
+import { InwardUpdateComponent} from './inward-update/inward-update.component';
 
 const routes: Routes = [
   { path: 'Inward', component: InwardComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'Outward', component: OutwardComponent },
   { path: 'Shifting', component: ShiftingComponent },
   { path: 'Transfer', component: TransferComponent },
+  { path: 'InwardUpdate', component: InwardUpdateComponent },
 ];
 
 @NgModule({

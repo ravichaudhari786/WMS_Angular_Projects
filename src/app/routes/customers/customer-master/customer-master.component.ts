@@ -373,7 +373,7 @@ uploadfiledata(data:any){
      //this.form.value.txtDocumentPath=file.url;
     
     
-      debugger;
+      //debugger;
        
   }
   
@@ -383,7 +383,7 @@ uploadfiledata(data:any){
 
  
 onFilechange(event: any) {
-  debugger;
+  //debugger;
 if(event.target.files.length>0){
   let data = new FormData();
 

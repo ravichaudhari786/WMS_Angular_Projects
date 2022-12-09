@@ -56,7 +56,7 @@ strcollectionName=strcollectionName.replace("%20"," ");
           resolve(null);
 // debugger;
 let menu1=response.menu;
-debugger;
+//debugger;
 // let flg=false;
 // for(var i=0;i<menu1.length;i++){
 //     for(var j=0;j<menu1[i].children.length;j++){

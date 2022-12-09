@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from '@core/authentication/interface';
 import { ColDef,GridApi } from 'ag-grid-community';
 import { MtxDialog, MtxGridCellSelectionDirective, MtxGridColumn,MtxGridRowClassFormatter  } from '@ng-matero/extensions';
+import { DispatchdeletebuttonComponent } from './dispatchdeletebutton/dispatchdeletebutton.component'
 @Component({
   selector: 'app-dispatch',
   templateUrl: './dispatch.component.html',
@@ -11,6 +12,7 @@ import { MtxDialog, MtxGridCellSelectionDirective, MtxGridColumn,MtxGridRowClass
 })
 export class DispatchComponent implements OnInit {
   customerList:any;
+  frameworkComponents: any;
   customePartyList:any;
   remarkList:any;
   SaveDispatch: any = {}; 
@@ -23,7 +25,7 @@ export class DispatchComponent implements OnInit {
   DispatchDetailList:Array<DispatchDetail>=[];
   DispatchDetail:Array<DDetail>=[];
   DispatchList:any;
-  constructor(private api:ApiService,private fb: FormBuilder) 
+  constructor(private api:ApiService,private fb: FormBuilder,public dialog: MtxDialog) 
   { 
     this.currentUser=this.api.getCurrentUser();
     this.form = this.fb.group({
@@ -36,6 +38,9 @@ export class DispatchComponent implements OnInit {
       DispatchRemarks: [null, Validators.required],
       txtTotalDispatchQty: [null, Validators.required],
     });
+    this.frameworkComponents = {
+      buttonRenderer: DispatchdeletebuttonComponent,
+    }
   }
 
   ngOnInit(): void {
@@ -153,6 +158,33 @@ export class DispatchComponent implements OnInit {
           //console.log(this.DispatchList);
         }, error=>{ console.error(error);});
     }
+    OnCancelledDispatch(d:any){
+      console.log(d.rowData);
+      if (d.rowData.StatusID== 41)
+      {
+        //alert("This transaction already generated Outward, You can't delete it....!!!");
+        this.dialog.alert("This transaction already generated Outward, You can't delete it....!!!");
+      }
+      else if (d.rowData.StatusID== 43)
+      {
+        this.dialog.alert("This transaction already generated Cancelled, You can't delete it....!!!");
+      }
+      else
+      {
+        let bar = confirm('Do you want to deleted or deactivate your dispatch...');
+        if(bar==true)
+        {
+          let foo = prompt('Remarks ');
+          //console.log(bar, foo);
+          this.api.post('/Dispatch/Dispatch_Cancelled?DispatchID='+d.rowData.DispatchID+'&Remark='+foo+'&CreatedBy='+this.currentUser.userId).subscribe(
+            data=>{data;
+              this.dialog.alert(data);
+              this.onDispatchList();},
+            error=>{ console.error(error);});
+        }
+        
+      }
+    }
     onDeleteDORow(e:any)
     {
       console.log(e);
@@ -257,29 +289,29 @@ export class DispatchComponent implements OnInit {
       this.DispatchDetailList=[];
       this.clickSave=false;
     }
-    onKeyfilter(e:string){
-      this.api.get('/Dispatch/Dispatch_Select').subscribe(
-        data=>{this.DispatchList=data;
-          var searchName = e;
-          const lists=this.DispatchList;
-          let res = lists.filter((obj:any) => 
-          (obj.CustomerName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-          (obj.DispatchNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-          (obj.DeliveryOrderNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-          (obj.OrderGivenBy.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-          (obj.PartyName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-          (obj.Remarks.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-          (obj.ShippingAddress.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-          (obj.TruckNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-          (obj.ContainerNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-          (obj.Status.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) 
-          );
-          this.DispatchList=res;
-        },
-        error=>{ console.error(error);}
-      );
-    }
-
+    // onKeyfilter(e:string){
+    //   this.api.get('/Dispatch/Dispatch_Select').subscribe(
+    //     data=>{this.DispatchList=data;
+    //       var searchName = e;
+    //       const lists=this.DispatchList;
+    //       let res = lists.filter((obj:any) => 
+    //       (obj.CustomerName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //       (obj.DispatchNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //       (obj.DeliveryOrderNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //       (obj.OrderGivenBy.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //       (obj.PartyName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //       (obj.Remarks.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //       (obj.ShippingAddress.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //       (obj.TruckNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //       (obj.ContainerNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+    //       (obj.Status.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) 
+    //       );
+    //       this.DispatchList=res;
+    //     },
+    //     error=>{ console.error(error);}
+    //   );
+    // }
+    
   DispatchDetailcolumnDefs: ColDef[] = [
   { headerName:'DeliveryOrderNo',field: 'DeliveryOrderNo',hide:false,filter: 'agTextColumnFilter',floatingFilter: true, },
   { headerName:'DeliveryOrderDID',field: 'DeliveryOrderDID',hide:true,filter: 'agTextColumnFilter',floatingFilter: true,},
@@ -316,48 +348,71 @@ DispatchSearchcolumnDefs: ColDef[] = [
   
 ];
 
-Dispatch_ListcolumnDefs: MtxGridColumn[] = [
-  { header: "Action",
-  field: 'Action',
-  minWidth: 80,
-  pinned:'left',    
-  type: 'button',
-  buttons: [
-   {
-      color: 'warn',
-      type: 'icon',
-      icon: 'delete',
-      tooltip: 'delete',
-      pop: true,
-      popTitle:'Do you want to delete Dispatch ....!!', //this.translate.stream('table_kitchen_sink.confirm_delete'),
-      popCloseText:'No', //this.translate.stream('table_kitchen_sink.close'),
-      popOkText:'Yes', 
-      popDescription:'',
-      popCloseColor:'warn',
-      popOkColor:'primary',
-      click: record => this.onDeleteDORow(record),
+// Dispatch_ListcolumnDefs: MtxGridColumn[] = [
+//   { header: "Action",
+//   field: 'Action',
+//   minWidth: 80,
+//   pinned:'left',    
+//   type: 'button',
+//   buttons: [
+//    {
+//       color: 'warn',
+//       type: 'icon',
+//       icon: 'delete',
+//       tooltip: 'delete',
+//       pop: true,
+//       popTitle:'Do you want to delete Dispatch ....!!', //this.translate.stream('table_kitchen_sink.confirm_delete'),
+//       popCloseText:'No', //this.translate.stream('table_kitchen_sink.close'),
+//       popOkText:'Yes', 
+//       popDescription:'',
+//       popCloseColor:'warn',
+//       popOkColor:'primary',
+//       click: record => this.onDeleteDORow(record),
+//     }
+//   ]},
+//   { header:'DispatchID',field: 'DispatchID',hide:true ,minWidth: 100,},
+//   { header:'DeliveryOrderNo',field: 'DeliveryOrderNo',hide:false,minWidth: 100,},
+//   { header:'DispatchNo',field: 'DispatchNo',hide:false,minWidth: 100,},
+//   { header:'CustomerID',field: 'CustomerID',hide:true,minWidth: 100,},
+//   { header:'CustomerName',field: 'CustomerName',hide:false,minWidth: 200,},
+//   { header:'CustomerPartyID',field: 'CustomerPartyID',hide:true,minWidth: 100,},
+//   { header:'PartyName',field: 'PartyName',hide:false,minWidth: 200,},
+//   { header:'ShippingAddress',field: 'ShippingAddress',hide:false,minWidth: 100,},
+//   { header:'OrderGivenBy',field: 'OrderGivenBy',hide:false,minWidth: 200,},
+//   { header:'Status',field: 'Status',hide:false,minWidth: 200,},
+//   { header:'Remarks',field: 'Remarks',hide:false,minWidth: 100,},
+//   { header:'DispatchDate',field: 'DispatchDate',hide:false,minWidth: 100,type:'date',typeParameter:{ format:'dd-MM-yyyy'}},
+//   { header:'WareHouseID',field: 'WareHouseID',hide:true,minWidth: 100,},
+//   { header:'StatusID',field: 'StatusID',hide:true,minWidth: 100,},
+//   { header:'CeatedBy',field: 'CeatedBy',hide:false,minWidth: 100,},
+//   { header:'TruckNo',field: 'TruckNo',hide:false,minWidth: 100,},
+//   { header:'ContainerNo',field: 'ContainerNo',hide:false,minWidth: 100,},
+// ];
+DispatchsListColumnDefs: ColDef[] = [
+  {  headerName: 'Action', width:100 ,floatingFilter: false,
+    cellRenderer: 'buttonRenderer',
+    cellRendererParams: {
+      onClick: this.OnCancelledDispatch.bind(this),
+      label: 'Click 1'
     }
-  ]},
-  { header:'DispatchID',field: 'DispatchID',hide:true ,minWidth: 100,},
-  { header:'DeliveryOrderNo',field: 'DeliveryOrderNo',hide:false,minWidth: 100,},
-  { header:'DispatchNo',field: 'DispatchNo',hide:false,minWidth: 100,},
-  { header:'CustomerID',field: 'CustomerID',hide:true,minWidth: 100,},
-  { header:'CustomerName',field: 'CustomerName',hide:false,minWidth: 200,},
-  { header:'CustomerPartyID',field: 'CustomerPartyID',hide:true,minWidth: 100,},
-  { header:'PartyName',field: 'PartyName',hide:false,minWidth: 200,},
-  { header:'ShippingAddress',field: 'ShippingAddress',hide:false,minWidth: 100,},
-  { header:'OrderGivenBy',field: 'OrderGivenBy',hide:false,minWidth: 200,},
-  { header:'Status',field: 'Status',hide:false,minWidth: 200,},
-  { header:'Remarks',field: 'Remarks',hide:false,minWidth: 100,},
-  { header:'DispatchDate',field: 'DispatchDate',hide:false,minWidth: 100,type:'date',typeParameter:{ format:'dd-MM-yyyy'}},
-  { header:'WareHouseID',field: 'WareHouseID',hide:true,minWidth: 100,},
-  { header:'StatusID',field: 'StatusID',hide:true,minWidth: 100,},
-  { header:'CeatedBy',field: 'CeatedBy',hide:false,minWidth: 100,},
-  { header:'TruckNo',field: 'TruckNo',hide:false,minWidth: 100,},
-  { header:'ContainerNo',field: 'ContainerNo',hide:false,minWidth: 100,},
-  
-  
-];
+  },
+  { headerName:'DispatchID',field: 'DispatchID',minWidth: 100,hide:false, filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'DeliveryOrderNo',field: 'DeliveryOrderNo',hide:false,minWidth: 100,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'DispatchNo',field: 'DispatchNo',hide:false,minWidth: 100,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'CustomerID',field: 'CustomerID',hide:true,minWidth: 100,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'CustomerName',field: 'CustomerName',hide:false,minWidth: 200,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'CustomerPartyID',field: 'CustomerPartyID',hide:true,minWidth: 100,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'PartyName',field: 'PartyName',hide:false,minWidth: 200,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'ShippingAddress',field: 'ShippingAddress',hide:false,minWidth: 100,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'OrderGivenBy',field: 'OrderGivenBy',hide:false,minWidth: 200,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'Status',field: 'Status',hide:false,minWidth: 200,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'Remarks',field: 'Remarks',hide:false,minWidth: 100,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'DispatchDate',field: 'DispatchDate',hide:false,minWidth: 100,type:'date',filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'WareHouseID',field: 'WareHouseID',hide:true,minWidth: 100,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'StatusID',field: 'StatusID',hide:true,minWidth: 100,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'CeatedBy',field: 'CeatedBy',hide:false,minWidth: 100,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'TruckNo',field: 'TruckNo',hide:false,minWidth: 100,filter: 'agTextColumnFilter',floatingFilter: true,},
+  { headerName:'ContainerNo',field: 'ContainerNo',hide:false,minWidth: 100,filter: 'agTextColumnFilter',floatingFilter: true,},];
 //---------end 
 }
 export class DispatchDetail{

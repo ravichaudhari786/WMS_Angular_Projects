@@ -12,6 +12,11 @@ import { ShiftingeditButtonComponent } from './shifting/shiftingedit-button/shif
 import { TransferComponent } from './transfer/transfer.component';
 import { OutwarddeletebuttonComponent } from './outward/outwarddeletebutton/outwarddeletebutton.component';
 import { TransferdeletebuttonComponent } from './transfer/transferdeletebutton/transferdeletebutton.component';
+import { DispatchdeletebuttonComponent } from './dispatch/dispatchdeletebutton/dispatchdeletebutton.component';
+import { DeliveryorderactionButtonsComponent } from './deliveryorder/deliveryorderaction-buttons/deliveryorderaction-buttons.component';
+import { InwardActionButtonComponent } from './inward/inward-action-button/inward-action-button.component';
+import { InwardUpdateComponent } from './inward-update/inward-update.component';
+
 
 
 // import {
@@ -30,6 +35,10 @@ import { TransferdeletebuttonComponent } from './transfer/transferdeletebutton/t
     TransferComponent,
     OutwarddeletebuttonComponent,
     TransferdeletebuttonComponent,
+    DispatchdeletebuttonComponent,
+    DeliveryorderactionButtonsComponent,
+    InwardActionButtonComponent,
+    InwardUpdateComponent,
     
   ],
   imports: [

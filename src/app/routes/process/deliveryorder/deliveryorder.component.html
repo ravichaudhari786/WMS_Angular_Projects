@@ -218,7 +218,7 @@
                 </div>
             </form>
             </mat-tab>
-            <mat-tab label="Delivery Order List">
+            <!-- <mat-tab label="Delivery Order List">
               <div class="form-control-sm" >
                 <label class="form-control-sm" >Filter  </label>
                 <input type="text" (keyup)="onKeyfilter(filtertext.value)" id="filtertext" #filtertext 
@@ -249,6 +249,19 @@
               >            
               </mtx-grid>
             </div>
+            </mat-tab> -->
+            <mat-tab label="Delivery Order List" >
+              <div style="height: 100%; box-sizing: border-box;">
+                <ag-grid-angular 
+                  style="height: 450px;"
+                  class="ag-theme-alpine"
+                  [rowData]="DeliveryOrderList"
+                  [columnDefs]="columnsDeliveryOrderList"
+                  [frameworkComponents]="frameworkComponents"
+                  [getRowStyle]="getRowStyle"
+                  >
+                </ag-grid-angular>
+              </div>
             </mat-tab>
             </mat-tab-group>
         </mat-card>

@@ -644,7 +644,7 @@
             {{row.name}}
           </ng-template> -->
         <!-- </mat-tab> -->
-        <mat-tab label="Inward List" >
+        <!-- <mat-tab label="Inward List" >
           <div class="form-control-sm" >
             <label class="form-control-sm" >Filter  </label>
             <input type="text" (keyup)="onKeyfilter(filtertext.value)" id="filtertext" #filtertext 
@@ -675,13 +675,24 @@
           >            
           </mtx-grid>
         </div>
+        </mat-tab> -->
+        <mat-tab label="Inward List" >
+          <div style="height: 100%; box-sizing: border-box;">
+            <ag-grid-angular 
+              style="height: 450px;"
+              class="ag-theme-alpine"
+              [rowData]="InwardList"
+              [columnDefs]="columnsInwardList"
+              [frameworkComponents]="frameworkComponents"              
+              >
+            </ag-grid-angular>
+          </div>
         </mat-tab>
-
       </mat-tab-group>
     </mat-card>
   </div>
 
-<!----popup customer contact-->                
+<!----popup customer contact [getRowStyle]="getRowStyle"-->                
 
 
 

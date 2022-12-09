@@ -35,7 +35,7 @@ export class OutwardComponent implements OnInit {
   DeliveryOrderDetailChargeList:any;
   ChargesListData: Array<OutwardCharege>=[];
   OutwardDetailList: Array<OutwardDetail>=[];
-  OutwardList: any={};
+  //OutwardList: any={};
   OutwardList12: any;
   frameworkComponents: any;
   config = {
@@ -141,9 +141,9 @@ export class OutwardComponent implements OnInit {
       StatusID:0,
   };
   this.api.post('/Outward/GetOutwardList',OutwardListData).subscribe(
-    data=>{this.OutwardList=data;
+    data=>{//this.OutwardList=data;
       this.OutwardList12=data;
-     console.log(this.OutwardList12);
+     //console.log(this.OutwardList12);
     },error=>{ console.error(error);}
   );
  }
@@ -220,53 +220,53 @@ export class OutwardComponent implements OnInit {
     }
   }
 
-  onKeyfilter(e:string){
-    //console.log(e.length);
+  // onKeyfilter(e:string){
+  //   //console.log(e.length);
     
-    if(e.length>=0){
-      const OutwardListData={
-        outwardID: 0,
-        warehouseID: 1,
-        outWardDate: "",
-        billStartDate: "",
-        deliveryOrderID: 0,
-        customerPartyID: 0,
-        truckNo: "",
-        containerNo: "",
-        transporterName: "",
-        remarks: "",
-        createdBy: 0,
-        customerID: 0,
-        driverName: "",
-        driverNo: "",
-        docID: 0,
-        loadingBy: 0,
-        transferID: 0,
-        dispatchID: 0,
-        StatusID:0,
-    };
-    this.api.post('/Outward/GetOutwardList',OutwardListData).subscribe(
-      data=>{this.OutwardList=data;
-        var searchName = e;
-        const lists=this.OutwardList;
-        let res = lists.filter((obj:any) => 
-        (obj.OutWardNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.OutWardDate.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.CustomerName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.DeliveryOrderNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.DispatchNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.DeliverTo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.TruckNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.TransporterName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.ContainerNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.Remarks.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.DriverName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0)||
-        (obj.StatusName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0)
-        );
-        this.OutwardList=res;
-      },error=>{ console.error(error);} );
-    }
-  }
+  //   if(e.length>=0){
+  //     const OutwardListData={
+  //       outwardID: 0,
+  //       warehouseID: 1,
+  //       outWardDate: "",
+  //       billStartDate: "",
+  //       deliveryOrderID: 0,
+  //       customerPartyID: 0,
+  //       truckNo: "",
+  //       containerNo: "",
+  //       transporterName: "",
+  //       remarks: "",
+  //       createdBy: 0,
+  //       customerID: 0,
+  //       driverName: "",
+  //       driverNo: "",
+  //       docID: 0,
+  //       loadingBy: 0,
+  //       transferID: 0,
+  //       dispatchID: 0,
+  //       StatusID:0,
+  //   };
+  //   this.api.post('/Outward/GetOutwardList',OutwardListData).subscribe(
+  //     data=>{this.OutwardList=data;
+  //       var searchName = e;
+  //       const lists=this.OutwardList;
+  //       let res = lists.filter((obj:any) => 
+  //       (obj.OutWardNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.OutWardDate.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.CustomerName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.DeliveryOrderNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.DispatchNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.DeliverTo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.TruckNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.TransporterName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.ContainerNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.Remarks.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.DriverName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0)||
+  //       (obj.StatusName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0)
+  //       );
+  //       this.OutwardList=res;
+  //     },error=>{ console.error(error);} );
+  //   }
+  // }
 
 //--------- Pending DO List Row double click event
   onRowDblclicked(a:any,e:any){
@@ -655,50 +655,50 @@ PendingDOListColum: MtxGridColumn[] = [
   {    header:"ContainerNo",    field:"ContainerNo",  },
 ];
 
-OutWardListColumn: MtxGridColumn[] = [
-  {
-    header: "Action",
-    field: 'Action',
-    minWidth: 80,
-    pinned:'left',    
-    type: 'button',
-    buttons: [
-      {
-        color: 'warn',
-        type: 'icon',
-        icon: 'delete',
-        tooltip: 'delete',
-        pop: true,
-        popTitle:'Do you want to delete Outward ....!!', //this.translate.stream('table_kitchen_sink.confirm_delete'),
-        popCloseText:'No', //this.translate.stream('table_kitchen_sink.close'),
-        popOkText:'Yes', 
-        popDescription:'',
-        popCloseColor:'warn',
-        popOkColor:'primary',
-        click: record => this.onDeleteOutward(record),
-      }
-    ]
-  },
-  {header:"OutWardID",field:"OutWardID",hide:true },
-  {header:"OutWardNo",field:"OutWardNo",hide:false,minWidth: 100,  },
-  {header:"WarehouseID",field:"WarehouseID",hide:true,  },
-  {header:"CustomerName",field:"CustomerName",minWidth: 150,  },
-  {header:"WareHouseName",field:"WareHouseName",hide:true,  },
-  {header:"OutWardDate",field:"OutWardDate",minWidth: 100,type:'date',typeParameter:{ format:'dd-MM-yyyy'}  },
-  {header:"DeliveryOrderNo",field:"DeliveryOrderNo",minWidth: 100,  },
-  {header:"DispatchNo",field:"DispatchNo",minWidth: 100,},
-  {header:"DeliverTo",field:"DeliverTo",minWidth: 120,hide:false,  },
-  {header:"TruckNo",field:"TruckNo",hide:false,minWidth: 150,  },
-  {header:"ContainerNo",field:"ContainerNo",minWidth: 120,  },
-  {header:"TransporterName",field:"TransporterName",hide:false,minWidth: 80,  },
-  {header:"Remarks",field:"Remarks",minWidth: 100,  },  
-  {header:"IsCancelled",field:"IsCancelled",hide:true,  },
-  {header:"DriverName",field:"DriverName",minWidth: 80,  },
-  {header:"DocID",field:"DocID",hide:true,  },
-  {header:"LoadingBy",field:"LoadingBy",hide:true,minWidth: 80,  },
-  {header:"StatusID",field:"StatusID",hide:true,  },
-  {header:"StatusName",field:"StatusName",minWidth: 80,  },
-]
+// OutWardListColumn: MtxGridColumn[] = [
+//   {
+//     header: "Action",
+//     field: 'Action',
+//     minWidth: 80,
+//     pinned:'left',    
+//     type: 'button',
+//     buttons: [
+//       {
+//         color: 'warn',
+//         type: 'icon',
+//         icon: 'delete',
+//         tooltip: 'delete',
+//         pop: true,
+//         popTitle:'Do you want to delete Outward ....!!', //this.translate.stream('table_kitchen_sink.confirm_delete'),
+//         popCloseText:'No', //this.translate.stream('table_kitchen_sink.close'),
+//         popOkText:'Yes', 
+//         popDescription:'',
+//         popCloseColor:'warn',
+//         popOkColor:'primary',
+//         click: record => this.onDeleteOutward(record),
+//       }
+//     ]
+//   },
+//   {header:"OutWardID",field:"OutWardID",hide:true },
+//   {header:"OutWardNo",field:"OutWardNo",hide:false,minWidth: 100,  },
+//   {header:"WarehouseID",field:"WarehouseID",hide:true,  },
+//   {header:"CustomerName",field:"CustomerName",minWidth: 150,  },
+//   {header:"WareHouseName",field:"WareHouseName",hide:true,  },
+//   {header:"OutWardDate",field:"OutWardDate",minWidth: 100,type:'date',typeParameter:{ format:'dd-MM-yyyy'}  },
+//   {header:"DeliveryOrderNo",field:"DeliveryOrderNo",minWidth: 100,  },
+//   {header:"DispatchNo",field:"DispatchNo",minWidth: 100,},
+//   {header:"DeliverTo",field:"DeliverTo",minWidth: 120,hide:false,  },
+//   {header:"TruckNo",field:"TruckNo",hide:false,minWidth: 150,  },
+//   {header:"ContainerNo",field:"ContainerNo",minWidth: 120,  },
+//   {header:"TransporterName",field:"TransporterName",hide:false,minWidth: 80,  },
+//   {header:"Remarks",field:"Remarks",minWidth: 100,  },  
+//   {header:"IsCancelled",field:"IsCancelled",hide:true,  },
+//   {header:"DriverName",field:"DriverName",minWidth: 80,  },
+//   {header:"DocID",field:"DocID",hide:true,  },
+//   {header:"LoadingBy",field:"LoadingBy",hide:true,minWidth: 80,  },
+//   {header:"StatusID",field:"StatusID",hide:true,  },
+//   {header:"StatusName",field:"StatusName",minWidth: 80,  },
+// ]
 
 DeliveryOrderDetailColumns:ColDef[]  = [
   {    field: 'Outward',  hide:false,cellRenderer: (params:any) => this.DeliveryOrderDetailCellRenderer(params), width:10,     },

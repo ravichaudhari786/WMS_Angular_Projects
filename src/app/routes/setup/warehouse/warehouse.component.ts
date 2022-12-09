@@ -54,7 +54,7 @@ export class WarehouseComponent implements OnInit {
     this.BindDropdown();
   }
   async BindDropdown() {
-    debugger;
+    //debugger;
     // const WarehouseData={
     //   id: this.currentUser.warehouseId,
     //   userid:0,

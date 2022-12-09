@@ -27,8 +27,8 @@ import {
 } from 'devextreme-angular';
 import DataSource from 'devextreme/data/data_source';
 import { ICON_REGISTRY_PROVIDER_FACTORY } from '@angular/material/icon';
-import { ButtonRendererComponent } from 'app/routes/renderer/button-renderer.component';
-
+//import { ButtonRendererComponent } from 'app/routes/renderer/button-renderer.component';
+import { InwardActionButtonComponent } from './inward-action-button/inward-action-button.component';
 @Component({
   selector: 'app-inward',
   templateUrl: './inward.component.html',
@@ -85,6 +85,8 @@ filtertext!:string;
   brandList:any;packateCountList:any;serviceTypeList:any;labourContractorList:any;
   inwardservicelist:any;Inwardservicecharges:any;InwardList:any;inwardserviTest:any;
   private currentUser:User;
+  ChallansProductList: Array<TDChallanProductList>=[];
+  ChallansLocation: Array<TDChallanLocation>=[];
   InwardDetailList: Array<InwardDetails>=[];
   DetailList: Array<InwardDetails>=[];
   newDynamicInwardDetails: any = {};
@@ -111,7 +113,7 @@ filtertext!:string;
   //selectedBrand:any;
   constructor(private fb: FormBuilder,private api:ApiService,public dialog: MtxDialog, private modalService: NgbModal,private el: ElementRef) {
     this.frameworkComponents = {
-      buttonRenderer: ButtonRendererComponent,
+      buttonRenderer: InwardActionButtonComponent,
     }
     this.currentUser=this.api.getCurrentUser();
     //this.todayDate=new Date();
@@ -218,9 +220,9 @@ filtertext!:string;
   data=>  {this.CurrentLotNo=data[0]["LotNo"];  //console.log(this.CurrentLotNo)
         },error=>{ console.error(error);});
 
-    this.api.get('/StorageAreaMaster',this.BindDropdownData).subscribe(
-      data=>{this.storageAreaList=data;},
-      error=>{ console.error(error);} );
+    // this.api.get('/StorageAreaMaster',this.BindDropdownData).subscribe(
+    //   data=>{this.storageAreaList=data;},
+    //   error=>{ console.error(error);} );
 
  }
 
@@ -228,12 +230,12 @@ filtertext!:string;
 
   GetCustomerID(id:any){
     console.log("customer_id =",this.form.value.customer_id)
-    // id=this.form.value.customer_id;
-    // this.api.post('/Inward/GetCustomerProducts',this.BindDropdownData).subscribe(
-    //   data=>{this.productList=data;//console.log(this.productList);
-    // },
-    //   error=>{ console.error(error);}
-    // );
+    id=this.form.value.customer_id;
+    this.api.post('/Inward/GetCustomerProducts',this.BindDropdownData).subscribe(
+      data=>{this.productList=data;//console.log(this.productList);
+    },
+      error=>{ console.error(error);}
+    );
   }
 GetServicedetail(){
   this.api.get('/StorageAreaType/servieceStorageAreaType').subscribe(
@@ -586,13 +588,13 @@ onRowDblclicked(a:any,e:any)
     resultStorageArea.forEach(element => {
       indexStorageArea.forEach(test => {
         if (element.StorageAreaID === test.StorageAreaID) {
-          element.AllocatedQty = test.StorageQuantity;
+          element.AllocatedQuantity = test.StorageQuantity;
         }});
       return element;
     });
     this.storageAreaList=[];
     this.storageAreaList=resultStorageArea;
-    var Qtydata = this.storageAreaList.map(v1=>v1.AllocatedQty).reduce((acc, v1) => v1 + acc);
+    var Qtydata = this.storageAreaList.map(v1=>v1.AllocatedQuantity).reduce((acc, v1) => v1 + acc);
     this.allocatedQty=Qtydata; 
     this.form.controls['allocatedQty'].setValue(this.allocatedQty);
     //console.log(this.storageAreaList);
@@ -608,10 +610,10 @@ onRowDblclicked(a:any,e:any)
 OnAddClick(){ 
   if(this.storageAreaList.length>0)
   {
-    this.InwardValidateStorage=this.storageAreaList.filter((x:any)=>x.AllocatedQty>0);
+    this.InwardValidateStorage=this.storageAreaList.filter((x:any)=>x.AllocatedQuantity>0);
     if(this.InwardValidateStorage.length>0)
     {
-      this.allocatedQty= this.InwardValidateStorage.map(v1=>v1.AllocatedQty).reduce((acc, v1) => v1 + acc);
+      this.allocatedQty= this.InwardValidateStorage.map(v1=>v1.AllocatedQuantity).reduce((acc, v1) => v1 + acc);
     }
     else
     {
@@ -677,13 +679,13 @@ else if(this.Flag==true){
           }        
       });
       this.ChargesList.slice();
-      var Qtydata = this.storageAreaList.map(v1=>v1.AllocatedQty).reduce((acc, v1) => v1 + acc);
+      var Qtydata = this.storageAreaList.map(v1=>v1.AllocatedQuantity).reduce((acc, v1) => v1 + acc);
       this.allocatedQty=Qtydata;
     }else 
     if(this.ChargesList.length==0){
     const indexcharges=this.InwardchargesList.filter((x:any)=>x.InwardDID==this.DID);
     this.ChargesList=indexcharges;
-    var Qtydata = this.storageAreaList.map(v1=>v1.AllocatedQty).reduce((acc, v1) => v1 + acc);
+    var Qtydata = this.storageAreaList.map(v1=>v1.AllocatedQuantity).reduce((acc, v1) => v1 + acc);
     this.allocatedQty=Qtydata;
   }
   const indexInwardDetail=this.InwardDetailList.filter((x:any)=>x.InwardDID!=this.DID);
@@ -819,12 +821,12 @@ this.TransportList.forEach(i=>{
   this.InwardchargesList.slice();
 //---------------------------------InwardStorageArea
 this.storageAreaList.forEach(i=>{
-if(i.AllocatedQty>0){
+if(i.AllocatedQuantity>0){
   this.InwardshowStorageArea.push(
     {
      "InwardDID":this.DID,
      "StorageAreaID":i.StorageAreaID,
-     "StorageQuantity":i.AllocatedQty,
+     "StorageQuantity":i.AllocatedQuantity,
      "LotNo":this.form.value.lot_no,
      "IsCustomerAreaSelected":false
     });
@@ -864,9 +866,46 @@ this.InwardshowStorageArea.slice();
 }
 GetStorageAreaList(){
   this.api.get('/StorageAreaMaster?WarehouseID='+this.currentUser.warehouseId).subscribe(
-    data=>{this.storageAreaList=data;this.allocatedQty=0;},
+    data=>{this.storageAreaList=data;this.allocatedQty=0;
+    console.log("this.storageAreaList",this.storageAreaList);
+    },
     error=>{ console.error(error);}
   );
+//   this.ChallansProductList.push({
+//     "AddArea":true,
+//     "Auto":false,
+//     "ChallanDID":0,
+//     "ProductID":this.form.value.product_id==null?0:this.form.value.product_id,
+//     "ProductName":"",
+//     "LotNo":this.form.value.lot_no,
+//     "BrandName":"",
+//     "ItemsInPacket":"",
+//     "InQuantity":this.form.value.quantity==""?0:this.form.value.quantity,
+//     "StorageAreaTypeID":this.servicesid,
+//     "StorageAreaType":"",
+//     "Applied":false,
+//   });
+//   this.ChallansLocation.push({
+//     "ChallanDID":0,
+//     "StorageAreaID":0,
+//     "StorageQuantity":this.form.value.quantity,
+//     "LotNo":this.form.value.lot_no,
+//     "IsCustomerAreaSelected":false,
+//   });
+// const StorageRequirData={
+//   "WarehouseID": this.currentUser.warehouseId,
+//   "CustomerID": this.form.value.customer_id,
+//   "Mode":"Inward",
+//   "InwardID":this.InwardID,
+//   "ChallanID": 0,
+//   "Cproduct":this.ChallansProductList,
+//   "Clocation":this.ChallansLocation
+// };
+//   this.api.post('/Inward/GetAvailableStorageArea',StorageRequirData).subscribe(
+//     data=>{this.storageAreaList=data.Table; 
+//       console.log("this.storageAreaList",this.storageAreaList)
+//     },error=>{ console.error(error);}
+//   ); 
 }
 
 // OnProductSelect(args:any) {
@@ -875,60 +914,96 @@ GetStorageAreaList(){
 // }
 
 openStorageArea(StorageAreacontent:any) {
-  //console.log(this.form.value.quantity);
-  this.allocatedQty=0; 
-  if(this.form.value.quantity==null|| this.form.value.quantity==0){
-    alert("Please .... Enter Quantity");    
-    document?.getElementById("quantity")?.focus();
-  }
-  else
-  {    
-    if(this.Flag==true)
-    {
-      //this.GetStorageAreaList();
-      const indexStorageArea=this.InwardshowStorageArea.filter((x:any)=>x.InwardDID==this.DID);
-      const resultStorageArea = this.storageAreaList;
-      resultStorageArea.forEach(element => {
-        indexStorageArea.forEach(test => {
-          if (element.StorageAreaID === test.StorageAreaID) {
-            element.AllocatedQty = test.StorageQuantity;
-          } 
-          
-        });
-        return element;
-      });
-      this.storageAreaList=[];
-      this.storageAreaList=resultStorageArea;
-      var Qtydata = this.storageAreaList.map(v1=>v1.AllocatedQty).reduce((acc, v1) => v1 + acc);
-      this.allocatedQty=Qtydata; 
-      this.form.controls['allocatedQty'].setValue(this.allocatedQty);
-    }
-    else
-    {
-      if(this.storageAreaList.length>0)
-      {
-        this.InwardValidateStorage=this.storageAreaList.filter((x:any)=>x.AllocatedQty>0);
-        if(this.InwardValidateStorage.length>0)
+  this.ChallansProductList.push({
+    "AddArea":true,
+    "Auto":false,
+    "ChallanDID":0,
+    "ProductID":this.form.value.product_id,
+    "ProductName":"",
+    "LotNo":this.form.value.lot_no,
+    "BrandName":"",
+    "ItemsInPacket":"",
+    "InQuantity":this.form.value.quantity,
+    "StorageAreaTypeID":this.servicesid,
+    "StorageAreaType":"",
+    "Applied":false,
+  });
+  this.ChallansLocation.push({
+    "ChallanDID":0,
+    "StorageAreaID":0,
+    "StorageQuantity":this.form.value.quantity,
+    "LotNo":this.form.value.lot_no,
+    "IsCustomerAreaSelected":false,
+  });
+const StorageRequirData={
+  "WarehouseID": this.currentUser.warehouseId,
+  "CustomerID": this.form.value.customer_id,
+  "Mode":"Inward",
+  "InwardID":this.InwardID,
+  "ChallanID": 0,
+  "Cproduct":this.ChallansProductList,
+  "Clocation":this.ChallansLocation
+};
+
+  this.api.post('/Inward/GetAvailableStorageArea',StorageRequirData).subscribe(
+    data=>{this.storageAreaList=data.Table;
+      this.allocatedQty=0;
+      console.log("this.storageAreaList",this.storageAreaList);
+      this.allocatedQty=0; 
+      if(this.form.value.quantity==null|| this.form.value.quantity==0){
+        alert("Please .... Enter Quantity");    
+        document?.getElementById("quantity")?.focus();
+      }
+      else
+      {    
+        if(this.Flag==true)
         {
-          this.allocatedQty= this.InwardValidateStorage.map(v1=>v1.AllocatedQty).reduce((acc, v1) => v1 + acc);
+          //this.GetStorageAreaList();
+          const indexStorageArea=this.InwardshowStorageArea.filter((x:any)=>x.InwardDID==this.DID);
+          const resultStorageArea = this.storageAreaList;
+          resultStorageArea.forEach(element => {
+            indexStorageArea.forEach(test => {
+              if (element.StorageAreaID === test.StorageAreaID) {
+                element.AllocatedQuantity = test.StorageQuantity;
+              } 
+              
+            });
+            return element;
+          });
+          this.storageAreaList=[];
+          this.storageAreaList=resultStorageArea;
+          var Qtydata = this.storageAreaList.map(v1=>v1.AllocatedQuantity).reduce((acc, v1) => v1 + acc);
+          this.allocatedQty=Qtydata; 
           this.form.controls['allocatedQty'].setValue(this.allocatedQty);
         }
         else
         {
-          this.allocatedQty=0;
-          this.form.controls['allocatedQty'].setValue(this.allocatedQty);
+          if(this.storageAreaList.length>0)
+          {
+            this.InwardValidateStorage=this.storageAreaList.filter((x:any)=>x.AllocatedQty>0);
+            if(this.InwardValidateStorage.length>0)
+            {
+              this.allocatedQty= this.InwardValidateStorage.map(v1=>v1.AllocatedQuantity).reduce((acc, v1) => v1 + acc);
+              this.form.controls['allocatedQty'].setValue(this.allocatedQty);
+            }
+            else
+            {
+              this.allocatedQty=0;
+              this.form.controls['allocatedQty'].setValue(this.allocatedQty);
+            }
+          }
         }
+        
+        this.modalService.open(StorageAreacontent,this.config);
       }
-    }
-    
-    this.modalService.open(StorageAreacontent,this.config);
-  }
-  
+    },
+    error=>{ console.error(error);}
+  ); 
 }
 
 
 oncloseStoragearea(StorageAreacontent:any){
-  var validatedata = this.storageAreaList.map(v1=>v1.AllocatedQty).reduce((acc, v1) => v1 + acc);
+  var validatedata = this.storageAreaList.map(v1=>v1.AllocatedQuantity).reduce((acc, v1) => v1 + acc);
   if(this.form.value.quantity==validatedata){
     this.onStorageGridRefresh();
     this.modalService.dismissAll(StorageAreacontent);
@@ -944,7 +1019,7 @@ oncloseStoragearea(StorageAreacontent:any){
   console.log(this.storageAreaList);
 }
 onSaveStorageArea(StorageAreacontent:any){  
-  var validatedata = this.storageAreaList.map(v1=>v1.AllocatedQty).reduce((acc, v1) => v1 + acc);
+  var validatedata = this.storageAreaList.map(v1=>v1.AllocatedQuantity).reduce((acc, v1) => v1 + acc);
   //this.allocatedQty=validatedata; 
   if(this.form.value.quantity==validatedata)
   {
@@ -963,7 +1038,7 @@ onSaveStorageArea(StorageAreacontent:any){
 onCellKeyPress(e:any){
   this.allocatedQty=0;
   this.StorageId=e.data.StorageAreaID;
-  var data = this.storageAreaList.map(v1=>v1.AllocatedQty).reduce((acc, v1) => v1 + acc);
+  var data = this.storageAreaList.map(v1=>v1.AllocatedQuantity).reduce((acc, v1) => v1 + acc);
   this.allocatedQty=data;  
   if(this.form.value.quantity>=this.allocatedQty){
     this.form.controls['allocatedQty'].setValue(this.allocatedQty);
@@ -974,7 +1049,7 @@ onCellKeyPress(e:any){
     this.storageAreaList.forEach(i => {
       if(i.StorageAreaID==e.data.StorageAreaID)
       {
-        i.AllocatedQty=0;
+        i.AllocatedQuantity=0;
       }});
       alert("Please .... enter proper quantity");
   }  
@@ -982,7 +1057,7 @@ onCellKeyPress(e:any){
 }
 onStorageGridRefresh(){
   this.allocatedQty=0;
-  var data = this.storageAreaList.map(v1=>v1.AllocatedQty).reduce((acc, v1) => v1 + acc);
+  var data = this.storageAreaList.map(v1=>v1.AllocatedQuantity).reduce((acc, v1) => v1 + acc);
   this.allocatedQty=data; 
   this.form.controls['allocatedQty'].setValue(this.allocatedQty);
   let newRowData = this.storageAreaList.filter((row) => {
@@ -1108,30 +1183,29 @@ tabInwardchange(event:any){
 }
 
 
-  onKeyfilter(e:string){
-    this.GetInwardListJson={
-      CompanyId:this.currentUser.companyId, 
-      WarehouseId:this.currentUser.warehouseId, 
-      FinantialYearId:this.currentUser.FinantialYearId,
-    }
-    
-    this.api.post('/InwardList',this.GetInwardListJson).subscribe(
-    data=>{this.InwardList=data;
-      var searchName = e;
-      const lists=this.InwardList;
-      let res = lists.filter((obj:any) => 
-      (obj.CustomerName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-      (obj.BillingStartDate.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-      (obj.InwardDate.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-      (obj.PersonName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-      (obj.ReceiptNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-      (obj.StatusName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) 
-      );
-      this.InwardList=res;
-      console.log(this.InwardList);
-    },
-    error=>{ console.error(error);} );
-  }
+  // onKeyfilter(e:string){
+  //   this.GetInwardListJson={
+  //     CompanyId:this.currentUser.companyId, 
+  //     WarehouseId:this.currentUser.warehouseId, 
+  //     FinantialYearId:this.currentUser.FinantialYearId,
+  //   }
+  //   this.api.post('/InwardList',this.GetInwardListJson).subscribe(
+  //   data=>{this.InwardList=data;
+  //     var searchName = e;
+  //     const lists=this.InwardList;
+  //     let res = lists.filter((obj:any) => 
+  //     (obj.CustomerName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //     (obj.BillingStartDate.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //     (obj.InwardDate.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //     (obj.PersonName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //     (obj.ReceiptNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //     (obj.StatusName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) 
+  //     );
+  //     this.InwardList=res;
+  //     console.log(this.InwardList);
+  //   },
+  //   error=>{ console.error(error);} );
+  // }
 
   SetDataTo_Inwardlist(){
     this.api.get('/InwardList?companyId='+this.currentUser.companyId+'&warehouseId='
@@ -1140,47 +1214,47 @@ tabInwardchange(event:any){
              this.InwardList=data},
       error=>{ console.error(error);} );
   }
-onDeleteTestListRow(d:any){
-  console.log(d);
-  if(d.Status==51)
-  {
-    const DeletedData={
-      InwardID :d.InwardID,
-      CustomerID :Number(d.CustomerID),
-      Remarks :0,
-      CreatedBy :Number(this.currentUser.userId),
-      serviceID :0,
-      ProductID :0,
-      CompanyId :Number(this.currentUser.companyId),
-      WarehouseId :Number(this.currentUser.warehouseId),
-      FinantialYearId:Number(this.currentUser.FinantialYearId), 
-      challan :0,
-      StorageAreaMasterID :1,
-      FinancialYear :"",
-    };
-    console.log(DeletedData);
-        // // this.api.post('/Inward/DeleteInward?InwardID='+d.InwardID+'&CustomerID='+d.CustomerID+'&Remarks=test_by_angular&CreatedBy='+this.currentUser.userId).subscribe(
-      //   this.api.post('/Inward/DeleteInward',DeletedData).subscribe(  
-      //     data=>{data;
-      //     alert(data.Table[0]["message"]); 
-      //     this.SetDataTo_Inwardlist();},
-      //     error=>{ console.error(error);}
-      //    ); 
-  }
-  else if(d.Status==52 || d.Status==0)
-  {
-    console.log("Sorry,Inward is under process. You can't Delete ....!!!");
-    alert("Sorry,Inward is under process. You can't Delete....!!!");
-  }else if(d.Status==53)
-  {
-    console.log("Sorry,Outward already generated.You can't Delete....!!!");
-    alert("Sorry,Outward already generated.You can't Delete....!!!");
-  }else if(d.Status==54)
-  {
-    console.log("Sorry,Inward is already cancelled ....!!!");
-    alert("Sorry,Inward is already cancelled ....!!!");
-  }
-}
+// onDeleteTestListRow(d:any){
+//   console.log(d);
+//   if(d.Status==51)
+//   {
+//     const DeletedData={
+//       InwardID :d.InwardID,
+//       CustomerID :Number(d.CustomerID),
+//       Remarks :0,
+//       CreatedBy :Number(this.currentUser.userId),
+//       serviceID :0,
+//       ProductID :0,
+//       CompanyId :Number(this.currentUser.companyId),
+//       WarehouseId :Number(this.currentUser.warehouseId),
+//       FinantialYearId:Number(this.currentUser.FinantialYearId), 
+//       challan :0,
+//       StorageAreaMasterID :1,
+//       FinancialYear :"",
+//     };
+//     console.log(DeletedData);
+//         // // this.api.post('/Inward/DeleteInward?InwardID='+d.InwardID+'&CustomerID='+d.CustomerID+'&Remarks=test_by_angular&CreatedBy='+this.currentUser.userId).subscribe(
+//       //   this.api.post('/Inward/DeleteInward',DeletedData).subscribe(  
+//       //     data=>{data;
+//       //     alert(data.Table[0]["message"]); 
+//       //     this.SetDataTo_Inwardlist();},
+//       //     error=>{ console.error(error);}
+//       //    ); 
+//   }
+//   else if(d.Status==52 || d.Status==0)
+//   {
+//     console.log("Sorry,Inward is under process. You can't Delete ....!!!");
+//     alert("Sorry,Inward is under process. You can't Delete....!!!");
+//   }else if(d.Status==53)
+//   {
+//     console.log("Sorry,Outward already generated.You can't Delete....!!!");
+//     alert("Sorry,Outward already generated.You can't Delete....!!!");
+//   }else if(d.Status==54)
+//   {
+//     console.log("Sorry,Inward is already cancelled ....!!!");
+//     alert("Sorry,Inward is already cancelled ....!!!");
+//   }
+// }
 
 OnResetInward(){
   this.click = false;
@@ -1201,90 +1275,89 @@ OnResetInward(){
   this.ReceiptNo='0';
 }
 
-   onEditTestListRow(e:any){
-    const inwardeditedDate = new DatePipe('en-US').transform(e.InwardDate, 'yyyy-MM-dd hh:mm:ss')
-    if(e.Status==51)
-    {
-      this.api.post('/Inward/GetCustomerProducts?customerid='+e.CustomerID+'&warehouseid='+this.currentUser.warehouseId).subscribe(
-        data=>{this.productList=data; },
-        error=>{ console.error(error);}
-      );
-        this.GetStorageAreaList();
-        this.InData={
-          InwardID :e.InwardID,
-          CustomerID :0,
-          Remarks :0,
-          CreatedBy :0,
-          serviceID :0,
-          ProductID :0,
-          CompanyId :0,
-          WarehouseId :0,
-          FinantialYearId:0, 
-          challan :0,
-          StorageAreaMasterID :0,
-          FinancialYear :"",
-        };
-        this.api.post('/Inward/GetInwardDetailsByID',this.InData).subscribe(
-        data=>  {this.InwardDetailList=data.Table;          
-        this.InwardshowStorageArea=data.Table1;
-        this.InwardTransportList=data.Table2;
-        this.InwardchargesList=data.Table3; 
-        this.InwardID=e.InwardID;
-        this.TransportList
-        this.InwardTransportID=0;
-        this.ReceiptNo= e.ReceiptNo;
-
-        const distinctTransport = this.InwardTransportList.filter((thing, i, arr) => arr.findIndex(t => t.TruckNo === thing.TruckNo) === i);
-        distinctTransport.forEach(i=>{ 
-        this.InwardTransportID=this.InwardTransportID+1;
-        this.TransportList.push(
-          {
-            "InwardTransportID":this.InwardTransportID,
-            "TransporterName":i.TransporterName==null?'A':i.TransporterName,
-            "TruckNo":i.TruckNo==null?'B':i.TruckNo,
-            "ContainerNo":i.ContainerNo==null?'C':i.ContainerNo,
-          });
-          });
-      this.TransportList.slice();
-      const inwarditem:any={
-      customer_id :e.CustomerID ==null?'':e.CustomerID,
-      dock_name :e.DocID,
-      challan_no:0,
-      inward_date:inwardeditedDate,
-      unloading_by:e.UnLoadingBy,
-      custremarks:e.Remarks,      
-      transportername:this.InwardTransportList[0]["TransporterName"]==null?'':this.InwardTransportList[0]["TransporterName"],
-      truckno:this.InwardTransportList[0]["TruckNo"]==null?'':this.InwardTransportList[0]["TruckNo"], 
-      container_no:this.InwardTransportList[0]["TruckNo"]==null?'':this.InwardTransportList[0]["TruckNo"], 
-      selflife:"0",
-      product_id:0,
-      brand_id:0,
-      packetcount:0,
-      quantity:0,
-      service_id:0, mgfdate:null,expdate:null,
-      labourcontractor_id:0,
-      lot_no:this.CurrentLotNo,remarks:"",country:"",
-      allocatedQty:0,
-      }
-      this.form.setValue(inwarditem);},error=>{ console.log(error);}); 
-      this.tab=0;
-      console.log(this.InwardTransportList);
-    console.log(this.TransportList);
-    }else if(e.Status==52 || e.Status==0)
-    {
-      console.log("Sorry,Inward is under process. You can't edit ....!!!");
-      alert("Sorry,Inward is under process. You can't edit ....!!!");
-    }else if(e.Status==53)
-    {
-      console.log("Sorry,Outward already generated.You can't edit ....!!!");
-      alert("Sorry,Outward already generated.You can't edit ....!!!");
-    }else if(e.Status==54)
-    {
-      console.log("Sorry,Inward is already cancelled ....!!!");
-      alert("Sorry,Inward is already cancelled ....!!!");
-    }   
+  //  onEditTestListRow(e:any){
+  //   const inwardeditedDate = new DatePipe('en-US').transform(e.InwardDate, 'yyyy-MM-dd hh:mm:ss')
+  //   if(e.Status==51)
+  //   {
+  //     this.api.post('/Inward/GetCustomerProducts?customerid='+e.CustomerID+'&warehouseid='+this.currentUser.warehouseId).subscribe(
+  //       data=>{this.productList=data; },
+  //       error=>{ console.error(error);}
+  //     );
+  //       this.GetStorageAreaList();
+  //       this.InData={
+  //         InwardID :e.InwardID,
+  //         CustomerID :0,
+  //         Remarks :0,
+  //         CreatedBy :0,
+  //         serviceID :0,
+  //         ProductID :0,
+  //         CompanyId :0,
+  //         WarehouseId :0,
+  //         FinantialYearId:0, 
+  //         challan :0,
+  //         StorageAreaMasterID :0,
+  //         FinancialYear :"",
+  //       };
+  //       this.api.post('/Inward/GetInwardDetailsByID',this.InData).subscribe(
+  //       data=>  {this.InwardDetailList=data.Table;          
+  //       this.InwardshowStorageArea=data.Table1;
+  //       this.InwardTransportList=data.Table2;
+  //       this.InwardchargesList=data.Table3; 
+  //       this.InwardID=e.InwardID;
+  //       this.TransportList
+  //       this.InwardTransportID=0;
+  //       this.ReceiptNo= e.ReceiptNo;
+  //       const distinctTransport = this.InwardTransportList.filter((thing, i, arr) => arr.findIndex(t => t.TruckNo === thing.TruckNo) === i);
+  //       distinctTransport.forEach(i=>{ 
+  //       this.InwardTransportID=this.InwardTransportID+1;
+  //       this.TransportList.push(
+  //         {
+  //           "InwardTransportID":this.InwardTransportID,
+  //           "TransporterName":i.TransporterName==null?'A':i.TransporterName,
+  //           "TruckNo":i.TruckNo==null?'B':i.TruckNo,
+  //           "ContainerNo":i.ContainerNo==null?'C':i.ContainerNo,
+  //         });
+  //         });
+  //     this.TransportList.slice();
+  //     const inwarditem:any={
+  //     customer_id :e.CustomerID ==null?'':e.CustomerID,
+  //     dock_name :e.DocID,
+  //     challan_no:0,
+  //     inward_date:inwardeditedDate,
+  //     unloading_by:e.UnLoadingBy,
+  //     custremarks:e.Remarks,      
+  //     transportername:this.InwardTransportList[0]["TransporterName"]==null?'':this.InwardTransportList[0]["TransporterName"],
+  //     truckno:this.InwardTransportList[0]["TruckNo"]==null?'':this.InwardTransportList[0]["TruckNo"], 
+  //     container_no:this.InwardTransportList[0]["TruckNo"]==null?'':this.InwardTransportList[0]["TruckNo"], 
+  //     selflife:"0",
+  //     product_id:0,
+  //     brand_id:0,
+  //     packetcount:0,
+  //     quantity:0,
+  //     service_id:0, mgfdate:null,expdate:null,
+  //     labourcontractor_id:0,
+  //     lot_no:this.CurrentLotNo,remarks:"",country:"",
+  //     allocatedQty:0,
+  //     }
+  //     this.form.setValue(inwarditem);},error=>{ console.log(error);}); 
+  //     this.tab=0;
+  //     console.log(this.InwardTransportList);
+  //   console.log(this.TransportList);
+  //   }else if(e.Status==52 || e.Status==0)
+  //   {
+  //     console.log("Sorry,Inward is under process. You can't edit ....!!!");
+  //     alert("Sorry,Inward is under process. You can't edit ....!!!");
+  //   }else if(e.Status==53)
+  //   {
+  //     console.log("Sorry,Outward already generated.You can't edit ....!!!");
+  //     alert("Sorry,Outward already generated.You can't edit ....!!!");
+  //   }else if(e.Status==54)
+  //   {
+  //     console.log("Sorry,Inward is already cancelled ....!!!");
+  //     alert("Sorry,Inward is already cancelled ....!!!");
+  //   }   
        
-  }
+  // }
 
   // onEditInward(e:any) {
   //   console.log(e);
@@ -1330,13 +1403,141 @@ OnResetInward(){
     return input;
   }
 
+OnInwardActions(event:any){      
+  if(String(event.actions)=='Delete'){
+  ///console.log(event.rowData);
+  if(event.rowData.Status==51)
+  {
+    const DeletedData={
+      InwardID :event.rowData.InwardID,
+      CustomerID :Number(event.rowData.CustomerID),
+      Remarks :0,
+      CreatedBy :Number(this.currentUser.userId),
+      serviceID :0,
+      ProductID :0,
+      CompanyId :Number(this.currentUser.companyId),
+      WarehouseId :Number(this.currentUser.warehouseId),
+      FinantialYearId:Number(this.currentUser.FinantialYearId), 
+      challan :0,
+      StorageAreaMasterID :1,
+      FinancialYear :"",
+    };
+    console.log(DeletedData);
+        //this.api.post('/Inward/DeleteInward?InwardID='+d.InwardID+'&CustomerID='+d.CustomerID+'&Remarks=test_by_angular&CreatedBy='+this.currentUser.userId).subscribe(
+        this.api.post('/Inward/DeleteInward',DeletedData).subscribe(  
+          data=>{data;
+          this.dialog.alert(data.Table[0]["message"]); 
+          this.SetDataTo_Inwardlist();},
+          error=>{ console.error(error);}
+         ); 
+  }
+  else if(event.rowData.Status==52 || event.rowData.Status==0)
+  {
+    //console.log("Sorry,Inward is under process. You can't Delete ....!!!");
+    this.dialog.alert("Sorry,Inward is under process. You can't Delete....!!!");
+  }else if(event.rowData.Status==53)
+  {
+    //console.log("Sorry,Outward already generated.You can't Delete....!!!");
+    this.dialog.alert("Sorry,Outward already generated.You can't Delete....!!!");
+  }else if(event.rowData.Status==54)
+  {
+    //console.log("Sorry,Inward is already cancelled ....!!!");
+    this.dialog.alert("Sorry,Inward is already cancelled ....!!!");
+  }
+}
+    else if(String(event.actions)=='Edit'){
+    //console.log(event.rowData);
+    const inwardeditedDate = new DatePipe('en-US').transform(event.rowData.InwardDate, 'yyyy-MM-dd hh:mm:ss')
+    if(event.rowData.Status==51)
+    {
+      this.api.post('/Inward/GetCustomerProducts?customerid='+event.rowData.CustomerID+'&warehouseid='+this.currentUser.warehouseId).subscribe(
+        data=>{this.productList=data; },
+        error=>{ console.error(error);}
+      );
+        this.GetStorageAreaList();
+        this.InData={
+          InwardID :event.rowData.InwardID,
+          CustomerID :0,
+          Remarks :0,
+          CreatedBy :0,
+          serviceID :0,
+          ProductID :0,
+          CompanyId :0,
+          WarehouseId :0,
+          FinantialYearId:0, 
+          challan :0,
+          StorageAreaMasterID :0,
+          FinancialYear :"",
+        };
+        this.api.post('/Inward/GetInwardDetailsByID',this.InData).subscribe(
+        data=>  {this.InwardDetailList=data.Table;          
+        this.InwardshowStorageArea=data.Table1;
+        this.InwardTransportList=data.Table2;
+        this.InwardchargesList=data.Table3; 
+        this.InwardID=event.rowData.InwardID;
+        this.TransportList
+        this.InwardTransportID=0;
+        this.ReceiptNo= event.rowData.ReceiptNo;
+
+        const distinctTransport = this.InwardTransportList.filter((thing, i, arr) => arr.findIndex(t => t.TruckNo === thing.TruckNo) === i);
+        distinctTransport.forEach(i=>{ 
+        this.InwardTransportID=this.InwardTransportID+1;
+        this.TransportList.push(
+          {
+            "InwardTransportID":this.InwardTransportID,
+            "TransporterName":i.TransporterName==null?'A':i.TransporterName,
+            "TruckNo":i.TruckNo==null?'B':i.TruckNo,
+            "ContainerNo":i.ContainerNo==null?'C':i.ContainerNo,
+          });
+          });
+      this.TransportList.slice();
+      const inwarditem:any={
+      customer_id :event.rowData.CustomerID ==null?'':event.rowData.CustomerID,
+      dock_name :event.rowData.DocID,
+      challan_no:0,
+      inward_date:inwardeditedDate,
+      unloading_by:event.rowData.UnLoadingBy,
+      custremarks:event.rowData.Remarks,      
+      transportername:this.InwardTransportList[0]["TransporterName"]==null?'':this.InwardTransportList[0]["TransporterName"],
+      truckno:this.InwardTransportList[0]["TruckNo"]==null?'':this.InwardTransportList[0]["TruckNo"], 
+      container_no:this.InwardTransportList[0]["TruckNo"]==null?'':this.InwardTransportList[0]["TruckNo"], 
+      selflife:"0",
+      product_id:0,
+      brand_id:0,
+      packetcount:0,
+      quantity:0,
+      service_id:0, mgfdate:null,expdate:null,
+      labourcontractor_id:0,
+      lot_no:this.CurrentLotNo,remarks:"",country:"",
+      allocatedQty:0,
+      }
+      this.form.setValue(inwarditem);},error=>{ console.log(error);}); 
+      this.tab=0;
+      //console.log(this.InwardTransportList);
+    //console.log(this.TransportList);
+    }else if(event.rowData.Status==52 || event.rowData.Status==0)
+    {
+      //console.log("Sorry,Inward is under process. You can't edit ....!!!");
+      this.dialog.alert("Sorry,Inward is under process. You can't edit ....!!!");
+    }else if(event.rowData.Status==53)
+    {
+      //console.log("Sorry,Outward already generated.You can't edit ....!!!");
+      this.dialog.alert("Sorry,Outward already generated.You can't edit ....!!!");
+    }else if(event.rowData.Status==54)
+    {
+      //console.log("Sorry,Inward is already cancelled ....!!!");
+      this.dialog.alert("Sorry,Inward is already cancelled ....!!!");
+    }
+      }
+  }
+
   columnDefs: ColDef[] = [
     { headerName:'StorageAreaID',field: 'StorageAreaID',hide:true},
     { headerName:'StorageArea',field: 'StorageArea' , checkboxSelection: false,filter: 'agTextColumnFilter',
     filterParams: {
       applyMiniFilterWhileTyping: true,
     },floatingFilter: true, },
-    { headerName:'Qty',field: 'AllocatedQty' ,aggFunc: "sum",cellEditorPopup: true,
+    { headerName:'Qty',field: 'AllocatedQuantity' ,aggFunc: "sum",cellEditorPopup: true,
     editable: true, valueParser: "Number(newValue)"  ,sort:"desc", filter: 'agNumberColumnFilter' ,
     floatingFilter: true, 
     cellEditorPopupPosition: 'defualt',  
@@ -1374,80 +1575,23 @@ TransperdetailcolumnDefs: ColDef[] = [
 ];
 
   InwardDetailColumns: MtxGridColumn[] = [
-    {
-      header:"InwardDID",
-      field:"InwardDID",
-      hide:true,
-    },
-    {
-      header:"ProductID",
-      field:"ProductID",
-      hide:true,
-    },
-    {
-      header:"ProductName",
-      field:"ProductName",
-    },
-    {
-      header:"LotNo",
-      field:"LotNo",
-    },
-    {
-      header:"BrandID",
-      field:"BrandID",
-      hide:true,
-    },
-{
-      header:"BrandName",
-      field:"BrandName",
-    },
-    {
-      header:"ItemsInPacket",
-      field:"ItemsInPacket",
-    },
-{
-      header:"InQuantity",
-      field:"InQuantity",
-    },
-    {
-      header:"MFD Date",
-      field:"MFGDate",
-      hide:true,
-    },
-    {
-      header:"ExpiryDate",
-      field:"ExpDate",
-      hide:true,
-    },
-    {
-      header:"Remarks",
-      field:"Remarks",
-    },
-    {
-      header:"LabourContractorID",
-      field:"LabourContractorID", hide:true,
-    },
-{
-      header:"LabourContracterName",
-      field:"LabourContracterName",
-    },
-{
-      header:"StorageAreaTypeID",
-      field:"StorageAreaTypeID",hide:true,
-    },
-{
-      header:"StorageAreaType",
-      field:"StorageAreaType",
-    },
-    {
-      header:"SelfLife",
-      field:"SelfLife",
-    },
-{
-      header:"Country",
-      field:"Country",
-    },
-
+    {      header:"InwardDID",      field:"InwardDID",      hide:true,    },    
+    {      header:"ProductID",      field:"ProductID",      hide:true,    },
+    {      header:"ProductName",      field:"ProductName",    },   
+    {      header:"LotNo",      field:"LotNo",    },    
+    {      header:"BrandID",      field:"BrandID",      hide:true,    },
+    {      header:"BrandName",      field:"BrandName",    },
+    {      header:"ItemsInPacket",      field:"ItemsInPacket",    },
+    {      header:"InQuantity",      field:"InQuantity",    },
+    {      header:"MFD Date",     field:"MFGDate",      hide:true,    },
+    {      header:"ExpiryDate",      field:"ExpDate",      hide:true,    },
+    {      header:"Remarks",      field:"Remarks",    },
+    {      header:"LabourContractorID",      field:"LabourContractorID", hide:true,    },
+    {      header:"LabourContracterName",      field:"LabourContracterName",    },
+    {      header:"StorageAreaTypeID",      field:"StorageAreaTypeID",hide:true,    },
+    {      header:"StorageAreaType",      field:"StorageAreaType",    },
+    {      header:"SelfLife",      field:"SelfLife",    },
+    {      header:"Country",      field:"Country",    },
   
   ]
   serviceColumns:ColDef[]  = [
@@ -1737,110 +1881,77 @@ TransperdetailcolumnDefs: ColDef[] = [
   ]
 
 
-  columnstest: MtxGridColumn[] = [
-    {
-      header: "Action",
-      field: 'Action',
-      minWidth: 105,
-      pinned:'left',    
-      type: 'button',
-      buttons: [
-        {
-          type: 'icon',
-          icon: 'edit',
-          tooltip: 'Edit',
-          click: record => this.onEditTestListRow(record),
-        }
-        ,{
-          color: 'warn',
-          type: 'icon',
-          icon: 'delete',
-          tooltip: 'delete',
-          pop: true,
-          popTitle:'Do you want to delete inward ....!!', //this.translate.stream('table_kitchen_sink.confirm_delete'),
-          popCloseText:'No', //this.translate.stream('table_kitchen_sink.close'),
-          popOkText:'Yes', 
-          popDescription:'',
-          popCloseColor:'warn',
-          popOkColor:'primary',
-          click: record => this.onDeleteTestListRow(record),
-        }
-      ]
+  // columnstest: MtxGridColumn[] = [
+  //   {
+  //     header: "Action",
+  //     field: 'Action',
+  //     minWidth: 105,
+  //     pinned:'left',    
+  //     type: 'button',
+  //     buttons: [
+  //       {
+  //         type: 'icon',
+  //         icon: 'edit',
+  //         tooltip: 'Edit',
+  //         click: record => this.onEditTestListRow(record),
+  //       }
+  //       ,{
+  //         color: 'warn',
+  //         type: 'icon',
+  //         icon: 'delete',
+  //         tooltip: 'delete',
+  //         pop: true,
+  //         popTitle:'Do you want to delete inward ....!!', //this.translate.stream('table_kitchen_sink.confirm_delete'),
+  //         popCloseText:'No', //this.translate.stream('table_kitchen_sink.close'),
+  //         popOkText:'Yes', 
+  //         popDescription:'',
+  //         popCloseColor:'warn',
+  //         popOkColor:'primary',
+  //         click: record => this.onDeleteTestListRow(record),
+  //       }
+  //     ]
+  //   },
+  //   {      header:'InwardID',      field:'InwardID',      hide:true,    },    
+  //   {      header:'CustomerID',      field:'CustomerID',      hide:true,    },
+  //   {      header:'ReceiptNo',      field:'ReceiptNo',      minWidth: 80,          },
+  //   {      header:'CustomerName',      field:'CustomerName',      minWidth: 200,    },
+  //   {      header:'DocID',      field:'DocID',      hide:true,    },
+  //   {      header:'UnLoadingBy',      field:'UnLoadingBy',      hide:true    },
+  //   {      header:'InwardDate',      field:'InwardDate',      minWidth: 100,      type:'date',      typeParameter:{ format:'dd-MM-yyyy'}    },
+  //   {      header:'BillingStartDate',      field:'BillingStartDate',      minWidth: 100,      type:'date',      typeParameter:{ format:'dd-MM-yyyy'},      hide:true,    },
+  //   {      header:'PersonName',      field:'PersonName',      minWidth: 120,    },
+  //   {      header:'Status',      field:'Status',      hide:true,      minWidth: 120,    },
+  //   {      header:'Remarks',      field:'Remarks',      minWidth: 200,    },
+  //   {      header:'StatusName',      field:'StatusName',      minWidth: 120,    }
+  // ];
+
+  columnsInwardList: ColDef[] = [
+    {  headerName: 'Action',floatingFilter: false,maxWidth:150,
+      cellRenderer: 'buttonRenderer',
+      cellRendererParams: {
+        onClick: this.OnInwardActions.bind(this),
+        
+      }
     },
-    {
-      header:'InwardID',
-      field:'InwardID',
-      hide:true,
-    },
-    {
-      header:'CustomerID',
-      field:'CustomerID',
-      hide:true,
-    },
-    {
-      header:'ReceiptNo',
-      field:'ReceiptNo',
-      minWidth: 80,
-      
-    },
-    {
-      header:'CustomerName',
-      field:'CustomerName',
-      minWidth: 200,
-    },
-    {
-      header:'DocID',
-      field:'DocID',
-      hide:true,
-    },
-    {
-      header:'UnLoadingBy',
-      field:'UnLoadingBy',
-      hide:true
-    },
-    {
-      header:'InwardDate',
-      field:'InwardDate',
-      minWidth: 100,
-      type:'date',
-      typeParameter:{ format:'dd-MM-yyyy'}
-    },
-    {
-      header:'BillingStartDate',
-      field:'BillingStartDate',
-      minWidth: 100,
-      type:'date',
-      typeParameter:{ format:'dd-MM-yyyy'},
-      hide:true,
-    },
-    {
-      header:'PersonName',
-      field:'PersonName',
-      minWidth: 120,
-    },
-    {
-      header:'Status',
-      field:'Status',
-      hide:true,
-      minWidth: 120,
-    },
-    {
-      header:'Remarks',
-      field:'Remarks',
-      minWidth: 200,
-    },
-    {
-      header:'StatusName',
-      field:'StatusName',
-      minWidth: 120,
-    }
-  ]
+    { headerName:'InwardID',  field:'InwardID', hide:true, filter: 'agTextColumnFilter',floatingFilter: true,    },    
+    { headerName:'CustomerID',  field:'CustomerID', hide:true,filter: 'agTextColumnFilter',floatingFilter: true,    },
+    { headerName:'ReceiptNo',  field:'ReceiptNo',      minWidth: 80,filter: 'agTextColumnFilter',floatingFilter: true,},
+    { headerName:'CustomerName',  field:'CustomerName',      minWidth: 200,filter: 'agTextColumnFilter',floatingFilter: true,},
+    { headerName:'DocID',  field:'DocID', hide:true,filter: 'agTextColumnFilter',floatingFilter: true,},
+    { headerName:'UnLoadingBy',  field:'UnLoadingBy', hide:true,filter: 'agTextColumnFilter',floatingFilter: true,},
+    { headerName:'InwardDate',  field:'InwardDate',      minWidth: 100,      type:'date',filter: 'agTextColumnFilter',floatingFilter: true, },
+    { headerName:'BillingStartDate',  field:'BillingStartDate',      minWidth: 100,      type:'date', hide:true,filter: 'agTextColumnFilter',floatingFilter: true,    },
+    { headerName:'PersonName',  field:'PersonName',      minWidth: 120,filter: 'agTextColumnFilter',floatingFilter: true,},
+    { headerName:'Status',  field:'Status', hide:true,      minWidth: 120,filter: 'agTextColumnFilter',floatingFilter: true,},
+    { headerName:'Remarks',  field:'Remarks',      minWidth: 200,filter: 'agTextColumnFilter',floatingFilter: true,},
+    { headerName:'StatusName',  field:'StatusName',      minWidth: 120,filter: 'agTextColumnFilter',floatingFilter: true,}
+  ];
  //-----------end 
 }
 export class StorageArea{
   StorageAreaID:number=0;
   StorageArea:string="";
-  AllocatedQty:number=0;
+  AllocatedQuantity:number=0;
 }
 export class InwardStorageArea{
   InwardDID:number=0;
@@ -1913,7 +2024,28 @@ export class InwardDetails{
   Country:string="";
   ServiceID:number=0;  
 }
+export class TDChallanLocation{
+  ChallanDID:number=0;
+  StorageAreaID:number=0;
+  StorageQuantity:number=0;
+  LotNo:string="";
+  IsCustomerAreaSelected:boolean=false;
+}
 
+export class TDChallanProductList{
+  AddArea:boolean=true;
+	Auto:boolean=false;
+	ChallanDID:number=0;
+	ProductID:number=0;
+	ProductName:string="";
+	LotNo:string="";
+	BrandName:string="";
+	ItemsInPacket:string="";
+	InQuantity:number=0;
+	StorageAreaTypeID:number=0;
+	StorageAreaType:string="";
+	Applied:boolean=false;
+}
 
 export class SaveInward{
   InwardID:number=0;

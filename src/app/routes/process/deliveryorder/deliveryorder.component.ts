@@ -3,10 +3,11 @@ import { ApiService } from '@core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { User } from '@core/authentication/interface';
-import { ColDef,GridApi } from 'ag-grid-community';
+import { ColDef,GridApi,RowClassRules } from 'ag-grid-community';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { MtxDialog, MtxGridCellSelectionDirective, MtxGridColumn,MtxGridRowClassFormatter  } from '@ng-matero/extensions';
 import { endWith } from 'rxjs/operators';
+import { DeliveryorderactionButtonsComponent } from './deliveryorderaction-buttons/deliveryorderaction-buttons.component'
 @Component({
   selector: 'app-deliveryorder',
   templateUrl: './deliveryorder.component.html',
@@ -16,6 +17,7 @@ export class DeliveryorderComponent implements OnInit {
   customerList:any;
   customePartyList:any;
   remarkList:any;
+  //getRowStyle:any;
   OrderGivenByList:any=[];
   DeliveryOrdersearchList:Array<DeliveryOrderDetail>=[];
   DO_Detail:Array<DODetail>=[];
@@ -23,6 +25,7 @@ export class DeliveryorderComponent implements OnInit {
   todayDate : any ;
   DeliveryOrderList:any;
   checkCust : boolean = false;
+  frameworkComponents: any;
   private currentUser:User;
   SaveCustomerParty:any={};
   SaveDeliveryOrder: any = {}; 
@@ -34,7 +37,7 @@ export class DeliveryorderComponent implements OnInit {
   };
   tab=0; 
   
-  constructor(private api:ApiService,private fb: FormBuilder,private modalService: NgbModal) { 
+  constructor(private api:ApiService,private fb: FormBuilder,private modalService: NgbModal,public dialog: MtxDialog) { 
     this.currentUser=this.api.getCurrentUser();
     this.form = this.fb.group({
       customer_id: [null, Validators.required],
@@ -59,6 +62,9 @@ export class DeliveryorderComponent implements OnInit {
 
     const dateSendingToServer = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd')
     this.todayDate=dateSendingToServer;
+    this.frameworkComponents = {
+      buttonRenderer: DeliveryorderactionButtonsComponent,
+    }
   }
   
 
@@ -82,12 +88,22 @@ export class DeliveryorderComponent implements OnInit {
     this.BindDeliveryOrderList();
 
   }
+  getRowStyle(params:any) {
+    if(params.data.StatusID==13){
+      return { 'background-color': 'pink' }
+    }    else{
+      return;
+    }
+  }
+
+  
   async BindDeliveryOrderList(){
     this.api.get('/DeliveryOrder/DOList?FinancialYearID='+this.currentUser.FinantialYearId+'&WareHouseID='+this.currentUser.warehouseId+'&UserID='+this.currentUser.userId).subscribe(
-      data=>{this.DeliveryOrderList=data;
-         },
+      data=>{this.DeliveryOrderList=data;        
+      },
       error=>{ console.error(error);}
     );
+    
   }
   tabDeliveryOrderchange(e:any){
     this.tab=e;    
@@ -159,26 +175,27 @@ export class DeliveryorderComponent implements OnInit {
     var TotalDOqty = this.DeliveryOrdersearchList.map(v1=>v1.DOQuantity).reduce((acc, v1) => v1 + acc);
     this.form.controls['txtTotalDOQty'].setValue(TotalDOqty);
   }
-  onKeyfilter(e:string){
-    this.api.get('/DeliveryOrder/DOList?FinancialYearID='+this.currentUser.FinantialYearId+'&WareHouseID='+this.currentUser.warehouseId+'&UserID='+this.currentUser.userId).subscribe(
-      data=>{this.DeliveryOrderList=data;
-        var searchName = e;
-        const lists=this.DeliveryOrderList;
-        let res = lists.filter((obj:any) => 
-        (obj.CustomerName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.DeliveryOrderDate.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.DeliveryOrderNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.DeliverTo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.Remarks.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.CreatedBy.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.Status.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
-        (obj.Process.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) 
-        );
-        this.DeliveryOrderList=res;
-      },
-      error=>{ console.error(error);}
-    );
-  }
+  // onKeyfilter(e:string){
+  //   this.api.get('/DeliveryOrder/DOList?FinancialYearID='+this.currentUser.FinantialYearId+'&WareHouseID='+this.currentUser.warehouseId+'&UserID='+this.currentUser.userId).subscribe(
+  //     data=>{this.DeliveryOrderList=data;
+  //       var searchName = e;
+  //       const lists=this.DeliveryOrderList;
+  //       let res = lists.filter((obj:any) => 
+  //       (obj.CustomerName.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.DeliveryOrderDate.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.DeliveryOrderNo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.DeliverTo.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.Remarks.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.CreatedBy.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.Status.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) ||
+  //       (obj.Process.toLowerCase().indexOf(searchName.toLowerCase()) >= 0) 
+  //       );
+  //       this.DeliveryOrderList=res;
+  //     },
+  //     error=>{ console.error(error);}
+  //   );
+  // }
+
   onCustomerPartyContact(CustomerPartycontent:any)
   {
     if(this.form.value.customer_id==null ||this.form.value.customer_id==0){
@@ -338,48 +355,242 @@ export class DeliveryorderComponent implements OnInit {
     // console.log(foo);
   }
   //------------------------------------------ Reset DO
-  onEditDORow(e:any){
+  // onEditDORow(e:any){
+  //   this.onResetDeliveryOrder();
+  //   this.api.get('/DeliveryOrder/DOValidation?CustomerID='+e.CustomerID+'&WaherhouseID='+e.WareHouseID).subscribe(
+  //     data=>{data;
+  //     if(data.Table.length>0){
+  //         this.checkCust=true;
+  //         alert("Order is stopped for some reason .... !!!")
+  //     }else{
+  //       if (e.StatusID == 11)
+  //       {
+  //         alert("Sorry,Outward already generated ....!!!");
+  //       }
+  //       else if (e.StatusID == 12)
+  //       {
+  //         alert("Sorry,Dispatch already generated ....!!!");
+  //       }
+  //       else if (e.StatusID== 13)
+  //       {
+  //         alert("Sorry,You can't edit this transaction ,because it's already Cancelled or deactivate ....!!!");
+  //       }
+  //       else if (e.StatusID== 15)
+  //       {
+  //         alert("Sorry,You already Cancelled this Delivery Order ....!!!");
+  //       }
+  //       else if (e.Process == "Online")
+  //       {
+  //         alert("Sorry,You can't edit because its generated by customer....!!!");
+  //       }
+  //       else
+  //       {
+  //         //alert("Work....!!!");
+  //         //console.log(e);
+  //         this.api.get('/DeliveryOrder/GetEditDelivryOrder?DeliveryOrderID='+e.DeliveryOrderID).subscribe(
+  //           data=>{data; 
+  //             this.tab=0;
+  //             this.DeliveryOrdersearchList=data.Table1;
+  //             this.DeliveryOrderID=e.DeliveryOrderID;
+  //             this.onDOSearchGridRefresh();
+  //             const DODate = new DatePipe('en-US').transform(e.DeliveryOrderDate, 'yyyy-MM-dd')
+  //             this.BindOrderGIvenBy(e.CustomerID);
+  //             var TotalDOqty = this.DeliveryOrdersearchList.map(v1=>v1.DOQuantity).reduce((acc, v1) => v1 + acc);
+  //             const OrderGivenByData=this.OrderGivenByList.filter((x:any)=>x.ContactPersonName== e.OrderGivenBy);
+  //             let OrderGiven;
+  //             let MobileNumber;
+  //             if(OrderGivenByData.length>0)
+  //             {
+  //               OrderGiven=OrderGivenByData[0]["CustomerContactID"];
+  //               MobileNumber=OrderGivenByData[0]["MobileNo"];
+  //               this.form.controls['txtMobileNo'].setValue(OrderGivenByData[0]["MobileNo"]);
+  //             }else{
+  //               OrderGiven=0;
+  //               MobileNumber=''
+  //               this.form.controls['txtMobileNo'].setValue('');
+  //             }
+
+  //             const DOitem:any={
+  //               customer_id:e.CustomerID,
+  //               deliveryorder_date:DODate,
+  //               chk_Do_Disptch:false,
+  //               customerParty_id:e.DeliverTo,
+  //               DeliveryParty_id:e.CustomerPartyID,
+  //               txtDO_No:e.DeliveryOrderNo,
+  //               txtShipping_Address:e.ShippingAddress,
+  //               txtTruckNo:e.TruckNo,
+  //               txtContainerNo:e.ContainerNo,
+  //               OrderGivenBy_id:OrderGiven,
+  //               DORemarks:e.Remarks,
+  //               Party_customer_id:e.CustomerID,
+  //               txtPartyName:'',
+  //               txtshiffadd1:'',
+  //               txtshiffadd2:'',
+  //               txtPinCode:'',
+  //               txtMobileNo:MobileNumber,
+  //               txtTotalDOQty :TotalDOqty,
+  //             }; 
+  //             //console.log(DOitem);   
+  //             this.form.setValue(DOitem);
+  //           },
+  //           error=>{ console.error(error);});
+  //       }            
+  //     }
+  //   },error=>{ console.error(error);});
+    
+  // }
+//--------------------------------------------------- Delete DO
+  // onDeleteDORow(e:any){
+  //   console.log(e.StatusID );
+  //   this.api.get('/DeliveryOrder/DOValidation?CustomerID='+e.CustomerID+'&WaherhouseID='+e.WareHouseID).subscribe(
+  //     data=>{data;
+  //     if(data.Table.length>0)
+  //     {
+  //         this.checkCust=true;
+  //         alert("Order is stopped for some reason .... !!!")
+  //     }
+  //     else
+  //     {
+  //       if (e.StatusID == 11)
+  //       {
+  //         alert("Sorry,Outward already generated ....!!!");
+  //       }
+  //       else if (e.StatusID== 15)
+  //       {
+  //         alert("Sorry,You already Cancelled this Delivery Order ....!!!");
+  //       }
+  //       else if (e.StatusID == 13)
+  //       {
+  //         alert("Sorry,You already Cancelled this Delivery Order ....!!!");
+  //       }
+  //       else if (e.StatusID == 12)
+  //       {
+  //         let bar = confirm('Sorry,this translation have dispatch. Do you want to deleted or deactivate your translation ...');
+  //         if(bar==true)
+  //         {
+  //           let foo = prompt('Remarks ');
+  //           this.api.post('/DeliveryOrder/PartiallyCancelled?DeliveryOrderID='+e.DeliveryOrderID+'&CustomerId='+e.CustomerID+'&Remarks='+foo+'&CreatedBy='+this.currentUser.userId).subscribe(
+  //           data=>{data;
+  //             alert(data);
+  //             this.BindDeliveryOrderList();},
+  //           error=>{ console.error(error);});
+  //         }
+  //       }
+  //       else
+  //       {
+  //         let bar = confirm('Do you want to deleted or deactivate your Delivery Order ...??');
+  //         if(bar==true)
+  //         {
+  //           let foo = prompt('Remarks');
+  //           this.api.post('/DeliveryOrder/CancelledDO?DeliveryOrderID='+e.DeliveryOrderID+'&CustomerId='+e.CustomerID+'&Remarks=test&CreatedBy='+this.currentUser.userId).subscribe(
+  //           data=>{data;
+  //             alert(data);
+  //             this.BindDeliveryOrderList();},
+  //           error=>{ console.error(error);});
+  //         }
+  //       }
+  //     }
+  //   },error=>{ console.error(error);}
+  //   );
+  // }
+//--------------------------------------------------- Edit & Delete DO
+  OnDeliveryOrderActions(event:any){    
+    if(String(event.actions)=='Delete')
+    {
+     this.api.get('/DeliveryOrder/DOValidation?CustomerID='+event.rowData.CustomerID+'&WaherhouseID='+event.rowData.WareHouseID).subscribe(
+      data=>{data;
+      if(data.Table.length>0)
+      {
+          this.checkCust=true;
+          this.dialog.alert("Order is stopped for some reason .... !!!")
+      }
+      else
+      {
+        if (event.rowData.StatusID == 11)
+        {
+          this.dialog.alert("Sorry,Outward already generated ....!!!");
+        }
+        else if (event.rowData.StatusID== 15)
+        {
+          this.dialog.alert("Sorry,You already Cancelled this Delivery Order ....!!!");
+        }
+        else if (event.rowData.StatusID == 13)
+        {
+          this.dialog.alert("Sorry,You already Cancelled this Delivery Order ....!!!");
+        }
+        else if (event.rowData.StatusID == 12)
+        {
+          let bar = confirm('Sorry,this translation have dispatch. Do you want to deleted or deactivate your translation ...');
+          if(bar==true)
+          {
+            let foo = prompt('Remarks ');
+            this.api.post('/DeliveryOrder/PartiallyCancelled?DeliveryOrderID='+event.rowData.DeliveryOrderID+'&CustomerId='+event.rowData.CustomerID+'&Remarks='+foo+'&CreatedBy='+this.currentUser.userId).subscribe(
+            data=>{data;
+              this.dialog.alert(data);
+              this.BindDeliveryOrderList();},
+            error=>{ console.error(error);});
+          }
+        }
+        else
+        {
+          let bar = confirm('Do you want to deleted or deactivate your Delivery Order ...??');
+          if(bar==true)
+          {
+            let foo = prompt('Remarks');
+            this.api.post('/DeliveryOrder/CancelledDO?DeliveryOrderID='+event.rowData.DeliveryOrderID+'&CustomerId='+event.rowData.CustomerID+'&Remarks=test&CreatedBy='+this.currentUser.userId).subscribe(
+            data=>{data;
+              this.dialog.alert(data);
+              this.BindDeliveryOrderList();},
+            error=>{ console.error(error);});
+          }
+        }
+      }
+    },error=>{ console.error(error);}
+    );
+    }
+    else if(String(event.actions)=='Edit')
+    {
     this.onResetDeliveryOrder();
-    this.api.get('/DeliveryOrder/DOValidation?CustomerID='+e.CustomerID+'&WaherhouseID='+e.WareHouseID).subscribe(
+    this.api.get('/DeliveryOrder/DOValidation?CustomerID='+event.rowData.CustomerID+'&WaherhouseID='+event.rowData.WareHouseID).subscribe(
       data=>{data;
       if(data.Table.length>0){
           this.checkCust=true;
-          alert("Order is stopped for some reason .... !!!")
+          this.dialog.alert("Order is stopped for some reason .... !!!")
       }else{
-        if (e.StatusID == 11)
+        if (event.rowData.StatusID == 11)
         {
-          alert("Sorry,Outward already generated ....!!!");
+          this.dialog.alert("Sorry,Outward already generated ....!!!");
         }
-        else if (e.StatusID == 12)
+        else if (event.rowData.StatusID == 12)
         {
-          alert("Sorry,Dispatch already generated ....!!!");
+          this.dialog.alert("Sorry,Dispatch already generated ....!!!");
         }
-        else if (e.StatusID== 13)
+        else if (event.rowData.StatusID== 13)
         {
-          alert("Sorry,You can't edit this transaction ,because it's already Cancelled or deactivate ....!!!");
+          this.dialog.alert("Sorry,You can't edit this transaction ,because it's already Cancelled or deactivate ....!!!");
         }
-        else if (e.StatusID== 15)
+        else if (event.rowData.StatusID== 15)
         {
-          alert("Sorry,You already Cancelled this Delivery Order ....!!!");
+          this.dialog.alert("Sorry,You already Cancelled this Delivery Order ....!!!");
         }
-        else if (e.Process == "Online")
+        else if (event.rowData.Process == "Online")
         {
-          alert("Sorry,You can't edit because its generated by customer....!!!");
+          this.dialog.alert("Sorry,You can't edit because its generated by customer....!!!");
         }
         else
         {
           //alert("Work....!!!");
           //console.log(e);
-          this.api.get('/DeliveryOrder/GetEditDelivryOrder?DeliveryOrderID='+e.DeliveryOrderID).subscribe(
+          this.api.get('/DeliveryOrder/GetEditDelivryOrder?DeliveryOrderID='+event.rowData.DeliveryOrderID).subscribe(
             data=>{data; 
               this.tab=0;
               this.DeliveryOrdersearchList=data.Table1;
-              this.DeliveryOrderID=e.DeliveryOrderID;
+              this.DeliveryOrderID=event.rowData.DeliveryOrderID;
               this.onDOSearchGridRefresh();
-              const DODate = new DatePipe('en-US').transform(e.DeliveryOrderDate, 'yyyy-MM-dd')
-              this.BindOrderGIvenBy(e.CustomerID);
+              const DODate = new DatePipe('en-US').transform(event.rowData.DeliveryOrderDate, 'yyyy-MM-dd')
+              this.BindOrderGIvenBy(event.rowData.CustomerID);
               var TotalDOqty = this.DeliveryOrdersearchList.map(v1=>v1.DOQuantity).reduce((acc, v1) => v1 + acc);
-              const OrderGivenByData=this.OrderGivenByList.filter((x:any)=>x.ContactPersonName== e.OrderGivenBy);
+              const OrderGivenByData=this.OrderGivenByList.filter((x:any)=>x.ContactPersonName== event.rowData.OrderGivenBy);
               let OrderGiven;
               let MobileNumber;
               if(OrderGivenByData.length>0)
@@ -392,20 +603,19 @@ export class DeliveryorderComponent implements OnInit {
                 MobileNumber=''
                 this.form.controls['txtMobileNo'].setValue('');
               }
-
               const DOitem:any={
-                customer_id:e.CustomerID,
+                customer_id:event.rowData.CustomerID,
                 deliveryorder_date:DODate,
                 chk_Do_Disptch:false,
-                customerParty_id:e.DeliverTo,
-                DeliveryParty_id:e.CustomerPartyID,
-                txtDO_No:e.DeliveryOrderNo,
-                txtShipping_Address:e.ShippingAddress,
-                txtTruckNo:e.TruckNo,
-                txtContainerNo:e.ContainerNo,
+                customerParty_id:event.rowData.DeliverTo,
+                DeliveryParty_id:event.rowData.CustomerPartyID,
+                txtDO_No:event.rowData.DeliveryOrderNo,
+                txtShipping_Address:event.rowData.ShippingAddress,
+                txtTruckNo:event.rowData.TruckNo,
+                txtContainerNo:event.rowData.ContainerNo,
                 OrderGivenBy_id:OrderGiven,
-                DORemarks:e.Remarks,
-                Party_customer_id:e.CustomerID,
+                DORemarks:event.rowData.Remarks,
+                Party_customer_id:event.rowData.CustomerID,
                 txtPartyName:'',
                 txtshiffadd1:'',
                 txtshiffadd2:'',
@@ -421,61 +631,9 @@ export class DeliveryorderComponent implements OnInit {
       }
     },error=>{ console.error(error);});
     
+    }    
   }
-//--------------------------------------------------- Delete DO
-  onDeleteDORow(e:any){
-    console.log(e.StatusID );
-    this.api.get('/DeliveryOrder/DOValidation?CustomerID='+e.CustomerID+'&WaherhouseID='+e.WareHouseID).subscribe(
-      data=>{data;
-      if(data.Table.length>0)
-      {
-          this.checkCust=true;
-          alert("Order is stopped for some reason .... !!!")
-      }
-      else
-      {
-        if (e.StatusID == 11)
-        {
-          alert("Sorry,Outward already generated ....!!!");
-        }
-        else if (e.StatusID== 15)
-        {
-          alert("Sorry,You already Cancelled this Delivery Order ....!!!");
-        }
-        else if (e.StatusID == 13)
-        {
-          alert("Sorry,You already Cancelled this Delivery Order ....!!!");
-        }
-        else if (e.StatusID == 12)
-        {
-          let bar = confirm('Sorry,this translation have dispatch. Do you want to deleted or deactivate your translation ...');
-          if(bar==true)
-          {
-            let foo = prompt('Remarks ');
-            this.api.post('/DeliveryOrder/PartiallyCancelled?DeliveryOrderID='+e.DeliveryOrderID+'&CustomerId='+e.CustomerID+'&Remarks='+foo+'&CreatedBy='+this.currentUser.userId).subscribe(
-            data=>{data;
-              alert(data);
-              this.BindDeliveryOrderList();},
-            error=>{ console.error(error);});
-          }
-        }
-        else
-        {
-          let bar = confirm('Do you want to deleted or deactivate your Delivery Order ...??');
-          if(bar==true)
-          {
-            let foo = prompt('Remarks');
-            this.api.post('/DeliveryOrder/CancelledDO?DeliveryOrderID='+e.DeliveryOrderID+'&CustomerId='+e.CustomerID+'&Remarks=test&CreatedBy='+this.currentUser.userId).subscribe(
-            data=>{data;
-              alert(data);
-              this.BindDeliveryOrderList();},
-            error=>{ console.error(error);});
-          }
-        }
-      }
-    },error=>{ console.error(error);}
-    );
-  }
+  
   //---------end
 
   DeliveryOrdercolumnDefs: ColDef[] = [
@@ -505,128 +663,81 @@ export class DeliveryorderComponent implements OnInit {
       { headerName:'Remarks',field: 'Remarks',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
   ];
 
-  columnsDeliveryOrderList: MtxGridColumn[] = [
-    {
-      header: "Action",
-      field: 'Action',
-      minWidth: 105,
-      pinned:'left',    
-      type: 'button',
-      buttons: [
-        {
-          type: 'icon',
-          icon: 'edit',
-          tooltip: 'Edit',
-          click: record => this.onEditDORow(record),
-        }
-        ,{
-          color: 'warn',
-          type: 'icon',
-          icon: 'delete',
-          tooltip: 'delete',
-          pop: true,
-          popTitle:'Do you want to delete Delivery order ....!!', //this.translate.stream('table_kitchen_sink.confirm_delete'),
-          popCloseText:'No', //this.translate.stream('table_kitchen_sink.close'),
-          popOkText:'Yes', 
-          popDescription:'',
-          popCloseColor:'warn',
-          popOkColor:'primary',
-          click: record => this.onDeleteDORow(record),
-        }
-      ]
+  // columnsDeliveryOrderList: MtxGridColumn[] = [
+  //   {
+  //     header: "Action",
+  //     field: 'Action',
+  //     minWidth: 105,
+  //     pinned:'left',    
+  //     type: 'button',
+  //     buttons: [
+  //       {
+  //         type: 'icon',
+  //         icon: 'edit',
+  //         tooltip: 'Edit',
+  //         click: record => this.onEditDORow(record),
+  //       }
+  //       ,{
+  //         color: 'warn',
+  //         type: 'icon',
+  //         icon: 'delete',
+  //         tooltip: 'delete',
+  //         pop: true,
+  //         popTitle:'Do you want to delete Delivery order ....!!', //this.translate.stream('table_kitchen_sink.confirm_delete'),
+  //         popCloseText:'No', //this.translate.stream('table_kitchen_sink.close'),
+  //         popOkText:'Yes', 
+  //         popDescription:'',
+  //         popCloseColor:'warn',
+  //         popOkColor:'primary',
+  //         click: record => this.onDeleteDORow(record),
+  //       }
+  //     ]
+  //   },
+  //   {      header:'DeliveryOrderID',      field:'DeliveryOrderID',      hide:true,    },
+  //   {      header:'CustomerID',      field:'CustomerID',      hide:true,    },
+  //   {      header:'DO No',      field:'DeliveryOrderNo',      minWidth: 80,    },
+  //   {      header:'DO Date',      field:'DeliveryOrderDate',      minWidth: 100,      type:'date',      typeParameter:{ format:'dd-MM-yyyy'}    },
+  //   {      header:'CustomerName',      field:'CustomerName',      minWidth: 200,    },    
+  //   {      header:'DeliverTo',      field:'DeliverTo',      hide:false,      minWidth: 200,    },
+  //   {      header:'Remarks',      field:'Remarks',      minWidth: 200,    },    
+  //   {      header:'StatusID',      field:'StatusID',      hide:true    },    
+  //   {      header:'Status',      field:'Status',      minWidth: 100,      hide:false,    },
+  //   {      header:'CreatedBy',      field:'CreatedBy',      minWidth: 70,    },    
+  //   {      header:'Process',      field:'Process',      minWidth: 70,    },
+  //   {      header:'CustomerPartyID',      field:'CustomerPartyID',      minWidth: 120,hide:true    },
+  //   {      header:'ContainerNo',      field:'ContainerNo',      minWidth: 120,hide:true    },
+  //   {      header:'TruckNo',      field:'TruckNo',      minWidth: 120,hide:true    },
+  //   {      header:'OrderGivenBy',      field:'OrderGivenBy',      minWidth: 120,hide:false    },
+  //   {      header:'ShippingAddress',      field:'ShippingAddress',      minWidth: 120,hide:true    },
+  //   {      header:'WareHouseID',      field:'WareHouseID',      minWidth: 120,hide:true    },
+  // ];
+//pinned: 'left',
+  columnsDeliveryOrderList: ColDef[] = [
+    {  headerName: 'Action',floatingFilter: false,maxWidth:150,
+      cellRenderer: 'buttonRenderer',
+      cellRendererParams: {
+        onClick: this.OnDeliveryOrderActions.bind(this),
+        
+      }
     },
-    {
-      header:'DeliveryOrderID',
-      field:'DeliveryOrderID',
-      hide:true,
-    },
-    {
-      header:'CustomerID',
-      field:'CustomerID',
-      hide:true,
-    },
-    {
-      header:'DO No',
-      field:'DeliveryOrderNo',
-      minWidth: 80,
-      
-    },
-    {
-      header:'DO Date',
-      field:'DeliveryOrderDate',
-      minWidth: 100,
-      type:'date',
-      typeParameter:{ format:'dd-MM-yyyy'}
-    },
-    {
-      header:'CustomerName',
-      field:'CustomerName',
-      minWidth: 200,
-    },
-    {
-      header:'DeliverTo',
-      field:'DeliverTo',
-      hide:false,
-      minWidth: 200,
-    },
-    {
-      header:'Remarks',
-      field:'Remarks',
-      minWidth: 200,
-    },
-    {
-      header:'StatusID',
-      field:'StatusID',
-      hide:true
-    },
-    
-    {
-      header:'Status',
-      field:'Status',
-      minWidth: 100,
-      hide:false,
-    },
-    {
-      header:'CreatedBy',
-      field:'CreatedBy',
-      minWidth: 70,
-    },
-    {
-      header:'Process',
-      field:'Process',
-      minWidth: 70,
-    },
-    {
-      header:'CustomerPartyID',
-      field:'CustomerPartyID',
-      minWidth: 120,hide:true
-    },
-    {
-      header:'ContainerNo',
-      field:'ContainerNo',
-      minWidth: 120,hide:true
-    },
-    {
-      header:'TruckNo',
-      field:'TruckNo',
-      minWidth: 120,hide:true
-    },
-    {
-      header:'OrderGivenBy',
-      field:'OrderGivenBy',
-      minWidth: 120,hide:false
-    },
-    {
-      header:'ShippingAddress',
-      field:'ShippingAddress',
-      minWidth: 120,hide:true
-    },
-    {
-      header:'WareHouseID',
-      field:'WareHouseID',
-      minWidth: 120,hide:true
-    },
-  ]
+    { headerName:'DeliveryOrderID', field:'DeliveryOrderID', hide:true, filter: 'agTextColumnFilter',floatingFilter: true, },
+    { headerName:'CustomerID', field:'CustomerID', hide:true,   filter: 'agTextColumnFilter',floatingFilter: true,  },
+    { headerName:'DO No',maxWidth:100, field:'DeliveryOrderNo',filter: 'agTextColumnFilter',floatingFilter: true,   },
+    { headerName:'DO Date',resizable: true, field:'DeliveryOrderDate',  type:'date',  filter: 'agTextColumnFilter',floatingFilter: true,   },
+    { headerName:'CustomerName', field:'CustomerName',  filter: 'agTextColumnFilter',floatingFilter: true,  },
+    { headerName:'DeliverTo', field:'DeliverTo', hide:false,  filter: 'agTextColumnFilter',floatingFilter: true,  },
+    { headerName:'Remarks', field:'Remarks',  filter: 'agTextColumnFilter',floatingFilter: true,  },
+    { headerName:'StatusID', field:'StatusID', hide:true   ,filter: 'agTextColumnFilter',floatingFilter: true,  },    
+    { headerName:'Status', field:'Status', hide:false,   filter: 'agTextColumnFilter',floatingFilter: true,  },
+    { headerName:'CreatedBy', field:'CreatedBy', filter: 'agTextColumnFilter',floatingFilter: true, },
+    { headerName:'Process', field:'Process', resizable: true,   filter: 'agTextColumnFilter',floatingFilter: true, },    
+    { headerName:'CustomerPartyID', field:'CustomerPartyID', resizable: true,hide:true,filter: 'agTextColumnFilter',floatingFilter: true,  },
+    { headerName:'ContainerNo', field:'ContainerNo', resizable: true,hide:true ,filter: 'agTextColumnFilter',floatingFilter: true,   },
+    { headerName:'TruckNo', field:'TruckNo', resizable: true,hide:true , filter: 'agTextColumnFilter',floatingFilter: true,   },
+    { headerName:'OrderGivenBy', field:'OrderGivenBy', resizable: true,hide:false , filter: 'agTextColumnFilter',floatingFilter: true,   },
+    { headerName:'ShippingAddress', field:'ShippingAddress', resizable: true,hide:true  , filter: 'agTextColumnFilter',floatingFilter: true,  },
+    { headerName:'WareHouseID', field:'WareHouseID', resizable: true,hide:true , filter: 'agTextColumnFilter',floatingFilter: true,   },  
+  ];
 }
 export class DeliveryOrderDetail{
   DeliveryOrderID:number=0;	

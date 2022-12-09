@@ -114,7 +114,7 @@
                   <button type="button" class="btn btn-secondary ml-3" style="width:20%;" (click)="onResetDispatch()" >Reset</button>
                 </form>
             </mat-tab>
-            <mat-tab label="Dispatch List">
+            <!-- <mat-tab label="Dispatch List">
               <div class="form-control-sm" >
                 <label class="form-control-sm" >Filter  </label>
                 <input type="text" (keyup)="onKeyfilter(filtertext.value)" id="filtertext" #filtertext 
@@ -144,6 +144,18 @@
                 
                 >            
                 </mtx-grid>
+              </div>
+            </mat-tab> -->
+            <mat-tab label="Dispatch List" >
+              <div style="height: 100%; box-sizing: border-box;">
+                <ag-grid-angular 
+                  style="height: 500px;"
+                  class="ag-theme-alpine"
+                  [rowData]="DispatchList"
+                  [columnDefs]="DispatchsListColumnDefs"
+                  [frameworkComponents]="frameworkComponents"
+                  >
+                </ag-grid-angular>
               </div>
             </mat-tab>
         </mat-tab-group>
