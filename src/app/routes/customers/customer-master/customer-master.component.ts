@@ -326,12 +326,12 @@ uploadfiledata(data:any){
 
  
 onFilechange(event: any) {
-<<<<<<< HEAD
+
   //debugger;
-=======
+
  // debugger;
   //event.target.files contain file
->>>>>>> 3da25848da9ebae4f8f8742f92fc359a60ce4d4e
+
 if(event.target.files.length>0){
   let data = new FormData();
 

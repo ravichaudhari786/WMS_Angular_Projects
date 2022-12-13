@@ -7,7 +7,7 @@ import { OutwardComponent } from './outward/outward.component';
 import { ShiftingComponent } from './shifting/shifting.component';
 import {TransferComponent} from './transfer/transfer.component'
 import { InwardUpdateComponent} from './inward-update/inward-update.component';
-
+import { OutwardUpdateComponent } from './outward-update/outward-update.component';
 const routes: Routes = [
   { path: 'Inward', component: InwardComponent },
   { path: 'DeliveryOrder', component: DeliveryorderComponent },
@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: 'Shifting', component: ShiftingComponent },
   { path: 'Transfer', component: TransferComponent },
   { path: 'InwardUpdate', component: InwardUpdateComponent },
+  { path: 'OutwardUpdate', component: OutwardUpdateComponent },
 ];
 
 @NgModule({

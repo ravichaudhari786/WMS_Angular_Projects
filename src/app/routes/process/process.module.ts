@@ -16,6 +16,7 @@ import { DispatchdeletebuttonComponent } from './dispatch/dispatchdeletebutton/d
 import { DeliveryorderactionButtonsComponent } from './deliveryorder/deliveryorderaction-buttons/deliveryorderaction-buttons.component';
 import { InwardActionButtonComponent } from './inward/inward-action-button/inward-action-button.component';
 import { InwardUpdateComponent } from './inward-update/inward-update.component';
+import { OutwardUpdateComponent } from './outward-update/outward-update.component';
 
 
 
@@ -39,6 +40,7 @@ import { InwardUpdateComponent } from './inward-update/inward-update.component';
     DeliveryorderactionButtonsComponent,
     InwardActionButtonComponent,
     InwardUpdateComponent,
+    OutwardUpdateComponent,
     
   ],
   imports: [
