@@ -23,3 +23,4 @@ describe('TemperatureCategoryComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

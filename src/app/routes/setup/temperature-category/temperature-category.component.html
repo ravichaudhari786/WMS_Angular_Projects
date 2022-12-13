@@ -1,1 +1,89 @@
-<p>temperature-category works!</p>
+<div fxLayout="row wrap" class="matero-row">
+    <div fxFlex="100" class="matero-col">
+
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form)" label="Department Master">
+            <div class="col-md-12">
+                <div class="row pt-2">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label>Temerature Category</label>
+                            <input type="text" autocomplete="off"
+                                [ngClass]="{'is-invalid': submitted && f.txtTemeratureCategory.invalid}"
+                                formControlName="txtTemeratureCategory" id="txtTemeratureCategory"
+                                class=" form-control form-control-sm" />
+                            <div *ngIf="submitted && f.txtTemeratureCategory.invalid" class="invalid-feedback">
+                                <span *ngIf="f.txtTemeratureCategory?.errors?.required">Enter Temerature Category </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+
+            <div class="col-md-12">
+                <div class="row pt-2">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Minimum Temperature</label>
+                            <input type="text" autocomplete="off"
+                                [ngClass]="{'is-invalid': submitted && f.txtMinimumTemperature.invalid}"
+                                formControlName="txtMinimumTemperature" id="txtMinimumTemperature"
+                                class=" form-control form-control-sm" />
+                            <div *ngIf="submitted && f.txtMinimumTemperature.invalid" class="invalid-feedback">
+                                <span *ngIf="f.txtMinimumTemperature?.errors?.required">Enter Minimum
+                                    Temperature</span>
+                            </div>
+                        </div>
+                    </div>
+                 
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Maximum Temperature</label>
+                                    <input type="text" autocomplete="off"
+                                        [ngClass]="{'is-invalid': submitted && f.txtMaximumTemperature.invalid}"
+                                        formControlName="txtMaximumTemperature" id="txtMaximumTemperature"
+                                        class=" form-control form-control-sm" />
+                                    <div *ngIf="submitted && f.txtMaximumTemperature.invalid" class="invalid-feedback">
+                                        <span *ngIf="f.txtMaximumTemperature?.errors?.required">Enter Maximum
+                                            Temperature</span>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                 
+
+
+                </div>
+            </div>
+        </div>
+
+            
+      
+
+
+   
+            <div class="row">
+                <div class="col-md-6">
+                    <button type="submit" [hidden]="!HideSaveButton" [value]="submitted"
+                        class="btn btn-secondary btn-sm" style="width: 85px !important; margin-top: 20px !important;">
+                        Save </button>
+                </div>
+
+            </div>
+
+       
+
+            <ng-template #toolbarTpl>
+                <input placeholder="Search">
+            </ng-template>
+        </form>
+
+        <hr>
+        <br>
+
+
+        <ag-grid-angular style="width: 100%; height: 500px;" class="ag-theme-alpine" [rowData]="TemperatureCategoryList"
+            [columnDefs]="columnDefs" [frameworkComponents]="frameworkComponents">
+        </ag-grid-angular>
+
+    </div>

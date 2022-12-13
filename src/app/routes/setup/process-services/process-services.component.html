@@ -1,1 +1,58 @@
-<p>process-services works!</p>
+
+<div fxLayout="row wrap" class="matero-row">
+    <div fxFlex="100" class="matero-col">
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+            <div class="col-md-12">
+                <div class="row pt-1">
+                    <div class="col-sm-11 col-md-11">
+                        <div class="form-group">
+                            <label>Process Name</label>
+                            <select class="form-control form-control-sm" (change)="GetProcessID($event)"
+                                [ngClass]="{'is-invalid': submitted && f.txtProcessName.invalid}"
+                                formControlName="txtProcessName" id="txtProcessName">
+                                <option value="null" >Select </option>
+                                <option *ngFor="let i of ProcessNameList" value={{i.ProcessID}}>
+                                    {{i.ProcessName}}</option>
+                            </select>
+                            <div *ngIf="submitted && f.txtProcessName.invalid" class="invalid-feedback">
+                                <div *ngIf="f.txtProcessName.errors?.required">Select Proces Name</div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    
+                <div class="col-sm-1 col-md-1">
+                    <button type="submit" class="btn btn-secondary btn-sm"
+                        style="width: 100px !important;margin-left: 15px; margin-top: 20px !important;">
+                        Save </button>
+                </div>
+                 
+
+                </div>
+
+                <div class="row pt-2">
+
+                    <div class="col-sm-12 col-md-12">
+                        <ag-grid-angular style="width: 100%; height: 600px;" class="ag-theme-alpine"
+                        [rowData]="ProcessServicesList" [columnDefs]="PSListcol" 
+                        [frameworkComponents]="frameworkComponents">
+                      </ag-grid-angular>
+                    </div>
+                
+                
+                  </div>
+            </div>
+        
+
+                
+
+                
+                
+        </form>
+         
+    </div>
+</div>
+
+ 
+
