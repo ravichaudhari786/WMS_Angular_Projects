@@ -15,6 +15,7 @@ import { ServiceMasterComponent } from './service-master/service-master.componen
 import { ProductTaxDetailComponent } from './product-tax-detail/product-tax-detail.component';
 import { ProcessServicesComponent } from './process-services/process-services.component';
 import { TemperatureCategoryComponent } from './temperature-category/temperature-category.component';
+import { TemperatureCategoryEditButtonComponent } from './temperature-category/temperature-category-edit-button/temperature-category-edit-button.component';
 
 
 
@@ -31,7 +32,8 @@ import { TemperatureCategoryComponent } from './temperature-category/temperature
     ServiceMasterComponent,
       ProductTaxDetailComponent,
       ProcessServicesComponent,
-      TemperatureCategoryComponent
+      TemperatureCategoryComponent,
+      TemperatureCategoryEditButtonComponent
 
   ],
   imports: [
