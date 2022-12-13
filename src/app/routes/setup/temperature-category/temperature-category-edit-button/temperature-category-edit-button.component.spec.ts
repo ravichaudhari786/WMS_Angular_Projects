@@ -23,3 +23,4 @@ describe('TemperatureCategoryEditButtonComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
