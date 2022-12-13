@@ -1,1 +1,111 @@
-<p>product-tax-detail works!</p>
+<div fxLayout="row wrap" class="matero-row">
+
+  <div fxFlex="100" class="matero-col">
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+          <div class="col-md-12">
+              <div class="row pt-1">
+
+                  <div class="col-sm-4 col-md-4">
+                      <div class="form-group">
+                          <label>Tax Name</label>
+                          <select class="form-control form-control-sm"
+                              [ngClass]="{'is-invalid': submitted && f.txtTaxName.invalid}"
+                              formControlName="txtTaxName" id="txtTaxName">
+                              <option value="null" >Select </option>
+                              <option *ngFor="let i of TaxNameList" value={{i.TaxID}}>
+                                  {{i.TaxName}}</option>
+                          </select>
+                          <div *ngIf="submitted && f.txtTaxName.invalid" class="invalid-feedback">
+                              <div *ngIf="f.txtTaxName.errors?.required">Select Tax Name</div>
+                          </div>
+                      </div>
+                  </div>
+
+
+                  <div class="col-sm-4 col-md-4">
+                      <div class="form-group">
+                          <label>HSN Code</label>
+                          <input type="text" autocomplete="off"
+                              [ngClass]="{'is-invalid': submitted && f.txtHSNCode.invalid}"
+                              formControlName="txtHSNCode" id="txtHSNCode"
+                              class=" form-control form-control-sm" />
+
+                          <div *ngIf="submitted && f.txtHSNCode.invalid" class="invalid-feedback">
+                              <span *ngIf="f.txtHSNCode?.errors?.required">Enter HSN Code</span>
+                          </div>
+                      </div>
+                  </div>
+
+                   <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                     <label>With Effective  Date</label>
+                      <input type="date" formControlName="WEDate" id="WEDate"
+                        class="form-control form-control-sm" placeholder="" 
+                        [ngModel]="todayDate| date:'yyyy-MM-dd'"  name="WEDate" 
+                        [ngClass]="{'is-invalid': submitted && f.WEDate.invalid}"
+                         class="form-control form-control-rounded" />
+                         <div *ngIf="submitted && f.WEDate.invalid" class="invalid-feedback">
+                          <span *ngIf="f.WEDate?.errors?.required">Enter With Effective Date</span>
+                      </div>
+                    </div>
+                      </div>
+
+
+
+                   </div>
+<!-- <hr> -->
+
+<div class="row pt-1">
+  
+  <div class="col-sm-6 col-md-6">
+      <ag-grid-angular style="width: 100%; height: 300px;" class="ag-theme-alpine"
+      [rowData]="ProductList" [columnDefs]="ProductListCol"
+      [frameworkComponents]="frameworkComponents">
+    </ag-grid-angular>
+  </div>
+  <div class="col-sm-6 col-md-6">
+      <ag-grid-angular style="width: 100%; height: 300px;" class="ag-theme-alpine"
+      [rowData]="ServiceList" [columnDefs]="ServiceListCol"
+      [frameworkComponents]="frameworkComponents">
+    </ag-grid-angular>
+  </div>
+
+
+</div>
+
+<div class="row">
+
+  <div class="col-md-6">
+      <button type="submit" class="btn btn-secondary btn-sm"
+          style="width: 100px !important; margin-top: 20px !important;">
+          Save </button>
+  </div>
+  <!-- <div class="col-md-6">
+    <button type="button" (click)="OnResetClick()" class="btn btn-secondary btn-sm"
+        style="width: 100px !important; margin-top: 20px !important;">
+        Reset </button>
+</div> -->
+
+</div>
+
+<!-- <hr> -->
+<div class="row pt-2">
+
+  <div class="col-sm-12 col-md-12">
+      <ag-grid-angular style="width: 100%; height: 350px;" class="ag-theme-alpine"
+      [rowData]="ProductTaxDetailList" [columnDefs]="PTDListCol" 
+      [frameworkComponents]="frameworkComponents">
+    </ag-grid-angular>
+  </div>
+
+
+</div>
+
+
+</div>
+
+</form>
+</div>
+</div>
+
