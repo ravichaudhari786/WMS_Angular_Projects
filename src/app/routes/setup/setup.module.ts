@@ -12,6 +12,9 @@ import { CompanyEditButtonComponent } from './company/company-edit-button/compan
 import { WarehouseEditButtonComponent } from './warehouse/warehouse-edit-button/warehouse-edit-button.component';
 
 import { ServiceMasterComponent } from './service-master/service-master.component';
+import { ProductTaxDetailComponent } from './product-tax-detail/product-tax-detail.component';
+import { ProcessServicesComponent } from './process-services/process-services.component';
+import { TemperatureCategoryComponent } from './temperature-category/temperature-category.component';
 
 
 
@@ -25,7 +28,10 @@ import { ServiceMasterComponent } from './service-master/service-master.componen
     CompanyEditButtonComponent,
     WarehouseEditButtonComponent,
 
-    ServiceMasterComponent
+    ServiceMasterComponent,
+      ProductTaxDetailComponent,
+      ProcessServicesComponent,
+      TemperatureCategoryComponent
 
   ],
   imports: [
