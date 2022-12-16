@@ -1,1 +1,174 @@
-<p>outward-update works!</p>
+<div fxLayout="row wrap" class="matero-row">
+    <div fxFlex="100" class="matero-col">
+        <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+            <div class="col-md-12">
+                <div class="row pt-2">
+                    
+                        <div class="col-sm-6 col-md-6">
+                            <div class="form-group">
+                              <label>Customer Name </label>
+                              <select class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f.Customerid.invalid}"                                  
+                                formControlName="Customerid" id="Customerid">
+                                <option value="null" disabled>Select </option>
+                                <option *ngFor="let b of CustomerList" value="{{b.CustomerID}}" >{{b.CustomerName}}</option>
+                              </select>
+                              <div *ngIf="submitted && f.Customerid.invalid" class="invalid-feedback">
+                                <div *ngIf="f.Customerid.errors?.required">Select Customer...</div>
+                              </div>
+                            </div>                                 
+                          </div>     
+                    
+
+                      <div class="col-sm-6 col-md-6">
+                        <div class="form-group">
+                          <label for="company">Outward No</label>
+                          <input type="text" [ngClass]="{'is-invalid': submitted && f.txtOutwardNo.invalid}"
+                            formControlName="txtOutwardNo" id="txtOutwardNo" class=" form-control form-control-sm" />
+                          <div *ngIf="submitted && f.txtOutwardNo.invalid" class="invalid-feedback">
+                            <div *ngIf="f.txtOutwardNo.errors?.required">Enter Outward No...</div>
+                          </div>
+                        </div>      
+                      </div>
+                      <div class="col-sm-6 col-md-6">
+                        <div class="form-group">
+                          <button type="button" class="btn btn-secondary btn-sm" (click)="OnSearch()"
+                            style="width: 85px !important; margin-top: 20px !important;"> Search </button>
+                        </div>
+                      </div>
+                      <div class="col-sm-12 col-md-12">
+                        <div style="height: 100%; box-sizing: border-box;">
+                            <ag-grid-angular 
+                              style="height: 300px;"
+                              class="ag-theme-alpine"
+                              [rowData]="LotDetailList"
+                              [columnDefs]="LotColumnDefs"
+                              (rowDoubleClicked)="onProductListRowClicked($event)"
+                              >
+                            </ag-grid-angular>
+                          </div>
+                      </div>
+                      
+                      <div class="col-12" >
+                      <hr>
+                        <p class="font-weight-bold"> Product Details </p>
+                        <div class="row">                  
+                          <div class="col-12">
+                            <div class="row">
+                             
+                                <div class="col-sm-4 col-md-3">
+                                    <div class="form-group">
+                                      <label>Dock Name</label>
+                                      <select class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f.cbDockID.invalid}" 
+                                        formControlName="cbDockID" id="cbDockID">
+                                        <option [ngValue]="null" disabled>Select </option>
+                                        <option *ngFor="let s of dockList" value="{{s.DockID}}">{{s.DockName}}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </div>
+
+
+                                  <div class="col-sm-4 col-md-3">
+                                    <div class="form-group">
+                                      <label>Loading By</label>
+                                      <select class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f.cbLoadingBy.invalid}" 
+                                        formControlName="cbLoadingBy" id="cbLoadingBy">
+                                        <option [ngValue]="null" disabled>Select </option>
+                                        <option *ngFor="let s of loadingList" value="{{s.UserID}}">{{s.UserName}}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </div>
+
+                                  
+                                <div class="col-sm-4 col-md-3">
+                                    <div class="form-group">
+                                      <label>Truck No</label>
+                                      <input type="text" formControlName="txtTruckNo" id="txtTruckNo" autocomplete="off"
+                                      [ngClass]="{'is-invalid': submitted && f.txtTruckNo.invalid}" 
+                                        class="form-control form-control-sm" placeholder="" required />                              
+                                    </div>
+          
+                                    
+                                  </div>
+          
+                                  
+                                  
+                                  <div class="col-sm-4 col-md-3">
+                                    <div class="form-group">
+                                      <label>Container No</label>
+                                      <input type="text" formControlName="txtContainerNo" id="txtContainerNo"
+                                      [ngClass]="{'is-invalid': submitted && f.txtContainerNo.invalid}" 
+                                        class="form-control form-control-sm" placeholder="" autocomplete="off"/>
+                                    </div>                                  
+                                  </div>
+
+                                  
+                                  <div class="col-sm-4 col-md-3">
+                                    <div class="form-group">
+                                      <label>Labour Contractor</label>
+                                      <select class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f.cbLabourContractor.invalid}" 
+                                        formControlName="cbLabourContractor" id="cbLabourContractor">
+                                        <option [ngValue]="null" disabled>Select </option>
+                                        <option *ngFor="let s of LabourContractorList" value="{{s.LabourContractorID}}">{{s.ContractorName}}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  
+                                  <div class="col-sm-4 col-md-3">
+                                    <div class="form-group">
+                                      <label>Deliver To</label>
+                                      <select class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f.cbDeliverTo.invalid}" 
+                                        formControlName="cbDeliverTo" id="cbDeliverTo">
+                                        <option [ngValue]="null" disabled>Select </option>
+                                        <option *ngFor="let s of DeliverToList" value="{{s.CustomerPartyID}}">{{s.PartyName}}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </div>
+
+                            
+                               
+        
+                                <div class="col-sm-4 col-md-3">
+                                  <div class="form-group">
+                                    <label>Remarks</label>
+                                    <input type="text" formControlName="remarks" id="remarks" class="form-control form-control-sm"
+                                    [ngClass]="{'is-invalid': submitted && f.remarks.invalid}" 
+                                      placeholder="" autocomplete="off"/>
+                                  </div>
+                                </div>
+                                
+                                
+                               
+        
+                                
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div>
+
+                      <div class="col-3">
+                        <div class="form-group">
+                          <button type="button" [disabled]="submitted" (click)="OnUpdateclick()" class="btn btn-secondary btn-sm"
+                            style="width: 85px !important; margin-top: 20px !important;"> Update </button>
+                        </div>
+                      </div>
+                        
+
+                      <div class="col-sm-6 col-md-3">
+                        <div class="form-group">
+                          <button type="submit"  class="btn btn-secondary btn-sm"
+                            style="width: 85px !important; margin-top: 20px !important;"> Save </button>
+                        </div>
+                      </div>
+                      
+                </div>
+            </div>
+            
+        </form>
+    </div>
+</div>
+
