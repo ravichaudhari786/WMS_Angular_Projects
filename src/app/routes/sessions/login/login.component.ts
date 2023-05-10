@@ -70,9 +70,6 @@ export class LoginComponent implements OnInit {
             this.FinantialYears=data.finantialYears;
             //console.log(data)
           }
-
-            //this.router.navigate(['auth/register'], {queryParams:{warehouses:warehouselist}});
-            //this.router.navigateByUrl('auth/register',warehouselist);
           }
           else{
             this.loading=false;
