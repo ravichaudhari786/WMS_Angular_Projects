@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 import { data } from 'jquery';
 import { runInThisContext } from 'vm';
 import { AdditionalServiceEditComponent } from './additional-service-edit/additional-service-edit.component';
-
+import { AgGridAngular} from "ag-grid-angular";
 @Component({
   selector: 'app-additional-services',
   templateUrl: './additional-services.component.html',

@@ -67,9 +67,9 @@ export class CustomerViewComponent implements OnInit {
     {
      
 
-      this.api.post('/Customer/CustomerView_GetData', custData).subscribe(
-
+      this.api.post('/Customer/CustomerView_GetData', custData).subscribe(        
         data => {
+          debugger;
           console.log(data)
           this.InwardData = data.Table;
           this.PendingStockData = data.Table1;
