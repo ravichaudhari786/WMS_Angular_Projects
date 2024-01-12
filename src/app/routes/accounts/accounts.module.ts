@@ -5,14 +5,14 @@ import { SharedModule } from '@shared/shared.module';
 import { AccountsRoutingModule } from './accounts-routing.module';
 import { AdditionalServicesComponent } from './additional-services/additional-services.component';
 import { AdditionalServiceEditComponent } from './additional-services/additional-service-edit/additional-service-edit.component';
-import { BillProcessComponent } from './bill-process/bill-process.component';
+import { BillprocessComponent } from './billprocess/billprocess.component';
 
 
 @NgModule({
   declarations: [
     AdditionalServicesComponent,
     AdditionalServiceEditComponent,
-    BillProcessComponent
+    BillprocessComponent
   ],
   imports: [
     CommonModule,SharedModule,

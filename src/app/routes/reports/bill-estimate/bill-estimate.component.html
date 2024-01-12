@@ -1,0 +1,73 @@
+
+    <div class="container">
+        <mat-card>
+            <h1>Bill Estimation</h1>
+                    <div class=" row" style="margin-top: 5%;">
+                        <div class="col-sm-8 col-md-8">
+                            <div  class="row">
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label>Start Date</label>
+                                        <input type="date" id="dtStartDate" class="form-control form-control-sm"
+                                            placeholder="yyyy-MM-dd" [(ngModel)]="dtStartDate"
+                                            name="dtStartDate" class="form-control form-control-rounded" />
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label>End Date</label>
+                                        <input type="date" id="inward_date" class="form-control form-control-sm"
+                                            placeholder="yyyy-MM-dd" [(ngModel)]="dtEndDate"
+                                            name="inward_date" class="form-control form-control-rounded" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div  class="row">
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label>Storage Bill Detail</label>
+                                        <input type="checkbox" class="form-check-input" class="form-control" id="chk_StorageDetail" 
+                                        [(ngModel)]="chk_StorageDetail" (change)="onChangesStorageDetail(chk_StorageDetail)"/>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label>Storage Bill Summary</label>
+                                        <input type="checkbox" class="form-check-input" class="form-control" id="chk_StorageSummary" 
+                                        [(ngModel)]="chk_StorageSummary" (change)="onChangesStorageSummary(chk_StorageSummary)"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label>Labour Bill</label>
+                                        <input type="checkbox" class="form-check-input" class="form-control" id="chk_Labour" 
+                                        [(ngModel)]="chk_Labour" (change)="onChangesLabour(chk_Labour)"/>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        <div class="col-md-4 col-sm-4" [style.border]="myAnchorID > 0 ? '1px solid cyan' : ''">
+                            <ag-grid-angular style="height: 300px;" class="ag-theme-alpine" [rowData]="CustomerList"
+                                [columnDefs]="CustomerListColumns">
+                            </ag-grid-angular>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-2 col-md-2"></div>
+                        <div class="col-sm-3 col-md-3">
+                            <button class="btn btn-secondary btn-sm" (click)="OnPrintBill()"
+                                style="width: 85px !important; ">Save</button>
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <button class="btn btn-secondary btn-sm"
+                                style="width: 85px !important; ">Reset</button>
+                        </div>
+                    </div>
+           
+        </mat-card>
+    </div>

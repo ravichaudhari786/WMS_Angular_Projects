@@ -4,7 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '@core';
 import { MtxDialog, MtxGridColumn } from '@ng-matero/extensions';
 import { User } from '@core/authentication/interface';
-import { ColDef, GridApi } from 'ag-grid-community';
+import { ColDef, GridApi, GridOptions } from 'ag-grid-community';
 import { DatePipe } from '@angular/common';
 import { data } from 'jquery';
 import { runInThisContext } from 'vm';
@@ -115,7 +115,22 @@ export class AdditionalServicesComponent implements OnInit {
   }
   OnServiceSelect(event: any) {
     const servicesData = {
-      "serviceID": this.form.value.cbServiceID,
+      "serviceID": Number(event.target.value),
+      "stateID": 0,
+      "customerID": 0,
+      "productID": 0,
+    }
+    this.api.post('/AdditionalService/ServiesCharges_List', servicesData).subscribe(
+
+      data => { this.UnitNameData = data, console.log(this.UnitNameData) },
+
+      error => { console.error(error); }
+
+    );
+  }
+  OnServiceSelectEdit(IDS: any) {
+    const servicesData = {
+      "serviceID": Number(IDS),
       "stateID": 0,
       "customerID": 0,
       "productID": 0,
@@ -348,9 +363,10 @@ export class AdditionalServicesComponent implements OnInit {
       );
     }
   }
-
-  onRowDblclickedDetail(a: any) {
+ 
+  onRowDblclickedDetail(a: any,e:any) {
     console.log("ssd", a.data);
+    this.OnServiceSelectEdit(a.data==undefined? '0' : a.data[0].ServiceID)
 
     // this.serviceDetailId = a.data.AdditionalServiceDID;
     this.form.controls['cbServiceID'].reset();
@@ -366,21 +382,21 @@ export class AdditionalServicesComponent implements OnInit {
     this.form.controls['Charges'].reset();
     this.form.controls['Remarks1'].reset();
 
- const unitdetail= this.UnitNameData.filter((x: any) => x.ServiceID == this.form.value.ServiceID);
+ const unitdetail= this.UnitNameData.filter((x: any) => x.ServiceID == a.data[0].ServiceID);//this.form.value.ServiceID);
     this.form.patchValue({
 
-      cbServiceID: a.data.ServiceID,
-      CbUnitName: unitdetail[0].ServiesCharges,
-      cbLabourContractorID: a.data.LabourContractorID,
-      Quantity: a.data.Quantity,
-      Description: a.data.Description,
-      StartTime: a.data.StartTime,
-      EndTime: a.data.EndTime,
-      TruckNo: a.data.TruckNo,
-      ContainerNo: a.data.ContainerNo,
-      PerUnitCharges: a.data.PerUnitCharges,
-      Charges: a.data.Charges,
-      Remarks1: a.data.Remarks,
+      cbServiceID: a.data[0].ServiceID,
+      //CbUnitName: unitdetail==undefined? '' : unitdetail[0].ServiesCharges,
+      cbLabourContractorID: a.data[0].LabourContractorID,
+      Quantity: a.data[0].Quantity,
+      Description: a.data[0].Description,
+      StartTime: a.data[0].StartTime,
+      EndTime: a.data[0].EndTime,
+      TruckNo: a.data[0].TruckNo,
+      ContainerNo: a.data[0].ContainerNo,
+      PerUnitCharges: a.data[0].PerUnitCharges,
+      Charges: a.data[0].Charges,
+      Remarks1: a.data[0].Remarks,
 
     });
     this.serviceDetailId = a.data.AdditionalServiceDID;
@@ -482,7 +498,8 @@ export class AdditionalServicesComponent implements OnInit {
     this.api.post('/AdditionalService/Get_AdditionalServiceCharges', item).subscribe(
       //data => {data;console.log(data)
       //},
-       data => { this.labourChargeDetail = data },
+       data => { this.labourChargeDetail = data;
+        console.log("this.labourChargeDetail",this.labourChargeDetail) },
        error => { console.error(error); }
     );
 
@@ -491,7 +508,8 @@ export class AdditionalServicesComponent implements OnInit {
     this.api.post('/AdditionalService/Get_AdditionalServiceDetail', item).subscribe(
 
       // data => { data;console.log(data)},
-      data => { this.ServiceListDetail = data },
+      data => { this.ServiceListDetail = data,
+        console.log("this.ServiceListDetail",data) },
       error => { console.error(error); }
     );
 
@@ -501,25 +519,26 @@ export class AdditionalServicesComponent implements OnInit {
   }
 
 
+  
 
 
-  ServiceDetailsColumn: ColDef[] = [
+  ServiceDetailsColumn: MtxGridColumn[] = [
 
-    { headerName: 'AdditionalServiceDID', field: 'AdditionalServiceDID', minWidth: 170, hide: false, },
-    { headerName: 'AdditionalServiceID', field: 'AdditionalServiceID', hide: true, minWidth: 250, },
-    { headerName: 'ServiceID', field: 'ServiceID', hide: true, minWidth: 170, },
-    { headerName: 'ServiceName', field: 'ServiceName', minWidth: 170, },
-    { headerName: 'Quantity', field: 'Quantity', minWidth: 170, },
-    { headerName: 'Description', field: 'Description', minWidth: 170 },
-    { headerName: 'StartTime', field: 'StartTime', minWidth: 120 },
-    { headerName: 'EndTime', field: 'EndTime', minWidth: 120 },
-    { headerName: 'TruckNo', field: 'TruckNo', minWidth: 120 },
-    { headerName: 'ContainerNo', field: 'ContainerNo', minWidth: 120 },
-    { headerName: 'PerUnitCharges', field: 'PerUnitCharges', minWidth: 120 },
-    { headerName: 'Charges', field: 'Charges', minWidth: 120 },
-    { headerName: 'Remarks', field: 'Remarks', minWidth: 120 },
-    { headerName: 'LabourContractorID', field: 'LabourContractorID', minWidth: 120, hide: true },
-    { headerName: 'LabourContractor', field: 'LabourContractor', minWidth: 120 },
+    { header: 'AdditionalServiceDID', field: 'AdditionalServiceDID', minWidth: 170, hide: false, },
+    { header: 'AdditionalServiceID', field: 'AdditionalServiceID', hide: true, minWidth: 250, },
+    { header: 'ServiceID', field: 'ServiceID', hide: true, minWidth: 170, },
+    { header: 'ServiceName', field: 'ServiceName', minWidth: 170, },
+    { header: 'Quantity', field: 'Quantity', minWidth: 170, },
+    { header: 'Description', field: 'Description', minWidth: 170 },
+    { header: 'StartTime', field: 'StartTime', minWidth: 120 },
+    { header: 'EndTime', field: 'EndTime', minWidth: 120 },
+    { header: 'TruckNo', field: 'TruckNo', minWidth: 120 },
+    { header: 'ContainerNo', field: 'ContainerNo', minWidth: 120 },
+    { header: 'PerUnitCharges', field: 'PerUnitCharges', minWidth: 120 },
+    { header: 'Charges', field: 'Charges', minWidth: 120 },
+    { header: 'Remarks', field: 'Remarks', minWidth: 120 },
+    { header: 'LabourContractorID', field: 'LabourContractorID', minWidth: 120, hide: true },
+    { header: 'LabourContractor', field: 'LabourContractor', minWidth: 120 },
   ]
 
 

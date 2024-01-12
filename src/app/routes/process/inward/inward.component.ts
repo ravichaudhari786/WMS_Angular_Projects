@@ -1405,45 +1405,43 @@ OnResetInward(){
 
 OnInwardActions(event:any){      
   if(String(event.actions)=='Delete'){
-  ///console.log(event.rowData);
-  if(event.rowData.Status==51)
-  {
-    const DeletedData={
-      InwardID :event.rowData.InwardID,
-      CustomerID :Number(event.rowData.CustomerID),
-      Remarks :0,
-      CreatedBy :Number(this.currentUser.userId),
-      serviceID :0,
-      ProductID :0,
-      CompanyId :Number(this.currentUser.companyId),
-      WarehouseId :Number(this.currentUser.warehouseId),
-      FinantialYearId:Number(this.currentUser.FinantialYearId), 
-      challan :0,
-      StorageAreaMasterID :1,
-      FinancialYear :"",
-    };
-    console.log(DeletedData);
-        //this.api.post('/Inward/DeleteInward?InwardID='+d.InwardID+'&CustomerID='+d.CustomerID+'&Remarks=test_by_angular&CreatedBy='+this.currentUser.userId).subscribe(
-        this.api.post('/Inward/DeleteInward',DeletedData).subscribe(  
-          data=>{data;
-          this.dialog.alert(data.Table[0]["message"]); 
-          this.SetDataTo_Inwardlist();},
-          error=>{ console.error(error);}
-         ); 
-  }
-  else if(event.rowData.Status==52 || event.rowData.Status==0)
-  {
-    //console.log("Sorry,Inward is under process. You can't Delete ....!!!");
-    this.dialog.alert("Sorry,Inward is under process. You can't Delete....!!!");
-  }else if(event.rowData.Status==53)
-  {
-    //console.log("Sorry,Outward already generated.You can't Delete....!!!");
-    this.dialog.alert("Sorry,Outward already generated.You can't Delete....!!!");
-  }else if(event.rowData.Status==54)
-  {
-    //console.log("Sorry,Inward is already cancelled ....!!!");
-    this.dialog.alert("Sorry,Inward is already cancelled ....!!!");
-  }
+    if(window.confirm('Are sure you want to delete this item ?')){
+      if(event.rowData.Status==51)
+      {
+        const DeletedData={
+          InwardID :event.rowData.InwardID,
+          CustomerID :Number(event.rowData.CustomerID),
+          Remarks :0,
+          CreatedBy :Number(this.currentUser.userId),
+          serviceID :0,
+          ProductID :0,
+          CompanyId :Number(this.currentUser.companyId),
+          WarehouseId :Number(this.currentUser.warehouseId),
+          FinantialYearId:Number(this.currentUser.FinantialYearId), 
+          challan :0,
+          StorageAreaMasterID :1,
+          FinancialYear :"",
+        };
+        console.log(DeletedData);
+            this.api.post('/Inward/DeleteInward',DeletedData).subscribe(  
+              data=>{data;
+              this.dialog.alert(data.Table[0]["message"]); 
+              this.SetDataTo_Inwardlist();},
+              error=>{ console.error(error);}
+             ); 
+      }
+      else if(event.rowData.Status==52 || event.rowData.Status==0)
+      {
+        this.dialog.alert("Sorry,Inward is under process. You can't Delete....!!!");
+      }else if(event.rowData.Status==53)
+      {
+        this.dialog.alert("Sorry,Outward already generated.You can't Delete....!!!");
+      }else if(event.rowData.Status==54)
+      {
+         this.dialog.alert("Sorry,Inward is already cancelled ....!!!");
+      }
+    }
+  
 }
     else if(String(event.actions)=='Edit'){
     //console.log(event.rowData);
@@ -1595,7 +1593,7 @@ TransperdetailcolumnDefs: ColDef[] = [
   
   ]
   serviceColumns:ColDef[]  = [
-    {
+    { type:'checkbox',
       field: 'Add', cellRenderer: (params:any) => this.checkBoxCellEditRenderer(params), 
       hide:false,width:10,     
     },

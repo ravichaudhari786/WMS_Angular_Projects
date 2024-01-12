@@ -8,10 +8,11 @@ import { ShiftingComponent } from './shifting/shifting.component';
 import {TransferComponent} from './transfer/transfer.component'
 import { InwardUpdateComponent} from './inward-update/inward-update.component';
 import { OutwardUpdateComponent } from './outward-update/outward-update.component';
+import { EditEntriesComponent} from './edit-entries/edit-entries.component'
 const routes: Routes = [
   { path: 'Inward', component: InwardComponent },
   { path: 'DeliveryOrder', component: DeliveryorderComponent },
-  
+  { path: 'EditEntries', component: EditEntriesComponent },
   { path: 'Dispatch', component: DispatchComponent },
   { path: 'Outward', component: OutwardComponent },
   { path: 'Shifting', component: ShiftingComponent },

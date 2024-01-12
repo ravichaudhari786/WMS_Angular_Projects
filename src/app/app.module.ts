@@ -25,13 +25,10 @@ import { InMemDataService } from './shared/in-mem/in-mem-data.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import{MaterialModule} from './material.module';
 import { AgGridModule } from 'ag-grid-angular';
-
-
 // Required for AOT compilation
 // export function TranslateHttpLoaderFactory(http: HttpClient) {
 //   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 // }
-
 @NgModule({
   declarations: [AppComponent],
   imports: [

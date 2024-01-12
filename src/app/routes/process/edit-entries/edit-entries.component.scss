@@ -1,0 +1,17 @@
+.table123 {
+    display: block;
+    overflow-y: auto;
+    overflow-x: auto;
+    height: 200px;
+}
+.Table_Header{
+    position: sticky;
+    top: -5px;
+    background-color: white;
+}
+.Table_Td{
+    white-space: nowrap;
+}
+.Datanotfoundcss{
+    text-align: center;
+}

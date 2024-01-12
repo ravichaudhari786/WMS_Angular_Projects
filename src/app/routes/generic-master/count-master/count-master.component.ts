@@ -24,6 +24,9 @@ export class CountMasterComponent implements OnInit {
   countdid:number=0;
   UserID: any = 0;
   tab: any;
+  reportUrl: string = 'Products';
+  hostUrl: string = 'https://localhost:54114/';
+  invokeAction: string = 'DXXRDV';
   private currentUser: User;
   constructor(private fb: FormBuilder, private api: ApiService, public dialog: MtxDialog,) {
     this.UserID = api.getUserID();

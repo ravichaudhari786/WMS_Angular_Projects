@@ -70,8 +70,9 @@ strcollectionName=strcollectionName.replace("%20"," ");
 const currentUser=JSON.parse(userid);
 if(strbaseapi!="me" && strcollectionName!="menu"){
   let menu=fetch1(environment.baseUrl+"/Menu/GetMenu?userid="+currentUser.userId);
-
+        
        menu=JSON.parse(menu);
+       console.log("menu",menu)
       for(var i=0;i<menu.menu.length;i++){
           for(var j=0;j<menu.menu[0].children.length;j++){
                 if(strcollectionName==menu.menu[i].children[j].name){

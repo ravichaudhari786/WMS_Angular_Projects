@@ -541,7 +541,7 @@ OnResetOuward(){
 
 onDeleteOutward(records:any){
   console.log("0",records);
- 
+  if(window.confirm('Are sure you want to delete this item ?')){
     const OutwardDeleteData={
       outwardID: records.OutWardID,
       warehouseID: records.WarehouseID,
@@ -586,7 +586,7 @@ onDeleteOutward(records:any){
         }
       },error=>{ console.error(error);}
   );
-  
+  }
 }
 OnCancelledOutward(deletedata:any)
 {

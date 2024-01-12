@@ -268,8 +268,12 @@
           "route": "lotsearch",
           "name": "Lot Search",
           "type": "link"
+        },
+        {
+          "route": "emailschedule",
+          "name": "Email Schedule",
+          "type": "link"
         }
-      
       ],
       "permissions": {
         "only": "ADMIN"

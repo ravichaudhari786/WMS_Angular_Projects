@@ -17,6 +17,7 @@ import { DeliveryorderactionButtonsComponent } from './deliveryorder/deliveryord
 import { InwardActionButtonComponent } from './inward/inward-action-button/inward-action-button.component';
 import { InwardUpdateComponent } from './inward-update/inward-update.component';
 import { OutwardUpdateComponent } from './outward-update/outward-update.component';
+import { EditEntriesComponent } from './edit-entries/edit-entries.component';
 
 
 
@@ -41,6 +42,7 @@ import { OutwardUpdateComponent } from './outward-update/outward-update.componen
     InwardActionButtonComponent,
     InwardUpdateComponent,
     OutwardUpdateComponent,
+    EditEntriesComponent,
     
   ],
   imports: [

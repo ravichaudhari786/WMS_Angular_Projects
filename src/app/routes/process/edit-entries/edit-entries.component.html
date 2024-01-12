@@ -1,0 +1,154 @@
+<div fxLayout="row wrap" class="matero-row">
+    <div fxFlex="100" class="matero-col">
+        <mat-card>
+            <form [formGroup]="form" (ngSubmit)="btnSerch(form)">
+                <div class="col-md-12">
+                    <div class="row pt-2">
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <label>Customer Name</label>
+                                <select class="form-control form-control-sm" (change)="GetCustomerID($event)"
+                                    formControlName="customer_id" id="customer_id">
+                                    <option value="null" disabled>Select</option>
+                                    <option *ngFor="let c of customerList" value={{c.CustomerID}}>{{c.CustomerName}}
+                                    </option>
+                                </select>
+                                <div *ngIf="submitted && form.controls.customer_id.errors" class="text-danger">
+                                    <div *ngIf="form.controls.customer_id.errors.required">Select Customer.......
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <div class="form-group">
+                                <label>From Date</label>
+                                <input type="date" formControlName="from_date" id="from_date"
+                                    class="form-control form-control-sm" placeholder=""
+                                    [ngModel]="todayDate| date:'yyyy-MM-dd'" name="from_date"
+                                    class="form-control form-control-rounded" />
+                                <div *ngIf="submitted && form.controls.from_date.errors" class="text-danger">
+                                    <div *ngIf="form.controls.from_date.errors.required">Select From Date.......
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <div class="form-group">
+                                <label>To Date</label>
+                                <input type="date" formControlName="To_date" id="To_date"
+                                    class="form-control form-control-sm" placeholder=""
+                                    [ngModel]="todayDate| date:'yyyy-MM-dd'" name="To_date"
+                                    class="form-control form-control-rounded" />
+                                <div *ngIf="submitted && form.controls.To_date.errors" class="text-danger">
+                                    <div *ngIf="form.controls.To_date.errors.required">Select To_date.......
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <div class="form-group">
+                                <label>Lot No</label>
+                                <input type="text" formControlName="txtLotno" id="txtLotno"
+                                    class="form-control form-control-sm" placeholder="" autocomplete="off" />
+                            </div>
+                        </div>
+                        <div class="col-sm-1 col-md-1">
+                            <div class="form-group">
+                                <label>Inward</label>
+                                <input type="checkbox" class="form-check-input" formControlName="chk_Inward"
+                                    class="form-control" id="chk_Inward" (change)="onCheck_Inward($event)" />
+                            </div>
+                        </div>
+                        <div class="col-sm-1 col-md-1">
+                            <div class="form-group">
+                                <label>Outward</label>
+                                <input type="checkbox" class="form-check-input" formControlName="chk_Outward"
+                                    class="form-control" id="chk_Outward" (change)="onCheck_Outward($event)" />
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-2 col-md-2">
+                            <div class="form-group pt-3">
+                                <button class="btn btn-secondary btn-block" type="submit">Search</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <div class="form-group pt-3">
+                                <button type="button" class="btn btn-secondary btn-block" type="button" (click)="onbtnReset()">Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-card>
+    <mat-card >
+            <div class="table">                
+                <table class="table123">
+                    <thead class="Table_Header">
+                        <tr>
+                            <th>Process</th>
+                            <th style="display: none;">ID</th>
+                            <th style="display: none;">DID</th>
+                            <th style="display: none;">CustomerID</th>
+                            <th style="display: none;">ProductID</th>
+                            <th>Date</th>
+                            <th>CustomerName</th>
+                            <th>ProductName</th>
+                            <th>ItemsInPacket</th>
+                            <th *ngIf="ProcessType=='Outward'">DeliveryTo</th>
+                            <th>LotNo</th>
+                            <th>Qty</th>
+                            <th>Loading</th>
+                            <th>Unloading</th>
+                            <th>Thappi</th>
+                            <th>Varai</th>
+                            <th>Shifting
+                            <th>Dummping</th>
+                            <th>Weights</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="datalength==0" >
+                            <tr class="tablerow tablerow-underline">
+                                <td colspan="14" class="tdhead direct-sticky"
+                                    style="padding:4px !important; width:2px !important;text-align:center;background-color: darkgray;font-size: large;">
+                                    No data found
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <ng-container *ngFor="let itms of GetInwardOutwardData, let i=index">
+                            
+                            <tr>
+                                <td class="Table_Td">{{itms.Process}}</td>
+                                <td style="display: none;">{{itms.ID}}</td>
+                                <td style="display: none;">{{itms.DID}}</td>
+                                <td style="display: none;">{{itms.CustomerID}}</td>
+                                <td style="display: none;">{{itms.ProductID}}</td>
+                                <td class="Table_Td">{{dateConvert(itms.Date)}}</td>
+                                <td class="Table_Td">{{itms.CustomerName}}</td>
+                                <td class="Table_Td">{{itms.ProductName}}</td>
+                                <td class="Table_Td">{{itms.ItemsInPacket}}</td>
+                                <td  class="Table_Td" *ngIf="ProcessType=='Outward'">{{itms.DeliveryTo}}</td>
+                                <td class="Table_Td">{{itms.lotno}}</td>
+                                <td class="Table_Td">{{itms.Qty}}</td>
+                                <td><input type="checkbox" [(ngModel)]='itms.Loading' (change)="onChangesRates(itms)"/></td>
+                                <td><input type="checkbox" [(ngModel)]='itms.Unloading' (change)="onChangesRates(itms)"/></td>
+                                <td><input type="checkbox" [(ngModel)]='itms.Thappi' (change)="onChangesRates(itms)"/></td>
+                                <td><input type="checkbox" [(ngModel)]='itms.Varai' (change)="onChangesRates(itms)"/></td>
+                                <td><input type="checkbox" [(ngModel)]='itms.Shifting' (change)="onChangesRates(itms)"/></td>
+                                <td><input type="checkbox" [(ngModel)]='itms.Dummping' (change)="onChangesRates(itms)"/></td>
+                                <td><input type="checkbox" [(ngModel)]='itms.Weights' (change)="onChangesRates(itms)"/></td>
+
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+
+            </div>
+        </mat-card>
+        
+    </div>
+</div>
+
+

@@ -230,10 +230,20 @@
                                 </mat-tab>
                                 <mat-tab label="Service Details List">
                                     <div style="height: 100%; box-sizing: border-box;">
-                                        <ag-grid-angular style="height: 250px;" class="ag-theme-alpine"
-                                            [rowData]="ServiceListDetail"[columnDefs]="ServiceDetailsColumn"  
+                                        <!-- <ag-grid-angular style="height: 250px;" class="ag-theme-alpine"
+                                            [rowData]="ServiceListDetail"[columnDefs]="ServiceDetailsColumn"                                                                                     
                                             (rowDoubleClicked)="onRowDblclickedDetail($event)">
-                                        </ag-grid-angular>
+                                        </ag-grid-angular> -->
+                                        <mtx-grid style="height: 250px;" class="ag-theme-alpine" [data]="ServiceListDetail" #gridlist [columns]="ServiceDetailsColumn" [loading]="false"
+                                        [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="false"
+                                        [hideRowSelectionCheckbox]="false" [rowHover]="true" [rowStriped]="false" [showToolbar]="false"
+                                        [toolbarTitle]="'Detail List'" [columnHideable]="false" [columnMovable]="true" [expandable]="false"
+                                        [pageOnFront]="true" [showPaginator]="false"  [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0"
+                                        (dblclick)="onRowDblclickedDetail(gridlist,$event)">
+                                      </mtx-grid>
+
+                           
+
                                     </div>
                                 </mat-tab>
 
@@ -319,7 +329,7 @@
 
 
                                             <div class="col-sm-4">
-                                                <button  type="button" class="btn btn-primary btn-sm"
+                                                <button  type="button" class="btn btn-secondary btn-sm"
                                                     (click)="OnAddChargesClick()"
                                                     style="width: 90px !important;margin-left: 15px !important; "> Add
                                                 </button>
@@ -342,7 +352,7 @@
                             <div class="row pt-2">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-sm"
+                                        <button type="submit" class="btn btn-secondary btn-sm"
                                             style="width: 85px !important; margin-top: 20px !important; margin-left: 250px !important;"> Save
                                         </button>
                                     </div>

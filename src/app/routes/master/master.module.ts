@@ -42,6 +42,7 @@ import { StatecityEditbuttonComponent } from './state-city/statecity-editbutton/
     BrandsEditButtonComponent,
     DockMasterEditButtonComponent,
     StatecityEditbuttonComponent
+    
   ],
   imports: [
     SharedModule,

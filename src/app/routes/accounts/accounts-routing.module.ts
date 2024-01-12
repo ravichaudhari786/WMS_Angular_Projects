@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdditionalServicesComponent } from './additional-services/additional-services.component';
-import { BillProcessComponent } from './bill-process/bill-process.component';
+import { BillprocessComponent } from './billprocess/billprocess.component';
 const routes: Routes = [
   { path: 'AdditionalServices', component: AdditionalServicesComponent },
-  { path: 'BillProcess', component: BillProcessComponent },
+  { path: 'BillProcess', component: BillprocessComponent },
 ];
 
 
