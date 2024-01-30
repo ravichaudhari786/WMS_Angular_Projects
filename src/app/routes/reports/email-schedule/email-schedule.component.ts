@@ -35,7 +35,7 @@ export class EmailScheduleComponent implements OnInit {
   selectedTime: any = "";
   txtEmailReportName: string = "";
   
-  tab = 1;
+  tab = 0;
   EmailScheduleList: any = [];
   frameworkComponents: any;
   constructor(private api: ApiService, private fb: FormBuilder, private modalService: NgbModal, public dialog: MtxDialog) {

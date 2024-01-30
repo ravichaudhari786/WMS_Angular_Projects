@@ -23,23 +23,21 @@
                                 </div>
                             </div>
                             <div  class="row">
-                                <div class="col-sm-6 col-md-6">
+                                <div class="col-sm-4 col-md-4">
                                     <div class="form-group">
                                         <label>Storage Bill Detail</label>
                                         <input type="checkbox" class="form-check-input" class="form-control" id="chk_StorageDetail" 
                                         [(ngModel)]="chk_StorageDetail" (change)="onChangesStorageDetail(chk_StorageDetail)"/>
                                     </div>
                                 </div>
-                                <div class="col-sm-6 col-md-6">
+                                <div class="col-sm-4 col-md-4">
                                     <div class="form-group">
                                         <label>Storage Bill Summary</label>
                                         <input type="checkbox" class="form-check-input" class="form-control" id="chk_StorageSummary" 
                                         [(ngModel)]="chk_StorageSummary" (change)="onChangesStorageSummary(chk_StorageSummary)"/>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-6 col-md-6">
+                                <div class="col-sm-4 col-md-4">
                                     <div class="form-group">
                                         <label>Labour Bill</label>
                                         <input type="checkbox" class="form-check-input" class="form-control" id="chk_Labour" 
@@ -47,8 +45,17 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            
+                            <hr>
+                            <div  class="row">      
+                                <div class="col-sm-3 col-md-3">
+                                    <button class="btn btn-secondary btn-sm" (click)="OnPrintBill()"
+                                        style="width: 85px !important; ">Save</button>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <button class="btn btn-secondary btn-sm"
+                                        style="width: 85px !important; ">Reset</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="col-md-4 col-sm-4" [style.border]="myAnchorID > 0 ? '1px solid cyan' : ''">
                             <ag-grid-angular style="height: 300px;" class="ag-theme-alpine" [rowData]="CustomerList"
@@ -56,18 +63,7 @@
                             </ag-grid-angular>
                         </div>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-2 col-md-2"></div>
-                        <div class="col-sm-3 col-md-3">
-                            <button class="btn btn-secondary btn-sm" (click)="OnPrintBill()"
-                                style="width: 85px !important; ">Save</button>
-                        </div>
-                        <div class="col-sm-3 col-md-3">
-                            <button class="btn btn-secondary btn-sm"
-                                style="width: 85px !important; ">Reset</button>
-                        </div>
-                    </div>
+                   
            
         </mat-card>
     </div>

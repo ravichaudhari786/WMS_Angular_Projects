@@ -1,0 +1,181 @@
+<div class="container">
+    <mat-tab-group animationDuration="1ms" [(selectedIndex)]="tab" (selectedIndexChange)="tabchange($event)">
+        <mat-tab label="Reports">
+            <mat-card>
+                <div class=" row">
+                    <div class="col-sm-8 col-md-8">
+                        <!-- <h4>Report</h4> -->
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <button class="btn btn-secondary btn-sm" (click)="OnPrintReport()"
+                            style="width: 85px !important; ">Report Print</button>
+                    </div>
+                    <div class="col-sm-2 col-md-2">
+                        <button class="btn btn-secondary btn-sm" (click)="OnReset()"
+                            style="width: 85px !important; ">Reset</button>
+                    </div>
+                </div>
+                <hr>
+                <div class=" row">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group">
+                            <label>ReportName</label>
+                            <!-- <select class="form-control form-control-sm" id="ReportnameModel"
+                                [(ngModel)]='ReportnameModel' (change)="GetReportDetails($event)">
+                                <option value="ReportnameModel" disabled>Select</option>
+                                <option *ngFor="let c of ReportsName" value={{c.ReportID}}>
+                                    {{c.DisplayName}}
+                                </option>
+                            </select> -->
+
+                            <input list="weeks" id="ReportnameModel" class="form-control form-control-sm"
+                                [(ngModel)]='ReportnameModel' (change)="GetReportDetails(ReportnameModel)">
+                            <datalist id="weeks">
+                                <option value="ReportnameModel" disabled>Select</option>
+                                <option *ngFor="let c of ReportsName" value={{c.DisplayName}}></option>
+                            </datalist>
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2" *ngIf="P_FromAndToDate">
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <input type="date" id="dtStartDate" class="form-control form-control-sm"
+                                placeholder="yyyy-MM-dd" [(ngModel)]="dtStartDate" name="dtStartDate"
+                                class="form-control form-control-rounded" />
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2" *ngIf="P_FromAndToDate">
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <input type="date" id="dtEndDate" class="form-control form-control-sm"
+                                placeholder="yyyy-MM-dd" [(ngModel)]="dtEndDate" name="dtEndDate"
+                                class="form-control form-control-rounded" />
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2" *ngIf="P_AsOnDate">
+                        <div class="form-group">
+                            <label>AsOnDate</label>
+                            <input type="date" id="dtAsOnDate" class="form-control form-control-sm"
+                                placeholder="yyyy-MM-dd" [(ngModel)]="dtAsOnDate" name="dtAsOnDate"
+                                class="form-control form-control-rounded" />
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2" *ngIf="P_LotNo">
+                        <div class="form-group">
+                            <label>Lot No</label>
+                            <input type="text" id="txtLotNumber" class="form-control form-control-sm"
+                                [(ngModel)]="txtLotNumber" name="txtLotNumber"
+                                class="form-control form-control-rounded" />
+                        </div>
+                    </div>
+                    <div class="col-sm-2 col-md-2" *ngIf="P_InvoiceType">
+                        <div class="form-group">
+                            <label>Invoice Type</label>
+                            <select class="form-control form-control-sm" id="InvoiceTypeModel"
+                                [(ngModel)]='InvoiceTypeModel'>
+                                <option value="null" disabled>Select</option>
+                                <option *ngFor="let c of InvoiceType" value={{c.InvoiceTypeID}}>
+                                    {{c.InvoiceType}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 col-sm-3" *ngIf="P_Customer">
+                        <ag-grid-angular style="height: 400px;" class="ag-theme-alpine" [rowData]="CustomersList"
+                            [columnDefs]="CustomersListColumns">
+                        </ag-grid-angular>
+                    </div>
+                    <div class="col-md-3 col-sm-3" *ngIf="P_UserName">
+                        <ag-grid-angular style="height: 400px;" class="ag-theme-alpine" [rowData]="UserNameList"
+                            [columnDefs]="UserNameListColumns">
+                        </ag-grid-angular>
+                    </div>
+                    <div class="col-md-3 col-sm-3" *ngIf="P_CustomerGroup">
+                        <ag-grid-angular style="height: 400px;" class="ag-theme-alpine" [rowData]="CustomerGroupList"
+                            [columnDefs]="CustomerGroupListColumns">
+                        </ag-grid-angular>
+                    </div>
+                    <div class="col-md-3 col-sm-3" *ngIf="P_LabourContractors">
+                        <ag-grid-angular style="height: 400px;" class="ag-theme-alpine" [rowData]="LabourContractorList"
+                            [columnDefs]="LabourContractorListColumns">
+                        </ag-grid-angular>
+                    </div>
+                    <div class="col-md-3 col-sm-3" *ngIf="P_Product">
+                        <ag-grid-angular style="height: 400px;" class="ag-theme-alpine" [rowData]="ProductsList"
+                            [columnDefs]="ProductsListColumns">
+                        </ag-grid-angular>
+                    </div>
+                    <div class="col-md-3 col-sm-3" *ngIf="P_Brand">
+                        <ag-grid-angular style="height: 400px;" class="ag-theme-alpine" [rowData]="BrandList"
+                            [columnDefs]="BrandListColumns">
+                        </ag-grid-angular>
+                    </div>
+                    <div class="col-md-3 col-sm-3" *ngIf="P_StorageArea">
+                        <ag-grid-angular style="height: 400px;" class="ag-theme-alpine" [rowData]="StorageAreas"
+                            [columnDefs]="StorageAreaListColumns">
+                        </ag-grid-angular>
+                    </div>
+                </div>
+            </mat-card>
+        </mat-tab>
+        <mat-tab label="Report Grid" *ngIf="ReportType!='Report'">
+            <div class=" row">
+                <div class="col-sm-8 col-md-8">
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <button class="btn btn-secondary btn-sm" (click)="btnExportToExcel()">Export To Excel</button>
+                </div>
+                <div class="col-sm-2 col-md-2">
+                    <button class="btn btn-secondary btn-sm" style="width: 85px !important;"
+                        (click)="btnExportToPdf()">Export To Pdf</button>
+                </div>
+            </div>
+            <hr>
+            <div class="tablediv">
+                <!-- <div id="MyGridTable">
+                    <table class="table table123">
+                        <tr class="Table_Header">
+                            <th *ngFor="let col of displayedColumns; let i = index">{{setHeader(col, i)}}</th>
+                        </tr>
+                        <tr *ngFor="let item of displayedData">
+                            <td *ngFor="let column of displayedColumns">{{setData(item[column], column)}}</td>
+                        </tr>
+                    </table>
+                </div> -->
+                <!-- <table #screen class="table table123">
+                    <tr class="Table_Header">
+                        <th *ngFor="let col of displayedColumns; let i = index">{{setHeader(col,i)}}</th>
+                    </tr>
+                    <tr *ngFor="let item of displayedData">
+                        <td *ngFor="let column of displayedColumns">{{setData(item[column],column)}}</td>
+                    </tr>
+                </table> -->
+                <table #screen class="table table123">
+                    <tr class="Table_Header">
+                        <th *ngFor="let col of displayedColumns; let i = index">{{setHeader(col, i)}}</th>
+                    </tr>
+                    <tr *ngFor="let item of displayedData">
+                        <td *ngFor="let column of displayedColumns">{{setData(item[column], column)}}</td>
+                    </tr>
+                </table>
+                <div id="download">
+                    <img #canvas>
+                    <a #downloadLink></a>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+
+</div>
+
+
+
+
+<!-- <input list="weeks" class="form-control form-control-sm" [(ngModel)]='ReportnameModel'
+(change)="onProductChanged(ReportnameModel)">
+<datalist id="weeks">
+    <option value="" disabled>Select</option>
+    <option *ngFor="let c of ReportsName" value={{c.DisplayName}}></option>
+</datalist> -->

@@ -7,13 +7,14 @@ import { SharedModule } from '@shared';
 import { EmailScheduleComponent } from './email-schedule/email-schedule.component';
 import { EmailScheduleActionBtnComponent } from './email-schedule/email-schedule-action-btn/email-schedule-action-btn.component';
 import { BillEstimateComponent } from './bill-estimate/bill-estimate.component';
+import { ReportComponent } from './report/report.component';
 
 
 
 @NgModule({
   declarations: [ 
     LotsearchComponent, 
-    EmailScheduleComponent, EmailScheduleActionBtnComponent, BillEstimateComponent,
+    EmailScheduleComponent, EmailScheduleActionBtnComponent, BillEstimateComponent, ReportComponent,
   ],
   imports: [
     CommonModule,
