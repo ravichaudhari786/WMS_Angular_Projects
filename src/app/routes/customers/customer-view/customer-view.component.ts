@@ -103,6 +103,7 @@ export class CustomerViewComponent implements OnInit {
           for (let key of Object.keys(row)) {
             this.displayedColumns.push(key);
           }
+          console.log("Ag Column",this.inwardDatadatacolumn)
         },
         error => { console.error(error); }
       );

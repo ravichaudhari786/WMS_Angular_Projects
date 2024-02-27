@@ -87,6 +87,7 @@ export class AuthService {
       tap(() =>{
         this.token.clear();
         this.store.clear();
+        sessionStorage.clear();
       }),
       map(() => !this.check())
     );

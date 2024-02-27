@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ApiService } from '@core';
 import { ColDef, GridApi } from 'ag-grid-community';
 import { User } from '@core/authentication/interface';
@@ -7,7 +7,12 @@ import * as XLSX from 'xlsx';
 import jspdf from 'jspdf';
 import { jsPDF } from "jspdf";
 import html2canvas from 'html2canvas';
+import { ICellRendererComp, KeyCreatorParams, GridReadyEvent, } from 'ag-grid-community';
 
+import { ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
+//import { DxReportViewerModule } from 'devexpress-reporting-angular';
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
@@ -19,12 +24,21 @@ export class ReportComponent implements OnInit {
   @ViewChild('canvas') canvas: ElementRef;
   @ViewChild('downloadLink') downloadLink!: ElementRef;
   tab = 0;
-  codeValue:any;
+  codeValue: any;
   displayedColumns: string[] = []
+  CommanColumns: ColDef[] = [{
+    field: 'field',
+    filter: "agTextColumnFilter",
+    floatingFilter: true,
+    headerName: 'headerName',
+    sortable: true,
+  }]
+  CommanData: any = []
   columnsToDisplay: string[] = []
+  hidePDFTab = false;
   displayedData: any = [];
   ReportsName: any = [];
-  ReportnameModel: any;
+  ReportnameModel: any = "";
   guest: any;
   InvoiceType: any = [];
   InvoiceTypeModel: string = '';
@@ -75,7 +89,7 @@ export class ReportComponent implements OnInit {
   P_StorageArea: any = false
   P_UserName: any = false
   PrintReport: any = false
-
+  ReportNames: any = ""
   ReportType: any = "Report";
   SPName: any = "";
   constructor(private api: ApiService) {
@@ -86,7 +100,7 @@ export class ReportComponent implements OnInit {
     this.dtAsOnDate = dateSendingToServer;
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.commandata = {
       "CustomerID": 0,
       "WarehouseID": this.currentUser.warehouseId,
@@ -95,7 +109,7 @@ export class ReportComponent implements OnInit {
     this.BindReportList()
   }
   async BindReportList() {
-    
+
     //--------------------User Name
     this.api.get('/Report/GetAllUserNames').subscribe(
       data => {
@@ -437,11 +451,12 @@ export class ReportComponent implements OnInit {
   }
 
   GetReportDetails(event: any) {
-    const ReportIDs=this.ReportsName.filter((x:any)=>x.DisplayName==String(event))
-    //console.log("onProductChanged",ReportIDs)
+    const ReportIDs = this.ReportsName.filter((x: any) => x.DisplayName == String(event))
     this.api.post('/Report/GetReportDetails?RID=' + ReportIDs[0].ReportID).subscribe(
       data => {
         console.log("GetReportDetails", data)
+        this.ReportNames = "";
+        this.ReportNames = data[0].ReportName;
         this.ReportType = data[0].ReportType;
         this.SPName = data[0].SPName;
         this.SelectedCustomers = [];
@@ -469,49 +484,80 @@ export class ReportComponent implements OnInit {
     );
   }
   OnPrintReport() {
-    const ReportPrintData = {
-      "ReportType": this.ReportType,
-      "ReportID": this.ReportnameModel,
-      "WarehouseID": this.currentUser.warehouseId,
-      "FromDate": this.dtStartDate,
-      "ToDate": this.dtEndDate,
-      "AsonDate": this.dtAsOnDate,
-      "LotNo": this.txtLotNumber,
-      "TD_CustomerReport": this.SelectedCustomers,
-      "TD_LabourContractor": this.SelectedLabourContractor,
-      "TD_ProductReport": this.SelectedProducts,
-      "TD_StorageAreaReport": this.SelectedStorageAreas,
-      "TD_BrandReport": this.SelectedBrand,
-      "TD_CustomerGroup": this.SelectedCustomerGroup,
-      "InvoiceTypeID": this.InvoiceTypeModel,
-      "TD_UserName": this.SelectedUserName,
-      "SPName": this.SPName
-    }
-    this.api.post('/Report/PrintReport', ReportPrintData).subscribe(
-      data => {
-        if(this.ReportType=="Grid" || this.ReportType=="Grid_D"){
-          this.tab=1;
-          console.log("Grid",data)
-          this.displayedData=[];
-          this.displayedColumns=[];
-          this.displayedData = data
-          let row = data[0];
-          for (let key of Object.keys(row)) {
-            this.displayedColumns.push(key);
+    if (this.ReportnameModel != "") {
+      const ReportPrintData = {
+        "ReportType": this.ReportType,
+        "ReportName": this.ReportNames,
+        "ReportID": this.ReportnameModel,
+        "WarehouseID": this.currentUser.warehouseId,
+        "FromDate": this.dtStartDate,
+        "ToDate": this.dtEndDate,
+        "AsonDate": this.dtAsOnDate,
+        "LotNo": this.txtLotNumber,
+        "TD_CustomerReport": this.SelectedCustomers,
+        "TD_LabourContractor": this.SelectedLabourContractor,
+        "TD_ProductReport": this.SelectedProducts,
+        "TD_StorageAreaReport": this.SelectedStorageAreas,
+        "TD_BrandReport": this.SelectedBrand,
+        "TD_CustomerGroup": this.SelectedCustomerGroup,
+        "InvoiceTypeID": this.InvoiceTypeModel,
+        "TD_UserName": this.SelectedUserName,
+        "SPName": this.SPName
+      }
+      console.log("ReportPrintData", ReportPrintData)
+      this.api.post('/Report/PrintReport', ReportPrintData).subscribe(
+        data => {
+          if (this.ReportType == "Grid" || this.ReportType == "Grid_D") {
+            this.tab = 1;
+            console.log("Grid", data)
+            let row = data[0];
+            this.CommanColumns = [];
+            this.displayedData = [];
+            this.displayedColumns = [];
+            this.CommanData = [];
+            for (let key of Object.keys(row)) {
+              this.displayedColumns.push(key);
+              this.CommanColumns.push({
+                field: String(key),
+                filter: "agTextColumnFilter",
+                floatingFilter: true,
+                headerName: String(key),
+                minWidth: 120,
+                sortable: true,
+              });
+            }
+            setTimeout(async () => {
+            }, 5000);
+            this.CommanData = data
+            this.displayedData = data
+
+          } else if (this.ReportType == "Report") {
+            this.tab = 0;
+            console.log("Report", data.length)
+            if (data.length == 0) {
+              alert("Data not found")
+            } else {
+              var pdfResult = data[0].Base64Str;
+              let pdfWindow = window.open("")
+              pdfWindow?.document.write("<iframe width='100%' height='100%' src='data:application/pdf;base64, " + encodeURI(pdfResult) + "'></iframe>")
+            }
           }
-        }else if(this.ReportType=="Report"){
-          this.tab=0;
-          console.log("Report",data)
-        }        
-      },
-      error1 => { console.log(error1); }
-    );
+        },
+        error1 => {
+          console.error("error1", error1.Message);
+          //alert(error1.Message)
+        }
+      );
+    } else {
+      alert("Select Report name.......");
+      document?.getElementById("ReportnameModel")?.focus();
+    }
   }
-  setHeader(title:any,index:any) {
+  setHeader(title: any, index: any) {
     return title;
   }
 
-  setData(data:any, title:any) {
+  setData(data: any, title: any) {
     //if(!title) return "Hi"
     return data;
   }
@@ -541,31 +587,35 @@ export class ReportComponent implements OnInit {
     this.P_UserName = false;
     this.PrintReport = false;
 
-    this.displayedData=[]
-    this.displayedColumns=[]
+    this.displayedData = []
+    this.displayedColumns = []
   }
-  tabchange(event:any){
-    this.tab=event;
+  tabchange(event: any) {
+    this.tab = event;
   }
 
-  btnExportToExcel(){
-    if(this.displayedData.length>0){
+  btnExportToExcel() {
+    if (this.displayedData.length > 0) {
       const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(this.displayedData);
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-  
+
       /* save to file */
-      const str=this.ReportnameModel.replace(/\s/g,'')+'.xlsx'
-      XLSX.writeFile(wb,String(str));
-    }else{
+      const str = this.ReportnameModel.replace(/\s/g, '') + '.xlsx'
+      XLSX.writeFile(wb, String(str));
+    } else {
       alert("Data not Found.........")
-    }    
+      document?.getElementById("ReportnameModel")?.focus();
+      this.tab = 0;
+    }
   }
   CreatePDFWithImage() {
-    
+
     html2canvas(this.screen.nativeElement).then(canvas => {
       try {
         var contentH = $(this.screen.nativeElement).height();
+        this.tab = 1
+        this.hidePDFTab = false;
         var img = canvas.toDataURL("image/png", 1.0);
         var w = canvas.width;
         var actw = canvas.width;
@@ -578,38 +628,37 @@ export class ReportComponent implements OnInit {
         var maxh = pdf.internal.pageSize.height;
         if (!maxw) maxw = width;
         if (!maxh) maxh = height;
-
         if (w > maxw) {
           w = maxw;
           h = Math.round(acth / actw * maxw);
         }
         pdf.addImage(img, 'JPEG', 0, 0, w, h);
         var count = Math.ceil(h) / Math.ceil(maxh);
-        count = Math.ceil(count)-1;
+        count = Math.ceil(count) - 1;
         for (var i = 1; i <= count; i++) {
           var position = - maxh * i
           pdf.addPage();
           pdf.addImage(img, 'JPEG', 0, position, w, h);
         }
-        const str=this.ReportnameModel.replace(/\s/g,'')+'.pdf'
+        const str = this.ReportnameModel.replace(/\s/g, '') + '.pdf'
         pdf.save(String(str));
       } catch (e: any) {
         alert("Error description: " + e.message);
       }
     });
   }
-  btnExportToPdf(){
-    if(this.displayedData.length>0){
-    
-    // html2canvas(this.screen.nativeElement).then(canvas => {
-      //   this.canvas.nativeElement.src = canvas.toDataURL();
-      //   this.downloadLink.nativeElement.href = canvas.toDataURL('image/png');
-      //   this.downloadLink.nativeElement.download = 'HTML_Document.png';
-      //   this.downloadLink.nativeElement.click();
-      // });
-    setTimeout(async () => {
-      this.CreatePDFWithImage()
-    }, 5000);
+  btnExportToPdf() {
+    if (this.displayedData.length > 0) {
+      this.tab = 2
+      this.hidePDFTab = true;
+      setTimeout(async () => {
+        this.CreatePDFWithImage()
+      }, 5000);
+    } else {
+      alert("Data not Found.........")
+      this.tab = 0;
+      document?.getElementById("ReportnameModel")?.focus();
+    }
   }
-} 
+
 }

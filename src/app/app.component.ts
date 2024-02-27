@@ -17,7 +17,9 @@ import { RouterOutlet } from '@angular/router';
 export class AppComponent implements OnInit, AfterViewInit {
   constructor(private preloader: PreloaderService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    
+  }
 
   
   ngAfterViewInit() {

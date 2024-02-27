@@ -1,1 +1,53 @@
-<p>remarks works!</p>
+<breadcrumb></breadcrumb>
+<div fxLayout="row wrap" class="matero-row">
+    <div fxFlex="100" class="matero-col">
+        <mat-card>
+            <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12">
+                        <div class="form-group">
+                          <label>Remark</label>
+                          <input type="text" formControlName="txtRemarks" id="txtRemarks"
+                            [ngClass]="{ 'is-invalid': submitted && f.txtRemarks.errors }"
+                            class=" form-control form-control-sm" autocomplete="off" />      
+                        </div>
+                      </div>
+                    <div class="col-sm-8 col-md-8">
+                        <div class="form-group">
+                          <label>Process Name</label>
+                          <select class="form-control form-control-sm" 
+                          [ngClass]="{'is-invalid': submitted && f.cbProcessID.invalid}"
+                            formControlName="cbProcessID" id="cbProcessID">
+                            <option value="null" disabled>Select</option>
+                            <option *ngFor="let c of processList" value={{c.ProcessID}}>{{c.ProcessName}}</option>
+                          </select>
+                          
+                        </div>
+                      </div>
+
+                      <div class="col-sm-2 col-md-2">
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-secondary btn-sm"
+                            style="width: 85px !important; margin-top: 20px !important;"> Save </button>
+                        </div>
+                      </div>
+                      <div class="col-sm-2 col-md-2">
+                        <div class="form-group">
+                          <button type="button"class="btn btn-secondary btn-sm"
+                            style="width: 85px !important; margin-top: 20px !important;"> Reset </button>
+                        </div>
+                      </div>
+                </div>
+                
+            </form>
+            <hr>
+            <div class="container-fluid">
+                <div style="height: 100%; box-sizing: border-box;">
+                    <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" [rowData]="RemarksList"
+                      [columnDefs]="RemarksListcolumns" [frameworkComponents]="frameworkComponents">
+                    </ag-grid-angular>
+                  </div>
+            </div>
+        </mat-card>
+    </div>
+</div>

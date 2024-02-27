@@ -120,7 +120,8 @@
                 </div>
             </mat-card>
         </mat-tab>
-        <mat-tab label="Report Grid" *ngIf="ReportType!='Report'">
+        <mat-tab label="Report Grid">
+            <!-- *ngIf="ReportType!='Report'" -->
             <div class=" row">
                 <div class="col-sm-8 col-md-8">
                 </div>
@@ -134,36 +135,24 @@
             </div>
             <hr>
             <div class="tablediv">
-                <!-- <div id="MyGridTable">
-                    <table class="table table123">
-                        <tr class="Table_Header">
-                            <th *ngFor="let col of displayedColumns; let i = index">{{setHeader(col, i)}}</th>
-                        </tr>
-                        <tr *ngFor="let item of displayedData">
-                            <td *ngFor="let column of displayedColumns">{{setData(item[column], column)}}</td>
-                        </tr>
-                    </table>
-                </div> -->
-                <!-- <table #screen class="table table123">
-                    <tr class="Table_Header">
-                        <th *ngFor="let col of displayedColumns; let i = index">{{setHeader(col,i)}}</th>
-                    </tr>
-                    <tr *ngFor="let item of displayedData">
-                        <td *ngFor="let column of displayedColumns">{{setData(item[column],column)}}</td>
-                    </tr>
-                </table> -->
-                <table #screen class="table table123">
-                    <tr class="Table_Header">
-                        <th *ngFor="let col of displayedColumns; let i = index">{{setHeader(col, i)}}</th>
-                    </tr>
-                    <tr *ngFor="let item of displayedData">
-                        <td *ngFor="let column of displayedColumns">{{setData(item[column], column)}}</td>
-                    </tr>
-                </table>
-                <div id="download">
-                    <img #canvas>
-                    <a #downloadLink></a>
-                </div>
+                <ag-grid-angular style="height: 380px;" class="ag-theme-alpine" [rowData]="CommanData"
+                    [columnDefs]="CommanColumns">
+                </ag-grid-angular>
+
+            </div>
+        </mat-tab>
+        <mat-tab label="Report Pdf" *ngIf="hidePDFTab">
+            <table #screen class="table table123">
+                <tr class="Table_Header">
+                    <th *ngFor="let col of displayedColumns; let i = index">{{setHeader(col, i)}}</th>
+                </tr>
+                <tr *ngFor="let item of displayedData">
+                    <td *ngFor="let column of displayedColumns">{{setData(item[column], column)}}</td>
+                </tr>
+            </table>
+            <div id="download">
+                <img #canvas>
+                <a #downloadLink></a>
             </div>
         </mat-tab>
     </mat-tab-group>

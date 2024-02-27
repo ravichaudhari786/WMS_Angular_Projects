@@ -6,13 +6,15 @@ import { AccountsRoutingModule } from './accounts-routing.module';
 import { AdditionalServicesComponent } from './additional-services/additional-services.component';
 import { AdditionalServiceEditComponent } from './additional-services/additional-service-edit/additional-service-edit.component';
 import { BillprocessComponent } from './billprocess/billprocess.component';
+import { ReceiptComponent } from './receipt/receipt.component';
 
 
 @NgModule({
   declarations: [
     AdditionalServicesComponent,
     AdditionalServiceEditComponent,
-    BillprocessComponent
+    BillprocessComponent,
+    ReceiptComponent
   ],
   imports: [
     CommonModule,SharedModule,

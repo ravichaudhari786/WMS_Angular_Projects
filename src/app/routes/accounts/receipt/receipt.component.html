@@ -1,0 +1,173 @@
+<div class="container-fluid">
+    <mat-tab-group animationDuration="1ms" [(selectedIndex)]="tab" (selectedIndexChange)="tabchange($event)" >
+        <mat-tab label="Receipt">
+            <div class=" row pt-2">
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <select class="form-control form-control-sm" (change)="GetCustomerID($event)"
+                            [(ngModel)]="customer_id" id="customer_id">
+                            <option value="null" disabled>Select</option>
+                            <option *ngFor="let c of customerList" value={{c.CustomerID}}>{{c.CustomerName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <label>Receipt Type</label>
+                        <select class="form-control form-control-sm" (change)="GetReceiptType($event)"
+                            [(ngModel)]="ReceiptType_ID" id="ReceiptType_ID">
+                            <option value="null" disabled>Select</option>
+                            <option *ngFor="let c of ReceiptTypeList" value={{c.ReceiptTypeID}}>{{c.ReceiptType}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                    <div class="form-group">
+                        <label>Receipt Date</label>
+                        <input type="datetime-local" [(ngModel)]="Receipt_date" id="Receipt_date"
+                            class="form-control form-control-sm" placeholder="yyyy-MM-dd"
+                            [ngModel]="Receipt_date| date:'yyyy-MM-dd hh:mm:ss'" name="Receipt_date"
+                            class="form-control form-control-rounded" />
+                    </div>
+                </div>
+                <hr>
+                <div class="col-sm-12">
+                    <ag-grid-angular style="height: 300px;" class="ag-theme-alpine" [rowData]="Receipt_InvoiceList"
+                        [columnDefs]="ReceiptInvoiceListColumns"
+                        [gridOptions]="gridOptionsInvoiceList"
+                        (cellValueChanged)="onReceiptInvoiceCellKeyPress($event)">
+                    </ag-grid-angular>
+                    <!--  -->
+                </div>
+
+
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-sm-12">
+                    <p class="font-weight-bold">Collection Details:</p>
+                    <div class="row">
+                        <div class="col-sm-3 col-md-3">
+                            <div class="form-group">
+                                <label>Payment Mode</label>
+                                <select class="form-control form-control-sm" (change)="GetPaymentMode($event)"
+                                    [(ngModel)]="PaymentModes_ID" id="PaymentModes_ID">
+                                    <option value="null" disabled>Select</option>
+                                    <option *ngFor="let c of PaymentModesList" value={{c.PaymentModeID}}>
+                                        {{c.PaymentMode}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <div class="form-group">
+                                <label>Amount</label>
+                                <input type="text" [(ngModel)]="CollectionAmount"
+                                    class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <div class="form-group">
+                                <label>Reference No</label>
+                                <input type="text" [(ngModel)]="CollectionReferenceNo"
+                                    class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <div class="form-group">
+                                <label>Bank Name</label>
+                                <input type="text" [(ngModel)]="CollectionBankName"
+                                    class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <div class="form-group">
+                                <label>Branch</label>
+                                <input type="text" [(ngModel)]="CollectionBranch"
+                                    class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="col-sm-3 col-md-3">
+                            <div class="form-group">
+                                <label>Reference Date</label>
+                                <input type="datetime-local" [(ngModel)]="CollectionReferenceDate"
+                                    id="CollectionReferenceDate" class="form-control form-control-sm"
+                                    placeholder="yyyy-MM-dd"
+                                    [ngModel]="CollectionReferenceDate| date:'yyyy-MM-dd hh:mm:ss'"
+                                    name="CollectionReferenceDate" class="form-control form-control-rounded" />
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <div class="form-group">
+                                <label>TDS Amount</label>
+                                <input type="text" [(ngModel)]="CollectionTDSAmt"
+                                    class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <div class="form-group">
+                                <label>Remarks</label>
+                                <input type="text" [(ngModel)]="CollectionRemarks"
+                                    class="form-control form-control-sm" />
+                            </div>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <div class="form-group" style="position: absolute;bottom: 5px;">
+                                <button class="btn btn-secondary btn-sm" (click)="OnADD()"
+                                    style="width: 85px !important; ">ADD</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <ag-grid-angular style="height: 300px;" class="ag-theme-alpine"
+                                [rowData]="CollectionDetailList" [columnDefs]="CollectionDetailColumns"
+                                [gridOptions]="gridOptions">
+                            </ag-grid-angular>
+                           
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <button class="btn btn-secondary btn-sm" (click)="OnSaveReceipt()"
+                              style="width: 85px !important; ">Save</button>
+                          </div>
+                          <div class="col-md-3">
+                            <button class="btn btn-secondary btn-sm" (click)="OnResetReceipt()"
+                              style="width: 85px !important; ">Reset</button>
+                          </div>
+                    </div>
+
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Receipt List">
+            <div style="height: 100%; box-sizing: border-box;">
+                <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" [rowData]="ReceiptList"
+                  [columnDefs]="ReceiptListcolumns" [frameworkComponents]="frameworkComponents"
+                  [gridOptions]="gridOptionsList"
+                  >
+                </ag-grid-angular>
+                <!--  -->
+              </div>
+
+              <ng-template #ReceiptRemarkText let-c="close" let-d="dismiss">
+                <div class="modal-header">
+                  <h4 id="modal-basic-title">Remarks</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <input type="text" [(ngModel)]="txtDeleteRemarks" class="form-control form-control-sm" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-info"
+                    (click)="onCloseReceiptRemarkText(ReceiptRemarkText)">OK</button>
+                </div>
+              </ng-template>
+        </mat-tab>
+    </mat-tab-group>
+</div>
