@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ICellRendererAngularComp } from 'ag-grid-angular';
 import { ICellRendererParams } from 'ag-grid-community';
-
+import { LocalStorageService } from '@shared';
 @Component({
   selector: 'app-inward-action-button',
   templateUrl: './inward-action-button.component.html',
@@ -13,22 +13,23 @@ export class InwardActionButtonComponent implements ICellRendererAngularComp {
   label: string = '';
   EditButtonDisplay: boolean = false;
   DeleteButtonDisplay: boolean = false;
-  
+  store: LocalStorageService;
+  Mymenus:any;
   Menus: any;
   Counts: number = 0;
   agInit(params: any): void {
     this.testMethod();
     this.params = params;
     this.label = this.params.label || null;
-    console.log("SelectedMenu",localStorage.getItem("SelectedMenu"))
   }
   testMethod() {
     if (this.Counts == 0) {
+      
       this.Counts = this.Counts + 1;
       const currentSelectedMenu = JSON.parse(localStorage.getItem("SelectedMenu") || '[]');
       this.Menus = JSON.parse(currentSelectedMenu)
-      console.log("agInit", this.Menus[0].Edit_flg)
-      console.log("agInit", this.Menus[0].Delete_flg)
+      // console.log("agInit", this.Menus[0].Edit_flg)
+      // console.log("agInit", this.Menus[0].Delete_flg)
       this.EditButtonDisplay = this.Menus[0].Edit_flg;
       this.DeleteButtonDisplay = this.Menus[0].Delete_flg;
     }
@@ -36,7 +37,7 @@ export class InwardActionButtonComponent implements ICellRendererAngularComp {
 
   }
   refresh(params?: any): boolean {
-    alert("refresh")
+    //alert("refresh")
     return true;
   }
 

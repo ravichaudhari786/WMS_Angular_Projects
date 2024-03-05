@@ -73,6 +73,12 @@ const routes: Routes = [
         import('./accounts/accounts.module').then(m=>m.AccountsModule),
 
       },
+      {
+        path:'User Management',
+        loadChildren:() =>
+        import('./user-management/user-management.module').then(m=>m.UserManagementModule),
+
+      },
     ],
   },
   {

@@ -158,32 +158,44 @@ export class DispatchComponent implements OnInit {
           //console.log(this.DispatchList);
         }, error=>{ console.error(error);});
     }
-    OnCancelledDispatch(d:any){
-      console.log(d.rowData);
-      if (d.rowData.StatusID== 41)
-      {
-        //alert("This transaction already generated Outward, You can't delete it....!!!");
-        this.dialog.alert("This transaction already generated Outward, You can't delete it....!!!");
-      }
-      else if (d.rowData.StatusID== 43)
-      {
-        this.dialog.alert("This transaction already generated Cancelled, You can't delete it....!!!");
-      }
-      else
-      {
-        let bar = confirm('Do you want to deleted or deactivate your dispatch...');
-        if(bar==true)
+    OnActionDispatch(d:any){
+      if(String(d.actions)=='Delete'){        
+        if (d.rowData.StatusID== 41)
         {
-          let foo = prompt('Remarks ');
-          //console.log(bar, foo);
-          this.api.post('/Dispatch/Dispatch_Cancelled?DispatchID='+d.rowData.DispatchID+'&Remark='+foo+'&CreatedBy='+this.currentUser.userId).subscribe(
-            data=>{data;
-              this.dialog.alert(data);
-              this.onDispatchList();},
-            error=>{ console.error(error);});
+          this.dialog.alert("This transaction already generated Outward, You can't delete it....!!!");
         }
-        
-      }
+        else if (d.rowData.StatusID== 43)
+        {
+          this.dialog.alert("This transaction already generated Cancelled, You can't delete it....!!!");
+        }
+        else
+        {
+          let bar = confirm('Do you want to deleted or deactivate your dispatch...');
+          if(bar==true)
+          {
+            let foo = prompt('Remarks ');
+            //console.log(bar, foo);
+            this.api.post('/Dispatch/Dispatch_Cancelled?DispatchID='+d.rowData.DispatchID+'&Remark='+foo+'&CreatedBy='+this.currentUser.userId).subscribe(
+              data=>{data;
+                this.dialog.alert(data);
+                this.onDispatchList();},
+              error=>{ console.error(error);});
+          }
+          
+        }
+      }else if(String(d.actions)=='Print'){
+        this.api.get('/Dispatch/DispatchReceipt?DispatchID='+d.rowData.DispatchID).subscribe(
+          data => {
+            data;
+            console.log("OnDeliveryOrderActions=>",data)
+            var pdfResult = data[0].Base64Str;
+            let pdfWindow = window.open("")
+            pdfWindow?.document.write("<iframe width='100%' height='100%' src='data:application/pdf;base64, " + encodeURI(pdfResult) + "'></iframe>")
+            
+          },
+          error => { console.error(error); }
+        );
+      }      
     }
     onDeleteDORow(e:any)
     {
@@ -389,10 +401,10 @@ DispatchSearchcolumnDefs: ColDef[] = [
 //   { header:'ContainerNo',field: 'ContainerNo',hide:false,minWidth: 100,},
 // ];
 DispatchsListColumnDefs: ColDef[] = [
-  {  headerName: 'Action', width:100 ,floatingFilter: false,
+  {  headerName: 'Action', width:180 ,floatingFilter: false,
     cellRenderer: 'buttonRenderer',
     cellRendererParams: {
-      onClick: this.OnCancelledDispatch.bind(this),
+      onClick: this.OnActionDispatch.bind(this),
       label: 'Click 1'
     }
   },

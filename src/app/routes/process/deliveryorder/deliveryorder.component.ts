@@ -631,7 +631,20 @@ export class DeliveryorderComponent implements OnInit {
       }
     },error=>{ console.error(error);});
     
-    }    
+    }   
+    else if (String(event.actions) == 'Print') {
+      this.api.get('/DeliveryOrder/DeliveryOrderReceipt?DeliveryOrderID='+event.rowData.DeliveryOrderID).subscribe(
+        data => {
+          data;
+          console.log("OnDeliveryOrderActions=>",data)
+          var pdfResult = data[0].Base64Str;
+          let pdfWindow = window.open("")
+          pdfWindow?.document.write("<iframe width='100%' height='100%' src='data:application/pdf;base64, " + encodeURI(pdfResult) + "'></iframe>")
+          
+        },
+        error => { console.error(error); }
+      );
+    } 
   }
   
   //---------end
@@ -713,7 +726,7 @@ export class DeliveryorderComponent implements OnInit {
   // ];
 //pinned: 'left',
   columnsDeliveryOrderList: ColDef[] = [
-    {  headerName: 'Action',floatingFilter: false,maxWidth:150,
+    {  headerName: 'Action',floatingFilter: false,maxWidth:200,
       cellRenderer: 'buttonRenderer',
       cellRendererParams: {
         onClick: this.OnDeliveryOrderActions.bind(this),

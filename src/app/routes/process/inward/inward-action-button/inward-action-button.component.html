@@ -1,6 +1,9 @@
 <div class="input-group">
     <button type="button" class="btn btn-secondary btn-sm btn-space" (click)="onClick($event,'Edit')"
         *ngIf="EditButtonDisplay">Edit</button>
-    <button type="button" class="btn btn-secondary btn-sm" (click)="onClick($event,'Delete')"
+    <button type="button" class="btn btn-secondary btn-sm btn-space" (click)="onClick($event,'Delete')"
     *ngIf="DeleteButtonDisplay">Delete</button>
+
+    <button type="button" class="btn btn-secondary btn-sm" (click)="onClick($event,'Print')"
+    *ngIf="DeleteButtonDisplay">Print</button>
 </div>

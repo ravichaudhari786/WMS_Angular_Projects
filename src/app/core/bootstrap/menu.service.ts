@@ -69,10 +69,11 @@ export class MenuService {
   buildRoute(routeArr: string[]): string {
     
     let route = '';
+    //console.log("buildRoute",routeArr)
     routeArr.forEach(item => {
       if (item && item.trim()) {
         route += '/' + item.replace(/^\/+|\/+$/g, '');
-        //console.log("buildRoute",route)
+        
       }
     });
     return route;

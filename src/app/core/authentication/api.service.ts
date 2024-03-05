@@ -30,11 +30,12 @@ export class ApiService {
   //     const currentMenu:ComponetMenus=JSON.parse(this.store.get("ComponetMenu"));
   //    return currentMenu;
   //  }
+
   getCurrentMenusForButton(Selected1: any) {
     const currentMenu: ComponetMenus = JSON.parse(this.store.get("ComponetMenu"));
     this.store.set("SelectedMenu", "");
     this.Mymenus = currentMenu
-    const SelectedMenu = this.Mymenus.filter((x: any) => x.DisplayName == String(Selected1))
+    const SelectedMenu = this.Mymenus.filter((x: any) => x.UIName == String(Selected1))
     this.store.set("SelectedMenu", JSON.stringify(SelectedMenu));
     return SelectedMenu;
   }

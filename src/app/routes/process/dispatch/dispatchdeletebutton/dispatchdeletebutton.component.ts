@@ -21,12 +21,13 @@ export class DispatchdeletebuttonComponent implements ICellRendererAngularComp {
     return true;
   }
 
-  onClick($event:any) {
+  onClick($event:any,action:string) {
     if (this.params.onClick instanceof Function) {
       // put anything into params u want pass into parents component
       const params = {
         event: $event,
-        rowData: this.params.node.data
+        rowData: this.params.node.data,
+        actions:action
         // ...something
       }
       this.params.onClick(params);

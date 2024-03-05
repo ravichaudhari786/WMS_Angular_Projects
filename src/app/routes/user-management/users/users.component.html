@@ -1,0 +1,155 @@
+<breadcrumb></breadcrumb>
+<div fxLayout="row wrap" class="matero-row">
+    <div fxFlex="100" class="matero-col">
+        <mat-card>
+            <mat-tab-group animationDuration="1ms" (selectedIndexChange)="tabCustomerchange($event)"
+                [(selectedIndex)]="tab">
+                <mat-tab label="Users Details">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+                        <div class="row pt-2">
+                            <!----Row Start div-->
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>User Name</label>
+                                    <input type="text" [ngClass]="{'is-invalid': submitted && f.txtUserName.invalid}"
+                                        formControlName="txtUserName" id="txtUserName"
+                                        class=" form-control form-control-sm" autocomplete="off"/>
+                                    <div *ngIf="submitted && f.txtUserName.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.txtUserName.errors?.required">Enter User Name</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>User Details</label>
+                                    <input type="text" [ngClass]="{'is-invalid': submitted && f.txtUserDeatail.invalid}"
+                                        formControlName="txtUserDeatail" id="txtUserDeatail"
+                                        class=" form-control form-control-sm" autocomplete="off"/>
+                                    <div *ngIf="submitted && f.txtUserDeatail.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.txtUserDeatail.errors?.required">Enter User Name</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>User Type</label>
+                                    <select class="form-control form-control-sm"
+                                        [ngClass]="{'is-invalid': submitted && f.txtUserType.invalid}"
+                                        formControlName="txtUserType" id="txtUserType">
+                                        <option value="null" disabled>Select </option>
+                                        <option *ngFor="let i of UserTypeList" value={{i.UserTypeID}}>{{i.UserType1}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && f.txtUserType.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.txtUserType.errors?.required">Enter User Name</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input type="text" [ngClass]="{'is-invalid': submitted && f.txtPassword.invalid}"
+                                        formControlName="txtPassword" id="txtPassword"
+                                        class=" form-control form-control-sm" autocomplete="off"/>
+                                    <div *ngIf="submitted && f.txtPassword.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.txtPassword.errors?.required">Enter User Name</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Role</label>
+                                    <select class="form-control form-control-sm"
+                                        [ngClass]="{'is-invalid': submitted && f.cbRole.invalid}"
+                                        formControlName="cbRole" id="cbRole">
+                                        <option value="null" disabled>Select </option>
+                                        <option *ngFor="let i of RoleList" value={{i.RoleID}}>{{i.RoleName}}</option>
+                                    </select>
+                                    <div *ngIf="submitted && f.cbRole.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.cbRole.errors?.required">Enter User Name</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Company</label>
+                                    <select class="form-control form-control-sm"
+                                        [ngClass]="{'is-invalid': submitted && f.cbCompany.invalid}"
+                                        formControlName="cbCompany" id="cbCompany">
+                                        <option value="null" disabled>Select </option>
+                                        <option *ngFor="let i of CompanyMasterList" value={{i.CompanyID}}>
+                                            {{i.CompanyName}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && f.cbCompany.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.cbCompany.errors?.required">Select Company Name</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Warehouse</label>
+                                    <select class="form-control form-control-sm"
+                                        [ngClass]="{'is-invalid': submitted && f.cbWarehouse.invalid}"
+                                        formControlName="cbWarehouse" id="cbWarehouse">
+                                        <option value="null" disabled>Select </option>
+                                        <option *ngFor="let i of WarehouseList" value={{i.WareHouseID}}>
+                                            {{i.WareHouseName}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && f.cbWarehouse.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.cbWarehouse.errors?.required">Select Warehouse</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-secondary btn-sm" (click)="OnAdd()"
+                                        style="width: 85px !important; margin-top: 20px !important;">Add</button>
+                                </div>
+                            </div>
+                            <!----Row last div (change)="OnItemChange($event)"-->
+                        </div>
+
+                        <div class="row pt-2" style="box-sizing: border-box;">
+                            <div class="container-fluid">
+                                <ag-grid-angular style="height: 250px;" class="ag-theme-alpine"
+                                    [rowData]="CompanyWarehouseGridList" [columnDefs]="CompanyWarehouseGrid">
+                                </ag-grid-angular>
+                            </div>
+                        </div>
+                    
+
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4">
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-secondary btn-sm"
+                                    style="width: 85px !important; margin-top: 20px !important;"> Save </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                </mat-tab>
+                <mat-tab label="Users List">
+                    <div class="row pt-2">
+                        <div class="container-fluid">
+                            <div style="height: 100%; box-sizing: border-box;">
+                                <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" [rowData]="UsersList"
+                                    [columnDefs]="UserListcolumns" [frameworkComponents]="frameworkComponents">
+                                </ag-grid-angular>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+
+        </mat-card>
+    </div>
+</div>

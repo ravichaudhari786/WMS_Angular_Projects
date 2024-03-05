@@ -540,6 +540,11 @@ export class ReportComponent implements OnInit {
               var pdfResult = data[0].Base64Str;
               let pdfWindow = window.open("")
               pdfWindow?.document.write("<iframe width='100%' height='100%' src='data:application/pdf;base64, " + encodeURI(pdfResult) + "'></iframe>")
+              
+              setTimeout(async () => {
+                pdfWindow?.print();
+                
+              }, 1000);
             }
           }
         },

@@ -552,56 +552,71 @@ serviceListEditBind(){
       i.TransferDID=this.DID;
     }});
 }
-OnCancelledTransfer(Td:any){
+OnActionTransfer(Td:any){
   console.log(Td.rowData)
-  if(window.confirm("Do you want to cancel your Transfer...!!!")){
-    const SearchData={
-      transferID:Number(Td.rowData.TransferID),
-      wareHouseID:Number(Td.rowData.WareHouseID),
-      companyID:0,
-      fromCustomerID:Number(Td.rowData.FromCustomerID),
-      toCustomerID:0,
-      transferDate:"",
-      orderGivenBy:"",
-      remarks:"",
-      createdBy:0,
-      financialYearID:0,
-      storageAreaMasterID:0,
-      StatusID:Number(Td.rowData.StatusID),
-    };
-    console.log(SearchData)
-    this.api.post('/Transfer/TransferStatus_validation',SearchData).subscribe(
-      data=>{data;
-        if(Number(data[0])>0){
-          if(Number(Td.rowData.StatusID)==72){
-            this.dialog.alert("Sorry,Transfer already deactivated or deleted ....!!!");
-          }else{
-            const cancelDataParam={
-              transferID:Number(Td.rowData.TransferID),
-              wareHouseID:Number(Td.rowData.WareHouseID),
-              companyID:0,
-              fromCustomerID:Number(Td.rowData.FromCustomerID),
-              toCustomerID:Number(Td.rowData.ToCustomerID),
-              transferDate:"",
-              orderGivenBy:"",
-              remarks:"",
-              createdBy:this.currentUser.userId,
-              financialYearID:0,
-              storageAreaMasterID:0,
-              StatusID:Number(Td.rowData.StatusID),
-            };
-            this.api.post('/Transfer/Transfer_Cancelled',cancelDataParam).subscribe(
-              data=>{data;
-                this.dialog.alert(data);
-                this.BindTransferList();
-            },error=>{ console.error(error);});
-          }
-        }else
-          {
-            this.dialog.alert("Please re-perform your delete operation...!!!");
-          }       
-      },error=>{ console.error(error);});    
-  }    
+  if(String(Td.actions)=='Delete'){
+    if(window.confirm("Do you want to cancel your Transfer...!!!")){
+      const SearchData={
+        transferID:Number(Td.rowData.TransferID),
+        wareHouseID:Number(Td.rowData.WareHouseID),
+        companyID:0,
+        fromCustomerID:Number(Td.rowData.FromCustomerID),
+        toCustomerID:0,
+        transferDate:"",
+        orderGivenBy:"",
+        remarks:"",
+        createdBy:0,
+        financialYearID:0,
+        storageAreaMasterID:0,
+        StatusID:Number(Td.rowData.StatusID),
+      };
+      console.log(SearchData)
+      this.api.post('/Transfer/TransferStatus_validation',SearchData).subscribe(
+        data=>{data;
+          if(Number(data[0])>0){
+            if(Number(Td.rowData.StatusID)==72){
+              this.dialog.alert("Sorry,Transfer already deactivated or deleted ....!!!");
+            }else{
+              const cancelDataParam={
+                transferID:Number(Td.rowData.TransferID),
+                wareHouseID:Number(Td.rowData.WareHouseID),
+                companyID:0,
+                fromCustomerID:Number(Td.rowData.FromCustomerID),
+                toCustomerID:Number(Td.rowData.ToCustomerID),
+                transferDate:"",
+                orderGivenBy:"",
+                remarks:"",
+                createdBy:this.currentUser.userId,
+                financialYearID:0,
+                storageAreaMasterID:0,
+                StatusID:Number(Td.rowData.StatusID),
+              };
+              this.api.post('/Transfer/Transfer_Cancelled',cancelDataParam).subscribe(
+                data=>{data;
+                  this.dialog.alert(data);
+                  this.BindTransferList();
+              },error=>{ console.error(error);});
+            }
+          }else
+            {
+              this.dialog.alert("Please re-perform your delete operation...!!!");
+            }       
+        },error=>{ console.error(error);});    
+    }    
+  }else if(String(Td.actions)=='Print'){
+    this.api.get('/Transfer/TransferReceipt?TransferID='+Td.rowData.TransferID).subscribe(
+      data => {
+        data;
+        console.log("OnActionTransfer=>",data)
+        var pdfResult = data[0].Base64Str;
+        let pdfWindow = window.open("")
+        pdfWindow?.document.write("<iframe width='100%' height='100%' src='data:application/pdf;base64, " + encodeURI(pdfResult) + "'></iframe>")
+        
+      },
+      error => { console.error(error); }
+    );
+  }
+  
 }
 //-----------end
 // TransferProductListCol: MtxGridColumn[] = [
@@ -647,25 +662,25 @@ serviceColumns:ColDef[] = [
   { field: 'ServiceName' }, { field: 'C_Rate', hide:true }, { field: 'L_Rate', hide:true },
 ];
 TransferListColumnDefs:ColDef[] = [
-  {  headerName: 'Action', width:100 ,floatingFilter: false,
+  {  headerName: 'Action', width:150 ,floatingFilter: false,
     cellRenderer: 'buttonRenderer',
     cellRendererParams: {
-      onClick: this.OnCancelledTransfer.bind(this),
+      onClick: this.OnActionTransfer.bind(this),
       label: 'Click 1'
     }
   },
-  {headerName:'TransferID',field:'TransferID',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
+  {headerName:'TransferID',field:'TransferID',hide:true,filter:'agTextColumnFilter',floatingFilter:true,},
   {headerName:'TransferNo',field:'TransferNo',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
-  {headerName:'WareHouseID',field:'WareHouseID',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
-  {headerName:'FromCustomerID',field:'FromCustomerID',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
+  {headerName:'WareHouseID',field:'WareHouseID',hide:true,filter:'agTextColumnFilter',floatingFilter:true,},
+  {headerName:'FromCustomerID',field:'FromCustomerID',hide:true,filter:'agTextColumnFilter',floatingFilter:true,},
   {headerName:'FromCustomer',field:'FromCustomer',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
-  {headerName:'ToCustomerID',field:'ToCustomerID',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
+  {headerName:'ToCustomerID',field:'ToCustomerID',hide:true,filter:'agTextColumnFilter',floatingFilter:true,},
   {headerName:'ToCustomer',field:'ToCustomer',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
   {headerName:'TransferDate',field:'TransferDate',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
   {headerName:'OrderGivenBy',field:'OrderGivenBy',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
   {headerName:'WareHouseName',field:'WareHouseName',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
   {headerName:'Remarks',field:'Remarks',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
-  {headerName:'StatusID',field:'StatusID',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
+  {headerName:'StatusID',field:'StatusID',hide:true,filter:'agTextColumnFilter',floatingFilter:true,},
   {headerName:'Status',field:'Status',hide:false,filter:'agTextColumnFilter',floatingFilter:true,},
   ];
 
