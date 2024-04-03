@@ -29,13 +29,13 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    
     this.warehouselist = this.warehouses;
     this.FinantialYears = this.yearList;
     const currentUser: User = JSON.parse(this.store.get("currentUser"));
     this.selectedYear = this.yearList[0].FinancialYearID;
-    this.warehouse = currentUser.warehouseId;
-
+    this.warehouse = this.warehouses[0].WarehouseID//currentUser.warehouseId;
+    
   }
 
 
@@ -59,7 +59,7 @@ export class RegisterComponent implements OnInit {
     this.router.navigateByUrl('/');
     //this.router.navigate(['/']);
     this.GetMyMenus(currentUser.userId);
-
+    //console.log("register",currentUser)
   }
   GetMyMenus(UserIds: any) {
     this.api.get('/Menu/ComponetMenu?userid=' + UserIds).subscribe(

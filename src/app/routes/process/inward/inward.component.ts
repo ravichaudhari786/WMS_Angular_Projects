@@ -257,7 +257,7 @@ export class InwardComponent implements OnInit {
   //   this.api.post('/Inward/GetInwardDetailsByID?InwardID=53').subscribe(
   // data=>  {this.InwardEdit=data;
   // console.log(this.InwardEdit);},
-  // error=>{ console.log(error);}
+  // error=>{ console.error(error);}
   // ); 
   // }
 
@@ -323,7 +323,7 @@ export class InwardComponent implements OnInit {
   //   this.api.post('/Inward/GetInwardDetailsByID?InwardID=53').subscribe(
   //     data=>  {this.InwardEdit=data;
   //     console.log(this.InwardEdit);},
-  //     error=>{ console.log(error);}
+  //     error=>{ console.error(error);}
   //     ); 
   // }
 
@@ -1330,7 +1330,7 @@ export class InwardComponent implements OnInit {
   //     lot_no:this.CurrentLotNo,remarks:"",country:"",
   //     allocatedQty:0,
   //     }
-  //     this.form.setValue(inwarditem);},error=>{ console.log(error);}); 
+  //     this.form.setValue(inwarditem);},error=>{ console.error(error);}); 
   //     this.tab=0;
   //     console.log(this.InwardTransportList);
   //   console.log(this.TransportList);
@@ -1499,7 +1499,7 @@ export class InwardComponent implements OnInit {
               allocatedQty: 0,
             }
             this.form.setValue(inwarditem);
-          }, error => { console.log(error); });
+          }, error => { console.error(error); });
         this.tab = 0;
         //console.log(this.InwardTransportList);
         //console.log(this.TransportList);

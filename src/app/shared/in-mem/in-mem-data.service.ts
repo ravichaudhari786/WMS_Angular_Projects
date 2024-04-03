@@ -70,9 +70,9 @@ strcollectionName=strcollectionName.replace("%20"," ");
 const currentUser=JSON.parse(userid);
 if(strbaseapi!="me" && strcollectionName!="menu"){
   let menu=fetch1(environment.baseUrl+"/Menu/GetMenu?userid="+currentUser.userId);
-        
+  console.log("menu123456",menu)
        menu=JSON.parse(menu);
-       //console.log("menu123",menu)
+       
       for(var i=0;i<menu.menu.length;i++){
           for(var j=0;j<menu.menu[0].children.length;j++){
                 if(strcollectionName==menu.menu[i].children[j].name){
@@ -173,7 +173,7 @@ export class InMemDataService implements OnInit,  InMemoryDbService {
       //  const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
         
        const menu=  JSON.parse(this.fetch(environment.baseUrl+"/Menu/GetMenu?userid="+ currentUser.userId)).menu
-       
+       console.log("787878",menu)
         return { status: STATUS.OK, headers, url, body: { menu } };
       });
     }

@@ -13,6 +13,7 @@ export class InwardActionButtonComponent implements ICellRendererAngularComp {
   label: string = '';
   EditButtonDisplay: boolean = false;
   DeleteButtonDisplay: boolean = false;
+  PrintButtonDisplay: boolean = false;
   store: LocalStorageService;
   Mymenus:any;
   Menus: any;
@@ -28,10 +29,11 @@ export class InwardActionButtonComponent implements ICellRendererAngularComp {
       this.Counts = this.Counts + 1;
       const currentSelectedMenu = JSON.parse(localStorage.getItem("SelectedMenu") || '[]');
       this.Menus = JSON.parse(currentSelectedMenu)
-      // console.log("agInit", this.Menus[0].Edit_flg)
+      //console.log("agInit", this.Menus)
       // console.log("agInit", this.Menus[0].Delete_flg)
       this.EditButtonDisplay = this.Menus[0].Edit_flg;
       this.DeleteButtonDisplay = this.Menus[0].Delete_flg;
+      this.PrintButtonDisplay = this.Menus[0].Print_flg;
     }
 
 
