@@ -6,10 +6,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { UsersComponent } from './users/users.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { UsercomapnyComponent } from './usercomapny/usercomapny.component';
+import { RoleUiComponent } from './role-ui/role-ui.component';
 @NgModule({
   declarations: [
     UsersComponent,
-    UsercomapnyComponent
+    UsercomapnyComponent,
+    RoleUiComponent
   ],
   imports: [
     SharedModule,
