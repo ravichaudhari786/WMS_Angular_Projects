@@ -1,1 +1,88 @@
-<p>financial-year works!</p>
+<div fxLayout="row wrap" class="matero-row">
+    <div fxFlex="100" class="matero-col">
+        <mat-card>
+            <mat-tab-group animationDuration="1ms">
+                <mat-tab label="Bank Details">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+                        <div class="row pt-2">
+                            <div class="col-sm-3 col-md-3">
+                                <div class="form-group">
+                                    <label>Financial Year</label>
+                                    <input type="text" formControlName="txtFinancialYear" id="txtFinancialYear"
+                                        class="form-control form-control-sm" name="txtFinancialYear"
+                                        [ngClass]="{'is-invalid': submitted && f.txtFinancialYear.invalid}"
+                                        class="form-control form-control-rounded" />
+                                    <div *ngIf="submitted && f.txtFinancialYear.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.txtFinancialYear.errors?.required">Enter Financial Year</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 col-md-3">
+                                <div class="form-group">
+                                    <label>From Date</label>
+                                    <input type="date" formControlName="dteFromDate" id="dteFromDate"
+                                        class="form-control form-control-sm" placeholder="yyyy-MM-dd"
+                                        [ngClass]="{'is-invalid': submitted && f.dteFromDate.invalid}"
+                                        name="dteFromDate" class="form-control form-control-rounded" />
+                                    <div *ngIf="submitted && f.dteFromDate.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.dteFromDate.errors?.required">Select From Date</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3 col-md-3">
+                                <div class="form-group">
+                                    <label>To Date</label>
+                                    <input type="date" formControlName="dteToDate" id="dteToDate"
+                                        class="form-control form-control-sm" placeholder="yyyy-MM-dd"
+                                        [ngClass]="{'is-invalid': submitted && f.dteToDate.invalid}" name="dteToDate"
+                                        class="form-control form-control-rounded" />
+                                    <div *ngIf="submitted && f.dteToDate.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.dteToDate.errors?.required">Select To Date</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3 col-md-3">
+                                <div class="form-group">
+                                    <label>Is Active</label>
+                                    <input type="checkbox"
+                                        style="margin-top: 30px !important; margin-left: 2px !important;"
+                                        [ngClass]="{'is-invalid': submitted && f.IsActive.invalid}" name="IsActive"
+                                        formControlName="IsActive" id="IsActive" class="form-check-input" />
+                                    <div *ngIf="submitted && f.IsActive.invalid" class="invalid-feedback" style="margin-top: 30px !important;">
+                                        <div *ngIf="f.IsActive.errors?.required">Select IsActive</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="container-fluid">
+                                <ag-grid-angular style="height: 250px;" class="ag-theme-alpine"
+                                    [rowData]="FinancialYearGridData" [columnDefs]="FinancialYearGridcoloumn"
+                                    [frameworkComponents]="frameworkComponents">
+                                </ag-grid-angular>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3 col-md-3">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-secondary btn-sm"
+                                        style="width: 85px !important; margin-top: 20px !important;"> Save </button>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-secondary btn-sm"
+                                        style="width: 85px !important; margin-top: 20px !important;"
+                                        (click)="OnResetActions()"> Reset </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </mat-tab>
+            </mat-tab-group>
+
+        </mat-card>
+    </div>
+</div>

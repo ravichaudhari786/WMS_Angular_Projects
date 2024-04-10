@@ -173,7 +173,7 @@ export class InMemDataService implements OnInit,  InMemoryDbService {
       //  const menu = JSON.parse(this.fetch('assets/data/menu.json?_t=' + Date.now())).menu;
         
        const menu=  JSON.parse(this.fetch(environment.baseUrl+"/Menu/GetMenu?userid="+ currentUser.userId)).menu
-       console.log("787878",menu)
+       //console.log("787878",menu)
         return { status: STATUS.OK, headers, url, body: { menu } };
       });
     }

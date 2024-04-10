@@ -21,7 +21,7 @@ import { StateCityComponent } from './state-city/state-city.component';
   { path: 'Check List Master', component: CheckListMasterComponent },
   { path: 'Check List Detail', component: CheckListDetailComponent },
   { path: 'Dock Master', component: DockMasterComponent },
-  { path: 'Financial Year', component: FinancialYearComponent },
+  { path: 'FinancialYear', component: FinancialYearComponent },
   { path: 'Remarks', component: RemarksComponent },
   { path: 'Brands', component: BrandsComponent },
   { path: 'StateCity', component: StateCityComponent },

@@ -7,6 +7,7 @@ import { AdditionalServicesComponent } from './additional-services/additional-se
 import { AdditionalServiceEditComponent } from './additional-services/additional-service-edit/additional-service-edit.component';
 import { BillprocessComponent } from './billprocess/billprocess.component';
 import { ReceiptComponent } from './receipt/receipt.component';
+import { BankAccountComponent } from './bank-account/bank-account.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { ReceiptComponent } from './receipt/receipt.component';
     AdditionalServicesComponent,
     AdditionalServiceEditComponent,
     BillprocessComponent,
-    ReceiptComponent
+    ReceiptComponent,
+    BankAccountComponent
   ],
   imports: [
     CommonModule,SharedModule,
