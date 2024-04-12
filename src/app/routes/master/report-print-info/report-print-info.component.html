@@ -1,1 +1,146 @@
-<p>report-print-info works!</p>
+<div fxLayout="row wrap" class="matero-row">
+    <div fxFlex="100" class="matero-col">
+        <mat-card>
+            <mat-tab-group animationDuration="1ms" style="overflow: hidden!important;">
+                <mat-tab label="Report Print Info">
+                    <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+                        <div class="row pt-2">
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Report Name</label>
+                                    <select class="form-control form-control-sm"
+                                        [ngClass]="{'is-invalid': submitted && f.cbReportID.invalid}"
+                                        formControlName="cbReportID" id="cbReportID">
+                                        <option value="null" disabled>Select </option>
+                                        <option *ngFor="let i of ReportsList" value={{i.ReportID}}>
+                                            {{i.DisplayName}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && f.cbReportID.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.cbReportID.errors?.required">Select Report Name</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Printer Name</label>
+                                    <input type="text" [ngClass]="{'is-invalid': submitted && f.txtPrinterName.invalid}"
+                                        formControlName="txtPrinterName" id="txtPrinterName"
+                                        class=" form-control form-control-sm" autocomplete="off" />
+                                    <div *ngIf="submitted && f.txtPrinterName.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.txtPrinterName.errors?.required">Enter Printer Name</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Page Size</label>
+                                    <select class="form-control form-control-sm"
+                                        [ngClass]="{'is-invalid': submitted && f.cbPageSizeID.invalid}"
+                                        formControlName="cbPageSizeID" id="cbPageSizeID">
+                                        <option value="null" disabled>Select </option>
+                                        <option *ngFor="let i of PageSizesList" value={{i.PageSizeName}}>
+                                            {{i.PageSizeName}}
+
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && f.cbPageSizeID.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.cbPageSizeID.errors?.required">Select Page Size</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Oriantation</label>
+                                    <select class="form-control form-control-sm"
+                                        [ngClass]="{'is-invalid': submitted && f.cbOriantationID.invalid}"
+                                        formControlName="cbOriantationID" id="cbOriantationID">
+                                        <option value="null" disabled>Select </option>
+                                        <option *ngFor="let i of OriantationData" value={{i.OriantationName}}>
+                                            {{i.OriantationName}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && f.cbOriantationID.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.cbOriantationID.errors?.required">Select Oriantation</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Top Margin</label>
+                                    <input type="text" [ngClass]="{'is-invalid': submitted && f.txtTopMargin.invalid}"
+                                        formControlName="txtTopMargin" id="txtTopMargin"
+                                        class=" form-control form-control-sm" autocomplete="off" />
+                                    <div *ngIf="submitted && f.txtTopMargin.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.txtTopMargin.errors?.required">Enter Top Margin</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Left Margin</label>
+                                    <input type="text" [ngClass]="{'is-invalid': submitted && f.txtLeftMargin.invalid}"
+                                        formControlName="txtLeftMargin" id="txtLeftMargin"
+                                        class=" form-control form-control-sm" autocomplete="off" />
+                                    <div *ngIf="submitted && f.txtLeftMargin.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.txtLeftMargin.errors?.required">Enter Left Margin</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Bottom Margin</label>
+                                    <input type="text"
+                                        [ngClass]="{'is-invalid': submitted && f.txtBottomMargin.invalid}"
+                                        formControlName="txtBottomMargin" id="txtBottomMargin"
+                                        class=" form-control form-control-sm" autocomplete="off" />
+                                    <div *ngIf="submitted && f.txtBottomMargin.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.txtBottomMargin.errors?.required">Enter Bottom Margin</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4 col-md-4">
+                                <div class="form-group">
+                                    <label>Right Margin</label>
+                                    <input type="text" [ngClass]="{'is-invalid': submitted && f.txtRightMargin.invalid}"
+                                        formControlName="txtRightMargin" id="txtRightMargin"
+                                        class=" form-control form-control-sm" autocomplete="off" />
+                                    <div *ngIf="submitted && f.txtRightMargin.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.txtRightMargin.errors?.required">Enter Right Margin</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2 col-md-2 pt-3">
+                                <div class="form-group ">
+                                    <button type="submit" class="btn btn-secondary" style="width: 100%;"> Save </button>
+                                </div>                              
+                            </div>
+                            <div class="col-sm-2 col-md-2 pt-3">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-secondary" style="width: 100%;"> Reset </button>
+                                </div>                              
+                            </div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="container-fluid">
+                                <div style="height: 100%; box-sizing: border-box;">
+                                    <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" [rowData]="ReportPrintInfoList"
+                                        [columnDefs]="ReportPrintInfocolumns" [frameworkComponents]="frameworkComponents">
+                                    </ag-grid-angular>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card>
+    </div>
+</div>
