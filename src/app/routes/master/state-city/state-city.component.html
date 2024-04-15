@@ -10,7 +10,7 @@
                     <form [formGroup]="form" (ngSubmit)="onStateSave(form)">
                         <div class="col-md-12">
                             <div class="row pt-2">
-                                <div class="col-sm-6">
+                                <div class="col-sm-4">
                                     <div class="form-group">
                                         <label>State Name</label>
                                         <input type="text" formControlName="State" class="form-control"
@@ -21,7 +21,7 @@
 
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <label>State Code</label>
                                         <input type="text" formControlName="StateCode" class="form-control"
@@ -34,7 +34,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6">
+                                <div class="col-sm-3">
                                     <div class="form-group">
                                         <label>GST Code</label>
                                         <input type="text" formControlName="GstCode" class="form-control"
@@ -45,9 +45,8 @@
 
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row pt-2">
-                                <div class="col-sm-6">
+
+                                <div class="col-sm-2">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-secondary btn-sm" [hidden]="!HideSaveButton"
                                             [value]="submitted"
@@ -55,15 +54,11 @@
                                         </button>
                                     </div>
                                 </div>
-                                <!-- <div class="col-sm-6 col-md-3">
-                                    <div class="form-group">
-                                        <button type="reset" class="btn btn-primary btn-sm" (click)="ResetForm()"
-                                            style="width: 85px !important; margin-top: 20px !important ">
-                                            Reset
-                                        </button>
-                                    </div>
-                                </div> -->
+
                             </div>
+                            <!-- <div class="row pt-2">
+                                                              
+                            </div> -->
                             <!--/.col  click="onSubmit(form)"-->
                         </div>
                       
@@ -93,7 +88,7 @@
                     <form [formGroup]="form2" (ngSubmit)="onCitySave(form2)">
                         <div class="col-md-12">
                             <div class="row pt-2">
-                                <div class="col-sm-6">
+                                <div class="col-sm-5">
                                     <div class="form-group">
                                         <label>City</label>
                                         <input type="text" formControlName="City" class="form-control"
@@ -105,7 +100,7 @@
 
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-5">
                                     <div class="form-group">
                                         <label>State</label>
                                         <select class="form-control form-control-sm" formControlName="CStateID"
@@ -121,10 +116,7 @@
 
                                     </div>
                                 </div>
-
-                            </div>
-                            <div class="row pt-2">
-                                <div class="col-sm-6">
+                                <div class="col-sm-2 pt-1">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-secondary btn-sm" [hidden]="!HideSaveButton2"
                                             [value]="submitted2"
@@ -132,15 +124,9 @@
                                         </button>
                                     </div>
                                 </div>
-                                <!-- <div class="col-sm-6 col-md-3">
-                                    <div class="form-group">
-                                        <button type="reset" class="btn btn-primary btn-sm" (click)="ResetForm2()"
-                                            style="width: 85px !important; margin-top: 20px !important ">
-                                            Reset
-                                        </button>
-                                    </div>
-                                </div> -->
                             </div>
+                            <!-- <div class="row pt-2">
+                            </div> -->
 
 
                         </div>

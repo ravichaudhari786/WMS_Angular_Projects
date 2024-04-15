@@ -3,91 +3,93 @@
 <div fxLayout="row wrap" class="matero-row">
 
   <div fxFlex="100" class="matero-col">
-
-    <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
-      <div class="col-md-12">
-        <div class="row pt-2">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label>Item Name</label>
-              <input type="text" autocomplete="off" [ngClass]="{'is-invalid': submitted && f.ItemName.invalid}"
-                formControlName="ItemName" id="ItemName" class=" form-control form-control-sm" />
-              <div *ngIf="submitted && f.ItemName.invalid" class="invalid-feedback">
-                <span *ngIf="f.ItemName?.errors?.required">Enter Item Name</span>
+    <mat-card>
+      <form [formGroup]="form" (ngSubmit)="onSubmit(form)">
+        <div class="col-md-12">
+          <div class="row pt-2">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Item Name</label>
+                <input type="text" autocomplete="off" [ngClass]="{'is-invalid': submitted && f.ItemName.invalid}"
+                  formControlName="ItemName" id="ItemName" class=" form-control form-control-sm" />
+                <div *ngIf="submitted && f.ItemName.invalid" class="invalid-feedback">
+                  <span *ngIf="f.ItemName?.errors?.required">Enter Item Name</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label for="company">Item Code</label>
-              <input type="text" autocomplete="off" [ngClass]="{'is-invalid': submitted && f.ItemCode.invalid}"
-                formControlName="ItemCode" id="ItemCode" class=" form-control form-control-sm" />
-              <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
-                <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label for="company">Item Code</label>
+                <input type="text" autocomplete="off" [ngClass]="{'is-invalid': submitted && f.ItemCode.invalid}"
+                  formControlName="ItemCode" id="ItemCode" class=" form-control form-control-sm" />
+                <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
+                  <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
+                </div>
+              </div>
+  
+            </div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Items Type</label>
+                <select class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f.ItemTypeID.invalid}"
+                  formControlName="ItemTypeID" id="ItemTypeID">
+                  <option value="null" disabled>Select </option>
+                  <option *ngFor="let i of ItemTypelist" value={{i.ItemTypeID}}>{{i.ItemType}}</option>
+                </select>
+                <div *ngIf="submitted && f.ItemTypeID.invalid" class="invalid-feedback">
+                  <div *ngIf="f.ItemTypeID.errors?.required">Select Item Type</div>
+                </div>
               </div>
             </div>
-
-          </div>
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label>Items Type</label>
-              <select class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f.ItemTypeID.invalid}"
-                formControlName="ItemTypeID" id="ItemTypeID">
-                <option value="null" disabled>Select </option>
-                <option *ngFor="let i of ItemTypelist" value={{i.ItemTypeID}}>{{i.ItemType}}</option>
-              </select>
-              <div *ngIf="submitted && f.ItemTypeID.invalid" class="invalid-feedback">
-                <div *ngIf="f.ItemTypeID.errors?.required">Select Item Type</div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Temperature Category</label>
+                <select class="form-control  form-control-sm"
+                  [ngClass]="{'is-invalid': submitted && f.TemperatureCategoryID.invalid}"
+                  formControlName="TemperatureCategoryID" id="TemperatureCategoryID">
+                  <option value="null" disabled>Select </option>
+                  <option *ngFor="let p of TempCatList" value={{p.TemperatureCategoryID}}>{{p.TemperatureCategory}}
+                  </option>
+                </select>
+                <div *ngIf="submitted && f.TemperatureCategoryID.invalid" class="invalid-feedback">
+                  <div *ngIf="f.TemperatureCategoryID.errors?.required">Select ProductType</div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label>Temperature Category</label>
-              <select class="form-control  form-control-sm"
-                [ngClass]="{'is-invalid': submitted && f.TemperatureCategoryID.invalid}"
-                formControlName="TemperatureCategoryID" id="TemperatureCategoryID">
-                <option value="null" disabled>Select </option>
-                <option *ngFor="let p of TempCatList" value={{p.TemperatureCategoryID}}>{{p.TemperatureCategory}}
-                </option>
-              </select>
-              <div *ngIf="submitted && f.TemperatureCategoryID.invalid" class="invalid-feedback">
-                <div *ngIf="f.TemperatureCategoryID.errors?.required">Select ProductType</div>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Is Active</label>
+                <input type="checkbox" style="margin-top: 30px !important; margin-left: 2px !important;"
+                  formControlName="IsActive" id="IsActive" class="form-check-input" />
               </div>
             </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label>Is Active</label>
-              <input type="checkbox" style="margin-top: 30px !important; margin-left: 2px !important;"
-                formControlName="IsActive" id="IsActive" class="form-check-input" />
+            <div class="row">
+              <div class="col-md-6">
+                <button type="submit" [hidden]="!HideSaveButton" [value]="submitted" class="btn btn-secondary btn-sm"
+                  style="width: 85px !important; margin-top: 20px !important;"> Save </button>
+              </div>
+  
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <button type="submit" [hidden]="!HideSaveButton" [value]="submitted" class="btn btn-secondary btn-sm"
-                style="width: 85px !important; margin-top: 20px !important;"> Save </button>
-            </div>
-
-          </div>
+  
         </div>
-
-      </div>
-
-    </form>
-
-    <hr>
-    <br>
-    <mtx-grid [data]="ItemList" #gridPendingDOdList [columns]="columns" [loading]="false" [columnResizable]="true"
-      [multiSelectable]="false" [rowSelectable]="true" [hideRowSelectionCheckbox]="true" [rowHover]="true"
-      [rowStriped]="false" [showToolbar]="false" [toolbarTitle]="'Detail List'" [columnHideable]="false"
-      [columnMovable]="true" [expandable]="false" [pageOnFront]="true" [showPaginator]="true"
-      [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0" [pageSize]="0">
-    </mtx-grid>
-
-    <ng-template #toolbarTpl>
-      <input placeholder="Search">
-    </ng-template>
+  
+      </form>
+  
+      <hr>
+      <br>
+      <mtx-grid [data]="ItemList" #gridPendingDOdList [columns]="columns" [loading]="false" [columnResizable]="true"
+        [multiSelectable]="false" [rowSelectable]="true" [hideRowSelectionCheckbox]="true" [rowHover]="true"
+        [rowStriped]="false" [showToolbar]="false" [toolbarTitle]="'Detail List'" [columnHideable]="false"
+        [columnMovable]="true" [expandable]="false" [pageOnFront]="true" [showPaginator]="true"
+        [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0" [pageSize]="0">
+      </mtx-grid>
+  
+      <ng-template #toolbarTpl>
+        <input placeholder="Search">
+      </ng-template>
+    </mat-card>
+    
 
 
 

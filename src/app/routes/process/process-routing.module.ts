@@ -8,7 +8,8 @@ import { ShiftingComponent } from './shifting/shifting.component';
 import {TransferComponent} from './transfer/transfer.component'
 import { InwardUpdateComponent} from './inward-update/inward-update.component';
 import { OutwardUpdateComponent } from './outward-update/outward-update.component';
-import { EditEntriesComponent} from './edit-entries/edit-entries.component'
+import { EditEntriesComponent} from './edit-entries/edit-entries.component';
+import { StopDeliveryComponent } from './stop-delivery/stop-delivery.component'
 const routes: Routes = [
   { path: 'Inward', component: InwardComponent },
   { path: 'DeliveryOrder', component: DeliveryorderComponent },
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'Transfer', component: TransferComponent },
   { path: 'InwardUpdate', component: InwardUpdateComponent },
   { path: 'OutwardUpdate', component: OutwardUpdateComponent },
+  { path: 'StopDelivery', component: StopDeliveryComponent },
 ];
 
 @NgModule({

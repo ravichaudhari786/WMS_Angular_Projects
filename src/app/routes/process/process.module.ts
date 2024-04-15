@@ -18,6 +18,7 @@ import { InwardActionButtonComponent } from './inward/inward-action-button/inwar
 import { InwardUpdateComponent } from './inward-update/inward-update.component';
 import { OutwardUpdateComponent } from './outward-update/outward-update.component';
 import { EditEntriesComponent } from './edit-entries/edit-entries.component';
+import { StopDeliveryComponent } from './stop-delivery/stop-delivery.component';
 
 
 
@@ -43,6 +44,7 @@ import { EditEntriesComponent } from './edit-entries/edit-entries.component';
     InwardUpdateComponent,
     OutwardUpdateComponent,
     EditEntriesComponent,
+    StopDeliveryComponent,
     
   ],
   imports: [
