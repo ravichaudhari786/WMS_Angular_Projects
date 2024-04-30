@@ -1,0 +1,464 @@
+<div fxLayout="row wrap" class="matero-row">
+
+    <div fxFlex="100" class="matero-col">
+        <mat-card>
+            <mat-tab-group animationDuration="1ms" (selectedIndexChange)="tabRepackingChnage($event)"
+                [(selectedIndex)]="tab">
+                <mat-tab label="Repacking">
+                    <form [formGroup]="form" (ngSubmit)="OnSaveRepacking(form)">
+                        <div class="row pt-2">
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label>Customer Name</label>
+                                    <!-- <select class="form-control form-control-sm" (change)="GetCustomerID($event)"
+                                        [ngClass]="{'is-invalid': submitted && f.cbCustomerID.invalid}"
+                                        formControlName="cbCustomerID" id="cbCustomerID">
+                                        <option value="null" disabled>Select </option>
+                                        <option *ngFor="let i of customerList" value={{i.CustomerID}}>{{i.CustomerName}}
+                                        </option>
+                                    </select> -->
+                                    <ng-select [items]="customerList" bindLabel="CustomerName" [virtualScroll]="true"
+                                                                        placeholder="Select Customer" (change)="GetCustomerID($event)"
+                                                                        formControlName="cbCustomerID" id="cbCustomerID">
+                                                                    </ng-select>
+                                    <div *ngIf="submitted && f.cbCustomerID.invalid" class="invalid-feedback">
+                                        <span *ngIf="f.cbCustomerID?.errors?.required">Select Customer</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="company">Repacking Date</label>
+                                    <input type="datetime-local" formControlName="dtRepacking_Date"
+                                        id="dtRepacking_Date" class="form-control form-control-sm"
+                                        placeholder="yyyy-MM-dd" [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'"
+                                        name="dtRepacking_Date" />
+                                    <div *ngIf="submitted && f.dtRepacking_Date.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.dtRepacking_Date?.errors?.required">select Repacking date</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="company">Order Given By</label>
+                                    <input type="text"
+                                        [ngClass]="{ 'is-invalid': submitted && form.controls.txtOrderGivenBy.errors }"
+                                        formControlName="txtOrderGivenBy" id="txtOrderGivenBy"
+                                        class=" form-control form-control-sm" />
+                                    <div *ngIf="submitted && f.txtOrderGivenBy.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.txtOrderGivenBy?.errors?.required">Order Given By</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="company">Remarks</label>
+                                    <input type="text"
+                                        [ngClass]="{ 'is-invalid': submitted && form.controls.txtRemarks.errors }"
+                                        formControlName="txtRemarks" id="txtRemarks"
+                                        class=" form-control form-control-sm" />
+                                    <div *ngIf="submitted && f.txtRemarks.invalid" class="invalid-feedback">
+                                        <div *ngIf="f.txtRemarks?.errors?.required">Order Given By</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <p class="font-weight-bold">Product List</p>
+                                <ag-grid-angular style="height: 250px;" class="ag-theme-alpine"
+                                    [rowData]="RepackingProductList" [columnDefs]="RepackingProductcolumnDefs"
+                                    [rowSelection]="'single'" (rowDoubleClicked)="onProductListRowClicked($event)">
+                                </ag-grid-angular>
+                            </div>
+                            <hr>
+                            <div class="col-sm-12 pt-2">
+                                <mat-tab-group animationDuration="1ms" style="background-color: lightgray;">
+                                    <mat-tab label="Repacking Details">
+                                        <div class="row">
+                                            <div class="col-sm-9">
+                                                <!--------Befor ----------->
+                                                <mat-card style="background-color: bisque;">
+                                                    <mat-card-header>
+                                                        <mat-card-title>Before Product</mat-card-title>
+                                                    </mat-card-header>
+                                                    <mat-card-content>
+                                                        <div class="row pt-1">
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Lot No</label>
+                                                                    <input type="text" formControlName="txtLotNo"
+                                                                        id="txtLotNo" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="" readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Product Name</label>
+                                                                    <select class="form-control form-control-sm"
+                                                                        [ngClass]="{'is-invalid': submitted && f.cbProductID.invalid}"
+                                                                        formControlName="cbProductID" id="cbProductID"
+                                                                        readonly>
+                                                                        <option value="null" disabled>Select </option>
+                                                                        <option *ngFor="let i of ProductList"
+                                                                            value={{i.ProductID}}>
+                                                                            {{i.ProductName}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Brand</label>
+                                                                    <input type="text" formControlName="txtBeforBrand"
+                                                                        id="txtBeforBrand" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="" readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Count</label>
+                                                                    <input type="text" formControlName="txtBeforCount"
+                                                                        id="txtBeforCount" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="" readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Billing Cycle</label>
+                                                                    <input type="text"
+                                                                        formControlName="txtBeforBillingCycle"
+                                                                        id="txtBeforBillingCycle" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="" readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Service Type</label>
+                                                                    <select class="form-control form-control-sm"
+                                                                        [ngClass]="{'is-invalid': submitted && f.cbBeforServiceType.invalid}"
+                                                                        formControlName="cbBeforServiceType"
+                                                                        id="cbBeforServiceType" readonly>
+                                                                        <option value="null" disabled>Select </option>
+                                                                        <option *ngFor="let i of ServiceTypeList"
+                                                                            value={{i.StorageAreaTypeID}}>
+                                                                            {{i.ServiceName}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Location</label>
+                                                                    <select class="form-control form-control-sm"
+                                                                        [ngClass]="{'is-invalid': submitted && f.cbBeforLocation.invalid}"
+                                                                        formControlName="cbBeforLocation"
+                                                                        id="cbBeforLocation" readonly>
+                                                                        <option value="null" disabled>Select </option>
+                                                                        <option *ngFor="let i of StorageAreasList"
+                                                                            value={{i.StorageAreaID}}>
+                                                                            {{i.Storage_Area_Name}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Labour Contractor</label>
+                                                                    <select class="form-control form-control-sm"
+                                                                        [ngClass]="{'is-invalid': submitted && f.cbBeforLabourContractorID.invalid}"
+                                                                        formControlName="cbBeforLabourContractorID"
+                                                                        id="cbBeforLabourContractorID" readonly>
+                                                                        <option value="null" disabled>Select </option>
+                                                                        <option *ngFor="let i of labourContractorList"
+                                                                            value={{i.LabourContractorID}}>
+                                                                            {{i.ContractorName}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Balance Qty</label>
+                                                                    <input type="text"
+                                                                        formControlName="txtBeforBalanceQty"
+                                                                        id="txtBeforBalanceQty" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="" readonly />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Repacking Qty</label>
+                                                                    <input type="text"
+                                                                        formControlName="txtBeforRepackingQty"
+                                                                        id="txtBeforRepackingQty" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder=""
+                                                                        (keyup)="onkeyupRepackingQty($event)"
+                                                                        (focusout)="onFocusOutRepackingQty($event)" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>TotalWeight</label>
+                                                                    <input type="text"
+                                                                        formControlName="txtBeforTotalWeight"
+                                                                        id="txtBeforTotalWeight" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="" readonly />
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </mat-card-content>
+
+                                                </mat-card>
+                                                <!--------After ----------->
+                                                <mat-card style="background-color: beige;">
+                                                    <mat-card-header>
+                                                        <mat-card-title>After Product</mat-card-title>
+                                                    </mat-card-header>
+                                                    <mat-card-content>
+                                                        <div class="row pt-1">
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>New Lot No</label>
+                                                                    <input type="text" formControlName="txtNewLotNo"
+                                                                        id="txtNewLotNo" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="" readonly />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Product Name</label>
+                                                                    <!-- <select class="form-control form-control-sm" (change)="GetcbAfterProductIdWeight($event)"
+                                                                        [ngClass]="{'is-invalid': submitted && f.cbAfterProductID.invalid}"
+                                                                        formControlName="cbAfterProductID"
+                                                                        id="cbAfterProductID">
+                                                                        <option value="null" disabled>Select </option>
+                                                                        <option *ngFor="let i of ProductList"
+                                                                            value={{i.ProductID}}>
+                                                                            {{i.ProductName}}
+                                                                        </option>
+                                                                    </select> -->
+                                                                    
+                                                                    <ng-select [items]="ProductList" bindLabel="ProductName" [virtualScroll]="true"
+                                                                        placeholder="Select Product" (change)="GetcbAfterProductIdWeight($event)"
+                                                                        formControlName="cbAfterProductID" id="cbAfterProductID">
+                                                                    </ng-select>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Weight</label>
+                                                                    <input type="text" formControlName="txtAfterWeight"
+                                                                        id="txtAfterWeight" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Repacking Qty</label>
+                                                                    <input type="text"
+                                                                        formControlName="txtAfterRepackingQty"
+                                                                        id="txtAfterRepackingQty" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="" (keyup)="onkeyupAfterRepackingQty($event)"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Product Weight</label>
+                                                                    <input type="text"
+                                                                        formControlName="txtAfterProductWeight"
+                                                                        id="txtAfterProductWeight" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="" readonly/>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Brand</label>
+                                                                    <!-- <select class="form-control form-control-sm"
+                                                                        [ngClass]="{'is-invalid': submitted && f.cbAfterBrand.invalid}"
+                                                                        formControlName="cbAfterBrand"
+                                                                        id="cbAfterBrand">
+                                                                        <option value="null" disabled>Select </option>
+                                                                        <option *ngFor="let i of brandList"
+                                                                            value={{i.BrandID}}>
+                                                                            {{i.BrandName}}
+                                                                        </option>
+                                                                    </select> -->
+                                                                
+                                                                    <ng-select [items]="brandList" bindLabel="BrandName" 
+                                                                    [virtualScroll]="true"
+                                                                        placeholder="Select Brand" (change)="GetcbAfterBrand($event)"
+                                                                        formControlName="cbAfterBrand" id="cbAfterBrand">
+                                                                    </ng-select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Count</label>
+                                                                    <select class="form-control form-control-sm"
+                                                                        [ngClass]="{'is-invalid': submitted && f.cbAfterCount.invalid}"
+                                                                        formControlName="cbAfterCount"
+                                                                        id="cbAfterCount">
+                                                                        <option value="null" disabled>Select </option>
+                                                                        <option *ngFor="let i of packateCountList"
+                                                                            value={{i.Counts}}>
+                                                                            {{i.Counts}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Service Type</label>
+                                                                    <select class="form-control form-control-sm"
+                                                                        [ngClass]="{'is-invalid': submitted && f.cbAfterServiceType.invalid}"
+                                                                        formControlName="cbAfterServiceType"
+                                                                        id="cbAfterServiceType" (change)="GetStorageAreaTypeID($event)">
+                                                                        <option value="null" disabled>Select </option>
+                                                                        <option *ngFor="let i of ServiceTypeList"
+                                                                            value={{i.StorageAreaTypeID}}>
+                                                                            {{i.ServiceName}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Location</label>
+                                                                    <!-- <select class="form-control form-control-sm"
+                                                                        [ngClass]="{'is-invalid': submitted && f.cbAfterLocation.invalid}"
+                                                                        formControlName="cbAfterLocation"
+                                                                        id="cbAfterLocation">
+                                                                        <option value="null" disabled>Select </option>
+                                                                        <option *ngFor="let i of StorageAreasList"
+                                                                            value={{i.StorageAreaID}}>
+                                                                            {{i.Storage_Area_Name}}
+                                                                        </option>
+                                                                    </select> -->
+                                                                    <ng-select [items]="StorageAreasList" bindLabel="Storage_Area_Name"
+                                                                        placeholder="Select Storage Area" [virtualScroll]="true"
+                                                                        formControlName="cbAfterLocation" id="cbAfterLocation">
+                                                                    </ng-select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Labour Contractor</label>
+                                                                    <select class="form-control form-control-sm"
+                                                                        [ngClass]="{'is-invalid': submitted && f.cbAfterLabourContractor.invalid}"
+                                                                        formControlName="cbAfterLabourContractor"
+                                                                        id="cbAfterLabourContractor">
+                                                                        <option value="null" disabled>Select </option>
+                                                                        <option *ngFor="let i of labourContractorList"
+                                                                            value={{i.LabourContractorID}}>
+                                                                            {{i.ContractorName}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Remarks</label>
+                                                                    <input type="text" formControlName="txtAfterRemarks"
+                                                                        id="txtAfterRemarks" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Class</label>
+                                                                    <select class="form-control form-control-sm"
+                                                                        [ngClass]="{'is-invalid': submitted && f.cbAfterClass.invalid}"
+                                                                        formControlName="cbAfterClass"
+                                                                        id="cbAfterClass">
+                                                                        <option value="null" disabled>Select </option>
+                                                                        <option *ngFor="let i of ClassMasterList"
+                                                                            value={{i.ClassName}}>
+                                                                            {{i.ClassName}}
+                                                                        </option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>After Weight</label>
+                                                                    <input type="text"
+                                                                        formControlName="txtAfter_AfterWeight"
+                                                                        id="txtAfter_AfterWeight" autocomplete="off"
+                                                                        class="form-control form-control-sm"
+                                                                        placeholder="" />
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </mat-card-content>
+
+                                                </mat-card>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="card">
+                                                    <ag-grid-angular style="height: 450px;" class="ag-theme-alpine"
+                                                        [rowData]="Repackingservicelist"
+                                                        [columnDefs]="RepackingserviceColumns">
+                                                    </ag-grid-angular>
+                                                </div>
+                                                <div class="form-group pt-3">
+                                                    <button class="btn btn-secondary btn-sm" (click)="OnADDRepacking()"
+                                                        style="width: 85px !important;" type="button">Add</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </mat-tab>
+                                    <mat-tab label="List">
+                                        <div class="col-sm-12">
+                                            <p class="font-weight-bold">Product List</p>
+                                            <ag-grid-angular style="height: 250px;" class="ag-theme-alpine"
+                                                [rowData]="ADDRepackingDetails" [columnDefs]="ADDRepackingDetailColumn"
+                                                [rowSelection]="'single'">
+                                            </ag-grid-angular>
+                                        </div>
+                                    </mat-tab>
+                                </mat-tab-group>
+                            </div>
+                            <div class="col-sm-12 pt-2">
+                                <button class="btn btn-secondary btn-sm col-sm-2" type="submit" style="width: 85px !important;" >Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </mat-tab>
+                <mat-tab label="Repacking List">
+                    <div style="height: 100%; box-sizing: border-box;">
+                        <ag-grid-angular style="height: 450px;" class="ag-theme-alpine" [rowData]="RepackingList"
+                          [columnDefs]="columnsRepackingList" [frameworkComponents]="frameworkComponents">
+                        </ag-grid-angular>
+                      </div>
+                </mat-tab>
+            </mat-tab-group>
+        </mat-card>
+    </div>
+</div>

@@ -10,6 +10,7 @@ import { InwardUpdateComponent} from './inward-update/inward-update.component';
 import { OutwardUpdateComponent } from './outward-update/outward-update.component';
 import { EditEntriesComponent} from './edit-entries/edit-entries.component';
 import { StopDeliveryComponent } from './stop-delivery/stop-delivery.component'
+import { RepackingComponent } from './repacking/repacking.component'
 const routes: Routes = [
   { path: 'Inward', component: InwardComponent },
   { path: 'DeliveryOrder', component: DeliveryorderComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'InwardUpdate', component: InwardUpdateComponent },
   { path: 'OutwardUpdate', component: OutwardUpdateComponent },
   { path: 'StopDelivery', component: StopDeliveryComponent },
+  { path: 'Repacking', component: RepackingComponent },
 ];
 
 @NgModule({

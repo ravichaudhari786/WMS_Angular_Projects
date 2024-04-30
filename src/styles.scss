@@ -10,7 +10,7 @@
 @import '~bootstrap/scss/bootstrap';
 @import "ag-grid-community/dist/styles/ag-grid.css";
 @import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-
+@import "~@ng-select/ng-select/themes/default.theme.css";
   .testclass .mat-form-field-infix {
     display: inherit;
   }
