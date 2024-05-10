@@ -8,6 +8,7 @@ import { ColDef, GridApi } from 'ag-grid-community';
 import { AgGridAngular } from "ag-grid-angular";
 import { MtxDialog, MtxGridCellSelectionDirective, MtxGridColumn, MtxGridRowClassFormatter } from '@ng-matero/extensions';
 import { OutwarddeletebuttonComponent } from './outwarddeletebutton/outwarddeletebutton.component';
+
 @Component({
   selector: 'app-outward',
   templateUrl: './outward.component.html',
@@ -48,7 +49,7 @@ export class OutwardComponent implements OnInit {
   Saveclick: boolean = false;
 
   private currentUser: User;
-  constructor(private api: ApiService, private fb: FormBuilder, private fbParty: FormBuilder, public dialogs: MtxDialog, private modalService: NgbModal) {
+  constructor(private api: ApiService, private fb: FormBuilder, private fbParty: FormBuilder, public dialogs: MtxDialog, private modalService: NgbModal,public dialog: MtxDialog) {
     this.currentUser = this.api.getCurrentUser();
     const dateSendingToServer = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd hh:mm:ss')
     this.todayDate = dateSendingToServer;
@@ -156,7 +157,7 @@ export class OutwardComponent implements OnInit {
   //----------- Button click event on pending DO 
   OnSearchPendingDO() {
     if (this.form.value.customer_id == null || this.form.value.customer_id == "") {
-      alert("Please .... Select Customer Name");
+      this.dialog.alert("Please .... Select Customer Name");
       document?.getElementById("customer_id")?.focus();
     } else {
       this.GetPendingDO = {
@@ -169,7 +170,7 @@ export class OutwardComponent implements OnInit {
           if (data.length > 0) {
             this.PendingDOList = data;
           } else {
-            alert("No Pending DO .....")
+            this.dialog.alert("No Pending DO .....")
           }
         },
         error => { console.error(error); }
@@ -182,7 +183,7 @@ export class OutwardComponent implements OnInit {
   openPartyWindow(AddPartyContent: any) {
     //console.log(this.form.value.customer_id);
     if (this.form.value.customer_id == null || this.form.value.customer_id == "") {
-      alert("Please .... Select Customer Name");
+      this.dialog.alert("Please .... Select Customer Name");
       document?.getElementById("customer_id")?.focus();
     } else {
       this.modalService.open(AddPartyContent);
@@ -196,7 +197,7 @@ export class OutwardComponent implements OnInit {
   //-------------------Save Customer party window data
   onAddParty() {
     if (this.formParty.value.txtPartyName == null || this.formParty.value.txtPartyName == "") {
-      alert("Please .... Enter Party Name");
+      this.dialog.alert("Please .... Enter Party Name");
       document?.getElementById("txtPartyName")?.focus();
     }
     else {
@@ -212,7 +213,7 @@ export class OutwardComponent implements OnInit {
       this.api.post('/CustomerParty/CustomerPartysave', this.SaveCustomerParty).subscribe(
         data => {
           data;
-          alert(data);
+          this.dialog.alert(data);
           this.formParty.reset();
           this.BindCustomerParty();
         },
@@ -272,7 +273,7 @@ export class OutwardComponent implements OnInit {
   //--------- Pending DO List Row double click event
   onRowDblclicked(a: any, e: any) {
     if (this.form.value.cbLabourContractor == null || this.form.value.cbLabourContractor == "") {
-      alert("Please .... Select Labour Contractor");
+      this.dialog.alert("Please .... Select Labour Contractor");
       document?.getElementById("cbLabourContractor")?.focus();
     }
     else {
@@ -416,48 +417,48 @@ export class OutwardComponent implements OnInit {
     }
     console.log("Save");
     if (this.form.value.customer_id == null || this.form.value.customer_id == "") {
-      alert("Please .... Select Customer Name");
+      this.dialog.alert("Please .... Select Customer Name");
       document?.getElementById("customer_id")?.focus();
       return;
     } else if (this.form.value.Outward_Date == null) {
-      alert("Please... Select Outward Date ..!!!");
+      this.dialog.alert("Please... Select Outward Date ..!!!");
       document?.getElementById("Outward_Date")?.focus();
       return;
     } else if (this.form.value.txtTruck_No == null || this.form.value.txtTruck_No == "") {
-      alert("Please .... Enter Truck No ....");
+      this.dialog.alert("Please .... Enter Truck No ....");
       document?.getElementById("txtTruck_No")?.focus();
       return;
     } else if (this.form.value.cbDock_Name == null || this.form.value.cbDock_Name == "") {
-      alert("Please .... select Dock name ....");
+      this.dialog.alert("Please .... select Dock name ....");
       document?.getElementById("cbDock_Name")?.focus();
       return;
     } else if (this.form.value.cbLodingBy_Name == null) {
-      alert("Please... Select unloading by ..!!!");
+      this.dialog.alert("Please... Select unloading by ..!!!");
       document?.getElementById("cbLodingBy_Name")?.focus();
       return;
     } else if (this.form.value.cbLabourContractor == null || this.form.value.cbLabourContractor == "") {
-      alert("Please .... select Labour Contractor ....");
+      this.dialog.alert("Please .... select Labour Contractor ....");
       document?.getElementById("cbLabourContractor")?.focus();
       return;
     }
     else if (this.DeliveryOrderDetailList.length == 0) {
-      alert("Please... Add Outward Details ..!!!");
+      this.dialog.alert("Please... Add Outward Details ..!!!");
       return;
     } else if (this.Out_Count > 0) {
-      alert("Please... Select Outward Product ..!!!");
+      this.dialog.alert("Please... Select Outward Product ..!!!");
       return;
     }
     // else if(this.InwardshowStorageArea.length==0){
-    //   alert("Please... Add Storage Details ..!!!");
+    //   this.dialog.alert("Please... Add Storage Details ..!!!");
     //   //document?.getElementById("truckno")?.focus();
     //   return;
     // }else if(this.InwardTransportList.length==0){
-    //   alert("Please... Add transport Details..!!!");
+    //   this.dialog.alert("Please... Add transport Details..!!!");
     //   //document?.getElementById("truckno")?.focus();
     //   return;
     // }
     else {
-      //alert("valid");
+      //this.dialog.alert("valid");
       //this.form.value.cbLabourContractor
       //const UpdateDODID=this.ChargesListData;
 
@@ -567,16 +568,16 @@ export class OutwardComponent implements OnInit {
         data => {
           console.log("process ", data[0].Count);
           if (data[0].Count == 0) {
-            alert("Some data is updated. So Please, reperform your cancelled operation");
+            this.dialog.alert("Some data is updated. So Please, reperform your cancelled operation");
             this.BindOutwardList();
           } else {
             if (records.StatusID = 82) {
-              alert("Sorry,Outward already deactivated or deleted ....!!!");
+              this.dialog.alert("Sorry,Outward already deactivated or deleted ....!!!");
             }
             else {
               this.api.post('/Outward/OutWard_Cancelled', OutwardDeleteData).subscribe(
                 data => {
-                  alert(data);
+                  this.dialog.alert(data);
                   this.BindOutwardList();
                 }, error => { console.error(error); }
               );
@@ -613,16 +614,16 @@ export class OutwardComponent implements OnInit {
         this.api.post('/Outward/OutwardStatus_validation', OutwardDeleteData).subscribe(
           data => {//console.log("process ",data[0].Count);
             if (data[0].Count == 0) {
-              alert("Some data is updated. So Please, reperform your cancelled operation");
+              this.dialog.alert("Some data is updated. So Please, reperform your cancelled operation");
               this.BindOutwardList();
             } else {
               if (OutActionata.rowData.StatusID = 82) {
-                alert("Sorry,Outward already deactivated or deleted ....!!!");
+                this.dialog.alert("Sorry,Outward already deactivated or deleted ....!!!");
               }
               else {
                 this.api.post('/Outward/OutWard_Cancelled', OutwardDeleteData).subscribe(
                   data => {
-                    alert(data);
+                    this.dialog.alert(data);
                     this.BindOutwardList();
                   }, error => { console.error(error); }
                 );
@@ -751,7 +752,9 @@ export class OutwardComponent implements OnInit {
     { headerName: "StatusID", field: "StatusID", filter: 'agTextColumnFilter', floatingFilter: true },
     { headerName: "StatusName", field: "StatusName", filter: 'agTextColumnFilter', floatingFilter: true },
   ];
-
+  OnListOutward(){
+    this.BindOutwardList();
+  }
 
 
 }

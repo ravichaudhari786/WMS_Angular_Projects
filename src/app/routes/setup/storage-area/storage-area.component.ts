@@ -99,11 +99,11 @@ export class StorageAreaComponent implements OnInit {
     this.submitted = true;
     console.log(this.form);
     if (this.form.invalid) {
-      alert("invalid form");
+      this.dialog.alert("invalid form");
       return;
     }
     else {
-      // alert("valid ");
+      // this.dialog.alert("valid ");
       this.HideSaveButton = false;
       this.StorageAreaGridList = [];
       this.StorageAreaGridList = {

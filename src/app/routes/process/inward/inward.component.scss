@@ -1,6 +1,7 @@
 .mtx-grid {
   height: 280px;
 }
+
 input.ng-invalid:focus {
   outline-color: red;
 }
@@ -24,11 +25,11 @@ input.ng-invalid:focus {
   margin-top: 10px;
 }
 
-.ng-deep .option > span {
+.ng-deep .option>span {
   margin-right: 10px;
 }
 
-.ng-deep .option > .dx-selectbox {
+.ng-deep .option>.dx-selectbox {
   display: inline-block;
   vertical-align: middle;
 }
@@ -40,4 +41,18 @@ input.ng-invalid:focus {
   border-top: 1px solid #dee2e6;
   border-bottom-right-radius: calc(0.3rem - 1px);
   border-bottom-left-radius: calc(0.3rem - 1px);
+}
+
+:host ::ng-deep .mtx-grid {
+
+  .warning_light {
+    background-color: #ACE1AF;
+  }
+  
+}
+:host ::ng-deep .mtx-grid .header {
+  .HeaderCSS {
+    font-weight:bold;
+    text-align: center;
+  }
 }

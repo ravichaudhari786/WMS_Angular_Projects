@@ -226,7 +226,7 @@
                                     </div>
                                     <div class="col-sm-9">
                                       <div class="form-group">
-                                        <button type="button" class="btn btn-primary btn-sm" (click)="OnAddClick()"
+                                        <button type="button" class="btn btn-secondary btn-sm" (click)="OnAddClick()"
                                           style="width: 85px !important; margin-top: 20px !important;">Add</button>
                                       </div>
                                   </div>
@@ -278,7 +278,7 @@
 
                     <div class="col-sm-9">
                       <div class="form-group">
-                        <button type="submit" [hidden]="!HideSaveButton"  [value]="submitted" class="btn btn-primary btn-sm"
+                        <button type="submit" [hidden]="!HideSaveButton"  [value]="submitted" class="btn btn-secondary btn-sm"
                           style="width: 85px !important; margin-top: 20px !important;"> Save </button>
                       </div>
                   </div>
@@ -286,16 +286,25 @@
             </form>
           </mat-tab>
           <mat-tab label="Transfer List" >
-            <div style="height: 100%; box-sizing: border-box;">
-              <ag-grid-angular 
-                style="height: 450px;"
-                class="ag-theme-alpine"
-                [rowData]="TransferList"
-                [columnDefs]="TransferListColumnDefs"   
-                [frameworkComponents]="frameworkComponents"             
-                >
-              </ag-grid-angular>
+            <div class="row">
+              <div class="col-md-2 col-sm-2" style="padding: 5px 0px 6px;">
+                <button class="btn btn-secondary btn-sm" (click)="OnListTransfer()"
+                  style="width: 150px !important; ">Refresh List</button>
+              </div>
+              <div class="col-md-12 col-sm-12" style="padding: 5px 0px 6px;">
+                <div style="height: 100%; box-sizing: border-box;">
+                  <ag-grid-angular 
+                    style="height: 450px;"
+                    class="ag-theme-alpine"
+                    [rowData]="TransferList"
+                    [columnDefs]="TransferListColumnDefs"   
+                    [frameworkComponents]="frameworkComponents"             
+                    >
+                  </ag-grid-angular>
+                </div>
+              </div>
             </div>
+            
           </mat-tab>
         </mat-tab-group>
       </mat-card>

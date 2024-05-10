@@ -33,11 +33,11 @@ export class AdditionalServicesComponent implements OnInit {
   ServiceNamesData: any;
   AdditionalServiceSave: any;
   getserviceCharge: Array<ChargesList> = [];
-  getserviceDetail: Array<CustomerList> = [];
+  getserviceDetail: Array<ADDDetailList> = [];
   UnitNameData: Array<any> = [];
   servicerates:any;
-  serviceListData: Array<CustomerList> = [];
-  ServiceListDetail: Array<CustomerList> = [];
+  serviceListData: Array<ADDDetailList> = [];
+  ServiceListDetail: Array<ADDDetailList> = [];
   flag: boolean = false;
   servicerates2:any;
   modename: string = "";
@@ -188,11 +188,11 @@ export class AdditionalServicesComponent implements OnInit {
     //this.ServiceListDetail = [];
 
     if (this.form.value.cbServiceID == null || this.form.value.cbServiceID == "") {
-      alert("Please .... Select Service Name");
+      this.dialog.alert("Please .... Select Service Name");
       document?.getElementById("cbServiceID")?.focus();
       return;
     } else if (this.form.value.cbLabourContractorID == null || this.form.value.cbLabourContractorID == "") {
-      alert("Please .... select LabourContractor ....");
+      this.dialog.alert("Please .... select LabourContractor ....");
       document?.getElementById("cbLabourContractorID")?.focus();
       return;
     }
@@ -255,12 +255,12 @@ export class AdditionalServicesComponent implements OnInit {
 
   OnAddChargesClick() {
     if (this.form.value.ProductID == null || this.form.value.ProductID == "") {
-      alert("Please .... Select Product Name");
+      this.dialog.alert("Please .... Select Product Name");
       document?.getElementById("ProductID")?.focus();
       return;
     }
      else if (this.form.value.Serviceid == null || this.form.value.Serviceid == "") {
-      alert("Please .... select Service ....");
+      this.dialog.alert("Please .... select Service ....");
       document?.getElementById("Serviceid")?.focus();
       return;
     } 
@@ -306,8 +306,8 @@ export class AdditionalServicesComponent implements OnInit {
     }
   }
 
-  getRowStyle(params:any) {
-    if(params.flag==true){
+  getRowStyle(a:any) {
+    if(a.data.dirty==true){
       return { 'background-color': 'pink' }
     }    else{
       return;
@@ -317,16 +317,16 @@ export class AdditionalServicesComponent implements OnInit {
   onSubmit(formData: any) {
    
     if (this.form.value.CustomerID == null || this.form.value.CustomerID == "") {
-      alert("Please .... Select Customer Name");
+      this.dialog.alert("Please .... Select Customer Name");
       document?.getElementById("CustomerID")?.focus();
       return;
     }
      else if (this.ServiceListDetail.length == 0) {
-      alert("Please... Add Service Details ..!!!");
+      this.dialog.alert("Please... Add Service Details ..!!!");
 
       return;
     } else if (this.labourChargeDetail.length == 0) {
-      alert("Please... Add Labour Service Charges ..!!!");
+      this.dialog.alert("Please... Add Labour Service Charges ..!!!");
 
       return;
     }
@@ -408,7 +408,11 @@ export class AdditionalServicesComponent implements OnInit {
   }
 
   onRowDblclickedCharges(a: any) {
-    console.log("ssd", a.data);
+    console.log("ssd", a);
+    a.node.setData({
+      ...a.data,
+      dirty: true
+    });
     this.form.controls['ProductID'].reset();
     this.form.controls['Serviceid'].reset();
     this.form.controls['Quantitys'].reset();
@@ -619,7 +623,7 @@ export class AdditionalServicesComponent implements OnInit {
 
 
 }
-export class CustomerList {
+export class ADDDetailList {
   AdditionalServiceDID: number = 0;
   AdditionalServiceID: number = 0;
   ServiceID: number = 0;

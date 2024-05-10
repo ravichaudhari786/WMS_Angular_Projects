@@ -393,7 +393,7 @@ export class RepackingComponent implements OnInit {
   //   this.form.controls["txtNewLotNo"].setValue(this.CurrentLotNo);
   // }
   OnADDRepacking() {
-    alert("work");
+    this.dialog.alert("work");
     if (Number(this.form.controls["txtBeforTotalWeight"].value) >= Number(this.form.controls["txtAfter_AfterWeight"].value)) {
 
       //console.log("ADD_Json1", this.detailfdata);
@@ -689,6 +689,9 @@ export class RepackingComponent implements OnInit {
           error => { console.error(error); }
         );
       }
+  }
+  OnListRepacking(){
+    this.GetRepackingList();
   }
 
 }

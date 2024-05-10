@@ -56,7 +56,7 @@ export class DockMasterComponent implements OnInit {
    console.log(formData);
     this.submitted = true;
     if (this.form.invalid) {
-      // alert("invalid Form")
+      // this.dialog.alert("invalid Form")
    
      return;
     }

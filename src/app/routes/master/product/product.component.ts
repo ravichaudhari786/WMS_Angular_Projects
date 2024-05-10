@@ -119,7 +119,7 @@ export class ProductComponent implements OnInit {
 
     this.submitted = true;
     if (this.form.invalid) {
-     //alert("invalid form");
+     //this.dialog.alert("invalid form");
      return;
     }
     else

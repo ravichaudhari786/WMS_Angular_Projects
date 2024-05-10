@@ -259,7 +259,7 @@ export class ProcessServicesComponent implements OnInit {
     return;
   }
   if( this.ProcessServicesList.length==0){
-    alert("Please ....select Process name");
+    this.dialog.alert("Please ....select Process name");
 return;
   }else{
     this.ProcessID= this.form.value.txtProcessName;
@@ -315,7 +315,7 @@ return;
   this.api.post('/ProcessServices/ProcessServices_Insert',this.ProcessServiceSave).subscribe(
     data=>{data;
       console.log("data",data.Table[0].message);
-      alert(data.Table[0].message);  
+      this.dialog.alert(data.Table[0].message);  
       this.BindDropdown();  
    
       

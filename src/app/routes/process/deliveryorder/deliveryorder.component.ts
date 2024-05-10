@@ -17,7 +17,6 @@ export class DeliveryorderComponent implements OnInit {
   customerList:any;
   customePartyList:any;
   remarkList:any;
-  //getRowStyle:any;
   OrderGivenByList:any=[];
   DeliveryOrdersearchList:Array<DeliveryOrderDetail>=[];
   DO_Detail:Array<DODetail>=[];
@@ -107,7 +106,7 @@ export class DeliveryorderComponent implements OnInit {
   }
   tabDeliveryOrderchange(e:any){
     this.tab=e;    
-    this.BindDeliveryOrderList();
+    ///this.BindDeliveryOrderList();
   }
   BindOrderGIvenBy(e:number=0){
     this.api.get('/CustomerContacts/GetCustomerContactsList?CustomerID='+e).subscribe(
@@ -123,7 +122,7 @@ export class DeliveryorderComponent implements OnInit {
       data=>{data;
       if(data.Table.length>0){
           this.checkCust=true;
-          alert("Order is stopped for some reason .... !!!")
+          this.dialog.alert("Order is stopped for some reason .... !!!")
       }},
       error=>{ console.error(error);}
     );
@@ -132,7 +131,7 @@ export class DeliveryorderComponent implements OnInit {
   {
     if(this.form.value.customer_id==null)
     {
-      alert("Select Customers .....");
+      this.dialog.alert("Select Customers .....");
       document?.getElementById("customer_id")?.focus();
     }
     else
@@ -141,7 +140,7 @@ export class DeliveryorderComponent implements OnInit {
         data=>{this.DeliveryOrdersearchList=data;
           //console.log(this.DeliveryOrdersearchList);          
           if(data.length ==0){
-            alert("Data not found ..... !!!");
+            this.dialog.alert("Data not found ..... !!!");
           }
         },
         error=>{ console.error(error);});
@@ -153,7 +152,7 @@ export class DeliveryorderComponent implements OnInit {
           this.onDOSearchGridRefresh();
       }else
       if(e.data.BalanceQuantity==e.data.DOQuantity){
-         alert(e.data.ProductName+" And Lot no "+e.data.LotNo+", Stock will be null or zero ...!!!");
+         this.dialog.alert(e.data.ProductName+" And Lot no "+e.data.LotNo+", Stock will be null or zero ...!!!");
          this.onDOSearchGridRefresh();
       }else 
       if(e.data.BalanceQuantity<e.data.DOQuantity)
@@ -163,7 +162,7 @@ export class DeliveryorderComponent implements OnInit {
           {
             i.DOQuantity=0;
           }});
-          alert("DO Quantity must be less than or equal to balance quantity ..!!!");
+          this.dialog.alert("DO Quantity must be less than or equal to balance quantity ..!!!");
         this.onDOSearchGridRefresh();
       }
   }
@@ -199,7 +198,7 @@ export class DeliveryorderComponent implements OnInit {
   onCustomerPartyContact(CustomerPartycontent:any)
   {
     if(this.form.value.customer_id==null ||this.form.value.customer_id==0){
-      alert("Select Customers .....");
+      this.dialog.alert("Select Customers .....");
       document?.getElementById("customer_id")?.focus();
     }
     else
@@ -214,10 +213,10 @@ export class DeliveryorderComponent implements OnInit {
 
   onAddCustomerParty(CustomerPartycontent:any){
     if(this.form.value.Party_customer_id==null ||this.form.value.Party_customer_id==0){
-      alert("Select Customers .....");      
+      this.dialog.alert("Select Customers .....");      
       document?.getElementById("Party_customer_id")?.focus();
     }else if(this.form.value.txtPartyName==null ||this.form.value.txtPartyName==0){
-      alert("Enter Customer Party Name ..... !!!");      
+      this.dialog.alert("Enter Customer Party Name ..... !!!");      
       document?.getElementById("txtPartyName")?.focus();
     }else{
       this.SaveCustomerParty={
@@ -231,7 +230,7 @@ export class DeliveryorderComponent implements OnInit {
       console.log(this.SaveCustomerParty);
       this.api.post('/DeliveryOrder/AddParty',this.SaveCustomerParty).subscribe(
         data=>{data;
-        alert(data.Table[0]["Message"]);
+        this.dialog.alert(data.Table[0]["Message"]);
         this.form.controls['txtPartyName'].reset();
         this.form.controls['txtshiffadd1'].reset(); 
         this.form.controls['txtshiffadd2'].reset();
@@ -255,7 +254,7 @@ export class DeliveryorderComponent implements OnInit {
     // this.clickSave=true;
     var TotalDOqty;
     if(this.form.value.customer_id==null || this.form.value.customer_id==""){
-      alert("Please .... Select Customer Name");
+      this.dialog.alert("Please .... Select Customer Name");
       document?.getElementById("customer_id")?.focus();
       return;
     }
@@ -265,7 +264,7 @@ export class DeliveryorderComponent implements OnInit {
         data=>{data;
         if(data.Table.length>0){
             this.checkCust=true;
-            alert("Order is stopped for some reason .... !!!")
+            this.dialog.alert("Order is stopped for some reason .... !!!")
         }else{
           if(this.DeliveryOrdersearchList.length>0 ){
             TotalDOqty = this.DeliveryOrdersearchList.map(v1=>v1.DOQuantity).reduce((acc, v1) => v1 + acc);
@@ -273,15 +272,15 @@ export class DeliveryorderComponent implements OnInit {
             TotalDOqty =0;
           }
           if(this.form.value.customerParty_id==null || this.form.value.customerParty_id==""){
-            alert("Please .... Select customer Party");
+            this.dialog.alert("Please .... Select customer Party");
             document?.getElementById("customerParty_id")?.focus();
             return;
           }else if(this.form.value.OrderGivenBy_id==null || this.form.value.OrderGivenBy_id==""){
-            alert("Please .... Select Order Given By");
+            this.dialog.alert("Please .... Select Order Given By");
             document?.getElementById("OrderGivenBy_id")?.focus();
             return;
           }else if(TotalDOqty<=0){
-            alert("Please .... Add DO quantity In delivery order detail ");
+            this.dialog.alert("Please .... Add DO quantity In delivery order detail ");
             return;
           }else{
             //console.log("Work..... !!!");
@@ -329,7 +328,7 @@ export class DeliveryorderComponent implements OnInit {
             this.api.post('/DeliveryOrder/SaveDO',this.SaveDeliveryOrder).subscribe(
               data=>{data;
                 //console.log(data)
-                alert(data.Table[0]["Message"]);},
+                this.dialog.alert(data.Table[0]["Message"]);},
               error=>{ console.error(error);this.clickSave=false;});
             console.log(this.SaveDeliveryOrder)
           }
@@ -361,31 +360,31 @@ export class DeliveryorderComponent implements OnInit {
   //     data=>{data;
   //     if(data.Table.length>0){
   //         this.checkCust=true;
-  //         alert("Order is stopped for some reason .... !!!")
+  //         this.dialog.alert("Order is stopped for some reason .... !!!")
   //     }else{
   //       if (e.StatusID == 11)
   //       {
-  //         alert("Sorry,Outward already generated ....!!!");
+  //         this.dialog.alert("Sorry,Outward already generated ....!!!");
   //       }
   //       else if (e.StatusID == 12)
   //       {
-  //         alert("Sorry,Dispatch already generated ....!!!");
+  //         this.dialog.alert("Sorry,Dispatch already generated ....!!!");
   //       }
   //       else if (e.StatusID== 13)
   //       {
-  //         alert("Sorry,You can't edit this transaction ,because it's already Cancelled or deactivate ....!!!");
+  //         this.dialog.alert("Sorry,You can't edit this transaction ,because it's already Cancelled or deactivate ....!!!");
   //       }
   //       else if (e.StatusID== 15)
   //       {
-  //         alert("Sorry,You already Cancelled this Delivery Order ....!!!");
+  //         this.dialog.alert("Sorry,You already Cancelled this Delivery Order ....!!!");
   //       }
   //       else if (e.Process == "Online")
   //       {
-  //         alert("Sorry,You can't edit because its generated by customer....!!!");
+  //         this.dialog.alert("Sorry,You can't edit because its generated by customer....!!!");
   //       }
   //       else
   //       {
-  //         //alert("Work....!!!");
+  //         //this.dialog.alert("Work....!!!");
   //         //console.log(e);
   //         this.api.get('/DeliveryOrder/GetEditDelivryOrder?DeliveryOrderID='+e.DeliveryOrderID).subscribe(
   //           data=>{data; 
@@ -447,21 +446,21 @@ export class DeliveryorderComponent implements OnInit {
   //     if(data.Table.length>0)
   //     {
   //         this.checkCust=true;
-  //         alert("Order is stopped for some reason .... !!!")
+  //         this.dialog.alert("Order is stopped for some reason .... !!!")
   //     }
   //     else
   //     {
   //       if (e.StatusID == 11)
   //       {
-  //         alert("Sorry,Outward already generated ....!!!");
+  //         this.dialog.alert("Sorry,Outward already generated ....!!!");
   //       }
   //       else if (e.StatusID== 15)
   //       {
-  //         alert("Sorry,You already Cancelled this Delivery Order ....!!!");
+  //         this.dialog.alert("Sorry,You already Cancelled this Delivery Order ....!!!");
   //       }
   //       else if (e.StatusID == 13)
   //       {
-  //         alert("Sorry,You already Cancelled this Delivery Order ....!!!");
+  //         this.dialog.alert("Sorry,You already Cancelled this Delivery Order ....!!!");
   //       }
   //       else if (e.StatusID == 12)
   //       {
@@ -471,7 +470,7 @@ export class DeliveryorderComponent implements OnInit {
   //           let foo = prompt('Remarks ');
   //           this.api.post('/DeliveryOrder/PartiallyCancelled?DeliveryOrderID='+e.DeliveryOrderID+'&CustomerId='+e.CustomerID+'&Remarks='+foo+'&CreatedBy='+this.currentUser.userId).subscribe(
   //           data=>{data;
-  //             alert(data);
+  //             this.dialog.alert(data);
   //             this.BindDeliveryOrderList();},
   //           error=>{ console.error(error);});
   //         }
@@ -484,7 +483,7 @@ export class DeliveryorderComponent implements OnInit {
   //           let foo = prompt('Remarks');
   //           this.api.post('/DeliveryOrder/CancelledDO?DeliveryOrderID='+e.DeliveryOrderID+'&CustomerId='+e.CustomerID+'&Remarks=test&CreatedBy='+this.currentUser.userId).subscribe(
   //           data=>{data;
-  //             alert(data);
+  //             this.dialog.alert(data);
   //             this.BindDeliveryOrderList();},
   //           error=>{ console.error(error);});
   //         }
@@ -579,7 +578,7 @@ export class DeliveryorderComponent implements OnInit {
         }
         else
         {
-          //alert("Work....!!!");
+          //this.dialog.alert("Work....!!!");
           //console.log(e);
           this.api.get('/DeliveryOrder/GetEditDelivryOrder?DeliveryOrderID='+event.rowData.DeliveryOrderID).subscribe(
             data=>{data; 
@@ -655,27 +654,33 @@ export class DeliveryorderComponent implements OnInit {
       { headerName:'InwardLocationID',field: 'InwardLocationID',hide:true},
       { headerName:'StorageAreaID',field: 'StorageAreaID',hide:true},
     	{ headerName:'ProductID',field: 'ProductID',hide:true},
-    	{ headerName:'ProductName',field: 'ProductName',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
-    	{ headerName:'LotNo',field: 'LotNo',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},resizable:true},
-    	{ headerName:'FirstLotNo',field: 'FirstLotNo',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
-    	{ headerName:'StorageAreaName',field: 'StorageAreaName',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
-    	{ headerName:'InQuantity',field: 'InQuantity',hide:false,filter: 'agNumberColumnFilter' ,floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
-    	{ headerName:'PendingDO',field: 'PendingDO',hide:false,filter: 'agNumberColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
-    	{ headerName:'OutQuantity',field: 'OutQuantity',hide:false,filter: 'agNumberColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
-    	{ headerName:'BalanceQuantity',field: 'BalanceQuantity',hide:false,filter: 'agNumberColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
+    	{ headerName:'ProductName',field: 'ProductName',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:150},
+    	{ headerName:'LotNo',field: 'LotNo',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:100},
+    	{ headerName:'FirstLotNo',field: 'FirstLotNo',hide:true,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:150},
+    	{ headerName:'StorageAreaName',field: 'StorageAreaName',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:150},
+    	{ headerName:'InQuantity',field: 'InQuantity',hide:false,filter: 'agNumberColumnFilter' ,floatingFilter: true,cellStyle: {fontSize: '12px'},width:150},
+    	{ headerName:'PendingDO',field: 'PendingDO',hide:false,filter: 'agNumberColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:150},
+    	{ headerName:'OutQuantity',field: 'OutQuantity',hide:false,filter: 'agNumberColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:150},
+    	{ headerName:'BalanceQuantity',field: 'BalanceQuantity',hide:false,filter: 'agNumberColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:150},
     	{ headerName:'DOQuantity',field: 'DOQuantity',hide:false,cellEditorPopup: true,sort:"desc",filter: 'agNumberColumnFilter',floatingFilter: true,
       valueParser: "Number(newValue)" ,editable: true,cellStyle: params => {
         if (params.value >0 ) {
             return {color: 'white', backgroundColor: '#FF0000'};
         }else{
-          return {color: 'black', backgroundColor: '#98FB98'};
+          return {color: 'red', backgroundColor: '#98FB98'};
         }}},
     	{ headerName:'BrandID',field: 'BrandID',hide:true,cellStyle: {fontSize: '12px'},width:200},
     	{ headerName:'BrandName',field: 'BrandName',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
       { headerName:'ItemsInPacket',field: 'ItemsInPacket',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},    
       { headerName:'Remarks',field: 'Remarks',hide:false,filter: 'agTextColumnFilter',floatingFilter: true,cellStyle: {fontSize: '12px'},width:200},
   ];
-
+  getRowStyleDetail(a:any) {
+    if(a.data.DOQuantity>0){
+      return { 'background-color': 'pink' }
+    }    else{
+      return;
+    }
+  }
   // columnsDeliveryOrderList: MtxGridColumn[] = [
   //   {
   //     header: "Action",
@@ -751,6 +756,10 @@ export class DeliveryorderComponent implements OnInit {
     { headerName:'ShippingAddress', field:'ShippingAddress', resizable: true,hide:true  , filter: 'agTextColumnFilter',floatingFilter: true,  },
     { headerName:'WareHouseID', field:'WareHouseID', resizable: true,hide:true , filter: 'agTextColumnFilter',floatingFilter: true,   },  
   ];
+  OnListDeliveryOrder(){
+    this.BindDeliveryOrderList();
+  }
+  
 }
 export class DeliveryOrderDetail{
   DeliveryOrderID:number=0;	

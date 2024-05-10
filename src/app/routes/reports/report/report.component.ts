@@ -12,6 +12,7 @@ import { ICellRendererComp, KeyCreatorParams, GridReadyEvent, } from 'ag-grid-co
 import { ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { MtxDialog} from '@ng-matero/extensions';
 //import { DxReportViewerModule } from 'devexpress-reporting-angular';
 @Component({
   selector: 'app-report',
@@ -92,7 +93,7 @@ export class ReportComponent implements OnInit {
   ReportNames: any = ""
   ReportType: any = "Report";
   SPName: any = "";
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService,public dialog: MtxDialog) {
     this.currentUser = this.api.getCurrentUser();
     const dateSendingToServer = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd')
     this.dtStartDate = dateSendingToServer;
@@ -535,7 +536,7 @@ export class ReportComponent implements OnInit {
             this.tab = 0;
             console.log("Report", data.length)
             if (data.length == 0) {
-              alert("Data not found")
+              this.dialog.alert("Data not found")
             } else {
               var pdfResult = data[0].Base64Str;
               let pdfWindow = window.open("")
@@ -550,11 +551,11 @@ export class ReportComponent implements OnInit {
         },
         error1 => {
           console.error("error1", error1.Message);
-          //alert(error1.Message)
+          //this.dialog.alert(error1.Message)
         }
       );
     } else {
-      alert("Select Report name.......");
+      this.dialog.alert("Select Report name.......");
       document?.getElementById("ReportnameModel")?.focus();
     }
   }
@@ -609,7 +610,7 @@ export class ReportComponent implements OnInit {
       const str = this.ReportnameModel.replace(/\s/g, '') + '.xlsx'
       XLSX.writeFile(wb, String(str));
     } else {
-      alert("Data not Found.........")
+      this.dialog.alert("Data not Found.........")
       document?.getElementById("ReportnameModel")?.focus();
       this.tab = 0;
     }
@@ -648,7 +649,7 @@ export class ReportComponent implements OnInit {
         const str = this.ReportnameModel.replace(/\s/g, '') + '.pdf'
         pdf.save(String(str));
       } catch (e: any) {
-        alert("Error description: " + e.message);
+        this.dialog.alert("Error description: " + e.message);
       }
     });
   }
@@ -660,7 +661,7 @@ export class ReportComponent implements OnInit {
         this.CreatePDFWithImage()
       }, 5000);
     } else {
-      alert("Data not Found.........")
+      this.dialog.alert("Data not Found.........")
       this.tab = 0;
       document?.getElementById("ReportnameModel")?.focus();
     }

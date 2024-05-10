@@ -194,6 +194,7 @@
                           [rowData]="DeliveryOrdersearchList"
                           [columnDefs]="DeliveryOrdercolumnDefs"
                           (cellValueChanged) ="onDOCellKeyPress($event)"
+                          [getRowStyle]="getRowStyleDetail"
                       >
                       </ag-grid-angular>
                   </div>
@@ -251,6 +252,10 @@
             </div>
             </mat-tab> -->
             <mat-tab label="Delivery Order List" >
+              <div class="col-md-2 col-sm-2" style="padding: 5px 0px 6px;">
+                <button class="btn btn-secondary btn-sm" (click)="OnListDeliveryOrder()"
+                  style="width: 150px !important; ">Refresh List</button>
+              </div>
               <div style="height: 100%; box-sizing: border-box;">
                 <ag-grid-angular 
                   style="height: 450px;"

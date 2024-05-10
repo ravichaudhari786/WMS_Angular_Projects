@@ -157,15 +157,15 @@ async BindDropdown() {
       return;
     }
     if( this.ProductTaxDetailList.length==0){
-      alert("Please ....Provide Product Tax Details");
+      this.dialog.alert("Please ....Provide Product Tax Details");
 return;
     }
     else if(this.form.value.txtTaxName==null ||this.form.value.txtTaxName==""){
         this.Taxname="";
         }else if(this.ProductListT.length==0){
-          alert("Please Select Product");
+          this.dialog.alert("Please Select Product");
         }else if(this.ServiceListT.length==0){
-          alert("Please Select Service");
+          this.dialog.alert("Please Select Service");
         }
 
 else{
@@ -195,7 +195,7 @@ else{
   this.api.post('/ProductTaxDetails/ProductTaxDetails_insert',this.ProductTaxDetailSave).subscribe(
     data=>{data;
       console.log("data",data.Table[0].message);
-      alert(data.Table[0].message);  
+      this.dialog.alert(data.Table[0].message);  
       this.BindDropdown();  
       this.form.patchValue({
         WEDate:this.todayDate,

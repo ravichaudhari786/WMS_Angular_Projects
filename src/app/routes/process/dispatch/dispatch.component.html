@@ -1,120 +1,116 @@
 <!-- <breadcrumb></breadcrumb> -->
 <div fxLayout="row wrap" class="matero-row">
-    <div fxFlex="100" class="matero-col">
-      <mat-card>
-        <mat-tab-group animationDuration="1ms" (selectedIndexChange)="tabDeliveryOrderchange($event)" [(selectedIndex)]="tab" >
-          <mat-tab label="Dispatch">
-            <form [formGroup]="form" >
-                <div class="col-md-12">
-                    <div class="row pt-2">
-                        <div class="col-sm-5 col-md-5">
-                            <div class="form-group">
-                              <label>Customer Name</label>
-                              <select class="form-control form-control-sm" 
-                                formControlName="customer_id" id="customer_id">
-                                <option value="null" disabled>Select</option>
-                                <option *ngFor="let c of customerList" value={{c.CustomerID}}>{{c.CustomerName}}</option>
-                              </select>
-                              <mat-error id="customer_id_error"></mat-error>
-                            </div>
-                          </div>
-                          <div class="col-sm-2 col-md-2">
-                            <div class="form-group pt-3">
-                              <button type="button" class="btn btn-secondary btn-block" (click)="OnSearchClick()" >Search</button>
-                            </div>
-                          </div>
-                          <div class="col-sm-5 col-md-5">
-                            <div class="form-group">
-                              <label>DeliveryTo</label>
-                              <select class="form-control form-control-sm"
-                                formControlName="DeliveryTo_ID" id="DeliveryTo_ID">
-                                <option value="null" disabled>Select</option>
-                                <option *ngFor="let c of customePartyList" value={{c.CustomerPartyID}}>{{c.PartyName}}</option>
-                              </select>
-                            </div>
-                          </div>
-                          <!---row 1-->
-                          <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                              <label>Shipping Address</label>
-                              <input type="text" formControlName="txtShipping_Address" id="txtShipping_Address"
-                                class="form-control form-control-sm" placeholder="" />
-                            </div>
-                          </div>
-                          <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                              <label>OrderGivenBy</label>
-                              <input type="text" formControlName="OrderGivenBy_id" id="OrderGivenBy_id"
-                                class="form-control form-control-sm" placeholder="" />
-                            </div>
-                          </div>
-                          <!---row 3-->
-                          <div class="col-sm-4 col-md-4">
-                            <div class="form-group">
-                              <label>Truck No</label>
-                              <input type="text" formControlName="txtTruckNo" id="txtTruckNo"
-                                class="form-control form-control-sm" placeholder="" />
-                            </div>
-                          </div>
-                          <div class="col-sm-4 col-md-4">
-                            <div class="form-group">
-                              <label>Container No</label>
-                              <input type="text" formControlName="txtContainerNo" id="txtContainerNo"
-                                class="form-control form-control-sm" placeholder="" />
-                            </div>
-                          </div>
-                          <div class="col-sm-4 col-md-4">
-                            <div class="form-group">
-                              <label>Remarks</label>
-                              <input type="text" formControlName="DispatchRemarks" id="DispatchRemarks" 
-                                class="form-control form-control-sm" placeholder="" />
-                            </div>
-                          </div>
-                    </div>
+  <div fxFlex="100" class="matero-col">
+    <mat-card>
+      <mat-tab-group animationDuration="1ms" (selectedIndexChange)="tabDeliveryOrderchange($event)"
+        [(selectedIndex)]="tab">
+        <mat-tab label="Dispatch">
+          <form [formGroup]="form">
+            <div class="col-md-12">
+              <div class="row pt-2">
+                <div class="col-sm-5 col-md-5">
+                  <div class="form-group">
+                    <label>Customer Name</label>
+                    <select class="form-control form-control-sm" formControlName="customer_id" id="customer_id">
+                      <option value="null" disabled>Select</option>
+                      <option *ngFor="let c of customerList" value={{c.CustomerID}}>{{c.CustomerName}}</option>
+                    </select>
+                    <mat-error id="customer_id_error"></mat-error>
                   </div>
-                  <hr>
-                  <div class="col-12">
-                    <p class="font-weight-bold"> Delivery Order List</p>
-                    <div>
-                      <ag-grid-angular 
-                            style="height: 250px;"
-                            class="ag-theme-alpine"
-                            [rowData]="DispatchSearchList"
-                            [columnDefs]="DispatchSearchcolumnDefs"
-                            (rowDoubleClicked)="rowDODoubleClicked($event)"
-                        >
-                        </ag-grid-angular>
-                    </div>
+                </div>
+                <div class="col-sm-2 col-md-2">
+                  <div class="form-group pt-3">
+                    <button type="button" class="btn btn-secondary btn-block" (click)="OnSearchClick()">Search</button>
                   </div>
-                  <hr>
-                  <div class="col-12">
-                    <p class="font-weight-bold">Dispatch Details</p>
-                    <div>
-                      <ag-grid-angular 
-                            style="height: 250px;"
-                            class="ag-theme-alpine"
-                            [rowData]="DispatchDetailList"
-                            [columnDefs]="DispatchDetailcolumnDefs"
-                            (cellValueChanged) ="onDispatchCellKeyPress($event)"
-                        >
-                        </ag-grid-angular>
-                    </div>
-                    <div class="row mt-2">
-                      <div class="col-sm-12">
-                        <div class="form-group float-right" style="display: flex;">
-                          <label>Total Dispatch Qty</label>
-                          <input type="text" formControlName="txtTotalDispatchQty" id="txtTotalDispatchQty" readonly
-                            class="form-control form-control-sm" placeholder="" />
-                        </div>
-                      </div>
-                    </div>
+                </div>
+                <div class="col-sm-5 col-md-5">
+                  <div class="form-group">
+                    <label>DeliveryTo</label>
+                    <select class="form-control form-control-sm" formControlName="DeliveryTo_ID" id="DeliveryTo_ID">
+                      <option value="null" disabled>Select</option>
+                      <option *ngFor="let c of customePartyList" value={{c.CustomerPartyID}}>{{c.PartyName}}</option>
+                    </select>
                   </div>
-                  <br>
-                  <button type="button" class="btn btn-secondary" style="width:20%;" (click)="onSaveDispatch()" [disabled]="clickSave">Save</button>
-                  <button type="button" class="btn btn-secondary ml-3" style="width:20%;" (click)="onResetDispatch()" >Reset</button>
-                </form>
-            </mat-tab>
-            <!-- <mat-tab label="Dispatch List">
+                </div>
+                <!---row 1-->
+                <div class="col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <label>Shipping Address</label>
+                    <input type="text" formControlName="txtShipping_Address" id="txtShipping_Address"
+                      class="form-control form-control-sm" placeholder="" />
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <label>OrderGivenBy</label>
+                    <input type="text" formControlName="OrderGivenBy_id" id="OrderGivenBy_id"
+                      class="form-control form-control-sm" placeholder="" />
+                  </div>
+                </div>
+                <!---row 3-->
+                <div class="col-sm-4 col-md-4">
+                  <div class="form-group">
+                    <label>Truck No</label>
+                    <input type="text" formControlName="txtTruckNo" id="txtTruckNo" class="form-control form-control-sm"
+                      placeholder="" />
+                  </div>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                  <div class="form-group">
+                    <label>Container No</label>
+                    <input type="text" formControlName="txtContainerNo" id="txtContainerNo"
+                      class="form-control form-control-sm" placeholder="" />
+                  </div>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                  <div class="form-group">
+                    <label>Remarks</label>
+                    <input type="text" formControlName="DispatchRemarks" id="DispatchRemarks"
+                      class="form-control form-control-sm" placeholder="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="col-12">
+              <p class="font-weight-bold"> Delivery Order List</p>
+              <div>
+                <ag-grid-angular style="height: 250px;" class="ag-theme-alpine" [rowData]="DispatchSearchList"
+                  [columnDefs]="DispatchSearchcolumnDefs" (rowDoubleClicked)="rowDODoubleClicked($event)">
+                </ag-grid-angular>
+              </div>
+            </div>
+            <hr>
+            <div class="col-12">
+              <p class="font-weight-bold">Dispatch Details</p>
+              <div>
+                <ag-grid-angular style="height: 250px;" class="ag-theme-alpine" [rowData]="DispatchDetailList"
+                  [columnDefs]="DispatchDetailcolumnDefs" (cellValueChanged)="onDispatchCellKeyPress($event)">
+                </ag-grid-angular>
+              </div>
+              <div class="row mt-2">
+                <div class="col-sm-12">
+                  <div class="form-group float-right" style="display: flex;">
+                    <label>Total Dispatch Qty</label>
+                    <input type="text" formControlName="txtTotalDispatchQty" id="txtTotalDispatchQty" readonly
+                      class="form-control form-control-sm" placeholder="" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row mt-2">
+                <div class="col-md-3 col-sm-3">
+                  <button type="button" class="btn btn-secondary" (click)="onSaveDispatch()" [disabled]="clickSave" style="width: 100% !important;">Save</button>
+                </div>
+                <div class="col-md-3 col-sm-3">
+                  <button type="button" class="btn btn-secondary" (click)="onResetDispatch()" style="width: 100% !important;">Reset</button>
+                </div>
+              </div>
+            </div>
+            
+          </form>
+        </mat-tab>
+        <!-- <mat-tab label="Dispatch List">
               <div class="form-control-sm" >
                 <label class="form-control-sm" >Filter  </label>
                 <input type="text" (keyup)="onKeyfilter(filtertext.value)" id="filtertext" #filtertext 
@@ -146,21 +142,18 @@
                 </mtx-grid>
               </div>
             </mat-tab> -->
-            <mat-tab label="Dispatch List" >
-              <div style="height: 100%; box-sizing: border-box;">
-                <ag-grid-angular 
-                  style="height: 500px;"
-                  class="ag-theme-alpine"
-                  [rowData]="DispatchList"
-                  [columnDefs]="DispatchsListColumnDefs"
-                  [frameworkComponents]="frameworkComponents"
-                  >
-                </ag-grid-angular>
-              </div>
-            </mat-tab>
-        </mat-tab-group>
-                    </mat-card>
-                    </div>
-                    </div>
-
-
+        <mat-tab label="Dispatch List">
+          <div class="col-md-2 col-sm-2" style="padding: 5px 0px 6px;">
+            <button class="btn btn-secondary btn-sm" (click)="OnListDispatch()"
+              style="width: 150px !important; ">Refresh List</button>
+          </div>
+          <div style="height: 100%; box-sizing: border-box;">
+            <ag-grid-angular style="height: 500px;" class="ag-theme-alpine" [rowData]="DispatchList"
+              [columnDefs]="DispatchsListColumnDefs" [frameworkComponents]="frameworkComponents">
+            </ag-grid-angular>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>

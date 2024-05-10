@@ -123,11 +123,11 @@ export class ShiftingComponent implements OnInit {
 
   OnSearchClick() {
     if (this.form.value.cbCustomerID == null || this.form.value.cbCustomerID == "") {
-      alert("Please .... Select Customer Name");
+      this.dialog.alert("Please .... Select Customer Name");
       document?.getElementById("cbCustomerID")?.focus();
       return;
     } else if (this.form.value.txtLotNo == null || this.form.value.txtLotNo == "") {
-      alert("Please .... Enter Lot No ");
+      this.dialog.alert("Please .... Enter Lot No ");
       document?.getElementById("txtLotNo")?.focus();
       return;
     } else {
@@ -192,7 +192,7 @@ export class ShiftingComponent implements OnInit {
   onKeyfilter(e: string) {
     if (Number(this.form.value.txtBalquantity) > 0) {
       if (Number(this.form.value.txtBalquantity) < Number(e)) {
-        alert("Shifting Quantity greater than the Balance Quantity ....!!!");
+        this.dialog.alert("Shifting Quantity greater than the Balance Quantity ....!!!");
         this.form.controls['txtShiftingQty'].setValue('');
       }
     }
@@ -201,7 +201,7 @@ export class ShiftingComponent implements OnInit {
     const ToLocationNames = this.StorageAreas.filter((x: any) => x.StorageAreaID == this.form.value.cbToLocation);
     if (this.form.value.txtLocation != "" || this.form.value.txtLocation != null) {
       if (this.form.value.txtLocation == ToLocationNames[0].Storage_Area_Name) {
-        alert("Please Select other location");
+        this.dialog.alert("Please Select other location");
         this.form.controls['cbToLocation'].reset();
       }
     }
@@ -209,21 +209,21 @@ export class ShiftingComponent implements OnInit {
 
   OnAddClick() {
     if (this.form.value.txtShiftingQty == null || this.form.value.txtShiftingQty == "") {
-      alert("Please .... Enter Shifting Quantity...!!");
+      this.dialog.alert("Please .... Enter Shifting Quantity...!!");
       document?.getElementById("txtShiftingQty")?.focus();
       return;
     } else if (Number(this.form.value.txtBalquantity) < Number(this.form.value.txtShiftingQty)) {
-      alert("Shifting Quantity greater than the Balance Quantity ....!!!");
+      this.dialog.alert("Shifting Quantity greater than the Balance Quantity ....!!!");
       document?.getElementById("txtShiftingQty")?.focus();
       return;
     }
     else if (this.form.value.cbToLocation == null || this.form.value.cbToLocation == 0) {
-      alert("Please .... Select To Location...!!");
+      this.dialog.alert("Please .... Select To Location...!!");
       document?.getElementById("cbToLocation")?.focus();
       return;
     }
     else if (this.form.value.cblabourcontractor_id == null || this.form.value.cblabourcontractor_id == 0) {
-      alert("Please .... Select Labour Contractor...!!");
+      this.dialog.alert("Please .... Select Labour Contractor...!!");
       document?.getElementById("cblabourcontractor_id")?.focus();
       return;
     }
@@ -299,13 +299,13 @@ export class ShiftingComponent implements OnInit {
     this.submitted = true;
     console.log(formData);
     if (this.form.invalid) {
-      alert("invalid");
+      this.dialog.alert("invalid");
       return;
     } else if (this.ShiftingDetailList.length == 0) {
-      alert("Enter Shifting Detail ...");
+      this.dialog.alert("Enter Shifting Detail ...");
     } else {
       this.HideSaveButton = false;
-      alert("Save");
+      this.dialog.alert("Save");
       this.ShiftingDetailList.forEach((i: any) => {
         if (i.ShiftingDID > 0) {
           this.SDetailSaveList.push(

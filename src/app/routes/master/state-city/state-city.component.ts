@@ -63,7 +63,7 @@ export class StateCityComponent implements OnInit {
     console.log(formData)
     this.submitted = true;
     if (this.form.invalid) {
-      //alert("invalid form");
+      //this.dialog.alert("invalid form");
       return;
     }
     else {
@@ -99,7 +99,7 @@ export class StateCityComponent implements OnInit {
 
     this.submitted2 = true;
     if (this.form2.invalid) {
-      // alert("invalid form");
+      // this.dialog.alert("invalid form");
       return;
     }
     else {

@@ -105,29 +105,29 @@ export class EmailScheduleComponent implements OnInit {
     const filterReportID = this.ReportNameList.filter((x: any) => x.Selected == true);
 
     if (filterReportID.length == 0) {
-      alert("Please Select Report name........")
+      this.dialog.alert("Please Select Report name........")
     } else
       if (this.txtEmailSubject == "") {
-        alert("Please Enter Email Subject........")
+        this.dialog.alert("Please Enter Email Subject........")
         document?.getElementById("txtEmailSubject")?.focus();
       } else
         if (this.txtEmailText == "") {
-          alert("Please Enter Email Text........")
+          this.dialog.alert("Please Enter Email Text........")
           document?.getElementById("txtEmailText")?.focus();
         } else
           if (this.chk_Daily == false && this.chk_Onces == false && this.chk_weekly == false && this.chk_Monthly == false) {
-            alert("Please Select Period........")
+            this.dialog.alert("Please Select Period........")
             document?.getElementById("chk_Daily")?.focus();
           } else
             if (this.chk_weekly == true && this.weekday == "") {
-              alert("Please Select Week Day........")
+              this.dialog.alert("Please Select Week Day........")
               document?.getElementById("weekday")?.focus();
             } else
               if (this.chk_Monthly == true && this.Month_day == "") {
-                alert("Please Select Month Day........")
+                this.dialog.alert("Please Select Month Day........")
                 document?.getElementById("Month_day")?.focus();
               } else if (this.selectedTime == "") {
-                alert("Please Select Reporting Time........")
+                this.dialog.alert("Please Select Reporting Time........")
                 document?.getElementById("selectedTime")?.focus();
               } else {
                 const SaveEmailsSched = {
@@ -150,7 +150,7 @@ export class EmailScheduleComponent implements OnInit {
                 };
                 this.api.post('/EmailSchedule/Email_Report_insert', SaveEmailsSched).subscribe(
                   data => {
-                    alert(data[0].message)
+                    this.dialog.alert(data[0].message)
                     this.OnResetEmailSchedule();
                   },
                   error1 => {
@@ -250,7 +250,7 @@ export class EmailScheduleComponent implements OnInit {
       }
       this.api.post('/EmailSchedule/EmailReport_Delete', deteleData).subscribe(
         data => {
-          alert(data)
+          this.dialog.alert(data)
           this.tab=1;          
           this.BindEmailScheduleList();
         },

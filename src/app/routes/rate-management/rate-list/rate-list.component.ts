@@ -115,7 +115,7 @@ export class RateListComponent implements OnInit {
     // console.log(formData)
     this.submitted = true;
     if (this.form.invalid) {
-      //alert("invalid form");
+      //this.dialog.alert("invalid form");
       return;
     }
     else {

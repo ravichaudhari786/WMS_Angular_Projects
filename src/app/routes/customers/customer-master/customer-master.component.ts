@@ -224,7 +224,7 @@ throw new Error('Method not implemented.');
       
       return;
     }else if( this.CustomerDetailList.length==0){
-      alert("please ....Provide Customer Contact Details");
+      this.dialog.alert("please ....Provide Customer Contact Details");
     }
 
     else{
@@ -275,7 +275,7 @@ throw new Error('Method not implemented.');
    
     this.api.get('/Customer/Customers_Insert',this.CustomerSaveDetails).subscribe(
       data=>{data;
-        alert(data.Table[0].message);      
+        this.dialog.alert(data.Table[0].message);      
     },    
       error=>{ console.error(error);}
     );
@@ -423,13 +423,13 @@ console.log("Wprk3333",a.cellSelection[0].rowData);//cellselaction array contain
     this.DetailList=[];
    //validation of customer contact form
   if(this.form.value.txtContactName==null || this.form.value.txtContactName==""){
-    alert("Please .... Enter ContactName");
+    this.dialog.alert("Please .... Enter ContactName");
     document?.getElementById("txtContactName")?.focus();
     return;
   }
 
     else if(this.form.value.txtMobileNo==null){
-    alert("Please... Enter MobileNo");
+    this.dialog.alert("Please... Enter MobileNo");
     document?.getElementById("txtMobileNo")?.focus();
     return;}
  
@@ -491,11 +491,11 @@ OnAddFileClick(){
   this.DocumentList=[];
   //validation of customer Document form
     if(this.form.value.txtDocumentName==null || this.form.value.txtDocumentName==""){
-    alert("Please .... select DocumentName");
+    this.dialog.alert("Please .... select DocumentName");
     document?.getElementById("txtDocumentName")?.focus();
     return;
 }else if(this.form.value.txtDocumentpath==null){
-  alert("Please... Choose file");
+  this.dialog.alert("Please... Choose file");
   document?.getElementById("txtDocumentpath")?.focus();
   return;
 

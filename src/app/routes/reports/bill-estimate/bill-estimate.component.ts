@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import { ApiService } from '@core';
 import { ColDef, GridApi } from 'ag-grid-community';
 import { User } from '@core/authentication/interface';
+import { MtxDialog} from '@ng-matero/extensions';
 @Component({
   selector: 'app-bill-estimate',
   templateUrl: './bill-estimate.component.html',
@@ -21,7 +22,7 @@ export class BillEstimateComponent implements OnInit {
   chk_StorageSummary: any = false;
   chk_Labour: any = false;
   CustGrid:any;
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService,public dialog: MtxDialog) {
     this.currentUser = this.api.getCurrentUser();
     const dateSendingToServer = new DatePipe('en-US').transform(Date(), 'yyyy-MM-dd')
     this.dtStartDate = dateSendingToServer;
@@ -87,10 +88,10 @@ export class BillEstimateComponent implements OnInit {
   OnPrintBill() {
     this.myAnchorID=0;
     if(this.chk_StorageDetail==false && this.chk_StorageSummary==false && this.chk_Labour==false){
-      alert("Please Select Bill Type.........");
+      this.dialog.alert("Please Select Bill Type.........");
       document?.getElementById("chk_StorageDetail")?.focus();
     }else if(this.SelectedCustomerList.length==0){
-      alert("Please Select Customer Name.........");
+      this.dialog.alert("Please Select Customer Name.........");
       this.myAnchorID=1;
     }else{
       this.myAnchorID=0;

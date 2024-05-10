@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiService } from '@core';
 import { User } from '@core/authentication/interface';
 import { MtxDialog, MtxGridCellSelectionDirective, MtxGridColumn, MtxGridRowClassFormatter } from '@ng-matero/extensions';
+
 import { BehaviorSubject } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { AlertPromise } from 'selenium-webdriver';
@@ -35,11 +36,6 @@ import { InwardActionButtonComponent } from './inward-action-button/inward-actio
   styleUrls: ['./inward.component.scss']
 })
 export class InwardComponent implements OnInit {
-  // rowClassFormatter: MtxGridRowClassFormatter = {
-  //   success: (data, index) => data.name === 'Boron',
-  //   danger: (data, index) => index === 1,
-  // };
-
   public gridInward!: DxDataGridComponent;
   dataSource!: DataSource;
   collapsed = false;
@@ -60,7 +56,7 @@ export class InwardComponent implements OnInit {
     backdrop: false,
     ignoreBackdropClick: true
   };
-
+  
   filtertext!: string;
   form!: FormGroup;
   submitted = false;
@@ -81,6 +77,8 @@ export class InwardComponent implements OnInit {
   servicesid: number = 0;
   ProductRate: number = 0;
   isnew: boolean = true;
+  mainRem1: boolean = true;
+  mainRem2: boolean = false;
   customerList: any; productList: any; dockList: any; unloadingList: any; remarkList: any;
   brandList: any; packateCountList: any; serviceTypeList: any; labourContractorList: any;
   inwardservicelist: any; Inwardservicecharges: any; InwardList: any; inwardserviTest: any;
@@ -110,7 +108,11 @@ export class InwardComponent implements OnInit {
   frameworkComponents: any;
   MyMenus: any = [];
   public rowSelection = 'multiple';
+  ClassMasterList: any = [];
   //selectedBrand:any;
+  rowClassFormatterDetail: MtxGridRowClassFormatter = {
+    warning_light: (InwardDetailList, index) => InwardDetailList.IsNew == false && InwardDetailList.IsNew==0,
+  };
   constructor(private fb: FormBuilder, private api: ApiService, public dialog: MtxDialog, private modalService: NgbModal, private el: ElementRef) {
     this.MyMenus = this.api.getCurrentMenusForButton("Inward");
 
@@ -142,6 +144,8 @@ export class InwardComponent implements OnInit {
       remarks: [null, Validators.required],
       country: ["", Validators.required],
       allocatedQty: [0, Validators.required],
+      cbClassName: [""],
+      Maincustremarks: [""],
     });
     this.frameworkComponents = {
       buttonRenderer: InwardActionButtonComponent,
@@ -170,7 +174,8 @@ export class InwardComponent implements OnInit {
     // console.log(this.todayDate+'----'+this.productdate);
     console.log(this.todayDate);
   }
-
+  
+      
   async BindDropdown() {
     this.api.get('/Customer').subscribe(
       data => { this.customerList = data },
@@ -223,10 +228,17 @@ export class InwardComponent implements OnInit {
         this.CurrentLotNo = data[0]["LotNo"];  //console.log(this.CurrentLotNo)
       }, error => { console.error(error); });
 
-    // this.api.get('/StorageAreaMaster',this.BindDropdownData).subscribe(
-    //   data=>{this.storageAreaList=data;},
-    //   error=>{ console.error(error);} );
+    this.api.post('/InwardList', this.BindDropdownData).subscribe(
+      data => { this.InwardList = data },
+      error => { console.error(error); });
 
+    this.api.get('/Repacking/ClassMaster_Select').subscribe(
+      data => {
+        this.ClassMasterList = [];
+        this.ClassMasterList = data
+      },
+      error => { console.error(error); }
+    );
   }
 
   get f() { return this.form.controls; }
@@ -247,85 +259,7 @@ export class InwardComponent implements OnInit {
       error => { console.error(error); }
     );
   }
-  // OnEditInward(){
-
-  //var dataGrid = $("#InwardListgrid").data();
-  // var selectedKeys = dataGrid.getSelectedRowKeys();
-  // var selectedData = dataGrid.getSelectedRowsData();
-  // console.log("dataGrid");
-
-  //   this.api.post('/Inward/GetInwardDetailsByID?InwardID=53').subscribe(
-  // data=>  {this.InwardEdit=data;
-  // console.log(this.InwardEdit);},
-  // error=>{ console.error(error);}
-  // ); 
-  // }
-
-  // editIconClick(e:any){
-  //   console.log(e);
-  // this.api.get('/CountInPacket').subscribe(
-  //   data=>{this.packateCountList=data},
-  //   error=>{ console.error(error); alert(error)}
-  // );
-
-
-  //console.log('/Inward/GetInwardDetailsByID?InwardID='+e.row.data.InwardID);
-
-  //else if(e.row.data.Status==52 || e.row.data.Status==0)
-  // {
-  //   console.log("Sorry,Inward is under process. You can't edit ....!!!");
-  // }else if(e.row.data.Status==53)
-  // {
-  //   console.log("Sorry,Outward already generated.You can't edit ....!!!");
-  // }else if(e.row.data.Status==54)
-  // {
-  //   console.log("Sorry,Inward is already cancelled ....!!!");
-  // }
-  // console.log(e.row.data);
-  // const Inwarditems:any={
-  //   customer_id:e.row.data.CustomerID,
-  //   challan_no:e.row.data.challan_no==null?0:e.row.data.challan_no,
-  //   container_no :e.row.data.container_no,
-
-  //   dock_name:e.row.data.DocID,
-  //   inward_date:e.row.data.InwardDate,
-  //   unloading_by:e.row.data.UnLoadingBy,
-  //   custremarks:e.row.data.Remarks,
-
-  //   //transportername:e.row.data.transportername,
-
-
-  // }
-  // console.log(Inwarditems);
-  // this.form.setValue(Inwarditems);
-
-  // }
-
-  //   deleteIconClick(e:any){
-  //     if(e.row.data.Status==51)
-  //     {
-  //       console.log("new inward");
-
-  //     }else if(e.row.data.Status==52 || e.row.data.Status==0)
-  //     {
-  //       console.log("Sorry,Inward is under process. You can't edit ....!!!");
-  //     }else if(e.row.data.Status==53)
-  //     {
-  //       console.log("Sorry,Outward already generated.You can't edit ....!!!");
-  //     }else if(e.row.data.Status==54)
-  //     {
-  //       console.log("Sorry,Inward is already cancelled ....!!!");
-  //     }
-
-  // }
-  // onTabclick(){  
-  //   console.log("new inward");
-  //   this.api.post('/Inward/GetInwardDetailsByID?InwardID=53').subscribe(
-  //     data=>  {this.InwardEdit=data;
-  //     console.log(this.InwardEdit);},
-  //     error=>{ console.error(error);}
-  //     ); 
-  // }
+  
 
   printIconClick(e: any) {
 
@@ -338,17 +272,17 @@ export class InwardComponent implements OnInit {
   OnApplyClick(customer_id: any, challan_no: any) {
     //console.log(this.form.value.challan_no);
     if (this.form.value.customer_id == null || this.form.value.customer_id == 0) {
-      alert("Select Customers .....");
+      this.dialog.alert("Select Customers .....");
       document?.getElementById("customer_id")?.focus();
     } else if (this.form.value.challan_no == "" || this.form.value.challan_no == null) {
-      alert("Enter challan No .....");
+      this.dialog.alert("Enter challan No .....");
       document?.getElementById("challan_no")?.focus();
     }
   }
 
   onCustomerContact(CustomerContactcontent: any) {
     if (this.form.value.customer_id == null || this.form.value.customer_id == 0) {
-      alert("Select Customers .....");
+      this.dialog.alert("Select Customers .....");
       document?.getElementById("customer_id")?.focus();
     } else {
       //console.log("open Customers .....");
@@ -369,14 +303,6 @@ export class InwardComponent implements OnInit {
       this.api.post('/Inward/GetCustomerContact', CustomerData).subscribe(
         data => { this.customercontactList = data; },
         error => { console.error(error); });
-
-
-      // this.api.post('/Inward/GetCustomerContacts',CustomerData).subscribe(
-      //   data=>{this.customercontactList=data;
-      //     //console.log(this.customercontactList);
-      //   },
-      //   error=>{ console.error(error);}
-      // );
       this.modalService.open(CustomerContactcontent);
     }
 
@@ -395,7 +321,7 @@ export class InwardComponent implements OnInit {
   }
   OnTransportAdd(TranspoterDetailcontent: any) {
     if (this.form.value.truckno == null || this.form.value.truckno == "") {
-      alert("Please .... Enter Truck Number...");
+      this.dialog.alert("Please .... Enter Truck Number...");
     }
     else {
       //console.log('truckno= '+this.form.value.truckno);
@@ -462,7 +388,7 @@ export class InwardComponent implements OnInit {
 
   OnServiceSelect(id: any) {
     if (this.form.value.customer_id == null) {
-      alert("Please .... select Customers");
+      this.dialog.alert("Please .... select Customers");
       this.form.controls['product_id'].reset();
       this.form.controls['service_id'].reset();
       this.inwardservicelist = [];
@@ -470,7 +396,7 @@ export class InwardComponent implements OnInit {
       return;
     }
     else if (this.form.value.product_id == null) {
-      alert("Please .... select Product");
+      this.dialog.alert("Please .... select Product");
       this.form.controls['product_id'].reset();
       this.form.controls['service_id'].reset();
       this.inwardservicelist = [];
@@ -503,7 +429,7 @@ export class InwardComponent implements OnInit {
         datas => {
           console.log(" mess =>" + datas[0]["Message"]);
           if (datas[0]["Message"] !== '') {
-            alert("" + datas[0]["Message"])
+            this.dialog.alert("" + datas[0]["Message"])
             this.form.controls['product_id'].reset();
             this.form.controls['service_id'].reset();
             this.inwardservicelist = [];
@@ -519,22 +445,10 @@ export class InwardComponent implements OnInit {
 
   }
 
-  // getDropDownText(id:any, object:any){
-  //   const selObj = _.filter(object, function (o:any) {
-  //       return (_.includes(id,o.id));
-  //   });
-  //   return selObj;
-  // }
-
-  // onRowDoubleClick(a:any,e:any)
-  // {
-  //   console.log(a);
-  //   console.log(e);
-  // }
   onRowDblclicked(a: any, e: any) {
     this.Flag = true;
     this.GetServicedetail();
-    console.log(this.InwardTransportList)
+    console.log("99999999999", a)
     //-----------------------------------------------------Reset
     this.form.controls['product_id'].reset();
     this.form.controls['brand_id'].reset();
@@ -545,6 +459,7 @@ export class InwardComponent implements OnInit {
     this.form.controls['remarks'].reset();
     this.form.controls['selflife'].setValue('0');
     this.form.controls['quantity'].reset();
+    this.form.controls['cbClassName'].reset();
     this.form.controls['country'].setValue('');
     this.CurrentLotNo = Number(this.CurrentLotNo) + 1;
 
@@ -560,6 +475,7 @@ export class InwardComponent implements OnInit {
       country: a.cellSelection[0].rowData["Country"],
       service_id: a.cellSelection[0].rowData["StorageAreaTypeID"],
       labourcontractor_id: a.cellSelection[0].rowData["LabourContractorID"],
+      cbClassName: a.cellSelection[0].rowData["ClassName"],
     });
     this.DID = a.cellSelection[0].rowData["InwardDID"];
     this.servicesid = a.cellSelection[0].rowData["ServiceID"];
@@ -570,7 +486,7 @@ export class InwardComponent implements OnInit {
     this.outquantity = a.cellSelection[0].rowData["OutQuantity"];
     this.inprocessquantity = a.cellSelection[0].rowData["InprocessQuantity"];
     this.transferdid = a.cellSelection[0].rowData["TransferDID"];
-    this.isnew = a.cellSelection[0].rowData["IsNew"];
+    this.isnew = true;//a.cellSelection[0].rowData["IsNew"];
     //Get services for edit
     this.inwardservicelist = [];
     this.inwardservicelist = this.InwardchargesList.filter((x: any) => x.InwardDID == a.cellSelection[0].rowData["InwardDID"])
@@ -599,7 +515,8 @@ export class InwardComponent implements OnInit {
     var Qtydata = this.storageAreaList.map(v1 => v1.AllocatedQuantity).reduce((acc, v1) => v1 + acc);
     this.allocatedQty = Qtydata;
     this.form.controls['allocatedQty'].setValue(this.allocatedQty);
-    //console.log(this.storageAreaList);
+    //console.log("IsNew",a.cellSelection[0].rowData["IsNew"]);
+    document?.getElementById("product_id")?.focus();
   }
 
   SetServiceTo_inwardservicelist() {
@@ -636,28 +553,28 @@ export class InwardComponent implements OnInit {
       //console.log(this.TransportList);
     }
     if (this.form.value.truckno == null || this.form.value.truckno == "") {
-      alert("Please .... Enter Truck number");
+      this.dialog.alert("Please .... Enter Truck number");
       document?.getElementById("truckno")?.focus();
       return;
     } else if (this.form.value.product_id == null) {
-      alert("Please .... select Product");
+      this.dialog.alert("Please .... select Product");
       document?.getElementById("product_id")?.focus();
       return;
     } else if (this.form.value.quantity == null) {
-      alert("Please... Enter Quantity ..!!!");
+      this.dialog.alert("Please... Enter Quantity ..!!!");
       document?.getElementById("quantity")?.focus();
       return;
     } else if (this.form.value.service_id == null) {
-      alert("Please... Select Service Type ..!!!");
+      this.dialog.alert("Please... Select Service Type ..!!!");
       document?.getElementById("service_id")?.focus();
       return;
     } else if (this.form.value.labourcontractor_id == null) {
-      alert("Please... Select labour contractor ..!!!");
+      this.dialog.alert("Please... Select labour contractor ..!!!");
       document?.getElementById("labourcontractor_id")?.focus();
       return;
     }
     else if (this.form.value.quantity != this.allocatedQty) {
-      alert("Please... Add storage area quntity ..!!!");
+      this.dialog.alert("Please... Add storage area quntity ..!!!");
       document?.getElementById("BtnStorageArea")?.focus();
       return;
     }
@@ -750,9 +667,10 @@ export class InwardComponent implements OnInit {
       StorageAreaTypeID: this.servicesid,
       StorageAreaType: StorageAreaTypes[0].ServiceName,//this.form.value.service_id.ServiceName,
       SelfLife: this.form.value.selflife,
-      IsNew: this.isnew,
+      IsNew:this.InwardID>0? false:true,//this.isnew,
       Country: this.form.value.country,
-      ServiceID: this.form.value.service_id//.StorageAreaTypeID     
+      ServiceID: this.form.value.service_id,//.StorageAreaTypeID     
+      ClassName: this.form.value.cbClassName
     };
     this.DetailList = this.InwardDetailList;
     this.DetailList.push(this.newDynamicInwardDetails);
@@ -848,6 +766,7 @@ export class InwardComponent implements OnInit {
     this.form.controls['selflife'].setValue('0');
     this.form.controls['quantity'].reset();
     this.form.controls['country'].setValue('');
+    this.form.controls['cbClassName'].reset();
     this.CurrentLotNo = Number(this.CurrentLotNo) + 1;
     this.ChargesList = [];
     this.inwardservicelist = [];
@@ -864,7 +783,7 @@ export class InwardComponent implements OnInit {
     this.api.get('/StorageAreaMaster?WarehouseID=' + this.currentUser.warehouseId).subscribe(
       data => {
         this.storageAreaList = data; this.allocatedQty = 0;
-        console.log("this.storageAreaList", this.storageAreaList);
+        //console.log("this.storageAreaList", this.storageAreaList);
       },
       error => { console.error(error); }
     );
@@ -949,7 +868,7 @@ export class InwardComponent implements OnInit {
         console.log("this.storageAreaList", this.storageAreaList);
         this.allocatedQty = 0;
         if (this.form.value.quantity == null || this.form.value.quantity == 0) {
-          alert("Please .... Enter Quantity");
+          this.dialog.alert("Please .... Enter Quantity");
           document?.getElementById("quantity")?.focus();
         }
         else {
@@ -1001,7 +920,7 @@ export class InwardComponent implements OnInit {
       this.modalService.dismissAll(StorageAreacontent);
       this.allocatedQty = 0;
     } else {
-      alert("Please, Enter correct Quantity ...");
+      this.dialog.alert("Please, Enter correct Quantity ...");
       this.onStorageGridRefresh();
       //this.modalService.open(StorageAreacontent)
       this.modalService.dismissAll(StorageAreacontent);
@@ -1016,7 +935,7 @@ export class InwardComponent implements OnInit {
       this.onStorageGridRefresh();
       this.modalService.dismissAll(StorageAreacontent);
     } else {
-      alert("Please, Enter correct Quantity ...");
+      this.dialog.alert("Please, Enter correct Quantity ...");
       this.onStorageGridRefresh();
       this.modalService.open(StorageAreacontent)
       this.allocatedQty = 0;
@@ -1039,7 +958,7 @@ export class InwardComponent implements OnInit {
           i.AllocatedQuantity = 0;
         }
       });
-      alert("Please .... enter proper quantity");
+      this.dialog.alert("Please .... enter proper quantity");
     }
     this.onStorageGridRefresh();
   }
@@ -1082,44 +1001,42 @@ export class InwardComponent implements OnInit {
     console.log(e);
   }
   tabInwardchange(event: any) {
-    //console.log(this.Inwardtab);
-    //console.log("tab=>"+this.tab)
     this.tab = event;
-    this.GetInwardList();
+    //this.GetInwardList();
   }
   OnSaveinward() {
 
     //console.log(this.form.value.dock_name);
     if (this.form.value.customer_id == null || this.form.value.customer_id == "") {
-      alert("Please .... Select Customer Name");
+      this.dialog.alert("Please .... Select Customer Name");
       document?.getElementById("customer_id")?.focus();
       return;
     } else if (this.form.value.dock_name == null || this.form.value.dock_name == "") {
-      alert("Please .... select Dock name ....");
       document?.getElementById("dock_name")?.focus();
+      this.dialog.alert("Please .... select Dock name ....");      
       return;
     } else if (this.form.value.inward_date == null) {
-      alert("Please... Enter inward date ..!!!");
       document?.getElementById("inward_date")?.focus();
+      this.dialog.alert("Please... Enter inward date ..!!!");      
       return;
     } else if (this.form.value.unloading_by == null) {
-      alert("Please... Select unloading by ..!!!");
       document?.getElementById("unloading_by")?.focus();
+      this.dialog.alert("Please... Select unloading by ..!!!");
       return;
     } else if (this.form.value.truckno == null) {
-      alert("Please... Select truck no ..!!!");
       document?.getElementById("truckno")?.focus();
+      this.dialog.alert("Please... Select truck no ..!!!");
       return;
     } else if (this.InwardDetailList.length == 0) {
-      alert("Please... Add Product Details ..!!!");
+      this.dialog.alert("Please... Add Product Details ..!!!");
       //document?.getElementById("truckno")?.focus();
       return;
     } else if (this.InwardshowStorageArea.length == 0) {
-      alert("Please... Add Storage Details ..!!!");
+      this.dialog.alert("Please... Add Storage Details ..!!!");
       //document?.getElementById("truckno")?.focus();
       return;
     } else if (this.InwardTransportList.length == 0) {
-      alert("Please... Add transport Details..!!!");
+      this.dialog.alert("Please... Add transport Details..!!!");
       //document?.getElementById("truckno")?.focus();
       return;
     }
@@ -1131,7 +1048,7 @@ export class InwardComponent implements OnInit {
         CompanyID: this.currentUser.companyId,
         WarehouseID: this.currentUser.warehouseId,
         InwardDate: this.form.value.inward_date,
-        Remarks: this.form.value.custremarks == null ? "" : this.form.value.custremarks,
+        Remarks: this.form.value.Maincustremarks,//this.form.value.custremarks == null ? "" : this.form.value.custremarks,
         FinancialYearID: this.currentUser.FinantialYearId,
         UserID: this.currentUser.userId,
         ReceiptNo: this.ReceiptNo,
@@ -1144,7 +1061,7 @@ export class InwardComponent implements OnInit {
         InwardLocationModel: this.InwardshowStorageArea,
         InwardTransperModel: this.InwardTransportList
       }
-
+      console.log("this.newDynamicSaveInward", this.newDynamicSaveInward);
       this.api.post('/Inward/SaveInward', this.newDynamicSaveInward).subscribe(
         data => {
           data;
@@ -1227,7 +1144,7 @@ export class InwardComponent implements OnInit {
   //         // // this.api.post('/Inward/DeleteInward?InwardID='+d.InwardID+'&CustomerID='+d.CustomerID+'&Remarks=test_by_angular&CreatedBy='+this.currentUser.userId).subscribe(
   //       //   this.api.post('/Inward/DeleteInward',DeletedData).subscribe(  
   //       //     data=>{data;
-  //       //     alert(data.Table[0]["message"]); 
+  //       //     this.dialog.alert(data.Table[0]["message"]); 
   //       //     this.SetDataTo_Inwardlist();},
   //       //     error=>{ console.error(error);}
   //       //    ); 
@@ -1235,15 +1152,15 @@ export class InwardComponent implements OnInit {
   //   else if(d.Status==52 || d.Status==0)
   //   {
   //     console.log("Sorry,Inward is under process. You can't Delete ....!!!");
-  //     alert("Sorry,Inward is under process. You can't Delete....!!!");
+  //     this.dialog.alert("Sorry,Inward is under process. You can't Delete....!!!");
   //   }else if(d.Status==53)
   //   {
   //     console.log("Sorry,Outward already generated.You can't Delete....!!!");
-  //     alert("Sorry,Outward already generated.You can't Delete....!!!");
+  //     this.dialog.alert("Sorry,Outward already generated.You can't Delete....!!!");
   //   }else if(d.Status==54)
   //   {
   //     console.log("Sorry,Inward is already cancelled ....!!!");
-  //     alert("Sorry,Inward is already cancelled ....!!!");
+  //     this.dialog.alert("Sorry,Inward is already cancelled ....!!!");
   //   }
   // }
 
@@ -1264,6 +1181,8 @@ export class InwardComponent implements OnInit {
     this.DID = 0;
     this.InwardID = 0;
     this.ReceiptNo = '0';
+    this.mainRem1 = true;
+    this.mainRem2 = false;
   }
 
   //  onEditTestListRow(e:any){
@@ -1337,15 +1256,15 @@ export class InwardComponent implements OnInit {
   //   }else if(e.Status==52 || e.Status==0)
   //   {
   //     console.log("Sorry,Inward is under process. You can't edit ....!!!");
-  //     alert("Sorry,Inward is under process. You can't edit ....!!!");
+  //     this.dialog.alert("Sorry,Inward is under process. You can't edit ....!!!");
   //   }else if(e.Status==53)
   //   {
   //     console.log("Sorry,Outward already generated.You can't edit ....!!!");
-  //     alert("Sorry,Outward already generated.You can't edit ....!!!");
+  //     this.dialog.alert("Sorry,Outward already generated.You can't edit ....!!!");
   //   }else if(e.Status==54)
   //   {
   //     console.log("Sorry,Inward is already cancelled ....!!!");
-  //     alert("Sorry,Inward is already cancelled ....!!!");
+  //     this.dialog.alert("Sorry,Inward is already cancelled ....!!!");
   //   }   
 
   // }
@@ -1456,8 +1375,11 @@ export class InwardComponent implements OnInit {
           FinancialYear: "",
         };
         this.api.post('/Inward/GetInwardDetailsByID', this.InData).subscribe(
-          data => {
+          data => { console.log("editdata",data)
             this.InwardDetailList = data.Table;
+            this.InwardDetailList.forEach((elements)=>{
+              elements.IsNew=true;
+            });
             this.InwardshowStorageArea = data.Table1;
             this.InwardTransportList = data.Table2;
             this.InwardchargesList = data.Table3;
@@ -1497,8 +1419,12 @@ export class InwardComponent implements OnInit {
               labourcontractor_id: 0,
               lot_no: this.CurrentLotNo, remarks: "", country: "",
               allocatedQty: 0,
+              cbClassName: "",
+              Maincustremarks: event.rowData.Remarks,
             }
             this.form.setValue(inwarditem);
+            this.mainRem2=true;
+            this.mainRem1=false;
           }, error => { console.error(error); });
         this.tab = 0;
         //console.log(this.InwardTransportList);
@@ -1515,14 +1441,14 @@ export class InwardComponent implements OnInit {
       }
     } else
       if (String(event.actions) == 'Print') {
-        this.api.get('/Inward/InwardReceipt?InwardID='+event.rowData.InwardID).subscribe(
+        this.api.get('/Inward/InwardReceipt?InwardID=' + event.rowData.InwardID).subscribe(
           data => {
             data;
-            console.log("InwardReceipt=>",data)
+            console.log("InwardReceipt=>", data)
             var pdfResult = data[0].Base64Str;
             let pdfWindow = window.open("")
             pdfWindow?.document.write("<iframe width='100%' height='100%' src='data:application/pdf;base64, " + encodeURI(pdfResult) + "'></iframe>")
-            
+
           },
           error => { console.error(error); }
         );
@@ -1575,26 +1501,29 @@ export class InwardComponent implements OnInit {
     { headerName: 'TruckNo', field: 'TruckNo', editable: true, },
     { headerName: 'ContainerNo', field: 'ContainerNo', editable: true, },
   ];
-
+  // InwardDetailRows: MtxGridRowClassFormatter = {
+  //   danger: (InwardDetailList, index) => index == 1
+  // };
+  
   InwardDetailColumns: MtxGridColumn[] = [
-    { header: "InwardDID", field: "InwardDID", hide: true, },
-    { header: "ProductID", field: "ProductID", hide: true, },
-    { header: "ProductName", field: "ProductName", },
-    { header: "LotNo", field: "LotNo", },
-    { header: "BrandID", field: "BrandID", hide: true, },
-    { header: "BrandName", field: "BrandName", },
-    { header: "ItemsInPacket", field: "ItemsInPacket", },
-    { header: "InQuantity", field: "InQuantity", },
-    { header: "MFD Date", field: "MFGDate", hide: true, },
-    { header: "ExpiryDate", field: "ExpDate", hide: true, },
-    { header: "Remarks", field: "Remarks", },
-    { header: "LabourContractorID", field: "LabourContractorID", hide: true, },
-    { header: "LabourContracterName", field: "LabourContracterName", },
-    { header: "StorageAreaTypeID", field: "StorageAreaTypeID", hide: true, },
-    { header: "StorageAreaType", field: "StorageAreaType", },
-    { header: "SelfLife", field: "SelfLife", },
-    { header: "Country", field: "Country", },
-
+    { header: "InwardDID", field: "InwardDID", hide: true, class:'HeaderCSS',},
+    { header: "ProductID", field: "ProductID", hide: true, class:'HeaderCSS'},
+    { header: "ProductName", field: "ProductName", class:'HeaderCSS'},
+    { header: "LotNo", field: "LotNo", class:'HeaderCSS'},
+    { header: "BrandID", field: "BrandID", hide: true, class:'HeaderCSS'},
+    { header: "BrandName", field: "BrandName", class:'HeaderCSS'},
+    { header: "ItemsInPacket", field: "ItemsInPacket", class:'HeaderCSS'},
+    { header: "InQuantity", field: "InQuantity", class:'HeaderCSS'},
+    { header: "MFD Date", field: "MFGDate", hide: true, class:'HeaderCSS'},
+    { header: "ExpiryDate", field: "ExpDate", hide: true, class:'HeaderCSS'},
+    { header: "Remarks", field: "Remarks", class:'HeaderCSS'},
+    { header: "LabourContractorID", field: "LabourContractorID", hide: true, class:'HeaderCSS'},
+    { header: "LabourContracterName", field: "LabourContracterName", class:'HeaderCSS'},
+    { header: "StorageAreaTypeID", field: "StorageAreaTypeID", hide: true, class:'HeaderCSS'},
+    { header: "StorageAreaType", field: "StorageAreaType", class:'HeaderCSS'},
+    { header: "SelfLife", field: "SelfLife", class:'HeaderCSS'},
+    { header: "Country", field: "Country", class:'HeaderCSS'},
+    { header: "ClassName", field: "ClassName", class:'HeaderCSS'},
   ]
   serviceColumns: ColDef[] = [
     {
@@ -1787,7 +1716,7 @@ export class InwardComponent implements OnInit {
         //   tooltip: 'copy',
         //   disabled: true,
         //   click: () => {
-        //     alert('copy');
+        //     this.dialog.alert('copy');
         //   },
         // },
         {
@@ -1811,7 +1740,7 @@ export class InwardComponent implements OnInit {
         //   pop: true,
         //   popTitle: 'Confirm delete?',
         //   click: () => {
-        //     alert('delete');
+        //     this.dialog.alert('delete');
         //   },
         // },
       ],
@@ -1950,6 +1879,25 @@ export class InwardComponent implements OnInit {
     { headerName: 'Remarks', field: 'Remarks', minWidth: 200, filter: 'agTextColumnFilter', floatingFilter: true, },
     { headerName: 'StatusName', field: 'StatusName', minWidth: 120, filter: 'agTextColumnFilter', floatingFilter: true, }
   ];
+
+  GetMainRemarks(event: any) {
+    const FGRT = this.remarkList.filter((x: any) => x.Remarks == String(event.target.value));
+    //console.log("GetMainRemarks", FGRT[0].Remarks);
+    if (FGRT != null) {
+      if (Number(FGRT[0].RemarksID) == 1) {
+        this.mainRem1 = false;
+        this.mainRem2 = true;
+        this.form.controls['Maincustremarks'].setValue('');
+      } else {
+        this.mainRem1 = true;
+        this.mainRem2 = false;
+        this.form.controls['Maincustremarks'].setValue(FGRT[0].Remarks);
+      }
+    }
+  }
+  OnListInward(){
+    this.GetInwardList();
+  }
   //-----------end 
 }
 export class StorageArea {
@@ -2027,6 +1975,7 @@ export class InwardDetails {
   IsNew: boolean = true;
   Country: string = "";
   ServiceID: number = 0;
+  ClassName: string = "";
 }
 export class TDChallanLocation {
   ChallanDID: number = 0;

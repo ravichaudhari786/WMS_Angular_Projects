@@ -193,7 +193,7 @@ export class ReceiptComponent implements OnInit {
         error => { console.error(error); }
       );
     } else {
-      alert("Plase Select Customer...!!!!");
+      this.dialog.alert("Plase Select Customer...!!!!");
       document?.getElementById("customer_id")?.focus();
     }
 
@@ -330,19 +330,19 @@ export class ReceiptComponent implements OnInit {
     this.CollectionDetailSaveList = [];
     this.RectInvoiceList = [];
     if (this.customer_id == 0) {
-      alert("Please Select Customers............");
+      this.dialog.alert("Please Select Customers............");
       document?.getElementById("customer_id")?.focus();
     } else if (this.ReceiptType_ID == 0) {
-      alert("Please Select Receipt Type............");
+      this.dialog.alert("Please Select Receipt Type............");
       document?.getElementById("ReceiptType_ID")?.focus();
     } else if (this.Receipt_date == null || this.Receipt_date == "") {
-      alert("Please Select Receipt Type............");
+      this.dialog.alert("Please Select Receipt Type............");
       document?.getElementById("Receipt_date")?.focus();
     } else if (this.Receipt_InvoiceList.length == 0) {
-      alert("Please Enter Invoice Charges............");
+      this.dialog.alert("Please Enter Invoice Charges............");
       document?.getElementById("ReceiptType_ID")?.focus();
     } else if (this.CollectionDetailList.length == 0) {
-      alert("Please Enter Collection Details............");
+      this.dialog.alert("Please Enter Collection Details............");
       document?.getElementById("PaymentModes_ID")?.focus();
     } else {
       if (this.Receipt_InvoiceList.length > 0) {

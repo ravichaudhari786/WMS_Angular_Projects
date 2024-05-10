@@ -135,7 +135,7 @@ onbtnReset(){
     }
     this.api.post('/EditEntries/EditEntries_insert',EditEntriesSave).subscribe(
       data => { 
-        alert(data[0].message);
+        this.dialog.alert(data[0].message);
         console.log("EditEntries_insert",data[0].message); },
       error1 => { //console.error('abc');//.error(error); 
       }

@@ -77,7 +77,7 @@ export class CustomerViewComponent implements OnInit {
       LotNo: "",
     };
     if (this.form.value.cbCustomerID == null || this.form.value.cbCustomerID == "") {
-      alert("Please .... Select Customer Name");
+      this.dialog.alert("Please .... Select Customer Name");
       document?.getElementById("cbCustomerID")?.focus();
       return;
     } else {
@@ -161,7 +161,7 @@ export class CustomerViewComponent implements OnInit {
       const FilesNames = this.tabname.replace(/\s/g, '') + '.xlsx'
       XLSX.writeFile(wb, String(FilesNames));
     } else {
-      alert("Data not found ..........")
+      this.dialog.alert("Data not found ..........")
     }
 
   }
@@ -192,7 +192,7 @@ export class CustomerViewComponent implements OnInit {
         count = Math.ceil(count)-1;
         for (var i = 1; i <= count; i++) {
           var position = - maxh * i
-          //alert(position);
+          //this.dialog.alert(position);
           pdf.addPage();
           pdf.addImage(img, 'JPEG', 0, position, w, h);
         }
@@ -200,7 +200,7 @@ export class CustomerViewComponent implements OnInit {
         this.tab = this.currentTab;
         this.LoadingLoader = false;
       } catch (e: any) {
-        alert("Error description: " + e.message);
+        this.dialog.alert("Error description: " + e.message);
       }
     });
   }
@@ -281,7 +281,7 @@ export class CustomerViewComponent implements OnInit {
       }, 5000);
     }
     else {
-      alert("Data not found ..........")
+      this.dialog.alert("Data not found ..........")
       this.LoadingLoader = false;
     }
   }

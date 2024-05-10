@@ -39,12 +39,12 @@ export class InwardActionButtonComponent implements ICellRendererAngularComp {
 
   }
   refresh(params?: any): boolean {
-    //alert("refresh")
+    //this.dialog.alert("refresh")
     return true;
   }
 
   onClick($event: any, action: string) {
-    //alert("onClick")
+    //this.dialog.alert("onClick")
     if (this.params.onClick instanceof Function) {
       // put anything into params u want pass into parents component
       const params = {

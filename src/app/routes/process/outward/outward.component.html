@@ -1,203 +1,184 @@
 <!-- <breadcrumb></breadcrumb> -->
 <div fxLayout="row wrap" class="matero-row">
-    <div fxFlex="100" class="matero-col">
-      <mat-card>
-        <mat-tab-group animationDuration="1ms" (selectedIndexChange)="tabOutward($event)" [(selectedIndex)]="tab" >
-          <mat-tab label="Outward">
-            <form [formGroup]="form" >
-                <div class="col-md-12">
-                    <div class="row pt-2">
-                        <div class="col-sm-5 col-md-5">
-                            <div class="form-group">
-                              <label>Customer Name</label>
-                              <select class="form-control form-control-sm" 
-                                formControlName="customer_id" id="customer_id">
-                                <option value="null" disabled>Select</option>
-                                <option *ngFor="let c of customerList" value={{c.CustomerID}}>{{c.CustomerName}}</option>
-                              </select>
-                              <mat-error id="customer_id_error"></mat-error>
-                            </div>
-                          </div>
-                          <div class="col-sm-3 col-md-3">
-                            <div class="form-group pt-3">
-                              <button type="button" class="btn btn-secondary btn-block" (click)="OnSearchPendingDO()">Pending DO</button>
-                            </div>
-                          </div>
-                          <div class="col-sm-4 col-md-4">
-                            <div class="form-group">
-                                <label>Outward Date</label>
-                                <input type="datetime-local" formControlName="Outward_Date" id="Outward_Date"
-                                  class="form-control form-control-sm" placeholder="" 
-                                  [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'"  name="deliveryorder_date" 
-                                    class="form-control form-control-rounded"    />
-                            </div>
-                          </div>
-                          <!---row 1-->
-                          <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                              <label>Truck No</label>
-                              <input type="text" formControlName="txtTruck_No" id="txtTruck_No"
-                                class="form-control form-control-sm" placeholder="" />
-                            </div>
-                          </div>
-                          <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                              <label>Container No</label>
-                              <input type="text" formControlName="txtContainer_No" id="txtContainer_No"
-                                class="form-control form-control-sm" placeholder="" />
-                            </div>
-                          </div>
-                          <!---row 3-->
-                          <div class="col-sm-4 col-md-4">
-                            <div class="form-group">
-                                <label>Customer Party</label>
-                                <select class="form-control form-control-sm" 
-                                  formControlName="cbCustomer_Party" id="cbCustomer_Party">
-                                  <option value="null" disabled>Select</option>
-                                  <option *ngFor="let c of customePartyList" value={{c.CustomerPartyID}}>{{c.PartyName}}</option>
-                                </select>
-                            </div>
-                          </div>
-                          <div class="col-sm-3 col-md-3">
-                            <div class="form-group pt-3">
-                                <button type="button" class="btn btn-secondary btn-block" (click)="openPartyWindow(AddPartyContent)">ADD Party</button>
-                            </div>
-                          </div>
-                          <div class="col-sm-5 col-md-5">
-                            <div class="form-group">
-                              <label>Remarks</label>
-                              <select class="form-control form-control-sm" 
-                              formControlName="cbRemarks" id="cbRemarks">
-                              <option value="null" disabled>Select</option>
-                              <option *ngFor="let r of remarkList" value={{r.Remarks}}>{{r.Remarks}}</option>
-                            </select>
-                            </div>
-                          </div>
-                          <!--row 4-->
-                          <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                              <label>Driver Name</label>
-                              <input type="text" formControlName="txtDriver_Name" id="txtDriver_Name"
-                                class="form-control form-control-sm" placeholder="" />
-                            </div>
-                          </div>
-                          <div class="col-sm-6 col-md-6">
-                            <div class="form-group">
-                              <label>Driver Mobile No</label>
-                              <input type="text" formControlName="txtDriver_MobileNo" id="txtDriver_MobileNo"
-                                class="form-control form-control-sm" placeholder="" />
-                            </div>
-                          </div>
-                          <!--Row 5-->
-                          <div class="col-sm-4 col-md-4">
-                            <div class="form-group">
-                              <label>Dock Name</label>
-                              <select class="form-control form-control-sm" 
-                                formControlName="cbDock_Name" id="cbDock_Name">
-                                <option value="null" disabled>Select</option>
-                                <option *ngFor="let d of dockList" value={{d.DockID}}>{{d.DockName}}</option>
-                              </select>
-                              <mat-error id="customer_id_error"></mat-error>
-                            </div>
-                          </div>
-                          <div class="col-sm-4 col-md-4">
-                            <div class="form-group">
-                              <label>LodingBy Name</label>
-                              <select class="form-control form-control-sm" 
-                                formControlName="cbLodingBy_Name" id="cbLodingBy_Name">
-                                <option value="null" disabled>Select</option>
-                                <option *ngFor="let c of unloadingList" value={{c.UserID}}>{{c.UserName}}</option>
-                              </select>
-                              <mat-error id="customer_id_error"></mat-error>
-                            </div>
-                          </div>
-                          <div class="col-sm-4 col-md-4">
-                            <div class="form-group">
-                              <label>Labour Contractor</label>
-                              <select class="form-control form-control-sm" 
-                                formControlName="cbLabourContractor" id="cbLabourContractor">
-                                <option value="null" disabled>Select</option>
-                                <option *ngFor="let c of labourContractorList" value={{c.LabourContractorID}}>{{c.ContractorName}}</option>
-                              </select>
-                              <mat-error id="customer_id_error"></mat-error>
-                            </div>
-                          </div>
-                    </div>
+  <div fxFlex="100" class="matero-col">
+    <mat-card>
+      <mat-tab-group animationDuration="1ms" (selectedIndexChange)="tabOutward($event)" [(selectedIndex)]="tab">
+        <mat-tab label="Outward">
+          <form [formGroup]="form">
+            <div class="col-md-12">
+              <div class="row pt-2">
+                <div class="col-sm-5 col-md-5">
+                  <div class="form-group">
+                    <label>Customer Name</label>
+                    <select class="form-control form-control-sm" formControlName="customer_id" id="customer_id">
+                      <option value="null" disabled>Select</option>
+                      <option *ngFor="let c of customerList" value={{c.CustomerID}}>{{c.CustomerName}}</option>
+                    </select>
+                    <mat-error id="customer_id_error"></mat-error>
                   </div>
-                  
-                
-                  <hr>
-                  <div class="row">
-         <div class="col-12">
-          <p class="font-weight-bold">Pending DO</p>
-              <mtx-grid [data]="PendingDOList" #gridPendingDOdList
-                [columns]="PendingDOListColum"
-                [loading]="false"
-                [columnResizable]="true"
-                [multiSelectable]="false"
-                [rowSelectable]="true"
-                [hideRowSelectionCheckbox]="true"
-                [rowHover]="true"
-                [rowStriped]="false"
-                [showToolbar]="false"
-                [toolbarTitle]="'Detail List'"
-                [columnHideable]="false"
-                [columnMovable]="true"
-                [expandable]="false"
-                [pageOnFront]="true"
-                [showPaginator]="false"
-                [pageSizeOptions]="[10,20,50,100,500]"
-                [pageIndex]="0"  
-                
-                (dblclick)="onRowDblclicked(gridPendingDOdList,$event)"
-                >
-              </mtx-grid>
-            </div></div>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                  <div class="form-group pt-3">
+                    <button type="button" class="btn btn-secondary btn-block" (click)="OnSearchPendingDO()">Pending
+                      DO</button>
+                  </div>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                  <div class="form-group">
+                    <label>Outward Date</label>
+                    <input type="datetime-local" formControlName="Outward_Date" id="Outward_Date"
+                      class="form-control form-control-sm" placeholder=""
+                      [ngModel]="todayDate| date:'yyyy-MM-dd hh:mm:ss'" name="deliveryorder_date"
+                      class="form-control form-control-rounded" />
+                  </div>
+                </div>
+                <!---row 1-->
+                <div class="col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <label>Truck No</label>
+                    <input type="text" formControlName="txtTruck_No" id="txtTruck_No"
+                      class="form-control form-control-sm" placeholder="" />
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <label>Container No</label>
+                    <input type="text" formControlName="txtContainer_No" id="txtContainer_No"
+                      class="form-control form-control-sm" placeholder="" />
+                  </div>
+                </div>
+                <!---row 3-->
+                <div class="col-sm-4 col-md-4">
+                  <div class="form-group">
+                    <label>Customer Party</label>
+                    <select class="form-control form-control-sm" formControlName="cbCustomer_Party"
+                      id="cbCustomer_Party">
+                      <option value="null" disabled>Select</option>
+                      <option *ngFor="let c of customePartyList" value={{c.CustomerPartyID}}>{{c.PartyName}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-3 col-md-3">
+                  <div class="form-group pt-3">
+                    <button type="button" class="btn btn-secondary btn-block"
+                      (click)="openPartyWindow(AddPartyContent)">ADD Party</button>
+                  </div>
+                </div>
+                <div class="col-sm-5 col-md-5">
+                  <div class="form-group">
+                    <label>Remarks</label>
+                    <select class="form-control form-control-sm" formControlName="cbRemarks" id="cbRemarks">
+                      <option value="null" disabled>Select</option>
+                      <option *ngFor="let r of remarkList" value={{r.Remarks}}>{{r.Remarks}}</option>
+                    </select>
+                  </div>
+                </div>
+                <!--row 4-->
+                <div class="col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <label>Driver Name</label>
+                    <input type="text" formControlName="txtDriver_Name" id="txtDriver_Name"
+                      class="form-control form-control-sm" placeholder="" />
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                  <div class="form-group">
+                    <label>Driver Mobile No</label>
+                    <input type="text" formControlName="txtDriver_MobileNo" id="txtDriver_MobileNo"
+                      class="form-control form-control-sm" placeholder="" />
+                  </div>
+                </div>
+                <!--Row 5-->
+                <div class="col-sm-4 col-md-4">
+                  <div class="form-group">
+                    <label>Dock Name</label>
+                    <select class="form-control form-control-sm" formControlName="cbDock_Name" id="cbDock_Name">
+                      <option value="null" disabled>Select</option>
+                      <option *ngFor="let d of dockList" value={{d.DockID}}>{{d.DockName}}</option>
+                    </select>
+                    <mat-error id="customer_id_error"></mat-error>
+                  </div>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                  <div class="form-group">
+                    <label>LodingBy Name</label>
+                    <select class="form-control form-control-sm" formControlName="cbLodingBy_Name" id="cbLodingBy_Name">
+                      <option value="null" disabled>Select</option>
+                      <option *ngFor="let c of unloadingList" value={{c.UserID}}>{{c.UserName}}</option>
+                    </select>
+                    <mat-error id="customer_id_error"></mat-error>
+                  </div>
+                </div>
+                <div class="col-sm-4 col-md-4">
+                  <div class="form-group">
+                    <label>Labour Contractor</label>
+                    <select class="form-control form-control-sm" formControlName="cbLabourContractor"
+                      id="cbLabourContractor">
+                      <option value="null" disabled>Select</option>
+                      <option *ngFor="let c of labourContractorList" value={{c.LabourContractorID}}>{{c.ContractorName}}
+                      </option>
+                    </select>
+                    <mat-error id="customer_id_error"></mat-error>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
             <hr>
-          
-            <div class="row">              
+            <div class="row">
+              <div class="col-12">
+                <p class="font-weight-bold">Pending DO</p>
+                <mtx-grid [data]="PendingDOList" #gridPendingDOdList [columns]="PendingDOListColum" [loading]="false"
+                  [columnResizable]="true" [multiSelectable]="false" [rowSelectable]="true"
+                  [hideRowSelectionCheckbox]="true" [rowHover]="true" [rowStriped]="false" [showToolbar]="false"
+                  [toolbarTitle]="'Detail List'" [columnHideable]="false" [columnMovable]="true" [expandable]="false"
+                  [pageOnFront]="true" [showPaginator]="false" [pageSizeOptions]="[10,20,50,100,500]" [pageIndex]="0"
+                  (dblclick)="onRowDblclicked(gridPendingDOdList,$event)">
+                </mtx-grid>
+              </div>
+            </div>
+            <hr>
+
+            <div class="row">
               <div class="col-8">
                 <p class="font-weight-bold">Product List</p>
                 <div class="card">
-                  <ag-grid-angular 
-                  style="height: 300px;"
-                  class="ag-theme-alpine"
-                  [rowData]="DeliveryOrderDetailList"
-                  [columnDefs]="DeliveryOrderDetailColumns" >
-                </ag-grid-angular>
+                  <ag-grid-angular style="height: 300px;" class="ag-theme-alpine" [rowData]="DeliveryOrderDetailList"
+                    [columnDefs]="DeliveryOrderDetailColumns">
+                  </ag-grid-angular>
                 </div>
               </div>
               <div class="col-4">
                 <p class="font-weight-bold">Product Charges</p>
                 <div class="card">
-                  <ag-grid-angular 
-                  style="height: 300px;"
-                  class="ag-theme-alpine"
-                  [rowData]="DeliveryOrderDetailChargeList"
-                  [columnDefs]="DeliveryOrderDetailChargeColumns" >
-                </ag-grid-angular>
+                  <ag-grid-angular style="height: 300px;" class="ag-theme-alpine"
+                    [rowData]="DeliveryOrderDetailChargeList" [columnDefs]="DeliveryOrderDetailChargeColumns">
+                  </ag-grid-angular>
                 </div>
               </div>
-              
-              
+
+
 
 
             </div>
             <hr>
-          
-            <div class="row">              
-              <div class="col-sm-4">
-                <button class="btn btn-secondary btn-sm" (click)="OnSaveOutward()" style="width: 85px !important; " [disabled]="Saveclick" >Save</button>
+
+            <div class="row">
+              <div class="col-md-2 col-sm-2">
+                <button class="btn btn-secondary btn-sm" (click)="OnSaveOutward()" style="width: 100% !important; "
+                  [disabled]="Saveclick">Save</button>
               </div>
-              <div class="col-sm-4">
-                <button class="btn btn-secondary btn-sm" (click)="OnResetOuward()" style="width: 85px !important; ">Reset</button>
+              <div class="col-md-2 col-sm-2">
+                <button class="btn btn-secondary btn-sm" (click)="OnResetOuward()"
+                  style="width: 100% !important; ">Reset</button>
               </div>
             </div>
 
             <!-----End Of Form  [disabled]="click" -->
-          </form>   
+          </form>
         </mat-tab>
-                <!-- <mat-tab label="Outward List">
+        <!-- <mat-tab label="Outward List">
                   <div class="form-control-sm" >
                     <label class="form-control-sm" >Filter  </label>
                     <input type="text" (keyup)="onKeyfilter(filtertext.value)" id="filtertext" #filtertext 
@@ -228,80 +209,83 @@
                   </mtx-grid>
                 </div>
                 </mat-tab> -->
-                <mat-tab label="Outward List" >
-                  <div class="col-12"><!---test-->
-                      <ag-grid-angular 
-                      style="height: 400px;"
-                      class="ag-theme-alpine"
-                      [rowData]="OutwardList12"
-                      [columnDefs]="Columnsdata" 
-                      [frameworkComponents]="frameworkComponents">
-                    </ag-grid-angular>
-                  </div>
-                </mat-tab>
-                </mat-tab-group>
-            </mat-card>
-        </div>
-    </div>
+        <mat-tab label="Outward List">
+          <div class="row">
+            <div class="col-md-2 col-sm-2" style="padding: 5px 0px 6px;">
+              <button class="btn btn-secondary" (click)="OnListOutward()"
+                style="width: 100% !important; ">Refresh List</button>
+            </div>
+            <div class="col-md-12 col-sm-12">
+              <ag-grid-angular style="height: 400px;" class="ag-theme-alpine" [rowData]="OutwardList12"
+                [columnDefs]="Columnsdata" [frameworkComponents]="frameworkComponents">
+              </ag-grid-angular>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  </div>
+</div>
 
 <!-----------PoP Up (Add Party window)--------------->
 <ng-template #AddPartyContent let-c="close" let-d="dismiss">
-      <div>
-        <div class="modal-header">
-          <h5  id="modal-basic-title">Customer Party</h5> 
-        </div>
-        <br>
-        <form [formGroup]="formParty">
-          <div class="col-md-12">
-            <div class="row pt-2">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label>Party Name</label>
-                  <input type="text" formControlName="txtPartyName"
-                    id="txtPartyName" class=" form-control form-control-sm" autocomplete="off"/>
-                  <!-- <div *ngIf="submitted && f.ItemName.invalid" class="invalid-feedback">
+  <div>
+    <div class="modal-header">
+      <h5 id="modal-basic-title">Customer Party</h5>
+    </div>
+    <br>
+    <form [formGroup]="formParty">
+      <div class="col-md-12">
+        <div class="row pt-2">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label>Party Name</label>
+              <input type="text" formControlName="txtPartyName" id="txtPartyName" class=" form-control form-control-sm"
+                autocomplete="off" />
+              <!-- <div *ngIf="submitted && f.ItemName.invalid" class="invalid-feedback">
                     <span *ngIf="f.ItemName?.errors?.required">Enter Item Name</span>
                   </div> -->
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="company">Shipping Address1</label>
-                  <input type="text" formControlName="txtShippingAddress1" id="txtShippingAddress1" class=" form-control form-control-sm" />
-                  <!-- <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
-                    <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
-                  </div> -->
-                </div>
-
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="company">Shipping Address2</label>
-                  <input type="text" formControlName="txtShippingAddress2" id="txtShippingAddress2" class=" form-control form-control-sm" />
-                  <!-- <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
-                    <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
-                  </div> -->
-                </div>
-
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label for="company">Pin Code</label>
-                  <input type="text" formControlName="txtPinCode" id="txtPinCode" class=" form-control form-control-sm" />
-                  <!-- <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
-                    <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
-                  </div> -->
-                </div>
-
-              </div>
             </div>
           </div>
-        </form>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="onAddParty()">OK</button>
-        <button type="button" class="btn btn-info" (click)="onCloseAddParty(AddPartyContent)">cancel</button>
-      </div> 
-      </div>
-    
-</ng-template>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="company">Shipping Address1</label>
+              <input type="text" formControlName="txtShippingAddress1" id="txtShippingAddress1"
+                class=" form-control form-control-sm" />
+              <!-- <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
+                    <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
+                  </div> -->
+            </div>
 
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="company">Shipping Address2</label>
+              <input type="text" formControlName="txtShippingAddress2" id="txtShippingAddress2"
+                class=" form-control form-control-sm" />
+              <!-- <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
+                    <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
+                  </div> -->
+            </div>
+
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="company">Pin Code</label>
+              <input type="text" formControlName="txtPinCode" id="txtPinCode" class=" form-control form-control-sm" />
+              <!-- <div *ngIf="submitted && f.ItemCode.invalid" class="invalid-feedback">
+                    <div *ngIf="f.ItemCode?.errors?.required">Enter Itemcode</div>
+                  </div> -->
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="onAddParty()">OK</button>
+      <button type="button" class="btn btn-info" (click)="onCloseAddParty(AddPartyContent)">cancel</button>
+    </div>
+  </div>
+
+</ng-template>
